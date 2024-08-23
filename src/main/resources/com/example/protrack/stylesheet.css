@@ -1,0 +1,16 @@
+.welcome-label {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
+
+.login-box {
+    -fx-background-color: white;
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-padding: 20px; /* Optional: Adds padding inside the VBox */
+}
+
+
+.background {
+    -fx-background-color: linear-gradient(to bottom right, #141619, #B3B4BD, #0A21C0);
+}
