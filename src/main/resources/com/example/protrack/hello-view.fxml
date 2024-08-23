@@ -17,7 +17,7 @@
         <Label text="Welcome" styleClass="welcome-label"/>
         <TextField promptText="Username" maxWidth="500"/>
         <PasswordField promptText="Password" maxWidth="500"/>
-        <Button text="Login" onAction="#onHelloButtonClick"/>
+        <Button text="Login" onAction="#onHelloButtonClick" styleClass="login-button"/>
         <Label fx:id="welcomeText"/>
     </VBox>
 </VBox>

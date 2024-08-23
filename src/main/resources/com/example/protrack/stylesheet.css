@@ -5,12 +5,28 @@
 
 .login-box {
     -fx-background-color: white;
-    -fx-background-radius: 30px;
+    -fx-background-radius: 50% 20% / 10% 40%;
     -fx-border-radius: 30px;
     -fx-padding: 20px; /* Optional: Adds padding inside the VBox */
 }
 
+.login-button {
+    -fx-background-color: #3D52A0; /* Green background */
+    -fx-text-fill: white;           /* White text */
+    -fx-font-size: 16px;            /* Font size */
+    -fx-padding: 10px 20px;         /* Padding: top/bottom left/right */
+    -fx-border-radius: 5px;         /* Rounded corners */
+    -fx-background-radius: 5px;     /* Rounded corners */
+}
+
+.login-button:hover {
+    -fx-background-color: #7091E6; /* Darker green on hover */
+}
+
+.login-button:pressed {
+    -fx-background-color: #388e3c; /* Even darker green when pressed */
+}
 
 .background {
-    -fx-background-color: linear-gradient(to bottom right, #141619, #B3B4BD, #0A21C0);
+    -fx-background-color: linear-gradient(to bottom right, #B3B4BD, #0A21C0);
 }
