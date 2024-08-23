@@ -6,6 +6,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.protrack.HelloController">
     <padding>
@@ -13,8 +14,8 @@
     </padding>
 
     <Label text="Login"/>
-    <TextField/>
-    <TextField/>
+    <TextField promptText="Username"/>
+    <PasswordField promptText="Password"/>
     <Label fx:id="welcomeText"/>
     <Button text="Login" onAction="#onHelloButtonClick"/>
 </VBox>
