@@ -1,9 +1,9 @@
-package com.example.protrack;
+package com.example.protrack.applicationpages;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class LoginPageController {
     @FXML
     private Label welcomeText;
 
