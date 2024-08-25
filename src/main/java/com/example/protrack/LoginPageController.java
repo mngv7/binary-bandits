@@ -3,7 +3,7 @@ package com.example.protrack;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class LoginPageController {
     @FXML
     private Label welcomeText;
 
