@@ -36,3 +36,6 @@ build/
 
 ### Database Files ###
 *.db
+
+### Libraries Folder ###
+lib/

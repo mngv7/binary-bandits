@@ -9,7 +9,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.layout.HBox?>
 <VBox alignment="CENTER_RIGHT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.protrack.LoginPageController" styleClass="background">
+      fx:controller="com.example.protrack.applicationpages.LoginPageController" styleClass="background">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
