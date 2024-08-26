@@ -2,6 +2,7 @@ package com.example.protrack.users;
 
 import java.sql.*;
 import com.example.protrack.DatabaseConnection;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UsersDAO {
     private Connection connection;
@@ -46,12 +47,14 @@ public class UsersDAO {
     public void newUser(AbstractUser user) {
         try {
             PreparedStatement insertAccount = connection.prepareStatement(
-                    "INSERT INTO users (employeeId, firstName, lastName, password, accessLevel) VALUES (?, ?, ?, ?)"
+                    "INSERT INTO users (employeeId, firstName, lastName, password, accessLevel) VALUES (?, ?, ?, ?, ?)"
             );
+            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+
             insertAccount.setInt(1, user.getEmployeeId());
             insertAccount.setString(2, user.getFirstName());
             insertAccount.setString(3, user.getLastName());
-            insertAccount.setString(4, user.getPassword());
+            insertAccount.setString(4, hashedPassword);
             insertAccount.setString(5, user.getAccessLevel());
 
             insertAccount.execute();

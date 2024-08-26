@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -53,7 +54,10 @@ public class LoginPageController {
         if (isInputValid()) {
             UsersDAO usersDAO = new UsersDAO();
             String usersPassword = usersDAO.getPasswordByFirstName(firstName);
-            return Objects.equals(usersPassword, passwordTextField.getText());
+
+            if (usersPassword != null) {
+                return BCrypt.checkpw(passwordTextField.getText(), usersPassword);
+            }
         }
         return false;
     }
