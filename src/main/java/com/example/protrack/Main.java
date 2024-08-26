@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Main extends Application {
 
@@ -20,7 +21,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
-        String stylesheet = Main.class.getResource("stylesheet.css").toExternalForm();
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setTitle(TITLE);
         stage.setScene(scene);
