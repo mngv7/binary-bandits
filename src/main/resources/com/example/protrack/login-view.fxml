@@ -15,8 +15,8 @@
     </padding>
     <VBox alignment="CENTER" maxWidth="600" spacing="20.0" styleClass="login-box" VBox.vgrow="ALWAYS">
         <Label text="Welcome" styleClass="welcome-label"/>
-        <TextField promptText="Username" maxWidth="500"/>
-        <PasswordField promptText="Password" maxWidth="500"/>
+        <TextField fx:id="usernameTextField" promptText="Username" maxWidth="500"/>
+        <PasswordField fx:id="passwordTextField" promptText="Password" maxWidth="500"/>
         <Button fx:id="loginButton" text="Login" onAction="#onLoginButtonClick" styleClass="login-button"/>
     </VBox>
 </VBox>
