@@ -1,7 +1,6 @@
 package com.example.protrack.users;
 
 import java.sql.*;
-
 import com.example.protrack.DatabaseConnection;
 
 public class UsersDAO {
@@ -42,5 +41,22 @@ public class UsersDAO {
             System.err.println(ex);
         }
         return null;
+    }
+
+    public void newUser(AbstractUser user) {
+        try {
+            PreparedStatement insertAccount = connection.prepareStatement(
+                    "INSERT INTO users (employeeId, firstName, lastName, password, accessLevel) VALUES (?, ?, ?, ?)"
+            );
+            insertAccount.setInt(1, user.getEmployeeId());
+            insertAccount.setString(2, user.getFirstName());
+            insertAccount.setString(3, user.getLastName());
+            insertAccount.setString(4, user.getPassword());
+            insertAccount.setString(5, user.getAccessLevel());
+
+            insertAccount.execute();
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
     }
 }
