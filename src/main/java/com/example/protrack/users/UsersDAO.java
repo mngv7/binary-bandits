@@ -27,4 +27,20 @@ public class UsersDAO {
             System.err.println(ex);
         }
     }
+
+    public String getPasswordByFirstName(String firstName) {
+        try {
+            PreparedStatement getAccount = connection.prepareStatement("SELECT password FROM users WHERE firstName = ?");
+            getAccount.setString(1, firstName);
+
+            ResultSet rs = getAccount.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("password");
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return null;
+    }
 }

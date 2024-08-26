@@ -2,6 +2,7 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 
+import com.example.protrack.users.UsersDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginPageController {
 
@@ -25,8 +27,12 @@ public class LoginPageController {
 
     @FXML
     protected void onLoginButtonClick() throws IOException {
-        if (isInputValid()) {
+        String firstName = usernameTextField.getText();
+
+        if (checkLoginDetails(firstName)) {
             loadHomePage();
+        } else {
+            System.out.println("Invalid first name or password.");
         }
     }
 
@@ -41,5 +47,14 @@ public class LoginPageController {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
         return !username.trim().isEmpty() && !password.trim().isEmpty();
+    }
+
+    private boolean checkLoginDetails(String firstName) {
+        if (isInputValid()) {
+            UsersDAO usersDAO = new UsersDAO();
+            String usersPassword = usersDAO.getPasswordByFirstName(firstName);
+            return Objects.equals(usersPassword, passwordTextField.getText());
+        }
+        return false;
     }
 }
