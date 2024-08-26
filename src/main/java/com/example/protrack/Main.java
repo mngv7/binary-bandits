@@ -10,13 +10,18 @@ import java.sql.Connection;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    public static final String TITLE = "Address Book";
+    public static final int WIDTH = 640*2;
+    public static final int HEIGHT = 360*2;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
         String stylesheet = Main.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
-        stage.setTitle("ProTrack");
+        stage.setTitle(TITLE);
         stage.setScene(scene);
         stage.show();
     }

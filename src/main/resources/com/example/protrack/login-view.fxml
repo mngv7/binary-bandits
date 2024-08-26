@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.layout.HBox?>
+
 <VBox alignment="CENTER_RIGHT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.protrack.applicationpages.LoginPageController" styleClass="background">
     <padding>
@@ -17,9 +17,6 @@
         <Label text="Welcome" styleClass="welcome-label"/>
         <TextField promptText="Username" maxWidth="500"/>
         <PasswordField promptText="Password" maxWidth="500"/>
-        <Button text="Login" onAction="#onHelloButtonClick" styleClass="login-button"/>
-        <Label fx:id="welcomeText"/>
+        <Button fx:id="loginButton" text="Login" onAction="#onLoginButtonClick" styleClass="login-button"/>
     </VBox>
 </VBox>
-
-

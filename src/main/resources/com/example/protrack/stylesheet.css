@@ -11,7 +11,7 @@
 }
 
 .login-button {
-    -fx-background-color: #3D52A0; /* Green background */
+    -fx-background-color: #3D52A0;
     -fx-text-fill: white;           /* White text */
     -fx-font-size: 16px;            /* Font size */
     -fx-padding: 10px 20px;         /* Padding: top/bottom left/right */
@@ -20,11 +20,11 @@
 }
 
 .login-button:hover {
-    -fx-background-color: #7091E6; /* Darker green on hover */
+    -fx-background-color: #7091E6;
 }
 
 .login-button:pressed {
-    -fx-background-color: #388e3c; /* Even darker green when pressed */
+    -fx-background-color: #3D52A0;
 }
 
 .background {
