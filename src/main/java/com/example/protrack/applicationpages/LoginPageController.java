@@ -30,6 +30,8 @@ public class LoginPageController {
     @FXML
     private Button loginButton;
 
+    private Integer loginAttempts = 0;
+
     @FXML
     protected void onLoginButtonClick() throws IOException {
         String firstName = usernameTextField.getText();
@@ -37,12 +39,24 @@ public class LoginPageController {
         if (checkLoginDetails(firstName)) {
             usernameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
+            loginAttempts = 0;
             loadHomePage();
         } else {
             loginErrorMessage.setText("Invalid first name or password.");
             usernameTextField.getStyleClass().add("login-error");
             passwordTextField.getStyleClass().add("login-error");
+            loginAttempts++;
         }
+
+        if (loginAttempts >= 3) {
+            disableLogin();
+        }
+    }
+
+    @FXML
+    protected void disableLogin() {
+        loginButton.setDisable(true);
+        loginErrorMessage.setText("Too many incorrect login attempts, please contact supervisor.");
     }
 
     private void loadHomePage() throws IOException {
