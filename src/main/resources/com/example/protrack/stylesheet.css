@@ -58,3 +58,9 @@
 .background {
     -fx-background-color: #310B91;
 }
+
+img {
+
+}
+
+<img src="application_logo.png">

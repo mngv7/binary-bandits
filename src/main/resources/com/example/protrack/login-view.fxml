@@ -9,11 +9,17 @@
 <?import javafx.scene.control.PasswordField?>
 
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <HBox alignment="CENTER_RIGHT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-         fx:controller="com.example.protrack.applicationpages.LoginPageController" styleClass="background">
+      fx:controller="com.example.protrack.applicationpages.LoginPageController" styleClass="background">
 
     <!-- Hbox.hgrow will allow each VBox to take up half the screen -->
     <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+        <ImageView fitHeight="150" fitWidth="150" preserveRatio="true">
+            <Image url="@application_logo.png"/>
+        </ImageView>
+
         <Label text="ProTrack" styleClass="logo"/>
     </VBox>
 
