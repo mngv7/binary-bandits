@@ -1,5 +1,6 @@
 package com.example.protrack;
 
+import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.UsersDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,13 +11,18 @@ import java.sql.Connection;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    public static final String TITLE = "Address Book";
+    public static final int WIDTH = 640*2;
+    public static final int HEIGHT = 360*2;
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
         String stylesheet = Main.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
-        stage.setTitle("ProTrack");
+        stage.setTitle(TITLE);
         stage.setScene(scene);
         stage.show();
     }
@@ -24,6 +30,9 @@ public class Main extends Application {
     public static void main(String[] args) {
         Connection connection = DatabaseConnection.getInstance();
         UsersDAO usersDAO = new UsersDAO();
+
+        // Insert a new user (comment out this code once it has been run).
+        // usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
 
         usersDAO.createTable();
         launch();

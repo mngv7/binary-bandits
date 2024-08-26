@@ -2,12 +2,12 @@ package com.example.protrack.users;
 
 public abstract class AbstractUser {
 
-    protected String employeeId;
+    protected int employeeId;
     protected String firstName;
     protected String lastName;
     protected String password;
 
-    public AbstractUser(String employeeId, String firstName, String lastName, String password) {
+    public AbstractUser(int employeeId, String firstName, String lastName, String password) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -15,7 +15,7 @@ public abstract class AbstractUser {
 
     }
 
-    public String getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
     }
 
@@ -31,5 +31,5 @@ public abstract class AbstractUser {
         return password;
     }
 
-    public abstract void getAccessLevel();
+    public abstract String getAccessLevel();
 }

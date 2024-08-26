@@ -36,6 +36,7 @@ build/
 
 ### Database Files ###
 *.db
+*.db-journal
 
 ### Libraries Folder ###
 lib/

@@ -1,12 +1,15 @@
 package com.example.protrack.users;
 
 public class ProductionUser extends AbstractUser {
-    public ProductionUser(String employeeId, String firstName, String lastName, String password) {
+    private final String accessLevel;
+
+    public ProductionUser(int employeeId, String firstName, String lastName, String password) {
         super(employeeId, firstName, lastName, password);
+        this.accessLevel = "LOW";
     }
 
     @Override
-    public void getAccessLevel() {
-
+    public String getAccessLevel() {
+        return accessLevel;
     }
 }

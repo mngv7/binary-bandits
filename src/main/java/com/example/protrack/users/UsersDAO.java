@@ -1,8 +1,8 @@
 package com.example.protrack.users;
 
 import java.sql.*;
-
 import com.example.protrack.DatabaseConnection;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UsersDAO {
     private Connection connection;
@@ -23,6 +23,41 @@ public class UsersDAO {
                             + "accessLevel VARCHAR NOT NULL"
                             + ")"
             );
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+    }
+
+    public String getPasswordByFirstName(String firstName) {
+        try {
+            PreparedStatement getAccount = connection.prepareStatement("SELECT password FROM users WHERE firstName = ?");
+            getAccount.setString(1, firstName);
+
+            ResultSet rs = getAccount.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("password");
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return null;
+    }
+
+    public void newUser(AbstractUser user) {
+        try {
+            PreparedStatement insertAccount = connection.prepareStatement(
+                    "INSERT INTO users (employeeId, firstName, lastName, password, accessLevel) VALUES (?, ?, ?, ?, ?)"
+            );
+            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+
+            insertAccount.setInt(1, user.getEmployeeId());
+            insertAccount.setString(2, user.getFirstName());
+            insertAccount.setString(3, user.getLastName());
+            insertAccount.setString(4, hashedPassword);
+            insertAccount.setString(5, user.getAccessLevel());
+
+            insertAccount.execute();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
