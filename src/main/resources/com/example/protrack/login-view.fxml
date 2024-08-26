@@ -16,10 +16,16 @@
     <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
         <Label text="ProTrack" styleClass="logo"/>
     </VBox>
+
     <VBox alignment="CENTER" maxWidth="600" spacing="20.0" styleClass="login-box" HBox.hgrow="ALWAYS">
         <Label text="Welcome" styleClass="welcome-label"/>
-        <TextField fx:id="usernameTextField" promptText="Username" maxWidth="500" styleClass="username-field"/>
+        <TextField fx:id="usernameTextField" promptText="First Name" maxWidth="500" styleClass="username-field"/>
         <PasswordField fx:id="passwordTextField" promptText="Password" maxWidth="500" styleClass="password-field"/>
-        <Button fx:id="loginButton" text="Login" onAction="#onLoginButtonClick" styleClass="login-button"/>
+
+        <HBox alignment="CENTER">
+            <Label fx:id="loginErrorMessage" styleClass="login-error-message"/>
+        </HBox>
+
+        <Button fx:id="loginButton" text="Log In" onAction="#onLoginButtonClick" styleClass="login-button"/>
     </VBox>
 </HBox>

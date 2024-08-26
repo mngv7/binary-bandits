@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -16,6 +17,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class LoginPageController {
+
+    @FXML
+    public Label loginErrorMessage;
 
     @FXML
     private PasswordField passwordTextField;
@@ -31,9 +35,13 @@ public class LoginPageController {
         String firstName = usernameTextField.getText();
 
         if (checkLoginDetails(firstName)) {
+            usernameTextField.getStyleClass().remove("login-error");
+            passwordTextField.getStyleClass().remove("login-error");
             loadHomePage();
         } else {
-            System.out.println("Invalid first name or password.");
+            loginErrorMessage.setText("Invalid first name or password.");
+            usernameTextField.getStyleClass().add("login-error");
+            passwordTextField.getStyleClass().add("login-error");
         }
     }
 
