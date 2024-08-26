@@ -7,7 +7,13 @@ public abstract class AbstractUser {
     protected String lastName;
     protected String password;
 
-    public abstract void getAccessLevel();
+    public AbstractUser(String employeeId, String firstName, String lastName, String password) {
+        this.employeeId = employeeId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+
+    }
 
     public String getEmployeeId() {
         return employeeId;
@@ -20,4 +26,10 @@ public abstract class AbstractUser {
     public String getLastName() {
         return lastName;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public abstract void getAccessLevel();
 }
