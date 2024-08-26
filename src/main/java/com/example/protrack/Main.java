@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    public static final String TITLE = "Address Book";
+    public static final String TITLE = "ProTrack";
     public static final int WIDTH = 640*2;
     public static final int HEIGHT = 360*2;
 
