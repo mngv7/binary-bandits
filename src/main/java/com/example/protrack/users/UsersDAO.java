@@ -1,8 +1,7 @@
 package com.example.protrack.users;
 
 import java.sql.*;
-import java.util.List;
-import java.util.ArrayList;
+
 import com.example.protrack.DatabaseConnection;
 
 public class UsersDAO {
@@ -20,7 +19,8 @@ public class UsersDAO {
                             + "employeeId INTEGER PRIMARY KEY AUTOINCREMENT, "
                             + "firstName VARCHAR NOT NULL, "
                             + "lastName VARCHAR NOT NULL, "
-                            + "password VARCHAR NOT NULL"
+                            + "password VARCHAR NOT NULL, "
+                            + "accessLevel VARCHAR NOT NULL"
                             + ")"
             );
         } catch (SQLException ex) {
