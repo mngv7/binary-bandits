@@ -1,7 +1,7 @@
 package com.example.protrack.users;
 
 import java.sql.*;
-import com.example.protrack.DatabaseConnection;
+import com.example.protrack.databaseutil.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class UsersDAO {

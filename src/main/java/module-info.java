@@ -9,4 +9,6 @@ module com.example.protrack {
     exports com.example.protrack;
     exports com.example.protrack.applicationpages;
     opens com.example.protrack.applicationpages to javafx.fxml;
+    exports com.example.protrack.databaseutil;
+    opens com.example.protrack.databaseutil to javafx.fxml;
 }

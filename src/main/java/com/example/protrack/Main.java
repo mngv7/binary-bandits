@@ -1,6 +1,6 @@
 package com.example.protrack;
 
-import com.example.protrack.users.ManagerialUser;
+import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.users.UsersDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
