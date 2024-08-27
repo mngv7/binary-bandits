@@ -18,13 +18,20 @@ public class TestRecordDAO {
             Statement createTable = connection.createStatement();
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS testRecordParts ("
-                            + "employeeId INTEGER PRIMARY KEY AUTOINCREMENT, "
-                            + "firstName VARCHAR NOT NULL, "
-                            + "lastName VARCHAR NOT NULL, "
-                            + "password VARCHAR NOT NULL, "
-                            + "accessLevel VARCHAR NOT NULL"
+                            + "productId INTEGER PRIMARY KEY, "
+                            + "partId VARCHAR NOT NULL, "
+                            + "partQuantity VARCHAR NOT NULL, "
                             + ")"
             );
+            createTable.execute(
+                    "CREATE TABLE IF NOT EXISTS testRecordSteps ("
+                            + "productId INTEGER PRIMARY KEY, "
+                            + "stepNum VARCHAR NOT NULL, "
+                            + "stepDescription VARCHAR NOT NULL, "
+                            + "checkType VARCHAR NOT NULL, "
+                            + ")"
+            );
+
         } catch (SQLException ex) {
             System.err.println(ex);
         }
