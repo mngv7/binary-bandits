@@ -8,15 +8,30 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.PasswordField?>
 
-<VBox alignment="CENTER_RIGHT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<HBox alignment="CENTER_RIGHT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.protrack.applicationpages.LoginPageController" styleClass="background">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-    <VBox alignment="CENTER" maxWidth="600" spacing="20.0" styleClass="login-box" VBox.vgrow="ALWAYS">
-        <Label text="Welcome" styleClass="welcome-label"/>
-        <TextField fx:id="usernameTextField" promptText="Username" maxWidth="500"/>
-        <PasswordField fx:id="passwordTextField" promptText="Password" maxWidth="500"/>
-        <Button fx:id="loginButton" text="Login" onAction="#onLoginButtonClick" styleClass="login-button"/>
+
+    <!-- Hbox.hgrow will allow each VBox to take up half the screen -->
+    <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+        <ImageView fitHeight="150" fitWidth="150" preserveRatio="true">
+            <Image url="@application_logo.png"/>
+        </ImageView>
+
+        <Label text="ProTrack" styleClass="logo"/>
     </VBox>
-</VBox>
+
+    <VBox alignment="CENTER" maxWidth="600" spacing="20.0" styleClass="login-box" HBox.hgrow="ALWAYS">
+        <Label text="Welcome" styleClass="welcome-label"/>
+        <TextField fx:id="usernameTextField" promptText="First Name" maxWidth="500" styleClass="username-field"/>
+        <PasswordField fx:id="passwordTextField" promptText="Password" maxWidth="500" styleClass="password-field"/>
+
+        <HBox alignment="CENTER">
+            <Label fx:id="loginErrorMessage" styleClass="login-error-message"/>
+        </HBox>
+
+        <Button fx:id="loginButton" text="Log In" onAction="#onLoginButtonClick" styleClass="login-button"/>
+    </VBox>
+</HBox>

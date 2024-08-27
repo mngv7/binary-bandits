@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -18,6 +19,9 @@ import java.util.Objects;
 public class LoginPageController {
 
     @FXML
+    public Label loginErrorMessage;
+
+    @FXML
     private PasswordField passwordTextField;
 
     @FXML
@@ -26,15 +30,33 @@ public class LoginPageController {
     @FXML
     private Button loginButton;
 
+    private Integer loginAttempts = 0;
+
     @FXML
     protected void onLoginButtonClick() throws IOException {
         String firstName = usernameTextField.getText();
 
         if (checkLoginDetails(firstName)) {
+            usernameTextField.getStyleClass().remove("login-error");
+            passwordTextField.getStyleClass().remove("login-error");
+            loginAttempts = 0;
             loadHomePage();
         } else {
-            System.out.println("Invalid first name or password.");
+            loginErrorMessage.setText("Invalid first name or password.");
+            usernameTextField.getStyleClass().add("login-error");
+            passwordTextField.getStyleClass().add("login-error");
+            loginAttempts++;
         }
+
+        if (loginAttempts >= 3) {
+            disableLogin();
+        }
+    }
+
+    @FXML
+    protected void disableLogin() {
+        loginButton.setDisable(true);
+        loginErrorMessage.setText("Too many incorrect login attempts, please contact supervisor.");
     }
 
     private void loadHomePage() throws IOException {
