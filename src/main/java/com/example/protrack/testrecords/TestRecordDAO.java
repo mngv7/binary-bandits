@@ -13,7 +13,7 @@ public class TestRecordDAO {
         connection = DatabaseConnection.getInstance();
     }
 
-    public void createTable() {
+    public void createTables() {
         try {
             Statement createTable = connection.createStatement();
             createTable.execute(
