@@ -14,9 +14,9 @@ import java.util.Objects;
 
 public class Main extends Application {
 
-    public static final String TITLE = "ProTrack";
-    public static final int WIDTH = 640*2;
-    public static final int HEIGHT = 360*2;
+    private static final String TITLE = "ProTrack";
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 720;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -27,6 +27,14 @@ public class Main extends Application {
         stage.setTitle(TITLE);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static int getWidth() {
+        return WIDTH;
+    }
+
+    public static int getHeight() {
+        return HEIGHT;
     }
 
     public static void main(String[] args) {

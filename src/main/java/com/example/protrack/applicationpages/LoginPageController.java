@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class LoginPageController {
 
@@ -63,13 +62,12 @@ public class LoginPageController {
     private void loadHomePage() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.hide();
-        stage.setMaximized(true);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/main_view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/main_view.fxml"));
         Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
         stage.setScene(scene);
         stage.show();
-        scene.getStylesheets().add(getClass().getResource("/org/example/main_app").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/example/protrack/main_app.css").toExternalForm());
     }
 
     private boolean isInputValid() {

@@ -30,47 +30,47 @@ public class MainController {
 
     @FXML
     private void dashboard() {
-        loadContent("/org/example/dashboard.fxml");
+        loadContent("/com/example/protrack/dashboard.fxml");
     }
 
     @FXML
     private void products() {
-        loadContent("/org/example/products.fxml");
+        loadContent("/com/example/protrack/products.fxml");
     }
 
     @FXML
     private void parts() {
-        loadContent("/org/example/parts.fxml");
+        loadContent("/com/example/protrack/parts.fxml");
     }
 
     @FXML
     private void workOrders() {
-        loadContent("/org/example/work_orders.fxml");
+        loadContent("/com/example/protrack/work_orders.fxml");
     }
 
     @FXML
     private void purchaseOrders() {
-        loadContent("/org/example/purchase_orders.fxml");
+        loadContent("/com/example/protrack/purchase_orders.fxml");
     }
 
     @FXML
     private void customers() {
-        loadContent("/org/example/customers.fxml");
+        loadContent("/com/example/protrack/customers.fxml");
     }
 
     @FXML
     private void suppliers() {
-        loadContent("/org/example/suppliers.fxml");
+        loadContent("/com/example/protrack/suppliers.fxml");
     }
 
     @FXML
     private void employees() {
-        loadContent("/org/example/employees.fxml");
+        loadContent("/com/example/protrack/employees.fxml");
     }
 
     @FXML
     private void warehouse() {
-        loadContent("/org/example/warehouse.fxml");
+        loadContent("/com/example/protrack/warehouse.fxml");
     }
 
     private void loadContent(String fxmlFile) {
