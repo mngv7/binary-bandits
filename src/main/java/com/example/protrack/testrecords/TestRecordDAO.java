@@ -17,18 +17,31 @@ public class TestRecordDAO {
         try {
             Statement createTable = connection.createStatement();
             createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS testRecordParts ("
-                            + "productId INTEGER PRIMARY KEY, "
-                            + "partId VARCHAR NOT NULL, "
-                            + "partQuantity VARCHAR NOT NULL, "
+                    "CREATE TABLE IF NOT EXISTS testRecords ("
+                            + "testRecordId INTEGER PRIMARY KEY, "
+                            + "productName VARCHAR NOT NULL, "
+                            + "dateCreated VARCHAR NOT NULL, "
+                            + "employeeId INTEGER NOT NULL, "
+                            + "reqPartsId INTEGER NOT NULL, "
+                            + "stepsId INTEGER NOT NULL, "
+                            + "PIId INTEGER NOT NULL, "
                             + ")"
             );
             createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS testRecordSteps ("
-                            + "productId INTEGER PRIMARY KEY, "
-                            + "stepNum VARCHAR NOT NULL, "
-                            + "stepDescription VARCHAR NOT NULL, "
+                    "CREATE TABLE IF NOT EXISTS requiredParts ("
+                            + "reqPartsId INTEGER PRIMARY KEY, "
+                            + "partsId VARCHAR NOT NULL, "
+                            + "requiredAmt VARCHAR NOT NULL, "
+                            + "currentAmt VARCHAR NOT NULL, "
+                            + ")"
+            );
+            createTable.execute(
+                    "CREATE TABLE IF NOT EXISTS steps ("
+                            + "stepsId INTEGER PRIMARY KEY, "
+                            + "partsId INTEGER NOT NULL, "
+                            + "steDescription VARCHAR NOT NULL, "
                             + "checkType VARCHAR NOT NULL, "
+                            + "checkCriteria VARCHAR NOT NULL,"
                             + ")"
             );
 
