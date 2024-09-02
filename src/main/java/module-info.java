@@ -4,6 +4,7 @@ module com.example.protrack {
     requires javafx.graphics;
     requires java.sql;
     requires jbcrypt;
+    requires javafx.base;
 
 
     opens com.example.protrack to javafx.fxml;

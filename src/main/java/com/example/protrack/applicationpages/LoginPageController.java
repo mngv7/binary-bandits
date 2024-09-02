@@ -5,6 +5,7 @@ import com.example.protrack.Main;
 import com.example.protrack.users.UsersDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -61,9 +62,14 @@ public class LoginPageController {
 
     private void loadHomePage() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), Main.WIDTH, Main.HEIGHT);
+        stage.hide();
+        stage.setMaximized(true);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/main_view.fxml"));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.show();
+        scene.getStylesheets().add(getClass().getResource("/org/example/main_app").toExternalForm());
     }
 
     private boolean isInputValid() {

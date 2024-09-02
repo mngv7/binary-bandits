@@ -9,26 +9,30 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.Region?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.applicationpages.MainController">
     <top>
         <!-- Banner -->
         <HBox prefHeight="100" style="-fx-background-color: #390B91;">
-            <Label text="ProTrack" prefHeight="100" minWidth="320" textFill="white" styleClass="logo-label"/>
-            <VBox prefWidth="1100">
+            <Region minWidth="20"/>
+            <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+                <Image fx:id="logo" url="@application_logo.png"/>
+            </ImageView>
+            <Label text="ProTrack" prefHeight="100" minWidth="200" textFill="white" styleClass="logo-label"/>
+            <VBox HBox.hgrow="ALWAYS" alignment="TOP_LEFT">
                 <padding>
                     <Insets top="39"/>
                 </padding>
                 <TextField promptText="🔎 Search..." maxWidth="300" styleClass="search-field"/>
             </VBox>
-            <HBox spacing="10" minWidth="220">
-                <VBox alignment="TOP_RIGHT" spacing="-8">
-
+            <HBox spacing="10" minWidth="220" alignment="CENTER_RIGHT">
+                <VBox alignment="CENTER_RIGHT" spacing="-8">
                     <Label text="employeeName" styleClass="employee-name"/>
                     <Label text="employeeTitle" styleClass="employee-title"/>
                 </VBox>
-                <padding>
-                    <Insets top="28"/>
-                </padding>
+
                 <!-- Can do onMouseClicked to imitate a button, will need prepared statements  -->
                 <Text text="🚹" style="-fx-fill: white;" styleClass="profile-text"/>
                 <Text text="🔔" style="-fx-fill: white;" styleClass="bell-text"/>

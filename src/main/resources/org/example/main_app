@@ -33,7 +33,6 @@
     -fx-font-family: "Arial";
     -fx-font-weight: bold;
     -fx-font-style: italic;
-    -fx-label-padding: 0 0 0 3em;
 }
 
 .search-field {
@@ -79,3 +78,12 @@
     -fx-border-color: #f4f4f4 #f4f4f4 #f4f4f4 transparent;
     -fx-padding: 20;
 }
+
+.logo {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-style: italic;
+}
+
+<img src="application_logo.png">

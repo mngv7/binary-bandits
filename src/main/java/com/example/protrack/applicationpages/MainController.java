@@ -1,20 +1,10 @@
-package org.example;
+package com.example.protrack.applicationpages;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.beans.property.StringProperty;
-import javafx.collections.transformation.FilteredList;
 
 import java.io.IOException;
 
@@ -40,47 +30,47 @@ public class MainController {
 
     @FXML
     private void dashboard() {
-        loadContent("dashboard.fxml");
+        loadContent("/org/example/dashboard.fxml");
     }
 
     @FXML
     private void products() {
-        loadContent("products.fxml");
+        loadContent("/org/example/products.fxml");
     }
 
     @FXML
     private void parts() {
-        loadContent("parts.fxml");
+        loadContent("/org/example/parts.fxml");
     }
 
     @FXML
     private void workOrders() {
-        loadContent("work_orders.fxml");
+        loadContent("/org/example/work_orders.fxml");
     }
 
     @FXML
     private void purchaseOrders() {
-        loadContent("purchase_orders.fxml");
+        loadContent("/org/example/purchase_orders.fxml");
     }
 
     @FXML
     private void customers() {
-        loadContent("customers.fxml");
+        loadContent("/org/example/customers.fxml");
     }
 
     @FXML
     private void suppliers() {
-        loadContent("suppliers.fxml");
+        loadContent("/org/example/suppliers.fxml");
     }
 
     @FXML
     private void employees() {
-        loadContent("employees.fxml");
+        loadContent("/org/example/employees.fxml");
     }
 
     @FXML
     private void warehouse() {
-        loadContent("warehouse.fxml");
+        loadContent("/org/example/warehouse.fxml");
     }
 
     private void loadContent(String fxmlFile) {

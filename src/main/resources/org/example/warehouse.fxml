@@ -8,7 +8,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.MainController"
+            fx:controller="com.example.protrack.applicationpages.MainController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
         <Label text="Warehouse" styleClass="title-label"/>
