@@ -1,9 +1,10 @@
 module com.example.protrack {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
     requires java.sql;
     requires jbcrypt;
-
+    requires javafx.base;
 
     opens com.example.protrack to javafx.fxml;
     exports com.example.protrack;

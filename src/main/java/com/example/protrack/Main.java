@@ -1,6 +1,7 @@
 package com.example.protrack;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.UsersDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +14,9 @@ import java.util.Objects;
 
 public class Main extends Application {
 
-    public static final String TITLE = "ProTrack";
-    public static final int WIDTH = 640*2;
-    public static final int HEIGHT = 360*2;
+    private static final String TITLE = "ProTrack";
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 720;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -28,12 +29,20 @@ public class Main extends Application {
         stage.show();
     }
 
+    public static int getWidth() {
+        return WIDTH;
+    }
+
+    public static int getHeight() {
+        return HEIGHT;
+    }
+
     public static void main(String[] args) {
         Connection connection = DatabaseConnection.getInstance();
         UsersDAO usersDAO = new UsersDAO();
 
-        // Insert a new user (comment out this code once it has been run).
-        // usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
+        //Insert a new user (comment out this code once it has been run).
+        //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
 
         usersDAO.createTable();
         launch();
