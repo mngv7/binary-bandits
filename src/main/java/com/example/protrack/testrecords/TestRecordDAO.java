@@ -27,23 +27,7 @@ public class TestRecordDAO {
                             + "PIId INTEGER NOT NULL, "
                             + ")"
             );
-            createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS requiredParts ("
-                            + "reqPartsId INTEGER PRIMARY KEY, "
-                            + "partsId VARCHAR NOT NULL, "
-                            + "requiredAmt VARCHAR NOT NULL, "
-                            + "currentAmt VARCHAR NOT NULL, "
-                            + ")"
-            );
-            createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS steps ("
-                            + "stepsId INTEGER PRIMARY KEY, "
-                            + "partsId INTEGER NOT NULL, "
-                            + "steDescription VARCHAR NOT NULL, "
-                            + "checkType VARCHAR NOT NULL, "
-                            + "checkCriteria VARCHAR NOT NULL,"
-                            + ")"
-            );
+
 
         } catch (SQLException ex) {
             System.err.println(ex);
