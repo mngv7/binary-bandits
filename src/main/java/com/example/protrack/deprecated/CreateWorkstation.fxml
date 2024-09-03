@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.deprecated.CreateWorkstationController">
+    <children>
+        <Label text="Workstation Details"/>
+        <TextField fx:id="nameField" promptText="Workstation Name"/>
+        <TextField fx:id="capacityField" promptText="Stock Capacity"/>
+        <Button text="Create Workstation" onAction="#handleCreate"/>
+        <Button text="Cancel" onAction="#handleCancel"/>
+    </children>
+</VBox>
