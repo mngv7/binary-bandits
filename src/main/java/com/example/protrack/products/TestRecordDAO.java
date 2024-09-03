@@ -1,4 +1,4 @@
-package com.example.protrack.testrecords;
+package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
 import java.sql.Connection;
@@ -20,7 +20,7 @@ public class TestRecordDAO {
                     "CREATE TABLE IF NOT EXISTS testRecords ("
                             + "testRecordId INTEGER PRIMARY KEY, "
                             + "productName VARCHAR NOT NULL, "
-                            + "dateCreated VARCHAR NOT NULL, "
+                            + "dateCreated DATE NOT NULL, "
                             + "employeeId INTEGER NOT NULL, "
                             + "reqPartsId INTEGER NOT NULL, "
                             + "stepsId INTEGER NOT NULL, "

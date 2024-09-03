@@ -1,6 +1,7 @@
 package com.example.protrack;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.products.RequiredPartsDAO;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.UsersDAO;
 import javafx.application.Application;
@@ -41,10 +42,13 @@ public class Main extends Application {
         Connection connection = DatabaseConnection.getInstance();
         UsersDAO usersDAO = new UsersDAO();
 
+        RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
+
         //Insert a new user (comment out this code once it has been run).
         //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
 
         usersDAO.createTable();
+        requiredPartsDAO.createTables();
         launch();
     }
 }

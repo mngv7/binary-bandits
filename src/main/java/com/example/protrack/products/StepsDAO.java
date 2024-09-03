@@ -1,4 +1,4 @@
-package com.example.protrack.testrecordsrequiredparts;
+package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
 import java.sql.Connection;
@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class RequiredPartsDAO {
+public class StepsDAO {
     private Connection connection;
 
-    public RequiredPartsDAO() {
+    public StepsDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
@@ -18,14 +18,14 @@ public class RequiredPartsDAO {
             Statement createTable = connection.createStatement();
 
             createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS requiredParts ("
-                            + "reqPartsId INTEGER PRIMARY KEY, "
+                    "CREATE TABLE IF NOT EXISTS steps ("
+                            + "stepsId INTEGER PRIMARY KEY, "
                             + "partsId VARCHAR NOT NULL, "
-                            + "requiredAmt VARCHAR NOT NULL, "
-                            + "currentAmt VARCHAR NOT NULL, "
+                            + "stepDescription VARCHAR NOT NULL, "
+                            + "checkType VARCHAR NOT NULL, "
+                            + "checkCriteria VARCHAR NOT NULL,"
                             + ")"
             );
-
 
         } catch (SQLException ex) {
             System.err.println(ex);
