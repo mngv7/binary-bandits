@@ -1,20 +1,21 @@
+import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.WarehouseUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class WarehouseUserTest {
-    private WarehouseUser user;
+public class ProductionUserTest {
+    private ProductionUser user;
 
     @BeforeEach
     public void setUp() {
-        user = new WarehouseUser(101, "TestFirst", "TestLast", "1234") {
+        user = new ProductionUser(101, "TestFirst", "TestLast", "1234") {
         };
     }
 
     @Test
     public void testGetAccessLevel() {
-        assertEquals("MEDIUM", user.getAccessLevel());
+        assertEquals("LOW", user.getAccessLevel());
     }
 
     @Test
