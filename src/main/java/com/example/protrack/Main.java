@@ -1,6 +1,5 @@
 package com.example.protrack;
 
-import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.products.RequiredPartsDAO;
 import com.example.protrack.products.StepsDAO;
 import com.example.protrack.products.TestRecordDAO;
@@ -9,7 +8,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.sql.Connection;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -52,6 +50,9 @@ public class Main extends Application {
 
         //Insert a new user (comment out this code once it has been run).
         //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
+
+        // Dummy data for the products:
+
 
         launch();
     }

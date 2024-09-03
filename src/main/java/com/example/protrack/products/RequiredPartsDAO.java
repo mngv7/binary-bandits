@@ -30,4 +30,6 @@ public class RequiredPartsDAO {
             System.err.println(ex);
         }
     }
+
+
 }
