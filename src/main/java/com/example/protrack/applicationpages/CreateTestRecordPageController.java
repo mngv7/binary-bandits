@@ -61,9 +61,9 @@ public class CreateTestRecordPageController {
 
     private void loadHomePage() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), Main.WIDTH, Main.HEIGHT);
-        stage.setScene(scene);
+        //FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("home-view.fxml"));
+        //Scene scene = new Scene(fxmlLoader.load(), Main.WIDTH, Main.HEIGHT);
+        //stage.setScene(scene);
     }
 
     private boolean isInputValid() {
