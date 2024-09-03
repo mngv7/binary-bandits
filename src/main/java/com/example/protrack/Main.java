@@ -42,7 +42,7 @@ public class Main extends Application {
         UsersDAO usersDAO = new UsersDAO();
 
         //Insert a new user (comment out this code once it has been run).
-        usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
+        //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
 
         usersDAO.createTable();
         launch();
