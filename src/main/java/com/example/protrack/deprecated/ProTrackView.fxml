@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- TODO: Make this work with embedded content panes! -->
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.deprecated.ProTrackController">
+    <children>
+        <!-- Sidebar -->
+        <HBox>
+            <children>
+                <VBox fx:id="sidebar" styleClass="sidebar">
+                    <children>
+                        <Button text="Dashboard" styleClass="sidebar-button"/>
+                        <Button text="Inventory" styleClass="sidebar-button"/>
+                        <Button text="Sale Orders" styleClass="sidebar-button"/>
+                        <Button text="Purchase Orders" styleClass="sidebar-button"/>
+                        <Button text="Customers" styleClass="sidebar-button"/>
+                        <Button text="Suppliers" styleClass="sidebar-button"/>
+                        <Button text="Employees" styleClass="sidebar-button"/>
+                    </children>
+                </VBox>
+
+                <!-- Main Content -->
+                <VBox fx:id="workstationPanel" styleClass="workstation-panel">
+                    <!-- Top Bar -->
+                    <HBox fx:id="topBar" styleClass="top-bar">
+                        <Label text="ProTrack" styleClass="top-bar-label"/>
+                        <Label text="Warehouse A Setup" styleClass="top-bar-label"/>
+                    </HBox>
+
+                    <!-- Workstation Content -->
+                    <VBox>
+                        <children>
+                            <Label text="Workstations" styleClass="section-label"/>
+                            <Button fx:id="addWorkstationButton" text="Add Workstation" onAction="#handleAddWorkstation"/>
+                            <Button fx:id="allocateWorkstationButton" text="Allocate Workstation" onAction="#handleAllocateWorkstation"/>
+                            <TableView fx:id="workstationTable">
+                                <columns>
+                                    <TableColumn text="Workstation">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="name"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Employee ID">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="employeeId"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Worker">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="workerName"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Stock Level">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="stockLevel"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Production Output">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="productionOutput"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+
+                            <!-- Pagination -->
+                            <HBox>
+                                <children>
+                                    <Button text="Previous"/>
+                                    <Label text="1"/>
+                                    <Label text="2"/>
+                                    <Button text="Next"/>
+                                </children>
+                            </HBox>
+
+                            <!-- Sale Orders -->
+                            <Label text="Completed Sale Orders" styleClass="section-label"/>
+                            <TableView fx:id="saleOrderTable">
+                                <columns>
+                                    <TableColumn text="SO ID">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="soId"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Workstation">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="workstation"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Worker">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="worker"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Products">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="products"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Components Used">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="componentsUsed"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="Flags">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="flags"/>
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+
+                            <!-- Pagination -->
+                            <HBox>
+                                <children>
+                                    <Button text="Previous"/>
+                                    <Label text="1"/>
+                                    <Button text="Next"/>
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</VBox>
