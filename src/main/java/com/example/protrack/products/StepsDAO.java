@@ -21,6 +21,7 @@ public class StepsDAO {
                     "CREATE TABLE IF NOT EXISTS steps ("
                             + "stepsId INTEGER PRIMARY KEY, "
                             + "partsId VARCHAR NOT NULL, "
+                            + "stepNum INTEGER NOT NULL, "
                             + "stepDescription VARCHAR NOT NULL, "
                             + "checkType VARCHAR NOT NULL, "
                             + "checkCriteria VARCHAR NOT NULL"
