@@ -13,16 +13,15 @@ public class RequiredPartsDAO {
         connection = DatabaseConnection.getInstance();
     }
 
-    public void createTables() {
+    public void createTable() {
         try {
             Statement createTable = connection.createStatement();
-
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS requiredParts ("
                             + "reqPartsId INTEGER PRIMARY KEY, "
                             + "partsId VARCHAR NOT NULL, "
                             + "requiredAmt INTEGER NOT NULL, "
-                            + "currentAmt INTEGER NOT NULL, "
+                            + "currentAmt INTEGER NOT NULL "
                             + ")"
             );
 

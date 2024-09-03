@@ -13,7 +13,7 @@ public class StepsDAO {
         connection = DatabaseConnection.getInstance();
     }
 
-    public void createTables() {
+    public void createTable() {
         try {
             Statement createTable = connection.createStatement();
 
@@ -23,7 +23,7 @@ public class StepsDAO {
                             + "partsId VARCHAR NOT NULL, "
                             + "stepDescription VARCHAR NOT NULL, "
                             + "checkType VARCHAR NOT NULL, "
-                            + "checkCriteria VARCHAR NOT NULL,"
+                            + "checkCriteria VARCHAR NOT NULL"
                             + ")"
             );
 

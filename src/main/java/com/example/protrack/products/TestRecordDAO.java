@@ -13,7 +13,7 @@ public class TestRecordDAO {
         connection = DatabaseConnection.getInstance();
     }
 
-    public void createTables() {
+    public void createTable() {
         try {
             Statement createTable = connection.createStatement();
             createTable.execute(
@@ -24,7 +24,7 @@ public class TestRecordDAO {
                             + "employeeId INTEGER NOT NULL, "
                             + "reqPartsId INTEGER NOT NULL, "
                             + "stepsId INTEGER NOT NULL, "
-                            + "PIId INTEGER NOT NULL, "
+                            + "PIId INTEGER NOT NULL"
                             + ")"
             );
 
