@@ -35,7 +35,7 @@ public class TestRecordDAO {
     public void newTestRecord(TestRecords testRecords) {
         try {
             PreparedStatement insertAccount = connection.prepareStatement(
-                    "INSERT INTO users (testReordId, productId, stepsId) VALUES (?, ?, ?)"
+                    "INSERT INTO testRecords (testRecordId, productId, stepsId) VALUES (?, ?, ?)"
             );
 
             insertAccount.setInt(1, testRecords.getTestRecordId());

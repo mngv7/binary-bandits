@@ -40,7 +40,7 @@ public class StepsDAO {
     public void newSteps(Steps steps) {
         try {
             PreparedStatement insertAccount = connection.prepareStatement(
-                    "INSERT INTO users (stepsId, partsId, stepNum, stepDescription, checkType, checkCriteria) VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO steps (stepsId, partsId, stepNum, stepDescription, checkType, checkCriteria) VALUES (?, ?, ?, ?, ?, ?)"
             );
 
             insertAccount.setInt(1, steps.getStepsId());
