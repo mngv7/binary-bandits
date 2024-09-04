@@ -5,11 +5,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-public class TestRecordDAO {
+public class ProductDAO {
     private Connection connection;
 
-    public TestRecordDAO() {
+    public ProductDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
@@ -18,9 +17,13 @@ public class TestRecordDAO {
             Statement createTable = connection.createStatement();
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS testRecords ("
-                            + "testRecordId INTEGER PRIMARY KEY, "
-                            + "productId INTEGER NOT NULL, "
-                            + "stepsId INTEGER NOT NULL "
+                            + "productId INTEGER PRIMARY KEY, "
+                            + "name VARCHAR NOT NULL, "
+                            + "dateCreated DATE NOT NULL, "
+                            + "employeeId INTEGER NOT NULL, "
+                            + "reqPartsId INTEGER NOT NULL, "
+                            + "PIId INTEGER NOT NULL, "
+                            + "status VARCHAR NOT NULL"
                             + ")"
             );
 
