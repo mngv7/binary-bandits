@@ -90,8 +90,16 @@ public class LoginPageController {
     }
 
     public void initialize() {
-        usernameTextField.setFocusTraversable(false);
-        passwordTextField.setFocusTraversable(false);
-        loginButton.setFocusTraversable(false);
+        toggleFocusTraversal(false);
+
+        usernameTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
+        passwordTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
+        loginButton.setOnMouseClicked(event -> toggleFocusTraversal(true));
+    }
+
+    private void toggleFocusTraversal(boolean status) {
+        usernameTextField.setFocusTraversable(status);
+        passwordTextField.setFocusTraversable(status);
+        loginButton.setFocusTraversable(status);
     }
 }

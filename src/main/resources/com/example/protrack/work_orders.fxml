@@ -13,4 +13,5 @@
     <top>
         <Label text="Work Orders" styleClass="title-label"/>
     </top>
+    <TextField />
 </BorderPane>
