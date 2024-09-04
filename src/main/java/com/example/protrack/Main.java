@@ -54,8 +54,8 @@ public class Main extends Application {
         //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
 
         //(Integer productId, String name, Date dateCreated, Integer employeeId, Integer reqPartsId, Integer PIId, String status)
-        long millis=System.currentTimeMillis();
-        java.sql.Date date=new java.sql.Date(millis);
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
         /*
         productDAO.newProduct(new Product(102, "Test Product", date, 3, 15, 1, "In progress"));
         productDAO.newProduct(new Product(103, "Test Product", date, 3, 16, 1, "In progress"));
