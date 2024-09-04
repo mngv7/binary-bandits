@@ -3,13 +3,13 @@ package com.example.protrack.products;
 public class Steps {
 
     private Integer stepsId;
-    private Integer partsId;
+    private String partsId;
     private Integer stepNum;
     private String stepDescription;
     private String checkType;
     private String checkCriteria;
 
-    public Steps(Integer stepsId, Integer partsId, Integer stepNum, String stepDescription, String checkType, String checkCriteria) {
+    public Steps(Integer stepsId, String partsId, Integer stepNum, String stepDescription, String checkType, String checkCriteria) {
         this.stepsId = stepsId;
         this.partsId = partsId;
         this.stepNum = stepNum;
@@ -22,7 +22,7 @@ public class Steps {
         return stepsId;
     }
 
-    public Integer getPartsId() {
+    public String getPartsId() {
         return partsId;
     }
 

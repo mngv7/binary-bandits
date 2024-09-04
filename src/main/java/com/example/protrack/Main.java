@@ -55,6 +55,7 @@ public class Main extends Application {
 
         //Insert a new user (comment out this code once it has been run).
         //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
+        //productDAO.();
 
         // Dummy data for the products:
 

@@ -1,7 +1,11 @@
 package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.users.AbstractUser;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -23,7 +27,22 @@ public class TestRecordDAO {
                             + ")"
             );
 
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+    }
 
+    public void newTestRecord(TestRecords testRecords) {
+        try {
+            PreparedStatement insertAccount = connection.prepareStatement(
+                    "INSERT INTO users (testReordId, productId, stepsId) VALUES (?, ?, ?)"
+            );
+
+            insertAccount.setInt(1, testRecords.getTestRecordId());
+            insertAccount.setInt(2, testRecords.getProductId());
+            insertAccount.setInt(3, testRecords.getStepsId());
+
+            insertAccount.execute();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
