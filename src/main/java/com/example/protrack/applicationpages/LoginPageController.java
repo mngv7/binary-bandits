@@ -37,7 +37,8 @@ public class LoginPageController {
     protected void onLoginButtonClick() throws IOException {
         String firstName = usernameTextField.getText();
 
-        if (checkLoginDetails(firstName)) {
+        // DO NOT MERGE TO MAIN WITH (true) IN THE IF CHECK.
+        if (true) {//checkLoginDetails(firstName)) {
             usernameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
             loginAttempts = 0;
