@@ -16,7 +16,7 @@ public class ProductDAO {
         try {
             Statement createTable = connection.createStatement();
             createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS testRecords ("
+                    "CREATE TABLE IF NOT EXISTS products ("
                             + "productId INTEGER PRIMARY KEY, "
                             + "name VARCHAR NOT NULL, "
                             + "dateCreated DATE NOT NULL, "

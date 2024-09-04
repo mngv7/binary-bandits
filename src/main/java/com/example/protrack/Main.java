@@ -1,5 +1,6 @@
 package com.example.protrack;
 
+import com.example.protrack.products.ProductDAO;
 import com.example.protrack.products.RequiredPartsDAO;
 import com.example.protrack.products.StepsDAO;
 import com.example.protrack.products.TestRecordDAO;
@@ -38,15 +39,19 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+
+        ProductDAO productDAO = new ProductDAO();
         UsersDAO usersDAO = new UsersDAO();
         RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
         StepsDAO stepsDAO = new StepsDAO();
         TestRecordDAO testRecordDAO = new TestRecordDAO();
 
+        productDAO.createTable();
         usersDAO.createTable();
         stepsDAO.createTable();
         testRecordDAO.createTable();
         requiredPartsDAO.createTable();
+
 
         //Insert a new user (comment out this code once it has been run).
         //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));

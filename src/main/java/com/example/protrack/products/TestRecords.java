@@ -1,12 +1,5 @@
 package com.example.protrack.products;
 
-import com.example.protrack.users.AbstractUser;
-
-import java.sql.Date;
-
-
-
-
 public class TestRecords {
 
     private Integer testRecordId;
