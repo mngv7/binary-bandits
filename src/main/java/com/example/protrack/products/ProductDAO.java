@@ -1,13 +1,8 @@
 package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.users.AbstractUser;
-import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class ProductDAO {
     private Connection connection;
@@ -22,15 +17,10 @@ public class ProductDAO {
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS products ("
                             + "productId INTEGER PRIMARY KEY, "
-                            + "name VARCHAR NOT NULL, "
-                            + "dateCreated DATE NOT NULL, "
-                            + "employeeId INTEGER NOT NULL, "
-                            + "reqPartsId INTEGER NOT NULL, "
-                            + "PIId INTEGER NOT NULL, "
-                            + "status VARCHAR NOT NULL"
+                            + "productName VARCHAR NOT NULL, "
+                            + "dateCreated DATE NOT NULL"
                             + ")"
             );
-
         } catch (SQLException ex) {
             System.err.println(ex);
         }
@@ -38,21 +28,31 @@ public class ProductDAO {
 
     public void newProduct(Product product) {
         try {
-            PreparedStatement insertAccount = connection.prepareStatement(
-                    "INSERT INTO products (productId, name, dateCreated, employeeId, reqPartsId, PIId, status) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            PreparedStatement insertProduct = connection.prepareStatement(
+                    "INSERT INTO products (productId, productName, dateCreated) VALUES (?, ?, ?)"
             );
 
-            insertAccount.setInt(1, product.getProductId());
-            insertAccount.setString(2, product.getName());
-            insertAccount.setDate(3, product.getDateCreated());
-            insertAccount.setInt(4, product.getEmployeeId());
-            insertAccount.setInt(5, product.getReqPartsId());
-            insertAccount.setInt(6, product.getPIId());
-            insertAccount.setString(7, product.getStatus());
+            insertProduct.setInt(1, product.getProductId());
+            insertProduct.setString(2, product.getProductName());
+            insertProduct.setDate(3, product.getDateCreated());
 
-            insertAccount.execute();
+            insertProduct.execute();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
+    }
+
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM products");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
     }
 }

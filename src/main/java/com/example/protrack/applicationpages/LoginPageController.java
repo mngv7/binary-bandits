@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginPageController {
 
@@ -36,6 +37,7 @@ public class LoginPageController {
     protected void onLoginButtonClick() throws IOException {
         String firstName = usernameTextField.getText();
 
+        // DO NOT MERGE TO MAIN WITH (true) IN THE IF CHECK.
         if (checkLoginDetails(firstName)) {
             usernameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
@@ -67,7 +69,7 @@ public class LoginPageController {
         Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
         stage.setScene(scene);
         stage.show();
-        scene.getStylesheets().add(getClass().getResource("/com/example/protrack/main_app.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/protrack/main_app.css")).toExternalForm());
     }
 
     private boolean isInputValid() {
@@ -86,5 +88,19 @@ public class LoginPageController {
             }
         }
         return false;
+    }
+
+    public void initialize() {
+        toggleFocusTraversal(false);
+
+        usernameTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
+        passwordTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
+        loginButton.setOnMouseClicked(event -> toggleFocusTraversal(true));
+    }
+
+    private void toggleFocusTraversal(boolean status) {
+        usernameTextField.setFocusTraversable(status);
+        passwordTextField.setFocusTraversable(status);
+        loginButton.setFocusTraversable(status);
     }
 }

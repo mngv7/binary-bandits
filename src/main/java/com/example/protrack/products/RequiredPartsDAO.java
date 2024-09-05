@@ -1,14 +1,8 @@
 package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.users.AbstractUser;
-import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import java.sql.*;
 
 public class RequiredPartsDAO {
     private Connection connection;
@@ -17,40 +11,52 @@ public class RequiredPartsDAO {
         connection = DatabaseConnection.getInstance();
     }
 
+    // Create table with composite primary key
     public void createTable() {
         try {
             Statement createTable = connection.createStatement();
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS requiredParts ("
-                            + "reqPartsId INTEGER PRIMARY KEY, "
-                            + "partsId VARCHAR NOT NULL, "
-                            + "requiredAmt INTEGER NOT NULL, "
-                            + "currentAmt INTEGER NOT NULL "
+                            + "partsId INTEGER NOT NULL, "
+                            + "productId INTEGER NOT NULL, "
+                            + "requiredAmount INTEGER NOT NULL, "
+                            + "PRIMARY KEY (partsId, productId)"
                             + ")"
             );
 
-
         } catch (SQLException ex) {
             System.err.println(ex);
         }
     }
 
+    // Insert new required parts entry into the table
     public void newRequiredParts(RequiredParts requiredParts) {
         try {
-            PreparedStatement insertAccount = connection.prepareStatement(
-                    "INSERT INTO requiredParts (reqPartsId, partsId, requiredAmt, currentAmt) VALUES (?, ?, ?, ?)"
+            PreparedStatement insertRequiredParts = connection.prepareStatement(
+                    "INSERT INTO requiredParts (partsId, productId, requiredAmount) VALUES (?, ?, ?)"
             );
 
-            insertAccount.setInt(1, requiredParts.getReqPartsId());
-            insertAccount.setString(2, requiredParts.getPartsId());
-            insertAccount.setInt(3, requiredParts.getRequiredAmt());
-            insertAccount.setInt(4, requiredParts.getCurrentAmt());
+            insertRequiredParts.setInt(1, requiredParts.getPartsId());
+            insertRequiredParts.setInt(2, requiredParts.getProductId());
+            insertRequiredParts.setInt(3, requiredParts.getRequiredAmount());
 
-            insertAccount.execute();
+            insertRequiredParts.execute();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
     }
 
-
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM requiredParts");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
+    }
 }
