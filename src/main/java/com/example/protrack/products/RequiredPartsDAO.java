@@ -17,7 +17,7 @@ public class RequiredPartsDAO {
             Statement createTable = connection.createStatement();
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS requiredParts ("
-                            + "partsId VARCHAR NOT NULL, "
+                            + "partsId INTEGER NOT NULL, "
                             + "productId INTEGER NOT NULL, "
                             + "requiredAmount INTEGER NOT NULL, "
                             + "PRIMARY KEY (partsId, productId)"
@@ -36,7 +36,7 @@ public class RequiredPartsDAO {
                     "INSERT INTO requiredParts (partsId, productId, requiredAmount) VALUES (?, ?, ?)"
             );
 
-            insertRequiredParts.setString(1, requiredParts.getPartsId());
+            insertRequiredParts.setInt(1, requiredParts.getPartsId());
             insertRequiredParts.setInt(2, requiredParts.getProductId());
             insertRequiredParts.setInt(3, requiredParts.getRequiredAmount());
 

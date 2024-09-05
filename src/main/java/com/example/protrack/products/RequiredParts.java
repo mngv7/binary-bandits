@@ -2,17 +2,17 @@ package com.example.protrack.products;
 
 public class RequiredParts {
 
-    private String partsId;
+    private Integer partsId;
     private Integer productId;
     private Integer requiredAmount;
 
-    public RequiredParts(String partsId, Integer productId, Integer requiredAmount) {
+    public RequiredParts(Integer partsId, Integer productId, Integer requiredAmount) {
         this.partsId = partsId;
         this.productId = productId;
         this.requiredAmount = requiredAmount;
     }
 
-    public String getPartsId() {
+    public Integer getPartsId() {
         return partsId;
     }
 
