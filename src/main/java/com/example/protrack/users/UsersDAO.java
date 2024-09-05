@@ -62,4 +62,18 @@ public class UsersDAO {
             System.err.println(ex);
         }
     }
+
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM users");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
+    }
 }

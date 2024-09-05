@@ -1,6 +1,7 @@
 package com.example.protrack;
 
 import com.example.protrack.products.*;
+import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.UsersDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -38,9 +39,9 @@ public class Main extends Application {
     public static void main(String[] args) {
 
         ProductDAO productDAO = new ProductDAO();
-        UsersDAO usersDAO = new UsersDAO();
         RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
         TestRecordStepsDAO testRecordDAO = new TestRecordStepsDAO();
+        UsersDAO usersDAO = new UsersDAO();
 
         productDAO.createTable();
         usersDAO.createTable();
@@ -48,8 +49,10 @@ public class Main extends Application {
         requiredPartsDAO.createTable();
 
 
-        //Insert a new user (comment out this code once it has been run).
-        //usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
+
+        if (usersDAO.isTableEmpty()) {
+            usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
+        }
 
         //(Integer productId, String name, Date dateCreated, Integer employeeId, Integer reqPartsId, Integer PIId, String status)
         long millis = System.currentTimeMillis();
@@ -75,9 +78,6 @@ public class Main extends Application {
         requiredPartsDAO.newRequiredParts(new RequiredParts(16, "P127", 3, 2));
         requiredPartsDAO.newRequiredParts(new RequiredParts(17, "P65", 1, 1));
         */
-
-        // Dummy data for the products:
-
 
         launch();
     }

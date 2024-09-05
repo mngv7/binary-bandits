@@ -2,10 +2,7 @@ package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class TestRecordStepsDAO {
     private Connection connection;
@@ -51,5 +48,19 @@ public class TestRecordStepsDAO {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
+    }
+
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM testRecordSteps");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
     }
 }
