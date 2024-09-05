@@ -40,12 +40,10 @@ public class Main extends Application {
         ProductDAO productDAO = new ProductDAO();
         UsersDAO usersDAO = new UsersDAO();
         RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
-        StepsDAO stepsDAO = new StepsDAO();
         TestRecordStepsDAO testRecordDAO = new TestRecordStepsDAO();
 
         productDAO.createTable();
         usersDAO.createTable();
-        stepsDAO.createTable();
         testRecordDAO.createTable();
         requiredPartsDAO.createTable();
 
