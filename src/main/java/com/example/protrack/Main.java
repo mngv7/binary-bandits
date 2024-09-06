@@ -50,8 +50,6 @@ public class Main extends Application {
         testRecordDAO.createTable();
         requiredPartsDAO.createTable();
 
-
-
         if (usersDAO.isTableEmpty()) {
             usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
             usersDAO.newUser(new ManagerialUser(101, "Alice", "Smith", "alicepass"));
@@ -60,7 +58,6 @@ public class Main extends Application {
             usersDAO.newUser(new WarehouseUser(104, "Diana", "White", "dianapass"));
             usersDAO.newUser(new ProductionUser(105, "Eve", "Davis", "evepass"));
             usersDAO.newUser(new ProductionUser(106, "Frank", "Miller", "frankpass"));
-
         }
 
         if (testRecordDAO.isTableEmpty()) {
@@ -109,9 +106,7 @@ public class Main extends Application {
                 requiredPartsDAO.newRequiredParts(new RequiredParts(2, 67890, 6));  // 6 units of part ID 2
                 requiredPartsDAO.newRequiredParts(new RequiredParts(3, 67890, 4));  // 4 units of part ID 3
             }
-
         }
-
         launch();
     }
 }

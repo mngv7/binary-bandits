@@ -21,7 +21,7 @@
                 <Image fx:id="logo" url="@application_logo.png"/>
             </ImageView>
             <Label text="ProTrack" prefHeight="100" minWidth="200" textFill="white" styleClass="logo-label"/>
-            <VBox HBox.hgrow="ALWAYS" alignment="TOP_LEFT">
+            <VBox HBox.hgrow="ALWAYS">
                 <padding>
                     <Insets top="39"/>
                 </padding>

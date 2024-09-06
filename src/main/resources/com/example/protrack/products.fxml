@@ -12,9 +12,9 @@
     <top>
         <Label text="Products" styleClass="title-label"/>
     </top>
-
     <center>
-        <!-- Button to open the Create Product page in a popup -->
-        <Button text="Create Product" onAction="#openCreateProductPopup"/>
+        <VBox>
+            <Button text="Create Product" onAction="#openCreateProductPopup"/>
+        </VBox>
     </center>
 </BorderPane>

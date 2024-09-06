@@ -38,7 +38,7 @@ public class LoginPageController {
         String firstName = usernameTextField.getText();
 
         // DO NOT MERGE TO MAIN WITH (true) IN THE IF CHECK.
-        if (true) {//checkLoginDetails(firstName)) {
+        if (checkLoginDetails(firstName)) {
             usernameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
             loginAttempts = 0;

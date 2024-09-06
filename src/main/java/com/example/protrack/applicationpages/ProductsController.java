@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ProductsController {
+    private static final String TITLE = "Create Product";
+    private static final int WIDTH = 900;
+    private static final int HEIGHT = 360;
 
     public void openCreateProductPopup(ActionEvent actionEvent) {
         try {
@@ -18,9 +21,9 @@ public class ProductsController {
 
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle("Create Product");
+            popupStage.setTitle(TITLE);
 
-            Scene scene = new Scene(createProductRoot);
+            Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
             popupStage.setScene(scene);
 
             popupStage.showAndWait();
