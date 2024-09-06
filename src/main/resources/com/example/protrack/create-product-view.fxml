@@ -3,6 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.CreateProductController"
@@ -12,7 +14,7 @@
     </top>
 
     <center>
-        <HBox>
+        <HBox spacing="20">
             <VBox spacing="10">
                 <HBox spacing="10">
                     <Label text="Product ID:"/>
@@ -25,7 +27,34 @@
                 <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="login-button"/>
             </VBox>
             <VBox spacing="10">
-
+                <HBox spacing="10">
+                    <Label text="Create test record for:"/>
+                    <ComboBox>
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="ID36014"/>
+                                <String fx:value="ID42007"/>
+                                <String fx:value="ID45021"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <VBox spacing="10">
+                    <Label text="Enter the details for step 1:"/>
+                    <HBox spacing="10">
+                        <Label text="Step Description:"/>
+                        <TextArea/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Step Check Type:"/>
+                        <ComboBox/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <!-- This should only show if the user selected a text entry for check type. -->
+                        <Label text="Step Check Criteria:"/>
+                        <TextField/>
+                    </HBox>
+                </VBox>
             </VBox>
         </HBox>
     </center>

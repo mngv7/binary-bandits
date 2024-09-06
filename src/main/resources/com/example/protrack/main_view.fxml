@@ -52,7 +52,6 @@
                 <Button text="Products" onAction="#products" styleClass="menu-button"/>
                 <Button text="Parts" onAction="#parts" styleClass="menu-button"/>
             </VBox>
-            <Button text="Create Product" onAction="#workOrders" styleClass="menu-button"/>
             <Button text="Purchase Orders" onAction="#purchaseOrders" styleClass="menu-button"/>
             <Button text="Customers" onAction="#customers" styleClass="menu-button"/>
             <Button text="Suppliers" onAction="#suppliers" styleClass="menu-button"/>
