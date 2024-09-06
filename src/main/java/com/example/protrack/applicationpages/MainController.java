@@ -45,7 +45,7 @@ public class MainController {
 
     @FXML
     private void workOrders() {
-        loadContent("/com/example/protrack/work_orders.fxml");
+        loadContent("/com/example/protrack/create-product-view.fxml");
     }
 
     @FXML
