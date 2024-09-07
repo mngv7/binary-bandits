@@ -50,8 +50,6 @@ public class Main extends Application {
         testRecordDAO.createTable();
         requiredPartsDAO.createTable();
 
-
-
         if (usersDAO.isTableEmpty()) {
             usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
             usersDAO.newUser(new ManagerialUser(101, "Alice", "Smith", "alicepass"));
