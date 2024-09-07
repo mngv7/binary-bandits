@@ -1,5 +1,6 @@
 package com.example.protrack;
 
+import com.example.protrack.parts.*;
 import com.example.protrack.products.*;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
@@ -40,17 +41,17 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
+        PartsDAO partsDAO = new PartsDAO();
         ProductDAO productDAO = new ProductDAO();
         RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
         TestRecordStepsDAO testRecordDAO = new TestRecordStepsDAO();
         UsersDAO usersDAO = new UsersDAO();
 
+        partsDAO.createTable();
         productDAO.createTable();
         usersDAO.createTable();
         testRecordDAO.createTable();
         requiredPartsDAO.createTable();
-
-
 
         if (usersDAO.isTableEmpty()) {
             usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
@@ -60,7 +61,6 @@ public class Main extends Application {
             usersDAO.newUser(new WarehouseUser(104, "Diana", "White", "dianapass"));
             usersDAO.newUser(new ProductionUser(105, "Eve", "Davis", "evepass"));
             usersDAO.newUser(new ProductionUser(106, "Frank", "Miller", "frankpass"));
-
         }
 
         if (testRecordDAO.isTableEmpty()) {
@@ -109,9 +109,12 @@ public class Main extends Application {
                 requiredPartsDAO.newRequiredParts(new RequiredParts(2, 67890, 6));  // 6 units of part ID 2
                 requiredPartsDAO.newRequiredParts(new RequiredParts(3, 67890, 4));  // 4 units of part ID 3
             }
-
         }
 
+        if (partsDAO.isTableEmpty()) {
+            partsDAO.newPart(new Parts(50, "TestPart", "Testing", "Test", 50, 12.50));
+            partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", "Tes2", 50, 6.69));
+        }
         launch();
     }
 }
