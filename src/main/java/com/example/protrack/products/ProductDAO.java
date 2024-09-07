@@ -1,6 +1,7 @@
 package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
