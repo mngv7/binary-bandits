@@ -28,7 +28,6 @@ public class WarehouseController {
     }
 
     private void loadWorkstationData() {
-        // TODO: Work out what Cindy's instance of ChatGPT has tried to cook here.
 //        ObservableList<Workstation> workstations = FXCollections.observableArrayList(
 //                // Load data from database
 //                new SQLWorkstation("Workstation 1", 100, "Empty", "Low", 0),
@@ -66,7 +65,6 @@ public class WarehouseController {
 
             Stage stage = new Stage();
             stage.setTitle("Create Workstation");
-            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
@@ -89,6 +87,6 @@ public class WarehouseController {
         Stage stage = new Stage();
         stage.setTitle("Allocate Workstation");
         stage.setScene(new Scene(root));
-        stage.show();
+        stage.showAndWait();
     }
 }
