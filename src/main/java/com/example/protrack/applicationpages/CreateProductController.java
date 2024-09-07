@@ -5,16 +5,22 @@ import com.example.protrack.products.ProductDAO;
 import com.example.protrack.products.RequiredParts;
 import com.example.protrack.products.RequiredPartsDAO;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
 
-public class CreateProductController implements Initializable {
+public class CreateProductController {
+    private static final String TITLE = "Create Product";
+    private static final int WIDTH = 900;
+    private static final int HEIGHT = 360;
 
     @FXML
     public TextField partId1;
@@ -43,8 +49,7 @@ public class CreateProductController implements Initializable {
     @FXML
     private TextField productIdField;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize() {
         // Create a binding to check if any field is empty
         BooleanBinding fieldsEmpty = Bindings.createBooleanBinding(() ->
                         productIdField.getText().trim().isEmpty() ||
@@ -93,8 +98,27 @@ public class CreateProductController implements Initializable {
             requireAmount3.setText("");
             productIdField.setText("");
             productNameField.setText("");
+            openCreateTestRecordPopup();
         } catch (NumberFormatException e) {
             System.out.println("Invalid product ID. Please enter a valid number.");
+        }
+    }
+
+    public void openCreateTestRecordPopup() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-test-record-view.fxml"));
+            Parent createProductRoot = fxmlLoader.load();
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle(TITLE);
+
+            Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
+            popupStage.setScene(scene);
+
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

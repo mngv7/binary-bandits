@@ -1,6 +1,5 @@
 package com.example.protrack.applicationpages;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +13,7 @@ public class ProductsController {
     private static final int WIDTH = 900;
     private static final int HEIGHT = 360;
 
-    public void openCreateProductPopup(ActionEvent actionEvent) {
+    public void openCreateProductPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-product-view.fxml"));
             Parent createProductRoot = fxmlLoader.load();

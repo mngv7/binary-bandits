@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.CreateTestRecordController"
+            prefHeight="400.0" prefWidth="600.0">
+    <center>
+        <HBox spacing="20">
+            <Label text="This is where test records are created."/>
+        </HBox>
+    </center>
+</BorderPane>
