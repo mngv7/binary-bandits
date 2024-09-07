@@ -63,7 +63,6 @@ public class ProductDAO {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-
         return products;
     }
 

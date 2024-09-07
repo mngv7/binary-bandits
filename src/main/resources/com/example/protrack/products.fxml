@@ -12,9 +12,24 @@
     <top>
         <Label text="Products" styleClass="title-label"/>
     </top>
+
     <center>
-        <VBox>
-            <Button text="Create Product" onAction="#openCreateProductPopup"/>
+        <VBox spacing="20">
+            <HBox>
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                    <Button text="Refresh Table" onAction="#refreshTable"/>
+                </HBox>
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Button text="Create Product" onAction="#openCreateProductPopup"/>
+                </HBox>
+            </HBox>
+            <TableView fx:id="productTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0">
+                <columns>
+                    <TableColumn fx:id="colProductId" text="Product ID"/>
+                    <TableColumn fx:id="colProductName" text="Product Name"/>
+                    <TableColumn fx:id="colDateCreated" text="Date Created"/>
+                </columns>
+            </TableView>
         </VBox>
     </center>
 </BorderPane>
