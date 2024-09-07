@@ -9,13 +9,10 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.CreateProductController"
             prefHeight="400.0" prefWidth="600.0">
-    <top>
-        <Label text="Create Product" styleClass="title-label" BorderPane.alignment="TOP_LEFT"/>
-    </top>
-
     <center>
         <HBox spacing="20">
-            <VBox spacing="10">
+            <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label text="Product Details"/>
                 <HBox spacing="10">
                     <Label text="Product ID:"/>
                     <TextField fx:id="productIdField" promptText="Product ID" maxWidth="500" styleClass="product-name-field"/>
@@ -24,37 +21,22 @@
                     <Label text="Product Name:"/>
                     <TextField fx:id="productNameField" promptText="Product Name" maxWidth="500" styleClass="product-name-field"/>
                 </HBox>
-                <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="login-button"/>
             </VBox>
-            <VBox spacing="10">
-                <HBox spacing="10">
-                    <Label text="Create test record for:"/>
-                    <ComboBox>
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="ID36014"/>
-                                <String fx:value="ID42007"/>
-                                <String fx:value="ID45021"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
+            <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label text="Bill of Materials"/>
+                <HBox>
+                    <TextField fx:id="partId1" promptText="Part ID"/>
+                    <TextField fx:id="requireAmount1" promptText="Required Amount"/>
                 </HBox>
-                <VBox spacing="10">
-                    <Label text="Enter the details for step 1:"/>
-                    <HBox spacing="10">
-                        <Label text="Step Description:"/>
-                        <TextArea/>
-                    </HBox>
-                    <HBox spacing="10">
-                        <Label text="Step Check Type:"/>
-                        <ComboBox/>
-                    </HBox>
-                    <HBox spacing="10">
-                        <!-- This should only show if the user selected a text entry for check type. -->
-                        <Label text="Step Check Criteria:"/>
-                        <TextField/>
-                    </HBox>
-                </VBox>
+                <HBox>
+                    <TextField fx:id="partId2" promptText="Part ID"/>
+                    <TextField fx:id="requireAmount2" promptText="Required Amount"/>
+                </HBox>
+                <HBox>
+                    <TextField fx:id="partId3" promptText="Part ID"/>
+                    <TextField fx:id="requireAmount3" promptText="Required Amount"/>
+                </HBox>
+                <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="login-button"/>
             </VBox>
         </HBox>
     </center>
