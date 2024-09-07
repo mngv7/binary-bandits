@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.applicationpages.CreateTestRecordController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.applicationpages.CreateTestRecordController">
     <center>
         <HBox spacing="20">
-            <Label text="This is where test records are created."/>
+            <VBox spacing="10">
+                <HBox spacing="10">
+                    <Label text="Step 1:" />
+                    <TextField promptText="Description" />
+                    <ComboBox fx:id="criteriaTypeComboBox1">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Checkbox" />
+                                <String fx:value="Text Entry" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                    <TextField promptText="Check Criteria" />
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Step 2:" />
+                    <TextField promptText="Description" />
+                    <ComboBox fx:id="criteriaTypeComboBox2">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Checkbox" />
+                                <String fx:value="Text Entry" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                    <TextField promptText="Check Criteria" />
+                </HBox>
+            </VBox>
         </HBox>
     </center>
 </BorderPane>
