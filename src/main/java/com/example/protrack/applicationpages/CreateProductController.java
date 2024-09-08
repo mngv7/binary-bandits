@@ -27,26 +27,6 @@ public class CreateProductController {
     private static final int WIDTH = 900;
     private static final int HEIGHT = 360;
 
-    /*
-    @FXML
-    public TextField partId1;
-
-    @FXML
-    public TextField requireAmount1;
-
-    @FXML
-    public TextField partId2;
-
-    @FXML
-    public TextField requireAmount2;
-
-    @FXML
-    public TextField partId3;
-
-    @FXML
-    public TextField requireAmount3;
-    */
-
     @FXML
     private TextField partIdSearchField;
 
@@ -97,11 +77,10 @@ public class CreateProductController {
         String partIdStr = partIdSearchField.getText();
 
         if (partIdStr != null && !partIdStr.trim().isEmpty()) {
-            // Clear previous results
-            // partResultVBox.getChildren().clear();
 
             int partIdInt = Integer.parseInt(partIdStr);
             try {
+
                 PreparedStatement getPartId = connection.prepareStatement(
                         "SELECT * " +
                                 "FROM parts a " +
@@ -160,7 +139,6 @@ public class CreateProductController {
         RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
 
         int rowCount = partResultVBox.getChildren().size();
-        System.out.println("Number of rows: " + rowCount);
 
         try {
             int productId = Integer.parseInt(productIdField.getText());
@@ -172,45 +150,10 @@ public class CreateProductController {
 
             productDAO.newProduct(new Product(productId, productName, date));
 
-            insertProductsIntoDB(productId, productName, date);
-
-            /*
-            requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partId1.getText()), productId, Integer.parseInt(requireAmount1.getText())));
-            requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partId2.getText()), productId, Integer.parseInt(requireAmount2.getText())));
-            requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partId3.getText()), productId, Integer.parseInt(requireAmount3.getText())));
-            partId1.setText("");
-            partId2.setText("");
-            partId3.setText("");
-            requireAmount1.setText("");
-            requireAmount2.setText("");
-            requireAmount3.setText("");
-            productIdField.setText("");
-            productNameField.setText("");
-            openCreateTestRecordPopup();
-            */
-
             insertReqPartsFromVbox(productId);
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid product ID. Please enter a valid number.");
-        }
-    }
-
-    private void insertProductsIntoDB(int productId, String productName, java.sql.Date date) {
-        Connection connection;
-        connection = DatabaseConnection.getInstance();
-        try {
-            PreparedStatement insertProduct = connection.prepareStatement(
-                    "INSERT INTO products (productId, productName, dateCreated ) " +
-                            "VALUES (?, ?, ?)");
-            insertProduct.setInt(1, productId);
-            insertProduct.setString(2, productName);
-            insertProduct.setDate(3, date);
-
-            System.out.println("productId" + productId + " productName " + productName + " date " + date);
-
-        } catch (SQLException ex) {
-            System.err.println(ex);
         }
     }
 
@@ -229,12 +172,6 @@ public class CreateProductController {
                     TextField amountField = (TextField) row.getChildren().get(2); // Assuming the third element is the TextField for required amount
                     String requiredAmount = amountField.getText();
 
-                    // Logging for debugging purposes
-                    System.out.println("---------------");
-                    System.out.println("PartsID: " + partsId);
-                    System.out.println("RequiredAmount: " + requiredAmount);
-                    System.out.println("---------------");
-
                     RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
                     requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
                 }
@@ -244,7 +181,7 @@ public class CreateProductController {
         } catch (SQLException ex) {
             System.err.println(ex);
             try {
-                connection.rollback(); // Rollback in case of error
+                connection.rollback();
             } catch (SQLException rollbackEx) {
                 System.err.println(rollbackEx);
             }
