@@ -28,6 +28,9 @@ public class CreateProductController {
     private static final int HEIGHT = 360;
 
     @FXML
+    public Button closePopupButton;
+
+    @FXML
     private TextField partIdSearchField;
 
     @FXML
@@ -205,5 +208,11 @@ public class CreateProductController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    protected void onClosePopupButton() {
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 }
