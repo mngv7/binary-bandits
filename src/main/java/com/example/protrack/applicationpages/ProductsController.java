@@ -53,10 +53,6 @@ public class ProductsController {
     }
 
     public void refreshTable() {
-<<<<<<< HEAD
-=======
-        //ProductDAO productDAO = new ProductDAO();
->>>>>>> 9587f22 (Got the price column in products page working)
         productList.clear();
         productList.addAll(productDBtoTable());
     }
@@ -69,11 +65,6 @@ public class ProductsController {
 
         String query = "SELECT * FROM products";
 
-<<<<<<< HEAD
-=======
-        //pstmt = connection.prepareStatement("SELECT * FROM bankAccounts WHERE bankBalance > ?");
-
->>>>>>> 9587f22 (Got the price column in products page working)
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -83,15 +74,6 @@ public class ProductsController {
                 Date dateCreated = rs.getDate("dateCreated");
                 double price = 0.0;
 
-<<<<<<< HEAD
-=======
-                /*String getCostQuery = "SELECT SUM(a.requiredAmount * b.cost) AS TotalValue ";
-                getCostQuery += "FROM requiredParts a ";
-                getCostQuery += "JOIN parts b ON a.PartsId = b.PartsId ";
-                getCostQuery += "WHERE a.productId = ";
-                */
-
->>>>>>> 9587f22 (Got the price column in products page working)
                 try {
                     PreparedStatement getPrice = connection.prepareStatement(
                             "SELECT SUM (a.requiredAmount * b.cost) AS TotalValue " +
@@ -110,10 +92,6 @@ public class ProductsController {
                     System.err.println(ex);
                 }
 
-<<<<<<< HEAD
-=======
-                //Product product = new Product(productId, productName, dateCreated);
->>>>>>> 9587f22 (Got the price column in products page working)
                 ProductDBTable product = new ProductDBTable(productId, productName, dateCreated, price);
 
                 products.add(product);
