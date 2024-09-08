@@ -23,6 +23,12 @@
             <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
                 <Label text="Bill of Materials"/>
                 <HBox>
+                    <TextField fx:id="partIdSearchField" promptText="Part ID"/>
+                    <Button fx:id="partSearchButton" text="Search" onAction="#partSearch" styleClass="login-button"/>
+                </HBox>
+                <VBox fx:id="partResultVBox" />
+                <!--
+                <HBox>
                     <TextField fx:id="partId1" promptText="Part ID"/>
                     <TextField fx:id="requireAmount1" promptText="Required Amount"/>
                 </HBox>
@@ -34,6 +40,7 @@
                     <TextField fx:id="partId3" promptText="Part ID"/>
                     <TextField fx:id="requireAmount3" promptText="Required Amount"/>
                 </HBox>
+                -->
                 <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="login-button"/>
             </VBox>
         </HBox>
