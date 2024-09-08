@@ -44,6 +44,22 @@ public class UsersDAO {
         return null;
     }
 
+    public String getAccessLevelByFirstName(String firstName) {
+        try {
+            PreparedStatement getAccount = connection.prepareStatement("SELECT accessLevel FROM users WHERE firstName = ?");
+            getAccount.setString(1, firstName);
+
+            ResultSet rs = getAccount.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("accessLevel");
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return null;
+    }
+
     public void newUser(AbstractUser user) {
         try {
             PreparedStatement insertAccount = connection.prepareStatement(

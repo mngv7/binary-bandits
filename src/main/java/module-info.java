@@ -5,6 +5,7 @@ module com.example.protrack {
     requires java.sql;
     requires jbcrypt;
     requires javafx.base;
+    requires java.desktop;
 
     opens com.example.protrack to javafx.fxml;
     opens com.example.protrack.products to javafx.base;
