@@ -2,12 +2,12 @@ package com.example.protrack.parts;
 
 public class Parts {
 
-    private Integer partsId;
-    private String name;
-    private String description;
-    private String type;
-    private Integer supplierId;
-    private Double cost;
+    private final Integer partsId;
+    private final String name;
+    private final String description;
+    private final String type;
+    private final Integer supplierId;
+    private final Double cost;
 
     public Parts(Integer partsId, String name, String description, String type, Integer supplierId, Double cost) {
         this.partsId = partsId;
