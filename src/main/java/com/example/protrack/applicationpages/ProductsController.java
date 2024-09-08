@@ -39,13 +39,14 @@ public class ProductsController {
 
         productList = FXCollections.observableArrayList();
         productTable.setItems(productList);
+        productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         refreshTable();
     }
 
     public void refreshTable() {
         ProductDAO productDAO = new ProductDAO();
-        productList.clear();  // Clear the current list
-        productList.addAll(productDAO.getAllProducts());  // Add the retrieved products to the list
+        productList.clear();
+        productList.addAll(productDAO.getAllProducts());
     }
 
     private static final String TITLE = "Create Product";
