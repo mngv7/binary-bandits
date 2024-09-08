@@ -138,8 +138,51 @@
     -fx-background-color: #926cf4;
 }
 
-.add-parts-button:pressed {
+.add-parts-popup {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #390B91;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+}
+
+.close-button {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 6px;
+    -fx-text-fill: #D11A2A;
+    -fx-border-color: #D11A2A;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 5px;
+}
+
+.parts-table-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.parts-table-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.parts-title-container {
     -fx-background-color: #310B91;
+    -fx-padding: 10px;
+}
+
+.parts-title-label {
+    -fx-font-size: 20px;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+.parts-title-sub-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16px;
+}
+
+.parts-grid-pane {
+    padding: 10px 0;
 }
 
 <img src="application_logo.png">

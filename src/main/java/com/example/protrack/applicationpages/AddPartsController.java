@@ -7,6 +7,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class AddPartsController {
 
@@ -30,6 +31,9 @@ public class AddPartsController {
 
     @FXML
     public Button addPartButton;
+
+    @FXML
+    public Button closePopupButton;
 
     public void initialize() {
         // Create a binding to check if any field is empty
@@ -75,5 +79,11 @@ public class AddPartsController {
         }  catch (NumberFormatException e) {
             System.out.println("Invalid part ID. Please enter a valid number.");
         }
+    }
+
+    @FXML
+    protected void onClosePopupButton() {
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 }

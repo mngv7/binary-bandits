@@ -1,5 +1,6 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import javafx.collections.FXCollections;
@@ -13,8 +14,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class PartsController {
 
@@ -62,8 +65,8 @@ public class PartsController {
     }
 
     private static final String TITLE = "Add Parts";
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 360;
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
 
     public void openAddPartsPopup () {
         try {
@@ -71,12 +74,16 @@ public class PartsController {
             Parent addPartsRoot = fxmlLoader.load();
 
             Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(TITLE);
 
             Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
-
+            popupStage.setY(150);
+            popupStage.setX(390);
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
