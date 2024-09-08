@@ -1,9 +1,8 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.database.ProductDBTable;
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.products.Product;
-import com.example.protrack.products.ProductDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,11 +14,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductsController {
 
@@ -108,15 +109,19 @@ public class ProductsController {
     public void openCreateProductPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-product-view.fxml"));
-            Parent createProductRoot = fxmlLoader.load();
+            Parent addPartsRoot = fxmlLoader.load();
 
             Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(TITLE);
 
-            Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
+            Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
-
+            popupStage.setY(150);
+            popupStage.setX(390);
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
