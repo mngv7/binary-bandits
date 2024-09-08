@@ -1,7 +1,6 @@
 package com.example.protrack.parts;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.parts.Parts;
 
 import java.sql.*;
 import java.util.ArrayList;
