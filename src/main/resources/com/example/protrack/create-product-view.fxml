@@ -15,30 +15,34 @@
         </GridPane>
     </top>
     <center>
-
-    <ScrollPane fitToWidth="true">
-        <HBox spacing="20">
-            <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER">
-                <Label text="Product Details"/>
-                <HBox spacing="10" alignment="CENTER">
-                    <Label text="Product ID:"/>
-                    <TextField fx:id="productIdField" promptText="Product ID" maxWidth="500" styleClass="product-name-field"/>
-                </HBox>
-                <HBox spacing="10" alignment="CENTER">
-                    <Label text="Product Name:"/>
-                    <TextField fx:id="productNameField" promptText="Product Name" maxWidth="500" styleClass="product-name-field"/>
-                </HBox>
-            </VBox>
-            <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
-                <Label text="Bill of Materials"/>
-                <HBox spacing="10">
-                    <TextField fx:id="partIdSearchField" promptText="Part ID"/>
-                    <Button fx:id="partSearchButton" text="Search" onAction="#partSearch" styleClass="create-product-button"/>
-                </HBox>
-                <VBox fx:id="partResultVBox" />
-                <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="create-product-button"/>
-            </VBox>
-        </HBox>
-    </ScrollPane>
+        <ScrollPane fitToWidth="true">
+            <HBox spacing="20">
+                <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER">
+                    <Label text="Product Details"/>
+                    <HBox spacing="10" alignment="CENTER">
+                        <Label text="Product ID:"/>
+                        <TextField fx:id="productIdField" promptText="Product ID" maxWidth="500" styleClass="product-name-field"/>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER">
+                        <Label text="Product Name:"/>
+                        <TextField fx:id="productNameField" promptText="Product Name" maxWidth="500" styleClass="product-name-field"/>
+                    </HBox>
+                </VBox>
+                <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                    <Label text="Bill of Materials"/>
+                    <HBox spacing="10">
+                        <TextField fx:id="partIdSearchField" promptText="Part ID"/>
+                        <Button fx:id="partSearchButton" text="Search" onAction="#partSearch" styleClass="create-product-button"/>
+                    </HBox>
+                    <VBox fx:id="partResultVBox" />
+                </VBox>
+            </HBox>
+        </ScrollPane>
     </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="create-product-button"/>
+        </HBox>
+    </bottom>
 </BorderPane>
