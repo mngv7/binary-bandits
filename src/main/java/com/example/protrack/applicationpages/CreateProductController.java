@@ -31,6 +31,9 @@ public class CreateProductController {
     public Button closePopupButton;
 
     @FXML
+    public Button partSearchButton;
+
+    @FXML
     private TextField partIdSearchField;
 
     @FXML

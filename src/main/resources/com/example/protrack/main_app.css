@@ -184,5 +184,21 @@
 .parts-grid-pane {
     padding: 10px 0;
 }
+.create-product-button {
+    -fx-background-color: #310B91;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.create-product-button:hover {
+    -fx-background-color: #926cf4;
+}
+
+.create-product-button:pressed {
+    -fx-background-color: #310B91;
+}
 
 <img src="application_logo.png">
