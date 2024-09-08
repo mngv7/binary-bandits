@@ -1,20 +1,59 @@
 package com.example.protrack.applicationpages;
 
-import javafx.event.ActionEvent;
+import com.example.protrack.products.Product;
+import com.example.protrack.products.ProductDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class ProductsController {
+
+    @FXML
+    private TableView<Product> productTable;
+
+    @FXML
+    private TableColumn<Product, Integer> colProductId;
+
+    @FXML
+    private TableColumn<Product, String> colProductName;
+
+    @FXML
+    private TableColumn<Product, java.sql.Date> colDateCreated;
+
+    private ObservableList<Product> productList;
+
+    public void initialize() {
+        colProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        colProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        colDateCreated.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
+
+        productList = FXCollections.observableArrayList();
+        productTable.setItems(productList);
+        productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        refreshTable();
+    }
+
+    public void refreshTable() {
+        ProductDAO productDAO = new ProductDAO();
+        productList.clear();
+        productList.addAll(productDAO.getAllProducts());
+    }
+
     private static final String TITLE = "Create Product";
     private static final int WIDTH = 900;
     private static final int HEIGHT = 360;
 
-    public void openCreateProductPopup(ActionEvent actionEvent) {
+    public void openCreateProductPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-product-view.fxml"));
             Parent createProductRoot = fxmlLoader.load();

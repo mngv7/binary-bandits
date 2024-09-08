@@ -9,7 +9,9 @@ import com.example.protrack.users.WarehouseUser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.util.Objects;
@@ -27,6 +29,8 @@ public class Main extends Application {
         String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setTitle(TITLE);
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("application_logo.png")));
+        stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.show();
     }

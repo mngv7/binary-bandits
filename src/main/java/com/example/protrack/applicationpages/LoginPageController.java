@@ -20,7 +20,7 @@ import java.util.Objects;
 public class LoginPageController {
 
     @FXML
-    public Label loginErrorMessage;
+    private Label loginErrorMessage;
 
     @FXML
     private PasswordField passwordTextField;
@@ -64,13 +64,22 @@ public class LoginPageController {
     private void loadHomePage() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.hide();
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/main_view.fxml"));
         Parent root = fxmlLoader.load();
+
+        MainController mainController = fxmlLoader.getController();
+        UsersDAO usersDAO = new UsersDAO();
+        mainController.setEmployeeName(usernameTextField.getText());
+        mainController.setEmployeeTitle(usersDAO.getAccessLevelByFirstName(usernameTextField.getText()));
+
         Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
         stage.setScene(scene);
         stage.show();
+
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/protrack/main_app.css")).toExternalForm());
     }
+
 
     private boolean isInputValid() {
         String username = usernameTextField.getText();

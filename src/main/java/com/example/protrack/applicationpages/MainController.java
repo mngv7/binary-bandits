@@ -4,11 +4,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class MainController {
+
+    @FXML
+    private Label employeeName;
+
+    @FXML
+    private Label employeeTitle;
 
     @FXML
     private VBox dynamicVBox;
@@ -78,5 +86,13 @@ public class MainController {
             e.printStackTrace();
             // Handle the exception (e.g., show an error message)
         }
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName.setText(employeeName);
+    }
+
+    public void setEmployeeTitle(String employeeTitle) {
+        this.employeeTitle.setText("Access Level: " + employeeTitle);
     }
 }
