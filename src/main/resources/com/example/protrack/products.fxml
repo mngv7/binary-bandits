@@ -33,6 +33,7 @@
                     <TableColumn fx:id="colProductId" text="Product ID"/>
                     <TableColumn fx:id="colProductName" text="Product Name"/>
                     <TableColumn fx:id="colDateCreated" text="Date Created"/>
+                    <TableColumn fx:id="colPrice" text="Price"/>
                 </columns>
             </TableView>
         </VBox>
