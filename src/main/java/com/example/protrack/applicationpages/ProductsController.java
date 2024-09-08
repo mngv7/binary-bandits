@@ -85,7 +85,6 @@ public class ProductsController {
 
                     if (rs2.next()) {
                         price += rs2.getDouble("TotalValue");
-                        System.out.println("Price " + price);
                     }
 
                 } catch (SQLException ex) {
