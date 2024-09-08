@@ -9,10 +9,12 @@ module com.example.protrack {
 
     opens com.example.protrack to javafx.fxml;
     opens com.example.protrack.products to javafx.base;
+    opens com.example.protrack.parts to javafx.base;
     opens com.example.protrack.database to javafx.base;
 
     exports com.example.protrack;
     exports com.example.protrack.products;
+    exports com.example.protrack.parts;
     exports com.example.protrack.database;
     exports com.example.protrack.users;
     exports com.example.protrack.applicationpages;
