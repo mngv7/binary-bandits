@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -27,12 +25,12 @@
             </HBox>
             <TableView fx:id="partsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colPartId" text="Part ID" />
-                    <TableColumn fx:id="colPartName" text="Part Name" />
-                    <TableColumn fx:id="colPartDesc" text="Part Description" />
-                    <TableColumn fx:id="colPartType" text="Part Type" />
-                    <TableColumn fx:id="colPartSupplierId" text="Part Supplier ID" />
-                    <TableColumn fx:id="colPartCost" text="Part Cost" />
+                    <TableColumn fx:id="colPartsId" text="Part ID" />
+                    <TableColumn fx:id="colName" text="Part Name" />
+                    <TableColumn fx:id="colDescription" text="Part Description" />
+                    <TableColumn fx:id="colType" text="Part Type" />
+                    <TableColumn fx:id="colSupplierId" text="Part Supplier ID" />
+                    <TableColumn fx:id="colCost" text="Part Cost" />
                 </columns>
             </TableView>
         </VBox>
