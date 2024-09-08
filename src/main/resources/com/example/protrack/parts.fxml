@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.applicationpages.MainController"
+            fx:controller="com.example.protrack.applicationpages.PartsController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
         <Label text="Parts" styleClass="title-label"/>
     </top>
+    <center>
+        <VBox spacing="20">
+            <HBox spacing="10">
+                <HBox>
+                    <TextField promptText="🔎 Search..." minWidth="300" minHeight="30" styleClass="search-field"/>
+                </HBox>
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Button text="Refresh Table" onAction="#refreshTable" styleClass="add-parts-button"/>
+                </HBox>
+                <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
+                    <Button text="Add Parts" onAction="#openAddPartsPopup" styleClass="add-parts-button"/>
+                </HBox>
+            </HBox>
+            <TableView fx:id="partsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colPartId" text="Part ID" />
+                    <TableColumn fx:id="colPartName" text="Part Name" />
+                    <TableColumn fx:id="colPartDesc" text="Part Description" />
+                    <TableColumn fx:id="colPartType" text="Part Type" />
+                    <TableColumn fx:id="colPartSupplierId" text="Part Supplier ID" />
+                    <TableColumn fx:id="colPartCost" text="Part Cost" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
 </BorderPane>

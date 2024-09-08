@@ -1,7 +1,5 @@
 package com.example.protrack.parts;
 
-import java.sql.Date;
-
 public class Parts {
 
     private Integer partsId;

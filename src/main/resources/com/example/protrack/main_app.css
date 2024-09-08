@@ -114,4 +114,32 @@
     -fx-background-color: #310B91;
 }
 
+.parts-table .column-header {
+    -fx-background-color: #310B91; /* Purple background color */
+    -fx-text-fill: white;          /* White text color */
+    -fx-font-size: 16px;           /* Font size */
+    -fx-padding: 10px;             /* Padding around the text */
+}
+
+.parts-table .column-header .label {
+    -fx-text-fill: white;
+}
+
+.add-parts-button {
+    -fx-background-color: #310B91;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.add-parts-button:hover {
+    -fx-background-color: #926cf4;
+}
+
+.add-parts-button:pressed {
+    -fx-background-color: #310B91;
+}
+
 <img src="application_logo.png">
