@@ -189,7 +189,7 @@ public class CreateProductController {
             openCreateTestRecordPopup();
             */
 
-            //insertReqPartsFromVbox(productId);
+            insertReqPartsFromVbox(productId);
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid product ID. Please enter a valid number.");
@@ -218,37 +218,39 @@ public class CreateProductController {
         Connection connection;
         connection = DatabaseConnection.getInstance();
 
-        System.out.println("HERE!");
         try {
             connection.setAutoCommit(false); // Use transaction to handle multiple inserts
-            PreparedStatement insertParts = connection.prepareStatement(
-                    "INSERT INTO requiredParts (partsId, productId, requiredAmount) " +
-                            "VALUES (?, ?, ?)");
             for (var node : partResultVBox.getChildren()) {
-                if (node instanceof  VBox) {
-                    VBox row = (VBox) node;
-
+                if (node instanceof VBox row) {
+                    // Get the labels and text field from the VBox
                     Label idLabel = (Label) row.getChildren().get(0);
-                    String partsId = idLabel.getText().replace("Parts ID: ", "");
+                    String partsId = idLabel.getText().replace("Part ID: ", "");
 
-                    TextField amountField = (TextField) row.getChildren().get(1);
+                    TextField amountField = (TextField) row.getChildren().get(2); // Assuming the third element is the TextField for required amount
                     String requiredAmount = amountField.getText();
 
-                    insertParts.setInt(1, Integer.parseInt(partsId));
-                    insertParts.setInt(2, productId);
-                    insertParts.setInt(3, Integer.parseInt(requiredAmount));
-                    System.out.println("PartsId" + partsId + " ProductId " + productId + " Amount " + requiredAmount);
-                    insertParts.addBatch();
+                    // Logging for debugging purposes
+                    System.out.println("---------------");
+                    System.out.println("PartsID: " + partsId);
+                    System.out.println("RequiredAmount: " + requiredAmount);
+                    System.out.println("---------------");
+
+                    RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
+                    requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
                 }
             }
-            insertParts.executeBatch();
             connection.commit();
-
 
         } catch (SQLException ex) {
             System.err.println(ex);
+            try {
+                connection.rollback(); // Rollback in case of error
+            } catch (SQLException rollbackEx) {
+                System.err.println(rollbackEx);
+            }
         }
     }
+
 
     public void openCreateTestRecordPopup() {
         try {
