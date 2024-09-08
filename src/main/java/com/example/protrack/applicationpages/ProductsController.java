@@ -53,7 +53,6 @@ public class ProductsController {
     }
 
     public void refreshTable() {
-        //ProductDAO productDAO = new ProductDAO();
         productList.clear();
         productList.addAll(productDBtoTable());
     }
@@ -66,8 +65,6 @@ public class ProductsController {
 
         String query = "SELECT * FROM products";
 
-        //pstmt = connection.prepareStatement("SELECT * FROM bankAccounts WHERE bankBalance > ?");
-
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -76,12 +73,6 @@ public class ProductsController {
                 String productName = rs.getString("productName");
                 Date dateCreated = rs.getDate("dateCreated");
                 double price = 0.0;
-
-                /*String getCostQuery = "SELECT SUM(a.requiredAmount * b.cost) AS TotalValue ";
-                getCostQuery += "FROM requiredParts a ";
-                getCostQuery += "JOIN parts b ON a.PartsId = b.PartsId ";
-                getCostQuery += "WHERE a.productId = ";
-                */
 
                 try {
                     PreparedStatement getPrice = connection.prepareStatement(
@@ -101,7 +92,6 @@ public class ProductsController {
                     System.err.println(ex);
                 }
 
-                //Product product = new Product(productId, productName, dateCreated);
                 ProductDBTable product = new ProductDBTable(productId, productName, dateCreated, price);
 
                 products.add(product);
