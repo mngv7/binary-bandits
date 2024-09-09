@@ -9,11 +9,13 @@
 <?import javafx.scene.image.ImageView?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.applicationpages.MainController"
+            fx:controller="com.example.protrack.applicationpages.ProfileController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
         <VBox>
+            <Label text="← Employees" styleClass="heading"/>
             <Label text="My Profile" styleClass="title-label"/>
+            <Region minHeight="20"/>
         </VBox>
     </top>
     <center>
@@ -35,29 +37,31 @@
                 <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
             </rowConstraints>
 
+            <children>
+                <Pane GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <fx:include source="profile_user_information.fxml"/>
+                </Pane>
+                <Pane GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <fx:include source="profile_details.fxml"/>
+                </Pane>
+                <Pane GridPane.columnIndex="2" GridPane.rowIndex="0">
+                    <fx:include source="profile_report.fxml"/>
+                </Pane>
+                <Pane GridPane.columnIndex="3" GridPane.rowIndex="0">
+                    <fx:include source="profile_work_orders.fxml"/>
+                </Pane>
+            </children>
             <!-- Column 1 [0] -->
-            <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0">
-
-            </ImageView>
-            <Label text="Employee ID:" styleClass="subheading" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <Label text="Reports to:" styleClass="subheading" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <fx:include source="profile_user_information.fxml"/>
 
             <!-- Column 2 [1] -->
-            <Label text="Personal Details" styleClass="heading" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <Label text="edit" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Label text="Name" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <Label text="Title" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-            <Label text="Date of Birth" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-            <Label text="Email" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-            <Label text="Phone" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-            <Label text="Gender" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+            <fx:include source="profile_details.fxml"/>
 
             <!-- Column 3 [2] -->
-            <!-- To add - Work Reporting -->
-            <Label text="Work Insights" styleClass="heading" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <fx:include source="profile_report.fxml"/>
 
             <!-- Column 4 [3] -->
-            <Label text="Assigned Orders" styleClass="heading" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+            <fx:include source="profile_work_orders.fxml"/>
 
         </GridPane>
 
