@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -47,7 +46,7 @@ public class MainController {
 
     @FXML
     private void workOrders() {
-        loadContent("/org/example/work_orders.fxml");
+        loadContent("/org/example/profile_work_orders.fxml");
     }
 
     @FXML
@@ -87,8 +86,7 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
             dynamicVBox.getChildren().add(content);
-
-            scene.getStylesheets().add(getClass().getResource(fxmlFile.substring(0, fxmlFile.length()-5)).toExternalForm());
+            //scene.getStylesheets().add(getClass().getResource(fxmlFile.substring(0, fxmlFile.length()-5)).toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             // Handle the exception (e.g., show an error message)
