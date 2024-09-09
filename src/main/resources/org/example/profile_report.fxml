@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.ProfileReportController"
+            prefHeight="400.0" prefWidth="600.0">
+        <center>
+                <!-- Column 3 [2] -->
+                <!-- To add - Work Reporting -->
+                <Label text="Work Insights" styleClass="heading" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+        </center>
+</BorderPane>
