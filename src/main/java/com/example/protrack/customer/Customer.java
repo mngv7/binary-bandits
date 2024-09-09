@@ -1,4 +1,4 @@
-package com.example.protrack;
+package com.example.protrack.customer;
 
 import com.example.protrack.workorder.WorkOrder;
 
