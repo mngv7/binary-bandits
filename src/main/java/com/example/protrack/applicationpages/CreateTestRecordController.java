@@ -2,7 +2,9 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.products.Product;
 import com.example.protrack.products.ProductDAO;
+import com.example.protrack.products.RequiredParts;
 import com.example.protrack.products.RequiredPartsDAO;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -86,7 +88,10 @@ public class CreateTestRecordController {
         TextField textField2 = new TextField();
         textField2.setPromptText("Check Criteria");
 
-        newColumn.getChildren().addAll(label, textField, comboBox, textField2);
+        Button removeButton = new Button("Remove Step");
+        removeButton.setOnAction(event -> removeRow(newColumn));
+
+        newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
 
         testRecordsVBox.getChildren().add(newColumn);
 
@@ -95,6 +100,80 @@ public class CreateTestRecordController {
             Make HBox
 
          */
+    }
+
+    private void removeRow(HBox newColumn) {
+        testRecordsVBox.getChildren().remove(newColumn);
+
+        //Remove 1 from numSteps
+
+        //Redo each column
+
+        numSteps--;
+
+        int numNewSteps = 0;
+
+        for (int i = 0; i < testRecordsVBox.getChildren().size(); i++) {
+            var node = testRecordsVBox.getChildren().getFirst();
+
+            if (node instanceof  HBox column) {
+                HBox newColumn2 = new HBox();
+
+                numNewSteps++;
+                Label label = new Label("Step " + numNewSteps + ": ");
+
+                // Get the labels and text field from the HBox
+                TextField textField1 = (TextField) column.getChildren().get(1);
+
+                //ComboBox<Object> comboBox = new ComboBox<>();
+                //comboBox.setItems(FXCollections.observableArrayList("Checkbox 1", "Text Entry");
+                //comboBox.getItems().addAll("Checkbox 1", "Text Entry");
+                //comboBox.setValue();
+
+                TextField textField2 = (TextField) column.getChildren().get(3);
+
+                Button removeButton = new Button("Remove Step");
+                removeButton.setOnAction(event -> removeRow(column));
+
+                newColumn2.getChildren().addAll(label, textField1, column.getChildren().get(2), textField2, removeButton);
+                testRecordsVBox.getChildren().remove(column);
+                testRecordsVBox.getChildren().add(newColumn2);
+
+            }
+        }
+
+        /*
+        for (var node : testRecordsVBox.getChildren()) {
+            if (node instanceof HBox column) {
+
+                numNewSteps++;
+                Label label = new Label("Step " + numNewSteps + ": ");
+
+                // Get the labels and text field from the VBox
+                TextField textField1 = (TextField) column.getChildren().get(1);
+
+                ComboBox<Object> comboBox = new ComboBox<>();
+                //comboBox.setItems(FXCollections.observableArrayList("Checkbox 1", "Text Entry");
+                comboBox.getItems().addAll("Checkbox 1", "Text Entry");
+                comboBox.setValue(column.getChildren().get(2));
+
+                TextField textField2 = (TextField) column.getChildren().get(3);
+
+
+
+                String partsId = idLabel.getText().replace("Part ID: ", "");
+
+                TextField amountField = (TextField) column.getChildren().get(2); // Assuming the third element is the TextField for required amount
+                String requiredAmount = amountField.getText();
+
+                RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
+                requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
+
+
+            }
+        }
+        */
+
     }
 
 
