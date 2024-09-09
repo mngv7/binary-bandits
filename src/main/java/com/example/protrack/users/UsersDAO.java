@@ -1,11 +1,12 @@
 package com.example.protrack.users;
 
-import java.sql.*;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.sql.*;
+
 public class UsersDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public UsersDAO() {
         connection = DatabaseConnection.getInstance();

@@ -47,7 +47,7 @@ public class MainController {
 
     @FXML
     private void workOrders() {
-        loadContent("/profile/profile_work_orders.fxml","/org/example/main_view");
+        loadContent("/profile/profile_work_orders.fxml", "/org/example/main_view");
     }
 
     @FXML

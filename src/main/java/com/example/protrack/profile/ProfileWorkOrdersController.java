@@ -1,4 +1,4 @@
-    package com.example.protrack.profile;
+package com.example.protrack.profile;
 
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAO.WorkOrdersDAOImplementation;
@@ -7,7 +7,6 @@ import javafx.scene.control.ListView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ProfileWorkOrdersController {
 

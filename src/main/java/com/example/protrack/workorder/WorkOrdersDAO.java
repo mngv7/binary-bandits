@@ -1,9 +1,6 @@
 package com.example.protrack.workorder;
 
-import com.example.protrack.Product;
 import com.example.protrack.customer.Customer;
-import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
 
 import java.sql.*;
@@ -29,9 +26,9 @@ public class WorkOrdersDAO {
 
 
     public static class WorkOrdersDAOImplementation implements WorkOrdersDAOInterface {
-        private Connection connection;
-        private HashMap<Integer, ProductionUser> users;
-        private HashMap<Integer, Customer> customers;
+        private final Connection connection;
+        private final HashMap<Integer, ProductionUser> users;
+        private final HashMap<Integer, Customer> customers;
 
 
         public WorkOrdersDAOImplementation(Connection connection, HashMap<Integer, ProductionUser> users, HashMap<Integer, Customer> customers) {
@@ -39,8 +36,6 @@ public class WorkOrdersDAO {
             this.users = users;
             this.customers = customers;
         }
-
-
 
 
         public void createTable() {
@@ -82,7 +77,7 @@ public class WorkOrdersDAO {
             }
         }
 
-        public WorkOrder getWorkOrder(Integer workOrderId) throws SQLException{
+        public WorkOrder getWorkOrder(Integer workOrderId) throws SQLException {
             return null;
         }
 
