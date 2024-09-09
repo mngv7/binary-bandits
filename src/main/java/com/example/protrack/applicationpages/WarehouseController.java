@@ -30,10 +30,10 @@ public class WarehouseController {
         /* TODO: Need to load from DB for this in production. */
         ObservableList<Workstation> workstations = FXCollections.observableArrayList(
                 // Load data from database
-                new MockWorkstation("Workstation 1", "Warehouse room A", 100),
-                new MockWorkstation("Workstation 2", "Warehouse room A",10),
-                new MockWorkstation("Workstation 3", "Warehouse room A",1),
-                new MockWorkstation("Workstation 4", "Warehouse room A",20)
+                new MockWorkstation(0,"Workstation 1", "Warehouse room A"),
+                new MockWorkstation(1,"Workstation 2", "Warehouse room A"),
+                new MockWorkstation(2,"Workstation 3", "Warehouse room A"),
+                new MockWorkstation(3,"Workstation 4", "Warehouse room A")
         );
 
         workstationTable.setItems(workstations);
