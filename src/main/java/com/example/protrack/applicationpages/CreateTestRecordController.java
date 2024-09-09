@@ -1,9 +1,7 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.products.Product;
-import com.example.protrack.products.ProductDAO;
-import com.example.protrack.products.RequiredParts;
-import com.example.protrack.products.RequiredPartsDAO;
+import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.products.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -15,6 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class CreateTestRecordController {
     /*
     private static final String TITLE = "Create Test Record";
@@ -22,7 +23,7 @@ public class CreateTestRecordController {
     private static final int HEIGHT = 360;
     */
 
-    int numSteps = 0;
+    private int numSteps = 0;
 
     @FXML
     public Button addTestRecordButton;
@@ -36,17 +37,39 @@ public class CreateTestRecordController {
     @FXML
     public Button createProductButton;
 
-    //private Button removeAllButton;
+    private String productIdLabel;
 
     public void initialize() {
 
+        VBox newRow = new VBox();
+        HBox newColumn = new HBox();
+        numSteps++;
+        Label label = new Label("Step " + numSteps + ": ");
 
+        TextField textField = new TextField();
+        textField.setPromptText("Description");
+
+        ComboBox<Object> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll("Checkbox 1", "Text Entry");
+
+        TextField textField2 = new TextField();
+        textField2.setPromptText("Check Criteria");
+
+        Button removeButton = new Button("Remove Step");
+        removeButton.setOnAction(event -> removeRow(newColumn));
+
+        newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
+
+        testRecordsVBox.getChildren().add(newColumn);
 
         testRecordsVBox.getChildren().addListener((ListChangeListener<? super Node>) c -> {
             updateButtonVisibility();
         });
 
-        //updateButtonVisibility();
+    }
+
+    public void setProductId(String value) {
+        productIdLabel = value;
     }
 
     private void updateButtonVisibility() {
@@ -106,13 +129,11 @@ public class CreateTestRecordController {
         testRecordsVBox.getChildren().remove(newColumn);
 
         //Remove 1 from numSteps
-
-        //Redo each column
-
         numSteps--;
 
         int numNewSteps = 0;
 
+        //Redo each column
         for (int i = 0; i < testRecordsVBox.getChildren().size(); i++) {
             var node = testRecordsVBox.getChildren().getFirst();
 
@@ -179,6 +200,58 @@ public class CreateTestRecordController {
 
     @FXML
     protected void onCreateProductButton() {
+
+        insertTestRecordsToDB();
+
+    }
+
+    private void insertTestRecordsToDB() {
+        //Got productId
+
+        int productIdValue = Integer.parseInt(productIdLabel);
+        System.out.println("This is productValue " + productIdValue);
+
+        Connection connection;
+        connection = DatabaseConnection.getInstance();
+
+        int currentRow = 0;
+        try {
+            connection.setAutoCommit(false); // Use transaction to handle multiple inserts
+            for (var node : testRecordsVBox.getChildren()) {
+                if (node instanceof HBox column) {
+
+                    currentRow++;
+
+                    int stepId = currentRow;
+                    int stepNum = currentRow;
+
+                    TextField textField1 = (TextField) column.getChildren().get(1);
+                    String description = textField1.getText();
+
+                    ComboBox<Object> comboBox = (ComboBox<Object>) column.getChildren().get(2);
+                    String checkType = (String) comboBox.getValue();
+                    System.out.println("CheckType " + checkType);
+
+                    TextField textField2 = (TextField) column.getChildren().get(3);
+                    String checkCriteria = textField2.getText();
+
+                    TestRecordStepsDAO testRecordStepsDAO = new TestRecordStepsDAO();
+                    testRecordStepsDAO.newTestRecordStep(new TestRecordSteps(stepId, productIdValue, stepNum, description, checkType, checkCriteria));
+
+
+                }
+            }
+            connection.commit();
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            try {
+                connection.rollback();
+            } catch (SQLException rollbackEx) {
+                System.err.println(rollbackEx);
+            }
+        }
+
 
     }
 
