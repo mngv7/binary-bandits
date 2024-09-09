@@ -49,6 +49,9 @@ public class CreateProductController {
     @FXML
     private TextField productIdField;
 
+    /*
+    TODO Ensure that checks to ensure that fields are not empty are added here.
+     */
     public void initialize() {
         // Create a binding to check if any field is empty
         /*
@@ -120,11 +123,12 @@ public class CreateProductController {
     Then it reads all the parts and assigns it to RequiredPartsDB
     Then the test record pop up occurs
 
-    1. Make it so that you can search for Parts.
-    2. Generate new row for said part, where you can add number of parts
-    3. Ensure that when create product is pressed, it generates a new input in product table
-    4. "" For requiredParts table using the parts generated in (2)
-    5. Open test records table.
+    1. ~Make it so that you can search for Parts.
+    2. ~Generate new row for said part, where you can add number of parts
+    3. ~Ensure that when create product is pressed, it generates a new input in product table
+    4. ~"" For requiredParts table using the parts generated in (2)
+    5. ~Open test records table.
+        All done~
      */
 
     /*
@@ -144,8 +148,6 @@ public class CreateProductController {
         ProductDAO productDAO = new ProductDAO();
         RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
 
-        int rowCount = partResultVBox.getChildren().size();
-
         try {
             int productId = Integer.parseInt(productIdField.getText());
 
@@ -157,6 +159,8 @@ public class CreateProductController {
             productDAO.newProduct(new Product(productId, productName, date));
 
             insertReqPartsFromVbox(productId);
+
+            openCreateTestRecordPopup();
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid product ID. Please enter a valid number.");

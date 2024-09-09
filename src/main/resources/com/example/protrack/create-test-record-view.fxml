@@ -7,9 +7,17 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.applicationpages.CreateTestRecordController">
+    <top>
+        <VBox spacing="10">
+            <Label text="Test Records" styleClass="title-label"/>
+        </VBox>
+    </top>
     <center>
         <HBox spacing="20">
             <VBox spacing="10">
+
+                <!-- Start of steps -->
+                <!--
                 <HBox spacing="10">
                     <Label text="Step 1:" />
                     <TextField promptText="Description" />
@@ -36,7 +44,29 @@
                     </ComboBox>
                     <TextField promptText="Check Criteria" />
                 </HBox>
+                -->
+                <HBox spacing="10">
+                    <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                        <!--<Label text="Bill of Materials"/>-->
+                        <VBox fx:id="testRecordsVBox" />
+
+                        <HBox spacing="10">
+                            <!--<TextField fx:id="partIdSearchField" promptText="Part ID"/>-->
+                            <Button fx:id="addTestRecordButton" text="Add Additional test record" onAction="#addTestRecord" styleClass="create-product-button"/>
+                            <VBox fx:id="removeAllTRButtonContainer" spacing="10"/>
+                        </HBox>
+
+                    </VBox>
+                </HBox>
             </VBox>
+
         </HBox>
     </center>
+
+    <!--IT IS THE SAME BUTTON AGAIN <SOB> <CRY> we probably need to change the previous button to a next like in the mid fid -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="create-product-button"/>
+        </HBox>
+    </bottom>
 </BorderPane>
