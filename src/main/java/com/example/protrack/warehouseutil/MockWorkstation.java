@@ -61,11 +61,13 @@ public class MockWorkstation implements Workstation {
         this.workstationId = workstationId;
     }
 
-    public void addPartsIdWithQuantity (int partsId, int quantity) {
+    public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
-                return; /* We don't need to progress any further. */
+                if (targetWarehouse != null)
+                    targetWarehouse.removePartsIdWithQuantity(partsId, quantity);
+                return;
             }
         }
 
@@ -75,10 +77,9 @@ public class MockWorkstation implements Workstation {
         this.partsId.add(newPart);
     }
 
-    public void removePartsIdWithQuantity (int partsId, int quantity) {
+    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
-                /* TODO: Theoretical MockWarehouse should also have the remaining quantity returned. */
                 int amountToSubtract = quantity;
                 if (this.partsId.get(i).quantity < quantity) {
                     System.out.println("WARNING: Attempting to remove more " + String.valueOf(partsId) + " than is in the workstation, truncating to current quantity.");
@@ -90,6 +91,8 @@ public class MockWorkstation implements Workstation {
                     this.partsId.remove(this.partsId.get(i));
                     return;
                 }
+                if (targetWarehouse != null)
+                    targetWarehouse.addPartsIdWithQuantity(partsId, quantity);
                 return; /* We don't need to progress any further. */
             }
         }

@@ -7,6 +7,6 @@ public interface Workstation {
     void setWorkstationLocation(String workstationLocation);
     int getWorkstationId();
     void setWorkstationId(int workstationID);
-    void addPartsIdWithQuantity (int componentId, int quantity);
-    void removePartsIdWithQuantity (int componentId, int quantity);
+    void importPartsIdWithQuantityFromWarehouse(Warehouse targetWarehouse, int componentId, int quantity);
+    void returnPartsIdWithQuantityToWarehouse(Warehouse targetWarehouse, int componentId, int quantity);
 }
