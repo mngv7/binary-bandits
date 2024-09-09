@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
 
     @FXML
@@ -24,19 +25,9 @@ public class WarehouseController {
     @FXML
     public void initialize() {
         loadWorkstationData();
-        //loadSaleOrderData(); TODO: Commented as sale orders are not implemented yet.
     }
 
     private void loadWorkstationData() {
-        // TODO: Work out what Cindy's instance of ChatGPT has tried to cook here.
-//        ObservableList<Workstation> workstations = FXCollections.observableArrayList(
-//                // Load data from database
-//                new SQLWorkstation("Workstation 1", 100, "Empty", "Low", 0),
-//                new SQLWorkstation("Workstation 2", 10, "Empty", "Low", 0),
-//                new SQLWorkstation("Workstation 3", 1, "John Doe", "High", 3),
-//                new SQLWorkstation("Workstation 4", 20, "Empty", "Critical", 0)
-//        );
-        // TODO: Fix this placeholder which makes sure it compiles.
         ObservableList<Workstation> workstations = FXCollections.observableArrayList(
                 // Load data from database
                 new SQLWorkstation("Workstation 1", 100, null),
@@ -49,15 +40,11 @@ public class WarehouseController {
     }
 
     /* TODO: Sale orders are not implemented yet. */
-//    private void loadSaleOrderData() {
-//        ObservableList<SaleOrder> saleOrders = FXCollections.observableArrayList(
-//                // Load data from database
-//                new SaleOrder("SO-000001", "Workstation 3", "Jonathon Doe", 3, 57, "Product Fault")
-//        );
-//
-//        saleOrderTable.setItems(saleOrders);
-//    }
+    private void loadSaleOrderData() {
+        System.out.println("FIXME: loadSaleOrderData stubbed.");
+    }
 
+    /* TODO: Workstation DB and related code is very incomplete, attempt to resolve with the database guys later. */
     @FXML
     private void handleAddWorkstation() {
         try {
@@ -66,7 +53,6 @@ public class WarehouseController {
 
             Stage stage = new Stage();
             stage.setTitle("Create Workstation");
-            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
@@ -89,6 +75,6 @@ public class WarehouseController {
         Stage stage = new Stage();
         stage.setTitle("Allocate Workstation");
         stage.setScene(new Scene(root));
-        stage.show();
+        stage.showAndWait();
     }
 }
