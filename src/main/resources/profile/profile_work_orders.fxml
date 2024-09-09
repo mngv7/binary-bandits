@@ -8,13 +8,12 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.applicationpages.ProfileWorkOrdersController"
+            fx:controller="com.example.protrack.profile.ProfileWorkOrdersController"
             prefHeight="400.0" prefWidth="600.0">
     <center>
-        <HBox>
-            <Label text="Work Orders" styleClass="title-label"/>
-
-        </HBox>
+        <VBox>
+            <Label text="Work Orders" styleClass="heading"/>
+        </VBox>
     </center>
     <center>
 
