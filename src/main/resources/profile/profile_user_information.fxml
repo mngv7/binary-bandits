@@ -9,15 +9,17 @@
 <?import javafx.scene.image.ImageView?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.applicationpages.ProfileDetailsController"
+            fx:controller="com.example.protrack.profile.ProfileDetailsController"
             prefHeight="400.0" prefWidth="600.0">
         <center>
                 <!-- Column 1 [0] -->
-                <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <VBox>
+                        <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0">
 
-                </ImageView>
-                <Label text="Employee ID:" styleClass="subheading" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <Label text="Reports to:" styleClass="subheading" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        </ImageView>
+                        <Label text="Employee ID:" styleClass="subheading"/>
+                        <Label text="Reports to:" styleClass="subheading"/>
+                </VBox>
         </center>
 
 </BorderPane>

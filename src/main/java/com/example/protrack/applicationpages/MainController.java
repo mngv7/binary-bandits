@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainController {
 
@@ -31,62 +32,64 @@ public class MainController {
 
     @FXML
     private void dashboard() {
-        loadContent("/org/example/dashboard.fxml");
+        loadContent("/org/example/dashboard.fxml", "/org/example/main_view");
     }
 
     @FXML
     private void products() {
-        loadContent("/org/example/products.fxml");
+        loadContent("/org/example/products.fxml", "/org/example/main_view");
     }
 
     @FXML
     private void parts() {
-        loadContent("/org/example/parts.fxml");
+        loadContent("/org/example/parts.fxml", "/org/example/main_view");
     }
 
     @FXML
     private void workOrders() {
-        loadContent("/org/example/profile_work_orders.fxml");
+        loadContent("/profile/profile_work_orders.fxml","/org/example/main_view");
     }
 
     @FXML
     private void purchaseOrders() {
-        loadContent("/org/example/purchase_orders.fxml");
+        loadContent("/org/example/purchase_orders.fxml", "/org/example/main_view");
     }
 
     @FXML
     private void customers() {
-        loadContent("/org/example/customers.fxml");
+        loadContent("/org/example/customers.fxml", "/org/example/main_view");
     }
 
     @FXML
     private void suppliers() {
-        loadContent("/org/example/suppliers.fxml");
+        loadContent("/org/example/suppliers.fxml", "/org/example/main_view");
     }
 
     @FXML
     private void employees() {
-        loadContent("/org/example/employees.fxml");
+        loadContent("/org/example/employees.fxml", "/org/example/main_view");
     }
 
     @FXML
     private void myProfile() {
-        loadContent("/org/example/my_profile.fxml");
+        loadContent("/profile/my_profile.fxml", "/profile/my_profile");
     }
 
     @FXML
     private void warehouse() {
-        loadContent("/org/example/warehouse.fxml");
+        loadContent("/org/example/warehouse.fxml", "/org/example/main_view");
     }
 
-    private void loadContent(String fxmlFile) {
+    private void loadContent(String fxmlFile, String stylesheet) {
         try {
             Scene scene = dynamicVBox.getScene();
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
             dynamicVBox.getChildren().add(content);
-            //scene.getStylesheets().add(getClass().getResource(fxmlFile.substring(0, fxmlFile.length()-5)).toExternalForm());
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/example/main_view")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource(stylesheet)).toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             // Handle the exception (e.g., show an error message)

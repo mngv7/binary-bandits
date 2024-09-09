@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.profile.ProfileDetailsController"
+            prefHeight="400.0" prefWidth="600.0">
+        <center>
+                <!-- Column 2 [1] -->
+                <VBox>
+                        <Label text="Personal Details" styleClass="heading"/>
+                        <Label text="Full Name" styleClass="subheading"/>
+                        <Label text="Date of Birth:" styleClass="subheading"/>
+                        <Label text="Email" styleClass="subheading"/>
+                        <Label text="Phone" styleClass="subheading"/>
+                        <Label text="Gender" styleClass="subheading"/>
+                </VBox>
+        </center>
+</BorderPane>
