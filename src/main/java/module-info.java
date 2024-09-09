@@ -26,4 +26,6 @@ module com.example.protrack {
     opens com.example.protrack.profile to javafx.fxml;
     exports com.example.protrack.workorder;
     opens com.example.protrack.workorder to javafx.fxml;
+    exports com.example.protrack.customer;
+    opens com.example.protrack.customer to javafx.fxml;
 }
