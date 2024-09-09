@@ -209,7 +209,7 @@ public class CreateTestRecordController {
         //Got productId
 
         int productIdValue = Integer.parseInt(productIdLabel);
-        System.out.println("This is productValue " + productIdValue);
+        //System.out.println("This is productValue " + productIdValue);
 
         Connection connection;
         connection = DatabaseConnection.getInstance();
@@ -230,7 +230,7 @@ public class CreateTestRecordController {
 
                     ComboBox<Object> comboBox = (ComboBox<Object>) column.getChildren().get(2);
                     String checkType = (String) comboBox.getValue();
-                    System.out.println("CheckType " + checkType);
+                    //System.out.println("CheckType " + checkType);
 
                     TextField textField2 = (TextField) column.getChildren().get(3);
                     String checkCriteria = textField2.getText();
