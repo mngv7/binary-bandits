@@ -1,8 +1,13 @@
 package com.example.protrack.applicationpages;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class AllocateWorkstationController {
 
@@ -22,25 +27,7 @@ public class AllocateWorkstationController {
             // Handle allocation logic here
             System.out.println("Allocated: " + selectedWorkstation);
             // try to connect WorkStation page
-            switch (selectedWorkstation) {
-                case "Workstation 1":
-                    loadNewPage("/com/example/workorder/WorkStation-1.fxml");
-                    break;
-                case "Workstation 2":
-                    loadNewPage("/com/example/workorder/WorkStation-2.fxml");
-                    break;
-                case "Workstation 3":
-                    loadNewPage("/com/example/workorder/WorkStation-3.fxml");
-                    break;
-                case "Workstation 4":
-                    loadNewPage("/com/example/workorder/WorkStation-4.fxml");
-                    break;
-                case "Workstation 5":
-                    loadNewPage("/com/example/workorder/WorkStation-5.fxml");
-                    break;
-                default:
-                    System.out.println("No valid workstation selected.");
-            }
+            loadNewPage("/com/example/protrack/WorkStation.fxml");
         }
     }
 
@@ -48,7 +35,7 @@ public class AllocateWorkstationController {
     private void loadNewPage(String fxmlFilePath) {
         try {
             //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(fxmlFilePath));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFilePath));
             Parent root = loader.load();
 
             // Get the current stage (window) and set the new scene
