@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class LoginPageController {
 
