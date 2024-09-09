@@ -6,14 +6,14 @@ import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAO;
 
-import java.sql.*;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 public class ProfileService {
     private WorkOrdersDAO workOrderDAO;
     private UsersDAO usersDAO;
 
-    public ProfileService(WorkOrdersDAO workOrderDAO, UsersDAO usersDAO ) {
+    public ProfileService(WorkOrdersDAO workOrderDAO, UsersDAO usersDAO) {
         this.workOrderDAO = workOrderDAO;
         this.usersDAO = usersDAO;
     }
@@ -26,7 +26,7 @@ public class ProfileService {
         return null;
     }
 
-    public AbstractUser getUser(){
+    public AbstractUser getUser() {
         return null;
     }
 
