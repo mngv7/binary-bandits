@@ -24,4 +24,6 @@ module com.example.protrack {
     opens org.example to javafx.fxml;
     exports com.example.protrack.profile;
     opens com.example.protrack.profile to javafx.fxml;
+    exports com.example.protrack.workorder;
+    opens com.example.protrack.workorder to javafx.fxml;
 }
