@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -72,16 +74,24 @@ public class MainController {
     }
 
     @FXML
+    private void myProfile() {
+        loadContent("/org/example/my_profile.fxml");
+    }
+
+    @FXML
     private void warehouse() {
         loadContent("/com/example/protrack/warehouse.fxml");
     }
 
     private void loadContent(String fxmlFile) {
         try {
+            Scene scene = dynamicVBox.getScene();
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
             dynamicVBox.getChildren().add(content);
+
+            scene.getStylesheets().add(getClass().getResource(fxmlFile.substring(0, fxmlFile.length()-5)).toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             // Handle the exception (e.g., show an error message)
