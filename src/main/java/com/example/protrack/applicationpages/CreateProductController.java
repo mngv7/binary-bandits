@@ -6,8 +6,10 @@ import com.example.protrack.products.Product;
 import com.example.protrack.products.ProductDAO;
 import com.example.protrack.products.RequiredParts;
 import com.example.protrack.products.RequiredPartsDAO;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -39,6 +41,8 @@ public class CreateProductController {
     @FXML
     private VBox partResultVBox;
 
+    @FXML
+    private VBox removeAllPartsButtonContainer;
 
     @FXML
     public Button createProductButton;
@@ -74,6 +78,10 @@ public class CreateProductController {
                 requireAmount3.textProperty()
         );
         */
+
+        partResultVBox.getChildren().addListener((ListChangeListener<? super Node>) c -> {
+            updateButtonVisibility();
+        });
 
         //createProductButton.disableProperty().bind(fieldsEmpty);
     }
@@ -218,6 +226,27 @@ public class CreateProductController {
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void updateButtonVisibility() {
+        Button removeAllButton = new Button("Remove all parts");
+        removeAllButton.setOnAction(event -> {
+            //Do things here
+            partResultVBox.getChildren().clear();
+            removeAllPartsButtonContainer.getChildren().clear();
+        });
+        if (partResultVBox.getChildren().isEmpty()) {
+            // If no rows, remove the button if it exists
+            if (removeAllPartsButtonContainer.getChildren().contains(removeAllButton)) {
+                removeAllPartsButtonContainer.getChildren().remove(removeAllButton);
+            }
+        } else {
+            // If there are rows, ensure the button is added
+            if (!removeAllPartsButtonContainer.getChildren().contains(removeAllButton)) {
+                removeAllPartsButtonContainer.getChildren().clear();
+                removeAllPartsButtonContainer.getChildren().add(removeAllButton);
+            }
         }
     }
 
