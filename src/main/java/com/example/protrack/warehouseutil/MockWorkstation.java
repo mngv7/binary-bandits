@@ -3,12 +3,6 @@ package com.example.protrack.warehouseutil;
 import java.util.ArrayList;
 import java.util.List;
 
-/* NOTE: Internal storage class for parts IDs, DO NOT SEPARATE. */
-class partIdWithQuantity {
-    public int partsId;
-    public int quantity;
-}
-
 public class MockWorkstation implements Workstation {
     private int workstationId;
     private String workstationName;
@@ -17,24 +11,29 @@ public class MockWorkstation implements Workstation {
 
     public MockWorkstation() {
         this.workstationId = 0; /* lol */
+        this.workstationName = "Default workstation";
+        this.workstationLocation = "Default location";
         this.partsId = new ArrayList<>();
     }
 
-    public MockWorkstation(String workstationName) {
-        this.workstationName = workstationName;
-        this.workstationId = 0; /* lmao even */
+    public MockWorkstation(int workstationId) {
+        this.workstationId = workstationId; /* lmao even */
+        this.workstationName = "Default workstation";
+        this.workstationLocation = "Default location";
         this.partsId = new ArrayList<>();
     }
 
-    public MockWorkstation(String workstationName, String workstationLocation) {
+    public MockWorkstation(int workstationId, String workstationName) {
+        this.workstationId = workstationId; /* lmao even */
         this.workstationName = workstationName;
-        this.workstationId = 0; /* lmao even */
+        this.workstationLocation = "Default Location";
         this.partsId = new ArrayList<>();
     }
 
-    public MockWorkstation(String workstationName, String workstationLocation, int workstationId) {
+    public MockWorkstation(int workstationId, String workstationName, String workstationLocation) {
+        this.workstationId = workstationId; /* lmao even */
         this.workstationName = workstationName;
-        this.workstationId = workstationId;
+        this.workstationLocation = workstationLocation;
         this.partsId = new ArrayList<>();
     }
 
