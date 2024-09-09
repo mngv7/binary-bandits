@@ -1,6 +1,6 @@
 package com.example.protrack.workorder;
 
-import com.example.protrack.Customer;
+import com.example.protrack.customer.Customer;
 import com.example.protrack.users.ProductionUser;
 
 public class WorkOrder {
