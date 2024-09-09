@@ -1,17 +1,15 @@
 package com.example.protrack.customer;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.users.AbstractUser;
 import com.example.protrack.workorder.WorkOrder;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CustomerDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public CustomerDAO() {
         connection = DatabaseConnection.getInstance();
@@ -38,19 +36,19 @@ public class CustomerDAO {
         }
     }
 
-    public boolean addCustomer(Customer customer) throws SQLException{
+    public boolean addCustomer(Customer customer) throws SQLException {
         return true;
     }
 
-    public Customer getCustomer(Integer customerId) throws SQLException{
+    public Customer getCustomer(Integer customerId) throws SQLException {
         return null;
     }
 
-    public ArrayList<Customer> getAllCustomers() throws SQLException{
+    public ArrayList<Customer> getAllCustomers() throws SQLException {
         return null;
     }
 
-    public void updateCustomer(Customer customer) throws SQLException{
+    public void updateCustomer(Customer customer) throws SQLException {
 
     }
 
