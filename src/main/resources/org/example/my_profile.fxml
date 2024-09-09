@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.MainController"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <VBox>
+            <Label text="My Profile" styleClass="title-label"/>
+        </VBox>
+    </top>
+    <center>
+        <GridPane maxWidth="Infinity" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints prefHeight="20.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+
+            <!-- Column 1 [0] -->
+            <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0">
+
+            </ImageView>
+            <Label text="Employee ID:" styleClass="subheading" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label text="Reports to:" styleClass="subheading" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+
+            <!-- Column 2 [1] -->
+            <Label text="Personal Details" styleClass="heading" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="edit" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label text="Name" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Title" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label text="Date of Birth" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Email" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <Label text="Phone" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            <Label text="Gender" styleClass="subheading" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+            <!-- Column 3 [2] -->
+            <!-- To add - Work Reporting -->
+            <Label text="Work Insights" styleClass="heading" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+            <!-- Column 4 [3] -->
+            <Label text="Assigned Orders" styleClass="heading" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+
+        </GridPane>
+
+    </center>
+</BorderPane>

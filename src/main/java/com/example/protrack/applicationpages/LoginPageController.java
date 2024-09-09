@@ -1,7 +1,5 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
-
 import com.example.protrack.users.UsersDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +13,6 @@ import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class LoginPageController {
 
@@ -69,7 +66,7 @@ public class LoginPageController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        scene.getStylesheets().add(getClass().getResource("/org/example/main_app").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/org/example/main_view").toExternalForm());
     }
 
     private boolean isInputValid() {
