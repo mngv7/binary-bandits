@@ -6,11 +6,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.cell.TextFieldListCell?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.MainController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <Label text="Employees" styleClass="title-label"/>
+        <VBox prefHeight="150">
+            <Label text="Employees" styleClass="title-label"/>
+            <Region minHeight="20"/>
+            <TextField promptText="🔎 Search..." maxWidth="300"/>
+        </VBox>
     </top>
+    <center>
+        <HBox>
+            <VBox prefWidth="600">
+                <Label text="My Team"/>
+                <Region minHeight="10"/>
+                <Label text="Location"/>
+            </VBox>
+            <VBox prefWidth="400">
+                <Label text="Organisation"/>
+                <Region minHeight="10"/>
+                <Label text="Team:"/>
+            </VBox>
+        </HBox>
+    </center>
 </BorderPane>

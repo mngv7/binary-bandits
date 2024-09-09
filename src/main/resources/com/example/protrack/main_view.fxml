@@ -34,7 +34,7 @@
                 </VBox>
 
                 <!-- Can do onMouseClicked to imitate a button, will need prepared statements  -->
-                <Text text="🚹" style="-fx-fill: white;" styleClass="profile-text"/>
+                <Text text="🚹" style="-fx-fill: white;" styleClass="profile-text" onMouseClicked="#myProfile"/>
                 <Text text="🔔" style="-fx-fill: white;" styleClass="bell-text"/>
             </HBox>
         </HBox>
