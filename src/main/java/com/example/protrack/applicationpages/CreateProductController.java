@@ -204,6 +204,10 @@ public class CreateProductController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-test-record-view.fxml"));
             Parent createProductRoot = fxmlLoader.load();
 
+            CreateTestRecordController createTestRecordController = fxmlLoader.getController();
+            String productIdValue = productIdField.getText();
+            createTestRecordController.setProductId(productIdValue);
+
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(TITLE);
