@@ -35,6 +35,7 @@
                         <Button fx:id="partSearchButton" text="Search" onAction="#partSearch" styleClass="create-product-button"/>
                     </HBox>
                     <VBox fx:id="partResultVBox" />
+                    <VBox fx:id="removeAllPartsButtonContainer" spacing="10"/>
                 </VBox>
             </HBox>
         </ScrollPane>
