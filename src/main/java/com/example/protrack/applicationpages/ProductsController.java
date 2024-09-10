@@ -117,7 +117,7 @@ public class ProductsController {
             popupStage.setTitle(TITLE);
 
             Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
             popupStage.setY(150);
