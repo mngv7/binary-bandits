@@ -8,12 +8,14 @@ public class MockWorkstation implements Workstation {
     private String workstationName;
     private String workstationLocation;
     private final List<partIdWithQuantity> partsId;
+    private int maxParts;
 
     public MockWorkstation() {
         this.workstationId = 0; /* lol */
         this.workstationName = "Default workstation";
         this.workstationLocation = "Default location";
         this.partsId = new ArrayList<>();
+        this.maxParts = 100;
     }
 
     public MockWorkstation(int workstationId) {
@@ -21,6 +23,7 @@ public class MockWorkstation implements Workstation {
         this.workstationName = "Default workstation";
         this.workstationLocation = "Default location";
         this.partsId = new ArrayList<>();
+        this.maxParts = 100;
     }
 
     public MockWorkstation(int workstationId, String workstationName) {
@@ -28,6 +31,7 @@ public class MockWorkstation implements Workstation {
         this.workstationName = workstationName;
         this.workstationLocation = "Default Location";
         this.partsId = new ArrayList<>();
+        this.maxParts = 100;
     }
 
     public MockWorkstation(int workstationId, String workstationName, String workstationLocation) {
@@ -35,6 +39,15 @@ public class MockWorkstation implements Workstation {
         this.workstationName = workstationName;
         this.workstationLocation = workstationLocation;
         this.partsId = new ArrayList<>();
+        this.maxParts = 100;
+    }
+
+    public MockWorkstation(int workstationId, String workstationName, String workstationLocation, int maxParts) {
+        this.workstationId = workstationId; /* lmao even */
+        this.workstationName = workstationName;
+        this.workstationLocation = workstationLocation;
+        this.partsId = new ArrayList<>();
+        this.maxParts = maxParts;
     }
 
     public String getWorkstationName() {
@@ -59,6 +72,9 @@ public class MockWorkstation implements Workstation {
     public void setWorkstationId(int workstationId) {
         this.workstationId = workstationId;
     }
+
+    public int getWorkstationMaxParts() { return this.maxParts; }
+    public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
 
     public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
