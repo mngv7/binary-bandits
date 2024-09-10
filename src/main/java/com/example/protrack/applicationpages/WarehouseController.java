@@ -41,14 +41,15 @@ public class WarehouseController {
     }
 
     private void loadWorkstationData() {
-        workstations = new ArrayList<>();
+        if (workstations == null) {
+            workstations = new ArrayList<>();
 
-        /* TODO: load from mock/real DB later. For now, make dummy data. */
-        workstations.add(new MockWorkstation(0,"Workstation for noobs.", "Warehouse room A"));
-        workstations.add(new MockWorkstation(1,"Workstation 2", "Warehouse room A"));
-        workstations.add(new MockWorkstation(2,"Workstation 3", "Warehouse room A"));
-        workstations.add(new MockWorkstation(3,"Workstation 4", "Warehouse room A"));
-
+            /* TODO: load from mock/real DB later. For now, make dummy data. */
+            workstations.add(new MockWorkstation(0, "Workstation for noobs.", "Warehouse room A"));
+            workstations.add(new MockWorkstation(1, "Workstation 2", "Warehouse room A"));
+            workstations.add(new MockWorkstation(2, "Workstation 3", "Warehouse room A"));
+            workstations.add(new MockWorkstation(3, "Workstation 4", "Warehouse room A"));
+        }
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
 
@@ -64,6 +65,7 @@ public class WarehouseController {
                 // Remove the selected item from the table
                 workstationTable.getItems().remove(selectedWorkstation);
                 // Optionally, remove it from the database or data source here
+                workstations.remove(selectedWorkstation);
             }
         }
     }
@@ -80,12 +82,16 @@ public class WarehouseController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/CreateWorkstation.fxml"));
             Parent root = loader.load();
 
+            CreateWorkstationController controller = loader.getController();
+            if (controller != null) {
+                controller.setParentWarehouseController(this);
+            }
+
             Stage stage = new Stage();
             stage.setTitle("Create Workstation");
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            // Optionally, reload workstation data after adding a new workstation
             loadWorkstationData();
 
         } catch (Exception e) {
@@ -94,7 +100,7 @@ public class WarehouseController {
     }
 
     public void addWorkstation (Workstation workstation) {
-        //workstation
+        workstations.add(workstation);
     }
 
     @FXML
