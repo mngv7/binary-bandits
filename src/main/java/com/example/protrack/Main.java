@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-
+import java.sql.Date;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -59,13 +59,13 @@ public class Main extends Application {
         requiredPartsDAO.createTable();
 
         if (usersDAO.isTableEmpty()) {
-            usersDAO.newUser(new ManagerialUser(100, "John", "Doe", "password"));
-            usersDAO.newUser(new ManagerialUser(101, "Alice", "Smith", "alicepass"));
-            usersDAO.newUser(new ManagerialUser(102, "Bob", "Johnson", "bobpass"));
-            usersDAO.newUser(new WarehouseUser(103, "Charlie", "Brown", "charliepass"));
-            usersDAO.newUser(new WarehouseUser(104, "Diana", "White", "dianapass"));
-            usersDAO.newUser(new ProductionUser(105, "Eve", "Davis", "evepass"));
-            usersDAO.newUser(new ProductionUser(106, "Frank", "Miller", "frankpass"));
+            usersDAO.newUser(new ManagerialUser(100, "John", "Doe", Date.valueOf("1985-01-01"), "john.doe@example.com", "0400125123", "Male", "password"));
+            usersDAO.newUser(new ManagerialUser(101, "Alice", "Smith", Date.valueOf("1990-05-15"), "alice.smith@example.com", "0400123113", "Female", "alicepass"));
+            usersDAO.newUser(new ManagerialUser(102, "Bob", "Johnson", Date.valueOf("1982-09-23"), "bob.johnson@example.com", "0400123723", "Male", "bobpass"));
+            usersDAO.newUser(new WarehouseUser(103, "Charlie", "Brown", Date.valueOf("1978-11-30"), "charlie.brown@example.com", "0400129723", "Male", "charliepass"));
+            usersDAO.newUser(new WarehouseUser(104, "Diana", "White", Date.valueOf("1987-03-12"), "diana.white@example.com", "0400123093", "Female", "dianapass"));
+            usersDAO.newUser(new ProductionUser(105, "Eve", "Davis", Date.valueOf("1993-07-22"), "eve.davis@example.com", "0400473123", "Female", "evepass"));
+            usersDAO.newUser(new ProductionUser(106, "Frank", "Miller", Date.valueOf("1989-12-09"), "frank.miller@example.com", "0400192123", "Male", "frankpass"));
         }
 
         if (testRecordDAO.isTableEmpty()) {

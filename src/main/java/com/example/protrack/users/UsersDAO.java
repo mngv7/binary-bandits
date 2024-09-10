@@ -19,6 +19,10 @@ public class UsersDAO {
                             + "employeeId INTEGER PRIMARY KEY AUTOINCREMENT, "
                             + "firstName VARCHAR NOT NULL, "
                             + "lastName VARCHAR NOT NULL, "
+                            + "dob DATE NOT NULL, "
+                            + "email VARCHAR NOT NULL, "
+                            + "phoneNo VARCHAR NOT NULL, "
+                            + "gender VARCHAR NOT NULL, "
                             + "password VARCHAR NOT NULL, "
                             + "accessLevel VARCHAR NOT NULL"
                             + ")"
@@ -63,15 +67,19 @@ public class UsersDAO {
     public void newUser(AbstractUser user) {
         try {
             PreparedStatement insertAccount = connection.prepareStatement(
-                    "INSERT INTO users (employeeId, firstName, lastName, password, accessLevel) VALUES (?, ?, ?, ?, ?)"
+                    "INSERT INTO users (employeeId, firstName, lastName, dob, email, phoneNo, gender, password, accessLevel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
             String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
             insertAccount.setInt(1, user.getEmployeeId());
             insertAccount.setString(2, user.getFirstName());
             insertAccount.setString(3, user.getLastName());
-            insertAccount.setString(4, hashedPassword);
-            insertAccount.setString(5, user.getAccessLevel());
+            insertAccount.setDate(4, user.getDob());
+            insertAccount.setString(5, user.getEmail());
+            insertAccount.setString(6, user.getPhoneNo());
+            insertAccount.setString(7, user.getGender());
+            insertAccount.setString(8, hashedPassword);
+            insertAccount.setString(9, user.getAccessLevel());
 
             insertAccount.execute();
         } catch (SQLException ex) {
