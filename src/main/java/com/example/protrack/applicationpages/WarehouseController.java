@@ -10,6 +10,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
@@ -17,6 +19,7 @@ public class WarehouseController {
 
     @FXML
     private TableView<Workstation> workstationTable;
+    private List<Workstation> workstations; /* Loaded workstations from a database. */
 
     //@FXML
     //private TableView<SaleOrder> saleOrderTable;
@@ -38,16 +41,15 @@ public class WarehouseController {
     }
 
     private void loadWorkstationData() {
-        /* TODO: Need to load from DB for this in production. */
-        ObservableList<Workstation> workstations = FXCollections.observableArrayList(
-                // Load data from database
-                new MockWorkstation(0,"Workstation 1", "Warehouse room A"),
-                new MockWorkstation(1,"Workstation 2", "Warehouse room A"),
-                new MockWorkstation(2,"Workstation 3", "Warehouse room A"),
-                new MockWorkstation(3,"Workstation 4", "Warehouse room A")
-        );
+        workstations = new ArrayList<>();
 
-        workstationTable.setItems(workstations);
+        /* TODO: load from mock/real DB later. For now, make dummy data. */
+        workstations.add(new MockWorkstation(0,"Workstation for noobs.", "Warehouse room A"));
+        workstations.add(new MockWorkstation(1,"Workstation 2", "Warehouse room A"));
+        workstations.add(new MockWorkstation(2,"Workstation 3", "Warehouse room A"));
+        workstations.add(new MockWorkstation(3,"Workstation 4", "Warehouse room A"));
+
+        workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
 
     private void handleDeleteWorkstation() {
@@ -89,6 +91,10 @@ public class WarehouseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void addWorkstation (Workstation workstation) {
+        //workstation
     }
 
     @FXML
