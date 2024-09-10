@@ -7,9 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
+import com.example.protrack.warehouseutil.*;
+
 import java.io.IOException;
 
 public class AllocateWorkstationController {
+    private WarehouseController parentWarehouse;
 
     @FXML
     private ComboBox<String> workstationComboBox;
@@ -27,8 +30,14 @@ public class AllocateWorkstationController {
             // Handle allocation logic here
             System.out.println("Allocated: " + selectedWorkstation);
             // try to connect WorkStation page
-            loadNewPage("/com/example/protrack/WorkStation.fxml");
+            /* TODO: Connect actual workstation; the combo box doesn't yet have enough data. */
+            this.parentWarehouse.openWorkstation(null);
+            //loadNewPage("/com/example/protrack/WorkStation.fxml");
         }
+    }
+
+    public void setParentWarehouseController(WarehouseController warehouse) {
+        this.parentWarehouse = warehouse;
     }
 
     //function to loadNewPage
