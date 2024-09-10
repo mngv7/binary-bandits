@@ -36,25 +36,27 @@ public class MockWarehouse {
         this.warehouseLocation = warehouseLocation;
         this.partsId = new ArrayList<>();
     }
-    String getWarehouseName() {
+
+    public String getWarehouseName() {
         return this.warehouseName;
     }
-    void setWarehouseName(String warehouseName) {
+    public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
     }
-    String getWarehouseLocation() {
+    public String getWarehouseLocation() {
         return this.warehouseLocation;
     }
-    void setWarehouseLocation(String warehouseLocation) {
+    public void setWarehouseLocation(String warehouseLocation) {
         this.warehouseLocation = warehouseLocation;
     }
-    int getWarehouseId() {
+    public int getWarehouseId() {
         return this.warehouseId;
     }
-    void setWarehouseId(int warehouseId) {
+    public void setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
     }
-    void addPartsIdWithQuantity (int partsId, int quantity) {
+
+    public void addPartsIdWithQuantity (int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
@@ -67,7 +69,7 @@ public class MockWarehouse {
         newPart.quantity = quantity;
         this.partsId.add(newPart);
     }
-    void removePartsIdWithQuantity (int partsId, int quantity) {
+    public void removePartsIdWithQuantity (int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
