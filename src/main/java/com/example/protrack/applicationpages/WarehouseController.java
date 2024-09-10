@@ -91,6 +91,9 @@ public class WarehouseController {
             }
 
             Stage stage = new Stage();
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();
+            root.getStylesheets().add(stylesheet);
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setTitle("Create Workstation");
             stage.setScene(new Scene(root));
             stage.showAndWait();
