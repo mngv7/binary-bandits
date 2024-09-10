@@ -6,6 +6,7 @@ import com.example.protrack.users.ProductionUser;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 import java.sql.Connection;
@@ -40,12 +41,30 @@ public class ProfileWorkOrdersController {
 
     @FXML
     private void displayPendingWorkOrders() {
-        ArrayList<WorkOrder> pendingWorkOrders = new ArrayList<>();
+        ArrayList<WorkOrder> pendingWorkOrders;
         try {
             pendingWorkOrders = workOrdersDAOimpl.getWorkOrderByStatus("pending");
+            System.out.println(pendingWorkOrders);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        // Set cell factory to customize how WorkOrder items are displayed
+        pendingWorkOrdersListView.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(WorkOrder item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    // Customize the cell content here
+                    setText("WorkOrder ID: " + item.getWorkOrderId() +
+                            ", Status: " + item.getStatus() +
+                            ", Description: " + item.getOrderDate());
+                }
+            }
+        });
 
         if (pendingWorkOrders != null) {
             pendingWorkOrdersListView.getItems().setAll(pendingWorkOrders);
