@@ -1,8 +1,11 @@
 package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDAO {
     private Connection connection;
@@ -41,6 +44,29 @@ public class ProductDAO {
             System.err.println(ex);
         }
     }
+
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+
+        String query = "SELECT * FROM products";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int productId = rs.getInt("productId");
+                String productName = rs.getString("productName");
+                Date dateCreated = rs.getDate("dateCreated");
+
+                Product product = new Product(productId, productName, dateCreated);
+                products.add(product);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return products;
+    }
+
 
     public boolean isTableEmpty() {
         try {

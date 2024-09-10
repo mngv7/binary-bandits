@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.CreateProductController"
+            prefHeight="400.0" prefWidth="600.0">
+    <center>
+        <HBox spacing="20">
+            <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label text="Product Details"/>
+                <HBox spacing="10">
+                    <Label text="Product ID:"/>
+                    <TextField fx:id="productIdField" promptText="Product ID" maxWidth="500" styleClass="product-name-field"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Product Name:"/>
+                    <TextField fx:id="productNameField" promptText="Product Name" maxWidth="500" styleClass="product-name-field"/>
+                </HBox>
+            </VBox>
+            <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <Label text="Bill of Materials"/>
+                <HBox>
+                    <TextField fx:id="partId1" promptText="Part ID"/>
+                    <TextField fx:id="requireAmount1" promptText="Required Amount"/>
+                </HBox>
+                <HBox>
+                    <TextField fx:id="partId2" promptText="Part ID"/>
+                    <TextField fx:id="requireAmount2" promptText="Required Amount"/>
+                </HBox>
+                <HBox>
+                    <TextField fx:id="partId3" promptText="Part ID"/>
+                    <TextField fx:id="requireAmount3" promptText="Required Amount"/>
+                </HBox>
+                <Button fx:id="createProductButton" text="Create Product" onAction="#onCreateProductButton" styleClass="login-button"/>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

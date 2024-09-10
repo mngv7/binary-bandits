@@ -1,6 +1,6 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.workstationutil.*;
+import com.example.protrack.warehouseutil.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,12 +27,13 @@ public class WarehouseController {
     }
 
     private void loadWorkstationData() {
+        /* TODO: Need to load from DB for this in production. */
         ObservableList<Workstation> workstations = FXCollections.observableArrayList(
                 // Load data from database
-                new SQLWorkstation("Workstation 1", 100, null),
-                new SQLWorkstation("Workstation 2", 10, null),
-                new SQLWorkstation("Workstation 3", 1, null),
-                new SQLWorkstation("Workstation 4", 20, null)
+                new MockWorkstation(0,"Workstation 1", "Warehouse room A"),
+                new MockWorkstation(1,"Workstation 2", "Warehouse room A"),
+                new MockWorkstation(2,"Workstation 3", "Warehouse room A"),
+                new MockWorkstation(3,"Workstation 4", "Warehouse room A")
         );
 
         workstationTable.setItems(workstations);
