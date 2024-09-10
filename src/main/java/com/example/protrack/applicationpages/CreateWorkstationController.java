@@ -1,21 +1,35 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.warehouseutil.MockWorkstation;
+import com.example.protrack.warehouseutil.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class CreateWorkstationController {
+    public WarehouseController parentWarehouse;
     @FXML
     private TextField nameField;
 
     @FXML
     private TextField capacityField;
 
+    public CreateWorkstationController() {
+        this.parentWarehouse = null;
+    }
 
+    public CreateWorkstationController(WarehouseController parentWarehouse) {
+        this.parentWarehouse = parentWarehouse;
+    }
+
+    public void setParentWarehouseController (WarehouseController parentWarehouse) {
+        this.parentWarehouse = parentWarehouse;
+    }
 
     @FXML
     private void handleCreate() {
-        // Your creation logic here
+        Workstation station = new MockWorkstation(11, nameField.getText(), "null", Integer.parseInt(capacityField.getText()));
+        parentWarehouse.addWorkstation(station);
         closeDialog();
     }
 
