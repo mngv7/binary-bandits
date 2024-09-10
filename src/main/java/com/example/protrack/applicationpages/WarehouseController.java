@@ -1,5 +1,6 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.warehouseutil.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +10,12 @@ import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.util.Objects;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
@@ -111,9 +114,13 @@ public class WarehouseController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/AllocateWorkstation.fxml"));
         Parent root = loader.load();
 
+        Scene rootScene = new Scene(root);
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();
+        rootScene.getStylesheets().add(stylesheet);
         Stage stage = new Stage();
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Allocate Workstation");
-        stage.setScene(new Scene(root));
+        stage.setScene(rootScene);
         stage.showAndWait();
     }
 }
