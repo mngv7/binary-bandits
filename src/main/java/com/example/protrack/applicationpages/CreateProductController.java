@@ -1,11 +1,10 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.database.ProductDBTable;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.products.Product;
 import com.example.protrack.products.ProductDAO;
-import com.example.protrack.products.RequiredParts;
-import com.example.protrack.products.RequiredPartsDAO;
+import com.example.protrack.products.BillOfMaterials;
+import com.example.protrack.products.BillOfMaterialsDAO;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -154,7 +151,7 @@ public class CreateProductController {
     protected void onCreateProductButton() {
 
         ProductDAO productDAO = new ProductDAO();
-        RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
+        BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
 
         try {
             int productId = Integer.parseInt(productIdField.getText());
@@ -190,8 +187,8 @@ public class CreateProductController {
                     TextField amountField = (TextField) row.getChildren().get(2); // Assuming the third element is the TextField for required amount
                     String requiredAmount = amountField.getText();
 
-                    RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
-                    requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
+                    BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
+                    billOfMaterial.newRequiredParts(new BillOfMaterials(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
                 }
             }
             connection.commit();

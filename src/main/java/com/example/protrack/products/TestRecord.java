@@ -1,6 +1,6 @@
 package com.example.protrack.products;
 
-public class TestRecordSteps {
+public class TestRecord {
 
     private Integer stepId;
     private Integer productId;
@@ -9,7 +9,7 @@ public class TestRecordSteps {
     private String stepCheckType;
     private String stepCheckCriteria;
 
-    public TestRecordSteps(Integer stepId, Integer productId, Integer stepNumber, String stepDescription, String stepCheckType, String stepCheckCriteria) {
+    public TestRecord(Integer stepId, Integer productId, Integer stepNumber, String stepDescription, String stepCheckType, String stepCheckCriteria) {
         this.stepId = stepId;
         this.productId = productId;
         this.stepNumber = stepNumber;

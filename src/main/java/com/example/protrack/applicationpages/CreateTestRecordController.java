@@ -2,7 +2,6 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.products.*;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -239,8 +238,8 @@ public class CreateTestRecordController {
                     TextField textField2 = (TextField) column.getChildren().get(3);
                     String checkCriteria = textField2.getText();
 
-                    TestRecordStepsDAO testRecordStepsDAO = new TestRecordStepsDAO();
-                    testRecordStepsDAO.newTestRecordStep(new TestRecordSteps(stepId, productIdValue, stepNum, description, checkType, checkCriteria));
+                    TestRecordDAO testRecordDAO = new TestRecordDAO();
+                    testRecordDAO.newTestRecordStep(new TestRecord(stepId, productIdValue, stepNum, description, checkType, checkCriteria));
 
 
                 }

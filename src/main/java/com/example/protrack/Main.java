@@ -48,15 +48,15 @@ public class Main extends Application {
 
         PartsDAO partsDAO = new PartsDAO();
         ProductDAO productDAO = new ProductDAO();
-        RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
-        TestRecordStepsDAO testRecordDAO = new TestRecordStepsDAO();
+        BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
+        TestRecordDAO testRecordDAO = new TestRecordDAO();
         UsersDAO usersDAO = new UsersDAO();
 
         partsDAO.createTable();
         productDAO.createTable();
         usersDAO.createTable();
         testRecordDAO.createTable();
-        requiredPartsDAO.createTable();
+        billOfMaterial.createTable();
 
         if (usersDAO.isTableEmpty()) {
             usersDAO.newUser(new ManagerialUser(100, "John", "Doe", Date.valueOf("1985-01-01"), "john.doe@example.com", "0400125123", "Male", "password"));
@@ -70,26 +70,26 @@ public class Main extends Application {
 
         if (testRecordDAO.isTableEmpty()) {
             // Product 36014: Mining Collision Detector
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(1, 36014, 1, "Torque the T10 screw to 5Nm.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(2, 36014, 2, "Measure the thickness of the metal plate (mm).", "TextEntry", ">5"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(3, 36014, 3, "Power on the device and check the operating voltage (V).", "TextEntry", ">10"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(4, 36014, 4, "Power off the device and put into sleep mode for shipping.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(1, 36014, 1, "Torque the T10 screw to 5Nm.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(2, 36014, 2, "Measure the thickness of the metal plate (mm).", "TextEntry", ">5"));
+            testRecordDAO.newTestRecordStep(new TestRecord(3, 36014, 3, "Power on the device and check the operating voltage (V).", "TextEntry", ">10"));
+            testRecordDAO.newTestRecordStep(new TestRecord(4, 36014, 4, "Power off the device and put into sleep mode for shipping.", "CheckBox", "NULL"));
 
             // Product 45021: Displacement Monitoring Device
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(1, 45021, 1, "Inspect the exterior for any visible damage or scratches.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(2, 45021, 2, "Check that the battery is fully charged.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(3, 45021, 3, "Test the wireless connection strength (dBm).", "TextEntry", ">60"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(4, 45021, 4, "Verify that the display is working without any dead pixels.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(5, 45021, 5, "Measure the device temperature after 10 minutes of operation (°C).", "TextEntry", "<40"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(6, 45021, 6, "Ensure all screws are torqued to the specified value (Nm).", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(7, 45021, 7, "Check that the firmware version is up to date.", "TextEntry", "Latest"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(8, 45021, 8, "Power off the device and package it in the protective casing.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(1, 45021, 1, "Inspect the exterior for any visible damage or scratches.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(2, 45021, 2, "Check that the battery is fully charged.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(3, 45021, 3, "Test the wireless connection strength (dBm).", "TextEntry", ">60"));
+            testRecordDAO.newTestRecordStep(new TestRecord(4, 45021, 4, "Verify that the display is working without any dead pixels.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(5, 45021, 5, "Measure the device temperature after 10 minutes of operation (°C).", "TextEntry", "<40"));
+            testRecordDAO.newTestRecordStep(new TestRecord(6, 45021, 6, "Ensure all screws are torqued to the specified value (Nm).", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(7, 45021, 7, "Check that the firmware version is up to date.", "TextEntry", "Latest"));
+            testRecordDAO.newTestRecordStep(new TestRecord(8, 45021, 8, "Power off the device and package it in the protective casing.", "CheckBox", "NULL"));
 
             // Product 67890: Power Supply
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(1, 67890, 1, "Verify the serial number matches the product ID label.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(2, 67890, 2, "Check the power cable for any signs of wear.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(3, 67890, 3, "Test the main function of the device to ensure it operates correctly.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecordSteps(4, 67890, 4, "Ensure all accessory components are included in the packaging.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(1, 67890, 1, "Verify the serial number matches the product ID label.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(2, 67890, 2, "Check the power cable for any signs of wear.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(3, 67890, 3, "Test the main function of the device to ensure it operates correctly.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(4, 67890, 4, "Ensure all accessory components are included in the packaging.", "CheckBox", "NULL"));
         }
 
         if (productDAO.isTableEmpty()) {
@@ -100,19 +100,19 @@ public class Main extends Application {
             productDAO.newProduct(new Product(67890, "Power Supply", date));
         }
 
-        if (requiredPartsDAO.isTableEmpty()) {
-            if (requiredPartsDAO.isTableEmpty()) {
+        if (billOfMaterial.isTableEmpty()) {
+            if (billOfMaterial.isTableEmpty()) {
                 // Product 36014: Mining Collision Detector
-                requiredPartsDAO.newRequiredParts(new RequiredParts(1, 36014, 10)); // 10 units of part ID 1
-                requiredPartsDAO.newRequiredParts(new RequiredParts(2, 36014, 5));  // 5 units of part ID 2
+                billOfMaterial.newRequiredParts(new BillOfMaterials(1, 36014, 10)); // 10 units of part ID 1
+                billOfMaterial.newRequiredParts(new BillOfMaterials(2, 36014, 5));  // 5 units of part ID 2
 
                 // Product 45021: Displacement Monitoring Device
-                requiredPartsDAO.newRequiredParts(new RequiredParts(1, 45021, 8));  // 8 units of part ID 1
-                requiredPartsDAO.newRequiredParts(new RequiredParts(3, 45021, 12)); // 12 units of part ID 3
+                billOfMaterial.newRequiredParts(new BillOfMaterials(1, 45021, 8));  // 8 units of part ID 1
+                billOfMaterial.newRequiredParts(new BillOfMaterials(3, 45021, 12)); // 12 units of part ID 3
 
                 // Product 67890: Power Supply
-                requiredPartsDAO.newRequiredParts(new RequiredParts(2, 67890, 6));  // 6 units of part ID 2
-                requiredPartsDAO.newRequiredParts(new RequiredParts(3, 67890, 4));  // 4 units of part ID 3
+                billOfMaterial.newRequiredParts(new BillOfMaterials(2, 67890, 6));  // 6 units of part ID 2
+                billOfMaterial.newRequiredParts(new BillOfMaterials(3, 67890, 4));  // 4 units of part ID 3
             }
         }
 
