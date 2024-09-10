@@ -118,6 +118,7 @@ public class CustomerDAO {
             while (rs.next()) {
                 Customer customer = mapResultSetToCustomer(rs);
                 customers.put(customer.getCustomerId(), customer);
+                System.out.println(customer.getCustomerId());
             }
         } catch (SQLException e) {
             e.printStackTrace();
