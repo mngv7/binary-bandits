@@ -10,13 +10,13 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
-    private Integer phoneNumber;
+    private String phoneNumber;
     private String billingAddress;
     private String shippingAddress;
     private String status;
     private ArrayList<WorkOrder> orders;
 
-    public Customer(Integer customerId, String firstName, String lastName, String email, Integer phoneNumber, String billingAddress, String shippingAddress, String status, ArrayList<WorkOrder> orders) {
+    public Customer(Integer customerId, String firstName, String lastName, String email, String phoneNumber, String billingAddress, String shippingAddress, String status) {
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -25,7 +25,6 @@ public class Customer {
         this.billingAddress = billingAddress;
         this.shippingAddress = shippingAddress;
         this.status = status;
-        this.orders = orders;
     }
 
     // Getters and Setters
@@ -61,11 +60,11 @@ public class Customer {
         this.email = email;
     }
 
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
