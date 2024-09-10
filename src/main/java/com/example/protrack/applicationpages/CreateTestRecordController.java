@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,6 +25,9 @@ public class CreateTestRecordController {
     */
 
     private int numSteps = 0;
+
+    @FXML
+    public Button closePopupButton;
 
     @FXML
     public Button addTestRecordButton;
@@ -255,8 +259,10 @@ public class CreateTestRecordController {
 
     }
 
-
-
-
+    @FXML
+    protected void onClosePopupButton() {
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
+    }
 
 }

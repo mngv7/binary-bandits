@@ -6,46 +6,28 @@
 
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.applicationpages.CreateTestRecordController">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.CreateTestRecordController"
+            prefHeight="360.0" prefWidth="900.0" styleClass="add-parts-popup">
+
     <top>
+        <GridPane styleClass="parts-title-container" hgap="165">
+            <Label text="Test Records" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Button fx:id="closePopupButton" text="❌" onAction="#onClosePopupButton" GridPane.halignment="RIGHT"
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
+        </GridPane>
+    </top>
+    <!--<top>
         <VBox spacing="10">
             <Label text="Test Records" styleClass="title-label"/>
         </VBox>
-    </top>
-    <center>
-        <HBox spacing="20">
-            <VBox spacing="10">
+    </top>-->
 
-                <!-- Start of steps -->
-                <!--
-                <HBox spacing="10">
-                    <Label text="Step 1:" />
-                    <TextField promptText="Description" />
-                    <ComboBox fx:id="criteriaTypeComboBox1">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Checkbox" />
-                                <String fx:value="Text Entry" />
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                    <TextField promptText="Check Criteria" />
-                </HBox>
-                <HBox spacing="10">
-                    <Label text="Step 2:" />
-                    <TextField promptText="Description" />
-                    <ComboBox fx:id="criteriaTypeComboBox2">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Checkbox" />
-                                <String fx:value="Text Entry" />
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                    <TextField promptText="Check Criteria" />
-                </HBox>
-                -->
-                <HBox spacing="10">
+    <center>
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="20">
+                <VBox spacing="10">
                     <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
                         <!--<Label text="Bill of Materials"/>-->
                         <VBox fx:id="testRecordsVBox" />
@@ -57,11 +39,19 @@
                         </HBox>
 
                     </VBox>
-                </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <!--<center>
+        <HBox spacing="20">
+            <VBox spacing="10">
+
             </VBox>
 
         </HBox>
-    </center>
+    </center>-->
 
     <!--IT IS THE SAME BUTTON AGAIN <SOB> <CRY> we probably need to change the previous button to a next like in the mid fid -->
     <bottom>
