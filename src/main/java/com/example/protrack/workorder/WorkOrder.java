@@ -1,6 +1,7 @@
 package com.example.protrack.workorder;
 
 import com.example.protrack.customer.Customer;
+import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
 
 import java.time.LocalDateTime;
