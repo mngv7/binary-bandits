@@ -24,6 +24,17 @@ public class WarehouseController {
     @FXML
     public void initialize() {
         loadWorkstationData();
+
+        // Create and set the context menu for the workstationTable
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        contextMenu.getItems().add(deleteMenuItem);
+
+        deleteMenuItem.setOnAction(event -> handleDeleteWorkstation());
+
+        workstationTable.setOnContextMenuRequested(event -> {
+            contextMenu.show(workstationTable, event.getScreenX(), event.getScreenY());
+        });
     }
 
     private void loadWorkstationData() {
@@ -37,6 +48,22 @@ public class WarehouseController {
         );
 
         workstationTable.setItems(workstations);
+    }
+
+    private void handleDeleteWorkstation() {
+        Workstation selectedWorkstation = workstationTable.getSelectionModel().getSelectedItem();
+        if (selectedWorkstation != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Confirmation");
+            alert.setHeaderText("Are you sure you want to delete this workstation?");
+            alert.setContentText("This action cannot be undone.");
+
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                // Remove the selected item from the table
+                workstationTable.getItems().remove(selectedWorkstation);
+                // Optionally, remove it from the database or data source here
+            }
+        }
     }
 
     /* TODO: Sale orders are not implemented yet. */
