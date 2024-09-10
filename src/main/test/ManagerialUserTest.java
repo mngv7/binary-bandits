@@ -21,7 +21,7 @@ public class ManagerialUserTest {
 
     @Test
     public void testGetEmployeeId() {
-        assertEquals(100, user.getEmployeeId()); // Changed from 101 to 100 to match initialization
+        assertEquals(100, user.getEmployeeId());
     }
 
     @Test
@@ -31,7 +31,7 @@ public class ManagerialUserTest {
 
     @Test
     public void testGetLastName() {
-        assertEquals("Doe", user.getLastName()); // Changed from "TestLast" to "Doe" to match initialization
+        assertEquals("Doe", user.getLastName());
     }
 
     @Test
