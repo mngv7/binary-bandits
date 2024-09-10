@@ -1,6 +1,9 @@
 import com.example.protrack.users.ManagerialUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ManagerialUserTest {
@@ -8,8 +11,7 @@ public class ManagerialUserTest {
 
     @BeforeEach
     public void setUp() {
-        user = new ManagerialUser(101, "TestFirst", "TestLast", "Password@1234") {
-        };
+        user = new ManagerialUser(100, "John", "Doe", Date.valueOf("1985-01-01"), "john.doe@example.com", "0400125123", "Male", "password");
     }
 
     @Test
@@ -19,21 +21,21 @@ public class ManagerialUserTest {
 
     @Test
     public void testGetEmployeeId() {
-        assertEquals(101, user.getEmployeeId());
+        assertEquals(100, user.getEmployeeId()); // Changed from 101 to 100 to match initialization
     }
 
     @Test
     public void testGetFirstName() {
-        assertEquals("TestFirst", user.getFirstName());
+        assertEquals("John", user.getFirstName());
     }
 
     @Test
     public void testGetLastName() {
-        assertEquals("TestLast", user.getLastName());
+        assertEquals("Doe", user.getLastName()); // Changed from "TestLast" to "Doe" to match initialization
     }
 
     @Test
     public void testGetPassword() {
-        assertEquals("Password@1234", user.getPassword());
+        assertEquals("password", user.getPassword());
     }
 }
