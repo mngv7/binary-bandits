@@ -8,6 +8,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.applicationpages.AllocateWorkstationController">
     <top>
+        <!-- Title and Close Button -->
         <GridPane styleClass="parts-title-container" hgap="165">
             <Label text="Create Parts" styleClass="parts-title-label" GridPane.rowIndex="0"/>
             <Button fx:id="closePopupButton" text="❌" onAction="#handleClose" GridPane.halignment="RIGHT"
@@ -15,7 +16,7 @@
         </GridPane>
     </top>
     <center>
-        <!-- Title and Close Button -->
+
         <HBox>
             <children>
                 <Label text="Allocate your Workstation" styleClass="subpage-title"/>
