@@ -27,21 +27,18 @@
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
             </columnConstraints>
 
-            <children>
-                <Pane GridPane.columnIndex="0">
-                    <fx:include source="profile_user_information.fxml"/>
-                </Pane>
-                <Pane GridPane.columnIndex="1">
-                    <fx:include source="profile_details.fxml"/>
-                </Pane>
-                <Pane GridPane.columnIndex="2">
-                    <fx:include source="profile_report.fxml"/>
-                </Pane>
-                <Pane GridPane.columnIndex="3">
-                    <fx:include source="profile_work_orders.fxml"/>
-                </Pane>
-            </children>
-
+            <Pane GridPane.columnIndex="0">
+                <fx:include source="profile_user_information.fxml"/>
+            </Pane>
+            <Pane GridPane.columnIndex="1">
+                <fx:include source="profile_details.fxml"/>
+            </Pane>
+            <Pane GridPane.columnIndex="2">
+                <fx:include source="profile_report.fxml"/>
+            </Pane>
+            <Pane GridPane.columnIndex="3">
+                <fx:include source="profile_work_orders.fxml"/>
+            </Pane>
         </GridPane>
     </center>
 </BorderPane>

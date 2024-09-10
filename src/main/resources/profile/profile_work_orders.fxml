@@ -13,6 +13,7 @@
     <center>
         <VBox>
             <Label text="Work Orders" styleClass="heading"/>
+            <ListView fx:id="pendingWorkOrdersListView"/>
         </VBox>
     </center>
     <center>
