@@ -109,6 +109,23 @@ public class WarehouseController {
         workstations.add(workstation);
     }
 
+    public void openWorkstation (Workstation workstation) {
+        /* TODO: Connect selected workstation to new page. */
+//        try {
+//            //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
+//            Parent root = loader.load();
+//
+//            // Get the current stage (window) and set the new scene
+//            Stage stage = (Stage) workstationTable.getScene();
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace(); // Log the error if FXML loading fails
+//            System.out.println("Failed to load FXML file: /com/example/protrack/WorkStation.fxml");
+//        }
+    }
+
     @FXML
     private Button allocateWorkstationButton;
 
@@ -116,6 +133,11 @@ public class WarehouseController {
     private void handleAllocateWorkstation() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/AllocateWorkstation.fxml"));
         Parent root = loader.load();
+
+        AllocateWorkstationController controller = loader.getController();
+        if (controller != null) {
+            controller.setParentWarehouseController(this);
+        }
 
         Scene rootScene = new Scene(root);
         String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();

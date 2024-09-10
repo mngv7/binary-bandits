@@ -1,5 +1,6 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.warehouseutil.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -9,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 public class WorkStationController {
+    private Workstation selectedWorkstation;
+
     @FXML
     public Label workStationName;
 
@@ -17,6 +20,10 @@ public class WorkStationController {
 
     @FXML
     private ListView<String> orderList;
+
+    public void setSelectedWorkstation (Workstation selectedWorkstation) {
+        this.selectedWorkstation = selectedWorkstation;
+    }
 
 //    @FXML
 //    private VBox step1Box;
@@ -90,6 +97,11 @@ public class WorkStationController {
 //            default:
 //                break;
 //        }
+    }
+
+    @FXML
+    private void handleClose () {
+        /* TODO: Load warehouse page again. */
     }
 }
 
