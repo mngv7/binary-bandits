@@ -32,7 +32,7 @@ public class AllocateWorkstationController {
             // try to connect WorkStation page
             /* TODO: Connect actual workstation; the combo box doesn't yet have enough data. */
             this.parentWarehouse.openWorkstation(null);
-            //loadNewPage("/com/example/protrack/WorkStation.fxml");
+            handleClose();
         }
     }
 

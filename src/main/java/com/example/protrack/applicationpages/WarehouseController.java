@@ -5,7 +5,8 @@ import com.example.protrack.warehouseutil.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
+import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -111,19 +112,20 @@ public class WarehouseController {
 
     public void openWorkstation (Workstation workstation) {
         /* TODO: Connect selected workstation to new page. */
-//        try {
-//            //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
-//            Parent root = loader.load();
-//
-//            // Get the current stage (window) and set the new scene
-//            Stage stage = (Stage) workstationTable.getScene();
-//            stage.setScene(new Scene(root));
-//            stage.show();
-//        } catch (IOException e) {
-//            e.printStackTrace(); // Log the error if FXML loading fails
-//            System.out.println("Failed to load FXML file: /com/example/protrack/WorkStation.fxml");
-//        }
+        try {
+            //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
+            Parent root = loader.load();
+
+            // Switch to the Workstation UI.
+            /* HACK: Pull the VBox used in MainController from here to clear; layout changes will likely break this. */
+            VBox contentPane = (VBox) workstationTable.getParent();
+            contentPane.getChildren().clear();
+            contentPane.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace(); // Log the error if FXML loading fails
+            System.out.println("Failed to load FXML file: /com/example/protrack/WorkStation.fxml");
+        }
     }
 
     @FXML
