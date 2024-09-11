@@ -1,21 +1,30 @@
 package com.example.protrack.customer;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.users.AbstractUser;
 import com.example.protrack.workorder.WorkOrder;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * DAO for managing Customer entities in the database
+ * Provides methods for CRUD operations on customer-related data
+ */
 public class CustomerDAO {
     private final Connection connection;
     private HashMap<Integer, Customer> customers;
 
+    /**
+     * Initializes the DAO with a database connection
+     */
     public CustomerDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
+    /**
+     * Creates the customer table in the database if it doesn't exist
+     */
     public void createTable() {
         try {
             Statement createTable = connection.createStatement();
@@ -36,6 +45,13 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * Adds a new customer to the database
+     *
+     * @param customer The Customer object to be added
+     * @return true if the customer was added successfully to the database, false otherwise
+     * @throws SQLException If an SQL error occurs
+     */
     public boolean addCustomer(Customer customer) throws SQLException {
         String query = "INSERT INTO customer (first_name, last_name, email, phone_number, billing_address, shipping_address, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -51,23 +67,29 @@ public class CustomerDAO {
             stmt.setString(6, customer.getShippingAddress());
             stmt.setString(7, customer.getStatus());
 
-            // Execute the insert statement
-            int rowsAffected = stmt.executeUpdate();
-
-            // Return true if the insert was successful
-            return rowsAffected > 0;
+            // Executes the insert statement and returns true if the insert was successful
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            // Handle SQL exception
             e.printStackTrace();
             throw e;
         }
     }
 
+    /**
+     * Retrieves a customer from the database based on the provided customer ID.
+     *
+     * @param customerId The ID of the customer to be retrieved.
+     * @return The Customer object if found, otherwise null.
+     * @throws SQLException If an SQL error occurs.
+     */
     public Customer getCustomer(Integer customerId) throws SQLException {
-        return null;
+        return null; // Need to implement.
     }
 
+    /**
+     * Drops the customer table from the database if exists.
+     */
     public void dropTable() {
         String query = "DROP TABLE IF EXISTS customer";
 
@@ -79,6 +101,12 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * Retrieves all customers from the database.
+     *
+     * @return 'HashMap<Integer, Customer>' containing all customers.
+     * @throws SQLException If an SQL error occurs during the operation.
+     */
     public HashMap<Integer, Customer> getAllCustomers() throws SQLException {
         HashMap<Integer, Customer> customers = new HashMap<>();
         String query = "SELECT * FROM customer";
@@ -97,6 +125,13 @@ public class CustomerDAO {
         return customers;
     }
 
+    /**
+     * Maps a ResultSet row to a Customer object.
+     *
+     * @param rs The ResultSet containing customer data.
+     * @return The Customer object mapped from the ResultSet.
+     * @throws SQLException If an SQL error occurs.
+     */
     private Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
         int customerId = rs.getInt("customer_id");
         String firstName = rs.getString("first_name");
@@ -110,18 +145,42 @@ public class CustomerDAO {
         return new Customer(customerId, firstName, lastName, email, phoneNumber, billingAddress, shippingAddress, status);
     }
 
+    /**
+     * Updates an existing customer in the database.
+     *
+     * @param customer The Customer object containing the (to be) updated details.
+     * @throws SQLException If an SQL error occurs.
+     */
     public void updateCustomer(Customer customer) throws SQLException {
 
     }
 
+    /**
+     * Deletes a customer from the database.
+     *
+     * @return true if the customer was deleted, false otherwise.
+     */
     public boolean deleteCustomer() {
         return true;
     }
 
+    /**
+     * Searches for customers based on a query string from a search box.
+     *
+     * @param query The search query.
+     * @return An ArrayList of Customer objects alike to the search.
+     */
     public ArrayList<Customer> searchCustomers(String query) {
         return null;
     }
 
+    /**
+     * Retrieves all work orders associated with a specific customer.
+     *
+     * @param customerId The ID of the customer whose work orders are to be retrieved.
+     * @return An ArrayList of WorkOrder objects associated with the customer.
+     * @throws SQLException If an SQL error occurs during the operation.
+     */
     public ArrayList<WorkOrder> getOrdersForCustomer(Integer customerId) throws SQLException {
         return null;
     }
