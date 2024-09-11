@@ -220,6 +220,7 @@
 #pendingWorkOrdersListView .list-cell:focused {
     -fx-font-family: "Arial";
     -fx-font-size: 20px;
+    -fx-text-fill: white;
     -fx-background-color: #390B91;
 }
 
