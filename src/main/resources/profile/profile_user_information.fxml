@@ -7,19 +7,18 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<BorderPane xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.profile.ProfileDetailsController"
             prefHeight="550.0" prefWidth="600.0">
-        <center>
-                <!-- Column 1 [0] -->
-                <VBox>
-                        <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0">
 
-                        </ImageView>
-                        <Label text="Employee ID:" styleClass="subheading"/>
-                        <Label text="Reports to:" styleClass="subheading"/>
-                </VBox>
-        </center>
+        <!-- Column 1 [0] -->
 
-</BorderPane>
+        <!-- Profile picture -->
+        <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0">
+
+        </ImageView>
+        <Label text="Employee ID:" styleClass="subheading"/>
+        <Label text="Reports to:" styleClass="subheading"/>
+
+</VBox>

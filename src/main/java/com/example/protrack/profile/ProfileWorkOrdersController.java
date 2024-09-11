@@ -2,7 +2,6 @@ package com.example.protrack.profile;
 
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
-import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
@@ -10,51 +9,62 @@ import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
-
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Controller for managing and displaying work orders on the profile page.
+ * The controller display of pending work orders with a List View, interacting with
+ * User, Customer, and WorkOrdersDAOImplementation DAO's.
+ */
 public class ProfileWorkOrdersController {
 
     @FXML
-    private ListView<WorkOrder> pendingWorkOrdersListView;
+    private ListView<WorkOrder> pendingWorkOrdersListView; //ListView containing pending work orders
 
     private final WorkOrdersDAOImplementation workOrdersDAOimpl;
 
     public ProfileWorkOrdersController() throws SQLException {
 
-        // Initialize the HashMaps (this is a placeholder; you need to populate these with actual data)
+        // Initialises a new UsersDAO and CustomerDAO interface (and connections)
         UsersDAO usersDAO = new UsersDAO();
         CustomerDAO customerDAO = new CustomerDAO();
 
+        // Creates HashMaps that retrieve HashMaps containing all users and customers
         HashMap<Integer, ProductionUser> productionUsers = usersDAO.getAllUsers();
         HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
 
-        // Initialize WorkOrdersDAOImplementation with required parameters
+        // Initialises WorkOrdersDAOImplementation using the recently initialised UsersDAO and CustomersDAO objects
         this.workOrdersDAOimpl = new WorkOrdersDAOImplementation(productionUsers, customers);
     }
 
+    /**
+     * Initialises the controller after the FXML is loaded. The method
+     * is automatically loaded by the FXMLLoader, displaying pending
+     * work orders in the ListView.
+     */
     @FXML
     private void initialize() {
-        // Ensure that this method is called after FXML is loaded
-        System.out.println("initialize() called");
-        displayPendingWorkOrders();
+        displayPendingWorkOrders(); // Displays pending work orders in the list view once controller initialises
     }
 
+    /**
+     * Retrieves and displays pending work orders in the ListView.
+     * Retrieves work orders from the database and sets them in the ListView as ListCells.
+     */
     @FXML
     private void displayPendingWorkOrders() {
         ArrayList<WorkOrder> pendingWorkOrders;
         try {
+            // Retrieves pending work orders
             pendingWorkOrders = workOrdersDAOimpl.getWorkOrderByStatus("pending");
             System.out.println("Fetched Work Orders: " + pendingWorkOrders);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        // Set cell factory to customize how WorkOrder items are displayed
+        // Sets cell factory for work order display
         pendingWorkOrdersListView.setCellFactory(listView -> new ListCell<>() {
 
             @Override
@@ -64,13 +74,13 @@ public class ProfileWorkOrdersController {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    // Customize the cell content here
                     setText("Work Order ID: " + item.getWorkOrderId() +
                             "\nOrder Date: " + item.getOrderDate());
                 }
             }
         });
 
+        // Updates ListView with retrieved pending work orders
         if (pendingWorkOrders != null) {
             pendingWorkOrdersListView.getItems().setAll(pendingWorkOrders);
         } else {

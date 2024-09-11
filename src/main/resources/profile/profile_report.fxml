@@ -7,15 +7,13 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<BorderPane xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.profile.ProfileReportController"
             prefHeight="550.0" prefWidth="300.0">
-        <center>
-                <!-- Column 3 [2] -->
-                <!-- To add - Work Reporting -->
-                <VBox>
-                        <Label text="Work Insights" styleClass="heading"/>
-                </VBox>
-        </center>
-</BorderPane>
+
+        <!-- Column 3 [2] -->
+        <!-- To add - Work Reporting -->
+        <Label text="Work Insights" styleClass="heading"/>
+
+</VBox>
