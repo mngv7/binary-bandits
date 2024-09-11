@@ -28,7 +28,6 @@
                     <TableColumn fx:id="colPartsId" text="Part ID" />
                     <TableColumn fx:id="colName" text="Part Name" />
                     <TableColumn fx:id="colDescription" text="Part Description" />
-                    <TableColumn fx:id="colType" text="Part Type" />
                     <TableColumn fx:id="colSupplierId" text="Part Supplier ID" />
                     <TableColumn fx:id="colCost" text="Part Cost" />
                 </columns>

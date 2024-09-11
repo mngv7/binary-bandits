@@ -25,9 +25,6 @@ public class AddPartsController {
     private TextField partDescField;
 
     @FXML
-    private TextField partTypeField;
-
-    @FXML
     private TextField partSupplierIdField;
 
     @FXML
@@ -45,13 +42,11 @@ public class AddPartsController {
                 partIdField.getText().trim().isEmpty() ||
                 partNameField.getText().trim().isEmpty() ||
                 partDescField.getText().trim().isEmpty() ||
-                partTypeField.getText().trim().isEmpty() ||
                 partSupplierIdField.getText().trim().isEmpty() ||
                 partCostField.getText().trim().isEmpty(),
                 partIdField.textProperty(),
                 partNameField.textProperty(),
                 partDescField.textProperty(),
-                partTypeField.textProperty(),
                 partSupplierIdField.textProperty(),
                 partCostField.textProperty()
         );
@@ -67,16 +62,14 @@ public class AddPartsController {
             int partId = Integer.parseInt(partIdField.getText());
             String partName = partNameField.getText();
             String partDesc = partDescField.getText();
-            String partType = partTypeField.getText();
             int partSupplierId = Integer.parseInt(partSupplierIdField.getText());
             double partCost = Integer.parseInt(partCostField.getText());
 
-            partsDAO.newPart(new Parts(partId, partName, partDesc, partType, partSupplierId, partCost));
+            partsDAO.newPart(new Parts(partId, partName, partDesc, partSupplierId, partCost));
 
             partIdField.setText("");
             partNameField.setText("");
             partDescField.setText("");
-            partTypeField.setText("");
             partSupplierIdField.setText("");
             partCostField.setText("");
 
