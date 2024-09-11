@@ -14,12 +14,11 @@ public class DatabaseConnection {
     public static Connection getInstance() {
         if (connection == null || !isConnectionValid()) {
             try {
-                // Initialize the database connection here
+                // Initialises the database connection
                 connection = DriverManager.getConnection("jdbc:sqlite:database.db");
                 System.out.println("Database connection established.");
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Optionally, throw a runtime exception or handle the error appropriately
             }
         }
         return connection;
@@ -34,7 +33,7 @@ public class DatabaseConnection {
         }
     }
 
-    // Optional: Method to close the connection, if needed
+    // Method to close the connection
     public static void close() {
         if (connection != null) {
             try {
