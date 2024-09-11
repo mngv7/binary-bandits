@@ -75,7 +75,7 @@ public class ProfileWorkOrdersController {
                     setGraphic(null);
                 } else {
                     setText("Work Order ID: " + item.getWorkOrderId() +
-                            "\nOrder Date: " + item.getOrderDate());
+                            "\nOrder Date: " + item.getOrderDate().toString().substring(0,10));
                 }
             }
         });
