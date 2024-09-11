@@ -1,13 +1,16 @@
 package com.example.protrack.profile;
 
 import com.example.protrack.customer.Customer;
+import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.users.ProductionUser;
+import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,15 +22,16 @@ public class ProfileWorkOrdersController {
     @FXML
     private ListView<WorkOrder> pendingWorkOrdersListView;
 
-    private WorkOrdersDAOImplementation workOrdersDAOimpl;
+    private final WorkOrdersDAOImplementation workOrdersDAOimpl;
 
-    public ProfileWorkOrdersController() {
-        // Initialize the database connection
-        Connection connection = DatabaseConnection.getInstance();
+    public ProfileWorkOrdersController() throws SQLException {
 
         // Initialize the HashMaps (this is a placeholder; you need to populate these with actual data)
-        HashMap<Integer, ProductionUser> productionUsers = new HashMap<>();
-        HashMap<Integer, Customer> customers = new HashMap<>();
+        UsersDAO usersDAO = new UsersDAO();
+        CustomerDAO customerDAO = new CustomerDAO();
+
+        HashMap<Integer, ProductionUser> productionUsers = usersDAO.getAllUsers();
+        HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
 
         // Initialize WorkOrdersDAOImplementation with required parameters
         this.workOrdersDAOimpl = new WorkOrdersDAOImplementation(productionUsers, customers);
@@ -36,6 +40,7 @@ public class ProfileWorkOrdersController {
     @FXML
     private void initialize() {
         // Ensure that this method is called after FXML is loaded
+        System.out.println("initialize() called");
         displayPendingWorkOrders();
     }
 
@@ -44,13 +49,14 @@ public class ProfileWorkOrdersController {
         ArrayList<WorkOrder> pendingWorkOrders;
         try {
             pendingWorkOrders = workOrdersDAOimpl.getWorkOrderByStatus("pending");
-            System.out.println(pendingWorkOrders);
+            System.out.println("Fetched Work Orders: " + pendingWorkOrders);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         // Set cell factory to customize how WorkOrder items are displayed
         pendingWorkOrdersListView.setCellFactory(listView -> new ListCell<>() {
+
             @Override
             protected void updateItem(WorkOrder item, boolean empty) {
                 super.updateItem(item, empty);
@@ -59,9 +65,8 @@ public class ProfileWorkOrdersController {
                     setGraphic(null);
                 } else {
                     // Customize the cell content here
-                    setText("WorkOrder ID: " + item.getWorkOrderId() +
-                            ", Status: " + item.getStatus() +
-                            ", Description: " + item.getOrderDate());
+                    setText("Work Order ID: " + item.getWorkOrderId() +
+                            "\nOrder Date: " + item.getOrderDate());
                 }
             }
         });
