@@ -1,12 +1,12 @@
 package com.example.protrack.products;
 
-public class RequiredParts {
+public class BillOfMaterials {
 
     private Integer partsId;
     private Integer productId;
     private Integer requiredAmount;
 
-    public RequiredParts(Integer partsId, Integer productId, Integer requiredAmount) {
+    public BillOfMaterials(Integer partsId, Integer productId, Integer requiredAmount) {
         this.partsId = partsId;
         this.productId = productId;
         this.requiredAmount = requiredAmount;

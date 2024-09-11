@@ -4,10 +4,10 @@ import com.example.protrack.databaseutil.DatabaseConnection;
 
 import java.sql.*;
 
-public class TestRecordStepsDAO {
+public class TestRecordDAO {
     private Connection connection;
 
-    public TestRecordStepsDAO() {
+    public TestRecordDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
@@ -15,7 +15,7 @@ public class TestRecordStepsDAO {
         try {
             Statement createTable = connection.createStatement();
             createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS testRecordSteps ("
+                    "CREATE TABLE IF NOT EXISTS testRecord ("
                             + "stepId INTEGER NOT NULL, "
                             + "productId INTEGER NOT NULL, "
                             + "stepNumber INTEGER NOT NULL, "
@@ -30,10 +30,10 @@ public class TestRecordStepsDAO {
         }
     }
 
-    public void newTestRecordStep(TestRecordSteps testRecordStep) {
+    public void newTestRecordStep(TestRecord testRecordStep) {
         try {
             PreparedStatement insertStep = connection.prepareStatement(
-                    "INSERT INTO testRecordSteps (stepId, productId, stepNumber, stepDescription, stepCheckType, stepCheckCriteria) "
+                    "INSERT INTO testRecord (stepId, productId, stepNumber, stepDescription, stepCheckType, stepCheckCriteria) "
                             + "VALUES (?, ?, ?, ?, ?, ?)"
             );
 
@@ -53,7 +53,7 @@ public class TestRecordStepsDAO {
     public boolean isTableEmpty() {
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM testRecordSteps");
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM testRecord");
             rs.next();
             int count = rs.getInt("rowcount");
             rs.close();

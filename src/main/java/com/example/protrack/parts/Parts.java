@@ -1,7 +1,6 @@
 package com.example.protrack.parts;
 
 public class Parts {
-
     private Integer partsId;
     private String name;
     private String description;

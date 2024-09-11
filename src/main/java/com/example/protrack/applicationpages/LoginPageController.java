@@ -77,7 +77,7 @@ public class LoginPageController {
         stage.setScene(scene);
         stage.show();
 
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/protrack/main_app.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/protrack/stylesheet.css")).toExternalForm());
     }
 
 
