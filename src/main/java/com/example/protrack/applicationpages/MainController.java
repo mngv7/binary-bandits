@@ -74,7 +74,7 @@ public class MainController {
 
     @FXML
     private void myProfile() {
-        loadContent("/org/example/my_profile.fxml");
+        loadContent("/profile/my_profile.fxml");
     }
 
     @FXML
