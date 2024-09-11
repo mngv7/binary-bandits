@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,7 +8,10 @@
             fx:controller="com.example.protrack.profile.ProfileWorkOrdersController"
             prefHeight="500" prefWidth="300">
 
+    <!-- Column 4 [3] -->
     <Label text="Work Orders" styleClass="heading"/>
+
+    <!-- ListView contains the ListCells that display the pending work orders -->
     <ListView fx:id="pendingWorkOrdersListView" VBox.vgrow="ALWAYS"/>
 
 </VBox>
