@@ -6,17 +6,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.profile.ProfileWorkOrdersController"
-            prefHeight="400.0" prefWidth="600.0">
-    <center>
-        <VBox>
-            <Label text="Work Orders" styleClass="heading"/>
-            <ListView fx:id="pendingWorkOrdersListView" maxWidth="300" prefHeight="Infinity"/>
-        </VBox>
-    </center>
-    <center>
+            prefHeight="500" prefWidth="300">
 
-    </center>
-</BorderPane>
+    <Label text="Work Orders" styleClass="heading"/>
+    <ListView fx:id="pendingWorkOrdersListView" VBox.vgrow="ALWAYS"/>
+
+</VBox>
