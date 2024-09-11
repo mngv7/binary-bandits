@@ -23,5 +23,8 @@
     -fx-font-size: 14px;
     -fx-text-fill: black;
     -fx-font-weight: bold;
+}
 
+#pendingWorkOrdersListView .list-cell {
+    -fx-font-size: 30px;
 }
