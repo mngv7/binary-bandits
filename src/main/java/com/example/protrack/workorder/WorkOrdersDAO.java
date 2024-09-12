@@ -1,12 +1,7 @@
 package com.example.protrack.workorder;
 
-import com.example.protrack.customer.Customer;
-import com.example.protrack.users.ProductionUser;
-
-import java.sql.*;
-import java.time.LocalDateTime;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class WorkOrdersDAO {
 

@@ -1,14 +1,13 @@
 package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public ProductDAO() {
         connection = DatabaseConnection.getInstance();

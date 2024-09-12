@@ -4,9 +4,9 @@ import java.sql.Date;
 
 public class Product {
 
-    private Integer productId;
-    private String productName;
-    private Date dateCreated;
+    private final Integer productId;
+    private final String productName;
+    private final Date dateCreated;
 
     public Product(Integer productId, String productName, Date dateCreated) {
         this.productId = productId;

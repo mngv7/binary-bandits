@@ -2,9 +2,9 @@ package com.example.protrack.products;
 
 public class BillOfMaterials {
 
-    private Integer partsId;
-    private Integer productId;
-    private Integer requiredAmount;
+    private final Integer partsId;
+    private final Integer productId;
+    private final Integer requiredAmount;
 
     public BillOfMaterials(Integer partsId, Integer productId, Integer requiredAmount) {
         this.partsId = partsId;

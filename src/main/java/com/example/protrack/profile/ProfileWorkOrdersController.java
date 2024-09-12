@@ -2,7 +2,6 @@ package com.example.protrack.profile;
 
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
-import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
@@ -10,6 +9,7 @@ import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class ProfileWorkOrdersController {
     @FXML
     private ListView<WorkOrder> pendingWorkOrdersListView; //ListView containing pending work orders
 
-    private WorkOrdersDAOImplementation workOrdersDAO;
+    private final WorkOrdersDAOImplementation workOrdersDAO;
 
     public ProfileWorkOrdersController() throws SQLException {
 

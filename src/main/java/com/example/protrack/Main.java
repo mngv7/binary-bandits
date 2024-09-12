@@ -1,26 +1,22 @@
 package com.example.protrack;
 
-import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
-import com.example.protrack.parts.*;
+import com.example.protrack.parts.Parts;
+import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
-import com.example.protrack.workorder.WorkOrder;
-import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.sql.Date;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Main extends Application {

@@ -3,10 +3,10 @@ package com.example.protrack.database;
 import java.sql.Date;
 
 public class ProductDBTable {
-    private Integer productId;
-    private String productName;
-    private Date dateCreated;
-    private Double price;
+    private final Integer productId;
+    private final String productName;
+    private final Date dateCreated;
+    private final Double price;
 
     public ProductDBTable(Integer productId, String productName, Date dateCreated, Double price) {
         this.productId = productId;

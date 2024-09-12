@@ -1,10 +1,10 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.products.Product;
-import com.example.protrack.products.ProductDAO;
 import com.example.protrack.products.BillOfMaterials;
 import com.example.protrack.products.BillOfMaterialsDAO;
+import com.example.protrack.products.Product;
+import com.example.protrack.products.ProductDAO;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +19,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CreateProductController {
     private static final String TITLE = "Create Product";
@@ -235,9 +238,7 @@ public class CreateProductController {
         });
         if (partResultVBox.getChildren().isEmpty()) {
             // If no rows, remove the button if it exists
-            if (removeAllPartsButtonContainer.getChildren().contains(removeAllButton)) {
-                removeAllPartsButtonContainer.getChildren().remove(removeAllButton);
-            }
+            removeAllPartsButtonContainer.getChildren().remove(removeAllButton);
         } else {
             // If there are rows, ensure the button is added
             if (!removeAllPartsButtonContainer.getChildren().contains(removeAllButton)) {

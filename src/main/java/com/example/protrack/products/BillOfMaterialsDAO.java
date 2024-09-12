@@ -5,7 +5,7 @@ import com.example.protrack.databaseutil.DatabaseConnection;
 import java.sql.*;
 
 public class BillOfMaterialsDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public BillOfMaterialsDAO() {
         connection = DatabaseConnection.getInstance();

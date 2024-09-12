@@ -12,7 +12,7 @@ import java.util.HashMap;
  * Provides methods for CRUD operations on customer-related data
  */
 public class CustomerDAO {
-    private Connection connection;
+    private final Connection connection;
     private HashMap<Integer, Customer> customers;
 
     /**

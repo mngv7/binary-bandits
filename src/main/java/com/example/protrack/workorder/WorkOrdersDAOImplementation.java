@@ -5,7 +5,6 @@ import com.example.protrack.customer.Customer;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
-import javafx.scene.chart.PieChart;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOInterface {
 
     // Instantiation of necessary class variables
-    private Connection connection;
+    private final Connection connection;
     private final HashMap<Integer, ProductionUser> productionUsers;
     private final HashMap<Integer, Customer> customers;
 
