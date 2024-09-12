@@ -1,11 +1,15 @@
 package com.example.protrack;
 
+import com.example.protrack.customer.Customer;
+import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.parts.*;
 import com.example.protrack.products.*;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
+import com.example.protrack.workorder.WorkOrder;
+import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +18,9 @@ import javafx.stage.Stage;
 
 import java.sql.Date;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -44,19 +51,38 @@ public class Main extends Application {
         return HEIGHT;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+
+        ProductDAO productDAO = new ProductDAO();
+        productDAO.createTable();
 
         PartsDAO partsDAO = new PartsDAO();
-        ProductDAO productDAO = new ProductDAO();
-        BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
-        TestRecordDAO testRecordDAO = new TestRecordDAO();
-        UsersDAO usersDAO = new UsersDAO();
-
         partsDAO.createTable();
-        productDAO.createTable();
-        usersDAO.createTable();
-        testRecordDAO.createTable();
+
+        BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
         billOfMaterial.createTable();
+
+        TestRecordDAO testRecordDAO = new TestRecordDAO();
+        testRecordDAO.createTable();
+
+        UsersDAO usersDAO = new UsersDAO();
+        usersDAO.createTable();
+
+        CustomerDAO customerDAO = new CustomerDAO();
+        customerDAO.createTable();
+
+
+        //HashMap<Integer, ProductionUser> productionUsers = usersDAO.getProductionUsers();
+        //HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
+        //System.out.println(productionUsers.keySet());
+        //System.out.println(customers.keySet());
+        ///WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
+        ///wdao.createWorkOrder(new WorkOrder(100, productionUsers.get(105), customers.get(1), LocalDateTime.now(), null, "shipAdd", 1, "pending", 40.87));
+        //System.out.print(wdao.getAllWorkOrders());
+
+
+
+
 
         if (usersDAO.isTableEmpty()) {
             usersDAO.newUser(new ManagerialUser(100, "John", "Doe", Date.valueOf("1985-01-01"), "john.doe@example.com", "0400125123", "Male", "password"));

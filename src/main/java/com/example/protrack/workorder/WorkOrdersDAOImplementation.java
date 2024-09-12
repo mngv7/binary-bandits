@@ -18,12 +18,12 @@ import java.util.HashMap;
 public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOInterface {
 
     // Instantiation of necessary class variables
-    private final Connection connection;
+    private Connection connection;
     private final HashMap<Integer, ProductionUser> productionUsers;
     private final HashMap<Integer, Customer> customers;
 
     // Constructor for WorkOrdersDAOImplementation
-    public WorkOrdersDAOImplementation(HashMap<Integer, ProductionUser> productionUsers, HashMap<Integer, Customer> customers) {
+    public WorkOrdersDAOImplementation(HashMap<Integer, ProductionUser> productionUsers, HashMap<Integer, Customer> customers) throws SQLException {
 
         // Initialises the JDBC connection using the singleton instance
         connection = DatabaseConnection.getInstance();
@@ -163,7 +163,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
         Integer customerId = resultSet.getInt("customer_id");
 
         // Retrieves the relevant Production User as specified by the resultSet
-        ProductionUser orderOwner = productionUsers.get(orderOwnerId);
+        AbstractUser orderOwner = productionUsers.get(orderOwnerId);
 
         // Retrieves the relevant Production User as specified by the resultSet
         Customer customer = customers.get(customerId);
@@ -178,7 +178,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
         // uses the new mapped variables to create a new WorkOrder instance
         return new WorkOrder(
                 workOrderId,
-                orderOwner,
+                (ProductionUser) orderOwner,
                 customer,
                 orderDate,
                 deliveryDate,

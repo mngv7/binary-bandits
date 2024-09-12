@@ -12,7 +12,7 @@ import java.util.HashMap;
  * Provides methods for CRUD operations on customer-related data
  */
 public class CustomerDAO {
-    private final Connection connection;
+    private Connection connection;
     private HashMap<Integer, Customer> customers;
 
     /**
@@ -97,7 +97,7 @@ public class CustomerDAO {
             stmt.execute(query);
             System.out.println("Table 'customers' dropped successfully.");
         } catch (SQLException ex) {
-            System.err.println("Error dropping table 'users': " + ex.getMessage());
+            System.err.println("Error dropping table 'customers': " + ex.getMessage());
         }
     }
 

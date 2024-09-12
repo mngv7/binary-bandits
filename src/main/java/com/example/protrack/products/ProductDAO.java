@@ -29,6 +29,17 @@ public class ProductDAO {
         }
     }
 
+    public void dropTable() {
+        String query = "DROP TABLE IF EXISTS products";  // SQL statement to drop the work_orders table
+
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(query);    // executes SQL deletion statement
+            System.out.println("Table 'products' dropped successfully.");
+        } catch (SQLException ex) {
+            System.err.println("Error dropping table 'products': " + ex.getMessage());
+        }
+    }
+
     public void newProduct(Product product) {
         try {
             PreparedStatement insertProduct = connection.prepareStatement(
@@ -81,4 +92,6 @@ public class ProductDAO {
         }
         return false;
     }
+
+
 }

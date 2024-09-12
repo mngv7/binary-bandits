@@ -262,4 +262,35 @@
     -fx-background-color: #310B91;
 }
 
+.search-field {
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
+
+.title-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 36px;
+    -fx-text-fill: black;
+    -fx-font-weight: bolder;
+}
+
+.heading {
+    -fx-font-family: "Arial";
+    -fx-font-size: 24px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.subheading {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+#pendingWorkOrdersListView .list-cell {
+    -fx-font-size: 20px;
+}
+
 <img src="application_logo.png">

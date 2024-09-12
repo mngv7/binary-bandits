@@ -1,12 +1,15 @@
 package com.example.protrack.users;
 
+import com.example.protrack.customer.Customer;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 
 public class UsersDAO {
-    private final Connection connection;
+    private Connection connection;
 
     public UsersDAO() {
         connection = DatabaseConnection.getInstance();
@@ -30,6 +33,129 @@ public class UsersDAO {
             );
         } catch (SQLException ex) {
             System.err.println(ex);
+        }
+    }
+
+    public HashMap<Integer, AbstractUser> getAllUsers() throws SQLException {
+
+        HashMap<Integer, AbstractUser> allUsers = new HashMap<>();
+        String query = "SELECT * FROM users";
+
+        try {
+            PreparedStatement getAllUsers = connection.prepareStatement(query);
+
+
+            ResultSet rs = getAllUsers.executeQuery();
+
+            while (rs.next()) {
+                AbstractUser user = mapResultSetToUser(rs);
+                allUsers.put(user.getEmployeeId(), user);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return allUsers;
+    }
+
+    public AbstractUser mapResultSetToUser(ResultSet resultSet) throws SQLException {
+        String userType = resultSet.getString("accessLevel");
+
+        switch (userType) {
+            case "HIGH":
+                return new ManagerialUser(
+                    resultSet.getInt("employeeId"),
+                    resultSet.getString("firstName"),
+                    resultSet.getString("lastName"),
+                    resultSet.getDate("dob"),
+                    resultSet.getString("email"),
+                    resultSet.getString("phoneNo"),
+                    resultSet.getString("gender"),
+                    resultSet.getString("password")
+                );
+            case "MEDIUM":
+                return new WarehouseUser(
+                    resultSet.getInt("employeeId"),
+                    resultSet.getString("firstName"),
+                    resultSet.getString("lastName"),
+                    resultSet.getDate("dob"),
+                    resultSet.getString("email"),
+                    resultSet.getString("phoneNo"),
+                    resultSet.getString("gender"),
+                    resultSet.getString("password")
+                );
+            case "LOW":
+                return new ProductionUser(
+                    resultSet.getInt("employeeId"),
+                    resultSet.getString("firstName"),
+                    resultSet.getString("lastName"),
+                    resultSet.getDate("dob"),
+                    resultSet.getString("email"),
+                    resultSet.getString("phoneNo"),
+                    resultSet.getString("gender"),
+                    resultSet.getString("password")
+                );
+            default:
+                throw new SQLException("Invalid user type: " + userType);
+        }
+    }
+
+    public HashMap<Integer, ManagerialUser> getManagerialUsers() throws SQLException {
+        HashMap<Integer, ManagerialUser> managerialUsers = new HashMap<>();
+        String query = "SELECT * FROM users WHERE accessLevel = 'HIGH'";
+
+        PreparedStatement getManagerialUsers = connection.prepareStatement(query);
+
+        ResultSet rs = getManagerialUsers.executeQuery();
+
+        while (rs.next()) {
+            AbstractUser managerialUser = mapResultSetToUser(rs);
+            managerialUsers.put(managerialUser.getEmployeeId(), (ManagerialUser) managerialUser);
+        }
+
+        return managerialUsers;
+    }
+
+    public HashMap<Integer, WarehouseUser> getWarehouseUsers() throws SQLException {
+        HashMap<Integer, WarehouseUser> warehouseUsers = new HashMap<>();
+        String query = "SELECT * FROM users WHERE accessLevel = 'MEDIUM'";
+
+        PreparedStatement getWarehouseUsers = connection.prepareStatement(query);
+
+        ResultSet rs = getWarehouseUsers.executeQuery();
+
+        while (rs.next()) {
+            AbstractUser warehouseUser = mapResultSetToUser(rs);
+            warehouseUsers.put(warehouseUser.getEmployeeId(), (WarehouseUser) warehouseUser);
+        }
+
+        return warehouseUsers;
+    }
+
+    public HashMap<Integer, ProductionUser> getProductionUsers() throws SQLException {
+        HashMap<Integer, ProductionUser> productionUsers = new HashMap<>();
+        String query = "SELECT * FROM users WHERE accessLevel = 'LOW'";
+
+        PreparedStatement getProductionUsers = connection.prepareStatement(query);
+
+
+        ResultSet rs = getProductionUsers.executeQuery();
+
+        while (rs.next()) {
+            AbstractUser productionUser = mapResultSetToUser(rs);
+            productionUsers.put(productionUser.getEmployeeId(), (ProductionUser) productionUser);
+        }
+
+        return productionUsers;
+    }
+
+    public void dropTable() {
+        String query = "DROP TABLE IF EXISTS users";  // SQL statement to drop the work_orders table
+
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(query);    // executes SQL deletion statement
+            System.out.println("Table 'users' dropped successfully.");
+        } catch (SQLException ex) {
+            System.err.println("Error dropping table 'users': " + ex.getMessage());
         }
     }
 

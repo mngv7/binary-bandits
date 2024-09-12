@@ -2,6 +2,7 @@ package com.example.protrack.profile;
 
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
@@ -11,6 +12,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Controller for managing and displaying work orders on the profile page.
@@ -22,7 +24,7 @@ public class ProfileWorkOrdersController {
     @FXML
     private ListView<WorkOrder> pendingWorkOrdersListView; //ListView containing pending work orders
 
-    private final WorkOrdersDAOImplementation workOrdersDAOimpl;
+    private WorkOrdersDAOImplementation workOrdersDAO;
 
     public ProfileWorkOrdersController() throws SQLException {
 
@@ -31,11 +33,11 @@ public class ProfileWorkOrdersController {
         CustomerDAO customerDAO = new CustomerDAO();
 
         // Creates HashMaps that retrieve HashMaps containing all users and customers
-        HashMap<Integer, ProductionUser> productionUsers = usersDAO.getAllUsers();
+        HashMap<Integer, ProductionUser> productionUsers = usersDAO.getProductionUsers();
         HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
 
         // Initialises WorkOrdersDAOImplementation using the recently initialised UsersDAO and CustomersDAO objects
-        this.workOrdersDAOimpl = new WorkOrdersDAOImplementation(productionUsers, customers);
+        this.workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
     }
 
     /**
@@ -57,7 +59,7 @@ public class ProfileWorkOrdersController {
         ArrayList<WorkOrder> pendingWorkOrders;
         try {
             // Retrieves pending work orders
-            pendingWorkOrders = workOrdersDAOimpl.getWorkOrderByStatus("pending");
+            pendingWorkOrders = workOrdersDAO.getWorkOrderByStatus("pending");
             System.out.println("Fetched Work Orders: " + pendingWorkOrders);
         } catch (SQLException e) {
             throw new RuntimeException(e);
