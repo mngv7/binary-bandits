@@ -35,10 +35,6 @@ public class WorkOrder {
         return workOrderId;
     }
 
-    public void setWorkOrderId(Integer workOrderId) {
-        this.workOrderId = workOrderId;
-    }
-
     public ProductionUser getOrderOwner() {
         return orderOwner;
     }
@@ -51,16 +47,8 @@ public class WorkOrder {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     public LocalDateTime getOrderDate() {
         return orderDate;
-    }
-
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
     }
 
     public LocalDateTime getDeliveryDate() {
@@ -97,9 +85,5 @@ public class WorkOrder {
 
     public Double getSubtotal() {
         return subtotal;
-    }
-
-    public void setSubtotal(Double subtotal) {
-        this.subtotal = subtotal;
     }
 }
