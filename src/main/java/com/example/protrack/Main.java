@@ -117,10 +117,10 @@ public class Main extends Application {
         }
 
         if (partsDAO.isTableEmpty()) {
-            partsDAO.newPart(new Parts(50, "TestPart", "Testing", "Test", 50, 12.50));
-            partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", "Tes2", 50, 6.69));
-            partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", "Battery", 50, 5.50));
-            partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", "Metal", 51, 2.10));
+            partsDAO.newPart(new Parts(50, "TestPart", "Testing", 50, 12.50));
+            partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", 50, 6.69));
+            partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
+            partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry",  51, 2.10));
         }
         launch();
     }
