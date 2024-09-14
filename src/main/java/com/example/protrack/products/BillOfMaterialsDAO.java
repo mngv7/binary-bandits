@@ -4,10 +4,10 @@ import com.example.protrack.databaseutil.DatabaseConnection;
 
 import java.sql.*;
 
-public class RequiredPartsDAO {
+public class BillOfMaterialsDAO {
     private Connection connection;
 
-    public RequiredPartsDAO() {
+    public BillOfMaterialsDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
@@ -30,15 +30,15 @@ public class RequiredPartsDAO {
     }
 
     // Insert new required parts entry into the table
-    public void newRequiredParts(RequiredParts requiredParts) {
+    public void newRequiredParts(BillOfMaterials billOfMaterials) {
         try {
             PreparedStatement insertRequiredParts = connection.prepareStatement(
                     "INSERT INTO requiredParts (partsId, productId, requiredAmount) VALUES (?, ?, ?)"
             );
 
-            insertRequiredParts.setInt(1, requiredParts.getPartsId());
-            insertRequiredParts.setInt(2, requiredParts.getProductId());
-            insertRequiredParts.setInt(3, requiredParts.getRequiredAmount());
+            insertRequiredParts.setInt(1, billOfMaterials.getPartsId());
+            insertRequiredParts.setInt(2, billOfMaterials.getProductId());
+            insertRequiredParts.setInt(3, billOfMaterials.getRequiredAmount());
 
             insertRequiredParts.execute();
         } catch (SQLException ex) {

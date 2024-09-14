@@ -21,7 +21,6 @@ public class PartsDAO {
                             + "partsId INTEGER PRIMARY KEY, "
                             + "name VARCHAR NOT NULL, "
                             + "description VARCHAR NOT NULL, "
-                            + "type VARCHAR NOT NULL, "
                             + "supplierId INTEGER NOT NULL, "
                             + "cost DOUBLE NOT NULL"
                             + ")"
@@ -34,21 +33,21 @@ public class PartsDAO {
     public void newPart(Parts parts) {
         try {
             PreparedStatement insertPart = connection.prepareStatement(
-                    "INSERT INTO parts (partsId, name, description, type, supplierId, cost) VALUES (?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO parts (partsId, name, description, supplierId, cost) VALUES (?, ?, ?, ?, ?)"
             );
 
             insertPart.setInt(1, parts.getPartsId());
             insertPart.setString(2, parts.getName());
             insertPart.setString(3, parts.getDescription());
-            insertPart.setString(4, parts.getType());
-            insertPart.setInt(5, parts.getSupplierId());
-            insertPart.setDouble(6, parts.getCost());
+            insertPart.setInt(4, parts.getSupplierId());
+            insertPart.setDouble(5, parts.getCost());
 
             insertPart.execute();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
     }
+
 
     public List<Parts> getAllParts() {
         List<Parts> parts = new ArrayList<>();
@@ -62,13 +61,12 @@ public class PartsDAO {
                 int partsId = rs.getInt("partsId");
                 String name = rs.getString("name");
                 String description = rs.getString("description");
-                String type = rs.getString("type");
                 int supplierId = rs.getInt("supplierId");
                 Double cost = rs.getDouble("cost");
 
                 //Date dateCreated = rs.getDate("dateCreated");
 
-                Parts partsItem = new Parts(partsId, name, description, type, supplierId, cost);
+                Parts partsItem = new Parts(partsId, name, description, supplierId, cost);
                 parts.add(partsItem);
             }
         } catch (SQLException ex) {

@@ -34,9 +34,6 @@ public class PartsController {
     private TableColumn<Parts, String> colDescription;
 
     @FXML
-    private TableColumn<Parts, String> colType;
-
-    @FXML
     private TableColumn<Parts, Integer> colSupplierId;
 
     @FXML
@@ -48,7 +45,6 @@ public class PartsController {
         colPartsId.setCellValueFactory(new PropertyValueFactory<>("partsId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colType.setCellValueFactory(new PropertyValueFactory<>("type"));
         colSupplierId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         colCost.setCellValueFactory(new PropertyValueFactory<>("cost"));
 
@@ -79,7 +75,7 @@ public class PartsController {
             popupStage.setTitle(TITLE);
 
             Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
             popupStage.setY(150);

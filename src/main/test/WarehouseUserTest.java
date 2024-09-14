@@ -1,6 +1,9 @@
 import com.example.protrack.users.WarehouseUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class WarehouseUserTest {
@@ -8,8 +11,7 @@ public class WarehouseUserTest {
 
     @BeforeEach
     public void setUp() {
-        user = new WarehouseUser(101, "TestFirst", "TestLast", "1234") {
-        };
+        user = new WarehouseUser(104, "Diana", "White", Date.valueOf("1987-03-12"), "diana.white@example.com", "0400123093", "Female", "dianapass");
     }
 
     @Test
@@ -19,21 +21,21 @@ public class WarehouseUserTest {
 
     @Test
     public void testGetEmployeeId() {
-        assertEquals(101, user.getEmployeeId());
+        assertEquals(104, user.getEmployeeId());
     }
 
     @Test
     public void testGetFirstName() {
-        assertEquals("TestFirst", user.getFirstName());
+        assertEquals("Diana", user.getFirstName());
     }
 
     @Test
     public void testGetLastName() {
-        assertEquals("TestLast", user.getLastName());
+        assertEquals("White", user.getLastName());
     }
 
     @Test
     public void testGetPassword() {
-        assertEquals("1234", user.getPassword());
+        assertEquals("dianapass", user.getPassword());
     }
 }
