@@ -203,9 +203,9 @@ public class CreateTestRecordController {
 
     @FXML
     protected void onCreateProductButton() {
-
         insertTestRecordsToDB();
-
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 
     private void insertTestRecordsToDB() {
