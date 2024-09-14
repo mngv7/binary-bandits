@@ -230,6 +230,8 @@ public class CreateProductController {
 
     private void updateButtonVisibility() {
         Button removeAllButton = new Button("Remove all parts");
+        removeAllButton.getStyleClass().add("create-product-button");
+
         removeAllButton.setOnAction(event -> {
             //Do things here
             partResultVBox.getChildren().clear();

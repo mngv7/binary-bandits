@@ -139,7 +139,7 @@
 }
 
 .add-parts-popup {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: white;
     -fx-border-color: #390B91;
     -fx-border-width: 2px;
     -fx-border-style: solid;
@@ -260,6 +260,10 @@
 
 .background {
     -fx-background-color: #310B91;
+}
+
+.create-product-scrollpane {
+-fx-background-color: white;
 }
 
 <img src="application_logo.png">
