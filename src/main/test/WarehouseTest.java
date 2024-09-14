@@ -28,5 +28,6 @@ class MockWarehouseTest {
     public void testGetWarehouseId() {
         assertEquals(1, warehouse.getWarehouseId());
     }
+    //
 
 }
