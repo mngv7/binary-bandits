@@ -213,14 +213,12 @@ public class CreateProductController {
             String productIdValue = productIdField.getText();
             createTestRecordController.setProductId(productIdValue);
 
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle(TITLE);
+            Stage stage = (Stage) productIdField.getScene().getWindow();
 
             Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
-            popupStage.setScene(scene);
+            stage.setScene(scene);
 
-            popupStage.showAndWait();
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
