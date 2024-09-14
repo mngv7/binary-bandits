@@ -67,7 +67,7 @@
     <!-- Bottom Bar: Complete Button -->
     <bottom>
         <HBox alignment="CENTER" style="-fx-padding: 20;">
-            <Button text="Complete" style="-fx-background-color: #5A2D91; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14; -fx-padding: 10 20;" />
+            <Button fx:id="completeButton" text="Complete" style="-fx-background-color: #5A2D91; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14; -fx-padding: 10 20;" />
         </HBox>
     </bottom>
 
