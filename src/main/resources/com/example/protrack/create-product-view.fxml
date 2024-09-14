@@ -28,11 +28,11 @@
                     </GridPane>
                 </VBox>
 
-                <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                <VBox spacing="10" maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
                     <Label text="Bill of Materials" styleClass="parts-table-title"/>
                     <HBox spacing="10">
                         <TextField fx:id="partIdSearchField" promptText="Part ID"/>
-                        <Button fx:id="partSearchButton" text="Search" onAction="#partSearch" styleClass="create-product-button"/>
+                        <Button fx:id="partSearchButton" text="Search" onAction="#partSearch" styleClass="create-product-button-small"/>
                     </HBox>
                     <VBox fx:id="partResultVBox" />
                     <VBox fx:id="removeAllPartsButtonContainer" spacing="10"/>

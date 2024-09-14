@@ -48,6 +48,7 @@ public class CreateTestRecordController {
         HBox newColumn = new HBox();
         numSteps++;
         Label label = new Label("Step " + numSteps + ": ");
+        label.getStyleClass().add("parts-table-label");
 
         TextField textField = new TextField();
         textField.setPromptText("Description");
@@ -59,6 +60,7 @@ public class CreateTestRecordController {
         textField2.setPromptText("Check Criteria");
 
         Button removeButton = new Button("Remove Step");
+        removeButton.getStyleClass().add("create-product-button-small");
         removeButton.setOnAction(event -> removeRow(newColumn));
 
         newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
@@ -77,6 +79,7 @@ public class CreateTestRecordController {
 
     private void updateButtonVisibility() {
         Button removeAllButton = new Button("Remove all Steps");
+        removeAllButton.getStyleClass().add("create-product-button");
         removeAllButton.setOnAction(event -> {
             //Do things here
             testRecordsVBox.getChildren().clear();
@@ -104,6 +107,7 @@ public class CreateTestRecordController {
         HBox newColumn = new HBox();
         numSteps++;
         Label label = new Label("Step " + numSteps + ": ");
+        label.getStyleClass().add("parts-table-label");
 
         TextField textField = new TextField();
         textField.setPromptText("Description");
@@ -115,17 +119,12 @@ public class CreateTestRecordController {
         textField2.setPromptText("Check Criteria");
 
         Button removeButton = new Button("Remove Step");
+        removeButton.getStyleClass().add("create-product-button-small");
         removeButton.setOnAction(event -> removeRow(newColumn));
 
         newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
 
         testRecordsVBox.getChildren().add(newColumn);
-
-        /*
-        Make Vbox
-            Make HBox
-
-         */
     }
 
     private void removeRow(HBox newColumn) {
@@ -157,6 +156,7 @@ public class CreateTestRecordController {
                 TextField textField2 = (TextField) column.getChildren().get(3);
 
                 Button removeButton = new Button("Remove Step");
+
                 removeButton.setOnAction(event -> removeRow(column));
 
                 newColumn2.getChildren().addAll(label, textField1, column.getChildren().get(2), textField2, removeButton);

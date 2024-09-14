@@ -201,6 +201,24 @@
     -fx-background-color: #310B91;
 }
 
+.create-product-button-small {
+    -fx-background-color: #310B91;
+    -fx-text-fill: white;
+    -fx-font-size: 12px; /* Smaller font size */
+    -fx-padding: 5px 10px; /* Smaller padding */
+    -fx-border-radius: 4px; /* Slightly smaller border radius */
+    -fx-background-radius: 4px; /* Slightly smaller background radius */
+}
+
+.create-product-button-small:hover {
+    -fx-background-color: #926cf4;
+}
+
+.create-product-button-small:pressed {
+    -fx-background-color: #310B91;
+}
+
+
 .welcome-label {
     -fx-font-size: 48px;
     -fx-font-weight: bold;
