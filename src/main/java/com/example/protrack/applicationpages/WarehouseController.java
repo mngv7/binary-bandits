@@ -142,7 +142,7 @@ public class WarehouseController {
         }
 
         Scene rootScene = new Scene(root);
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("main_app.css")).toExternalForm();
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
         rootScene.getStylesheets().add(stylesheet);
         Stage stage = new Stage();
         stage.initStyle(StageStyle.UNDECORATED);
