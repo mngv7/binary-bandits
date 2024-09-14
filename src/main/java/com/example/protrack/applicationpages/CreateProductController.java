@@ -1,5 +1,6 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.products.Product;
 import com.example.protrack.products.ProductDAO;
@@ -11,15 +12,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 
 public class CreateProductController {
     private static final String TITLE = "Create Product";
@@ -207,20 +208,21 @@ public class CreateProductController {
     public void openCreateTestRecordPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-test-record-view.fxml"));
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+
             Parent createProductRoot = fxmlLoader.load();
 
             CreateTestRecordController createTestRecordController = fxmlLoader.getController();
             String productIdValue = productIdField.getText();
             createTestRecordController.setProductId(productIdValue);
 
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle(TITLE);
+            Stage stage = (Stage) productIdField.getScene().getWindow();
 
             Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
-            popupStage.setScene(scene);
+            scene.getStylesheets().add(stylesheet);
+            stage.setScene(scene);
 
-            popupStage.showAndWait();
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -228,6 +230,8 @@ public class CreateProductController {
 
     private void updateButtonVisibility() {
         Button removeAllButton = new Button("Remove all parts");
+        removeAllButton.getStyleClass().add("create-product-button");
+
         removeAllButton.setOnAction(event -> {
             //Do things here
             partResultVBox.getChildren().clear();
@@ -249,7 +253,36 @@ public class CreateProductController {
 
     @FXML
     protected void onClosePopupButton() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UNDECORATED);
+        alert.setHeaderText("Cancel Product Creation");
+        alert.setContentText("Are you sure you want to cancel?");
+        alert.setGraphic(null);
+
+        DialogPane dialogPane = alert.getDialogPane();
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("cancelAlert.css")).toExternalForm();
+        dialogPane.getStyleClass().add("cancelDialog");
+        dialogPane.getStylesheets().add(stylesheet);
+
+        ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
+        ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
+
+
+
+        alert.getButtonTypes().setAll(confirmBtn, backBtn);
         Stage stage = (Stage) closePopupButton.getScene().getWindow();
-        stage.close();
+        Node confirmButton = dialogPane.lookupButton(confirmBtn);
+        ButtonBar.setButtonData(confirmButton, ButtonBar.ButtonData.LEFT);
+        confirmButton.setId("confirmBtn");
+        Node backButton = dialogPane.lookupButton(backBtn);
+        ButtonBar.setButtonData(backButton, ButtonBar.ButtonData.RIGHT);
+        backButton.setId("backBtn");
+        alert.showAndWait();
+        if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
+            alert.close();
+            stage.close();
+        } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
+            alert.close();
+        }
     }
 }
