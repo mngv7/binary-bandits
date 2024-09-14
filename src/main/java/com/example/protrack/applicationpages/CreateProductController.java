@@ -1,5 +1,6 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.products.Product;
 import com.example.protrack.products.ProductDAO;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 
 public class CreateProductController {
     private static final String TITLE = "Create Product";
@@ -207,6 +209,8 @@ public class CreateProductController {
     public void openCreateTestRecordPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-test-record-view.fxml"));
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+
             Parent createProductRoot = fxmlLoader.load();
 
             CreateTestRecordController createTestRecordController = fxmlLoader.getController();
@@ -216,6 +220,7 @@ public class CreateProductController {
             Stage stage = (Stage) productIdField.getScene().getWindow();
 
             Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
+            scene.getStylesheets().add(stylesheet);
             stage.setScene(scene);
 
             stage.show();
