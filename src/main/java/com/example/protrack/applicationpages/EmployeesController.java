@@ -56,7 +56,7 @@ public class EmployeesController {
 
     private static final String TITLE = "Create User";
     private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
+    private static final int HEIGHT = 600;
 
     public void openCreateNewUserPopup() {
         try {

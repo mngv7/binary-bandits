@@ -2,10 +2,12 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.CreateNewUserController"
-            prefHeight="500.0" prefWidth="500.0" styleClass="add-parts-popup">
+            prefHeight="600.0" prefWidth="500.0" styleClass="add-parts-popup">
     <top>
         <GridPane styleClass="parts-title-container" hgap="165">
             <Label text="Create User" styleClass="parts-title-label" GridPane.rowIndex="0"/>
@@ -15,26 +17,50 @@
     </top>
     <center>
         <GridPane hgap="10" vgap="20" alignment="CENTER" styleClass="parts-grid-pane">
-            <Label text="Part Details" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.rowSpan="2"
+            <Label text="User Information" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.rowSpan="2"
                    GridPane.halignment="CENTER" GridPane.valignment="CENTER" styleClass="parts-table-title"/>
 
-            <Label text="Part ID:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="partIdField" promptText="Part ID" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="First Name:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="firstNameField" promptText="First Name" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Label text="Part Name:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="partNameField" promptText="Part Name" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label text="Last Name:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="lastNameField" promptText="Last Name" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-            <Label text="Part Description:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="partDescField" promptText="Part Description" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Date of Birth:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <DatePicker fx:id="dobPicker" promptText="Date of Birth" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <Label text="Part Supplier ID:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-            <TextField fx:id="partSupplierIdField" promptText="Part Supplier ID" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <Label text="Email Address:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <TextField fx:id="emailField" promptText="Email Address" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-            <Label text="Part Cost:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
-            <TextField fx:id="partCostField" promptText="Part Cost" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            <Label text="Phone Number:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+            <TextField fx:id="phoneNumberField" promptText="Phone Number" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
-            <Button fx:id="addPartButton" text="Add Part" onAction="#createNewUser" styleClass="add-parts-button"
-                    GridPane.columnIndex="0" GridPane.rowIndex="9"
+            <Label text="Gender:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+            <ComboBox fx:id="genderComboBox" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Male"/>
+                        <String fx:value="Female"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <Label text="Access Level:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+            <ComboBox fx:id="accessLevelComboBox" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="HIGH"/>
+                        <String fx:value="MEDIUM"/>
+                        <String fx:value="LOW"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <Label text="Password:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+            <PasswordField fx:id="createPassword" promptText="Password" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+            <Button fx:id="addUserButton" text="Create User" onAction="#createNewUser" styleClass="add-parts-button"
+                    GridPane.columnIndex="0" GridPane.rowIndex="10"
                     GridPane.columnSpan="2" GridPane.rowSpan="2"
                     GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
         </GridPane>

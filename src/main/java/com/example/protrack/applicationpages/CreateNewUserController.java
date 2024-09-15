@@ -15,6 +15,33 @@ public class CreateNewUserController {
     @FXML
     public Button closePopupButton;
 
+    @FXML
+    public TextField firstNameField;
+
+    @FXML
+    public TextField lastNameField;
+
+    @FXML
+    public DatePicker dobPicker;
+
+    @FXML
+    public TextField emailField;
+
+    @FXML
+    public TextField phoneNumberField;
+
+    @FXML
+    public ComboBox genderComboBox;
+
+    @FXML
+    public ComboBox accessLevelComboBox;
+
+    @FXML
+    public PasswordField createPassword;
+
+    @FXML
+    public Button addUserButton;
+
     public void onClosePopupButton() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UNDECORATED);
