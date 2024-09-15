@@ -7,19 +7,24 @@
             fx:controller="com.example.protrack.applicationpages.EmployeesController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <VBox prefHeight="150">
+        <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
             <Label text="Employees" styleClass="title-label"/>
-            <Region minHeight="20"/>
-            <TextField promptText="🔎 Search..." maxWidth="300"/>
         </VBox>
     </top>
+
     <center>
         <HBox>
-            <VBox prefWidth="600">
-                <Label text="My Team:" styleClass="parts-table-title"/>
-                <VBox fx:id="employeeNames" />
-                <Region minHeight="10"/>
+            <VBox spacing="10">
+                <TextField promptText="🔎 Search..." maxWidth="300"/>
+
+                <VBox prefWidth="600">
+                    <Label text="My Team:" styleClass="parts-table-title"/>
+                    <VBox fx:id="employeeNames" />
+                    <Region minHeight="10"/>
+                </VBox>
             </VBox>
+
+            <Button fx:id="newUserButton" text="Create User" alignment="TOP_RIGHT" onAction="#openCreateNewUserPopup"/>
         </HBox>
     </center>
 </BorderPane>
