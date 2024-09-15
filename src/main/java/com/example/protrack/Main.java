@@ -9,6 +9,7 @@ import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
+import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -67,18 +69,6 @@ public class Main extends Application {
 
         CustomerDAO customerDAO = new CustomerDAO();
         customerDAO.createTable();
-
-        //HashMap<Integer, ProductionUser> productionUsers = usersDAO.getProductionUsers();
-        //HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
-        //System.out.println(productionUsers.keySet());
-        //System.out.println(customers.keySet());
-        ///WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
-        ///wdao.createWorkOrder(new WorkOrder(100, productionUsers.get(105), customers.get(1), LocalDateTime.now(), null, "shipAdd", 1, "pending", 40.87));
-        //System.out.print(wdao.getAllWorkOrders());
-
-
-
-
 
         if (usersDAO.isTableEmpty()) {
             usersDAO.newUser(new ManagerialUser(100, "John", "Doe", Date.valueOf("1985-01-01"), "john.doe@example.com", "0400125123", "Male", "password"));
@@ -144,6 +134,16 @@ public class Main extends Application {
             partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
             partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 51, 2.10));
         }
+
+        HashMap<Integer, ProductionUser> productionUsers = usersDAO.getProductionUsers();
+        HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
+        System.out.println(productionUsers.keySet());
+        System.out.println(customers.keySet());
+        WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
+        wdao.createTable();
+        ///wdao.createWorkOrder(new WorkOrder(100, productionUsers.get(105), customers.get(1), LocalDateTime.now(), null, "shipAdd", 1, "pending", 40.87));
+        System.out.print(wdao.getAllWorkOrders());
+
         launch();
     }
 }
