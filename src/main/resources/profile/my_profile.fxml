@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.protrack.profile.ProfileController">
+
+    <Label text="← Employees" styleClass="heading"/>
+    <Label text="My Profile" styleClass="title-label"/>
+    <Region minHeight="20"/>
+
+    <GridPane VBox.vgrow="ALWAYS">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+        </columnConstraints>
+
+        <Pane GridPane.columnIndex="0">
+            <fx:include source="profile_user_information.fxml"/>
+        </Pane>
+        <Pane GridPane.columnIndex="1">
+            <fx:include source="profile_details.fxml"/>
+        </Pane>
+        <Pane GridPane.columnIndex="2">
+            <fx:include source="profile_report.fxml"/>
+        </Pane>
+        <Pane GridPane.columnIndex="3">
+            <fx:include source="profile_work_orders.fxml"/>
+        </Pane>
+    </GridPane>
+</VBox>

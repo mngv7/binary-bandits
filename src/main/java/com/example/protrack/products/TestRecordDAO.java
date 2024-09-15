@@ -5,7 +5,7 @@ import com.example.protrack.databaseutil.DatabaseConnection;
 import java.sql.*;
 
 public class TestRecordDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public TestRecordDAO() {
         connection = DatabaseConnection.getInstance();

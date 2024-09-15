@@ -5,21 +5,44 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static Connection instance = null;
+    private static Connection connection;
 
     private DatabaseConnection() {
-        String url = "jdbc:sqlite:database.db";
-        try {
-            instance = DriverManager.getConnection(url);
-        } catch (SQLException sqlEx) {
-            System.err.println(sqlEx);
-        }
+        // Private constructor to prevent instantiation
     }
 
     public static Connection getInstance() {
-        if (instance == null) {
-            new DatabaseConnection();
+        if (connection == null || !isConnectionValid()) {
+            try {
+                // Initialises the database connection
+                connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+                System.out.println("Database connection established.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return instance;
+        return connection;
+    }
+
+    private static boolean isConnectionValid() {
+        try {
+            return connection != null && connection.isValid(2); // Check if connection is valid with a timeout of 2 seconds
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Method to close the connection
+    public static void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null; // Clear reference to allow reinitialization
+                System.out.println("Database connection closed.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

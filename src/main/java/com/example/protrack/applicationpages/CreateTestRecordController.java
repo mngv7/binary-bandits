@@ -2,7 +2,8 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.products.*;
+import com.example.protrack.products.TestRecord;
+import com.example.protrack.products.TestRecordDAO;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -88,9 +89,7 @@ public class CreateTestRecordController {
         });
         if (testRecordsVBox.getChildren().isEmpty()) {
             // If no rows, remove the button if it exists
-            if (removeAllTRButtonContainer.getChildren().contains(removeAllButton)) {
-                removeAllTRButtonContainer.getChildren().remove(removeAllButton);
-            }
+            removeAllTRButtonContainer.getChildren().remove(removeAllButton);
         } else {
             // If there are rows, ensure the button is added
             if (!removeAllTRButtonContainer.getChildren().contains(removeAllButton)) {

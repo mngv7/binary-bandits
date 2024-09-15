@@ -2,12 +2,12 @@ package com.example.protrack.products;
 
 public class TestRecord {
 
-    private Integer stepId;
-    private Integer productId;
-    private Integer stepNumber;
-    private String stepDescription;
-    private String stepCheckType;
-    private String stepCheckCriteria;
+    private final Integer stepId;
+    private final Integer productId;
+    private final Integer stepNumber;
+    private final String stepDescription;
+    private final String stepCheckType;
+    private final String stepCheckCriteria;
 
     public TestRecord(Integer stepId, Integer productId, Integer stepNumber, String stepDescription, String stepCheckType, String stepCheckCriteria) {
         this.stepId = stepId;

@@ -7,6 +7,6 @@
             fx:controller="com.example.protrack.applicationpages.MainController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <Label text="Purchase Orders" styleClass="title-label"/>
+        <Label text="Workstation" styleClass="title-label"/>
     </top>
 </BorderPane>

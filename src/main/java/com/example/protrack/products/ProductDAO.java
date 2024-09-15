@@ -1,14 +1,13 @@
 package com.example.protrack.products;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public ProductDAO() {
         connection = DatabaseConnection.getInstance();
@@ -26,6 +25,17 @@ public class ProductDAO {
             );
         } catch (SQLException ex) {
             System.err.println(ex);
+        }
+    }
+
+    public void dropTable() {
+        String query = "DROP TABLE IF EXISTS products";  // SQL statement to drop the work_orders table
+
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(query);    // executes SQL deletion statement
+            System.out.println("Table 'products' dropped successfully.");
+        } catch (SQLException ex) {
+            System.err.println("Error dropping table 'products': " + ex.getMessage());
         }
     }
 
@@ -81,4 +91,6 @@ public class ProductDAO {
         }
         return false;
     }
+
+
 }

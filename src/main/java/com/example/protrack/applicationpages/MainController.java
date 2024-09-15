@@ -4,10 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class MainController {
@@ -72,16 +72,23 @@ public class MainController {
     }
 
     @FXML
+    private void myProfile() {
+        loadContent("/profile/my_profile.fxml");
+    }
+
+    @FXML
     private void warehouse() {
         loadContent("/com/example/protrack/warehouse.fxml");
     }
 
     private void loadContent(String fxmlFile) {
         try {
+            Scene scene = dynamicVBox.getScene();
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
             dynamicVBox.getChildren().add(content);
+            //scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             // Handle the exception (e.g., show an error message)

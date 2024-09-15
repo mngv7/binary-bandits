@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartsDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public PartsDAO() {
         connection = DatabaseConnection.getInstance();
