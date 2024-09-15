@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 
 public class WorkOrder {
 
-    private Integer workOrderId;
+    private final Integer workOrderId;
     private ProductionUser orderOwner;
-    private Customer customer;
-    private LocalDateTime orderDate;
+    private final Customer customer;
+    private final LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
     private String shippingAddress; // Address specific to this order
     private Integer productId;
     private String status;
-    private Double subtotal;
+    private final Double subtotal;
 
     // Constructor
     public WorkOrder(Integer workOrderId, ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, LocalDateTime deliveryDate, String shippingAddress, Integer productId, String status, Double subtotal) {

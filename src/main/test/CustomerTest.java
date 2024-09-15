@@ -1,10 +1,8 @@
+import com.example.protrack.customer.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import com.example.protrack.customer.Customer;
-import com.example.protrack.workorder.WorkOrder;
 
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CustomerTest {
     private Customer customer;
