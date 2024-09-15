@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.protrack.applicationpages.CreateWorkstationController">
+    <top>
+        <!-- Title and Close Button -->
+        <GridPane styleClass="parts-title-container" hgap="165">
+            <Label text="Create Parts" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Button fx:id="closePopupButton" text="❌" onAction="#handleCancel" GridPane.halignment="RIGHT"
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
+        </GridPane>
+    </top>
+    <center>
+        <VBox>
+            <Label text="Workstation Details"/>
+            <TextField fx:id="nameField" promptText="Workstation Name"/>
+            <TextField fx:id="capacityField" promptText="Stock Capacity"/>
+            <Button text="Create Workstation" onAction="#handleCreate"/>
+            <Button text="Cancel" onAction="#handleCancel"/>
+        </VBox>
+    </center>
+</BorderPane>
