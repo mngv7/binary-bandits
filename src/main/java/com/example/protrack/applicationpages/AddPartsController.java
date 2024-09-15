@@ -63,7 +63,7 @@ public class AddPartsController {
             String partName = partNameField.getText();
             String partDesc = partDescField.getText();
             int partSupplierId = Integer.parseInt(partSupplierIdField.getText());
-            double partCost = Integer.parseInt(partCostField.getText());
+            double partCost = Double.parseDouble(partCostField.getText());
 
             partsDAO.newPart(new Parts(partId, partName, partDesc, partSupplierId, partCost));
 
