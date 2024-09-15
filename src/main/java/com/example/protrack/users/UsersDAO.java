@@ -1,10 +1,14 @@
 package com.example.protrack.users;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.parts.Parts;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.TooManyListenersException;
 
 public class UsersDAO {
     private final Connection connection;
@@ -34,33 +38,49 @@ public class UsersDAO {
         }
     }
 
-    public HashMap<Integer, AbstractUser> getAllUsers() throws SQLException {
+    public List<AbstractUser> getAllUsers() {
+        List<AbstractUser> users = new ArrayList<>();
 
-        HashMap<Integer, AbstractUser> allUsers = new HashMap<>();
         String query = "SELECT * FROM users";
 
-        try {
-            PreparedStatement getAllUsers = connection.prepareStatement(query);
-
-
-            ResultSet rs = getAllUsers.executeQuery();
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                AbstractUser user = mapResultSetToUser(rs);
-                allUsers.put(user.getEmployeeId(), user);
+                int employeeId = rs.getInt("employeeId");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                Date dob = rs.getDate("dob");
+                String email = rs.getString("email");
+                String phoneNo = rs.getString("phoneNo");
+                String gender = rs.getString("gender");
+                String password = rs.getString("password");
+                String accessLevel = rs.getString("accessLevel");
+
+                AbstractUser userItem = switch (accessLevel) {
+                    case "HIGH" ->
+                            new ManagerialUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+                    case "MEDIUM" ->
+                            new WarehouseUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+                    case "LOW" ->
+                            new ProductionUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+                    default -> throw new IllegalArgumentException("Unknown access level: " + accessLevel);
+                };
+                users.add(userItem);
             }
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        return allUsers;
+
+        return users;
     }
+
 
     public AbstractUser mapResultSetToUser(ResultSet resultSet) throws SQLException {
         String userType = resultSet.getString("accessLevel");
 
-        switch (userType) {
-            case "HIGH":
-                return new ManagerialUser(
+        return switch (userType) {
+            case "HIGH" -> new ManagerialUser(
                     resultSet.getInt("employeeId"),
                     resultSet.getString("firstName"),
                     resultSet.getString("lastName"),
@@ -69,9 +89,8 @@ public class UsersDAO {
                     resultSet.getString("phoneNo"),
                     resultSet.getString("gender"),
                     resultSet.getString("password")
-                );
-            case "MEDIUM":
-                return new WarehouseUser(
+            );
+            case "MEDIUM" -> new WarehouseUser(
                     resultSet.getInt("employeeId"),
                     resultSet.getString("firstName"),
                     resultSet.getString("lastName"),
@@ -80,9 +99,8 @@ public class UsersDAO {
                     resultSet.getString("phoneNo"),
                     resultSet.getString("gender"),
                     resultSet.getString("password")
-                );
-            case "LOW":
-                return new ProductionUser(
+            );
+            case "LOW" -> new ProductionUser(
                     resultSet.getInt("employeeId"),
                     resultSet.getString("firstName"),
                     resultSet.getString("lastName"),
@@ -91,10 +109,9 @@ public class UsersDAO {
                     resultSet.getString("phoneNo"),
                     resultSet.getString("gender"),
                     resultSet.getString("password")
-                );
-            default:
-                throw new SQLException("Invalid user type: " + userType);
-        }
+            );
+            default -> throw new SQLException("Invalid user type: " + userType);
+        };
     }
 
     public HashMap<Integer, ManagerialUser> getManagerialUsers() throws SQLException {
