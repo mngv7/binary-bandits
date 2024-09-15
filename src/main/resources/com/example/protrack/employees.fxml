@@ -7,7 +7,7 @@
             fx:controller="com.example.protrack.applicationpages.EmployeesController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
+        <VBox style="-fx-padding: 0 0 10 0;">
             <Label text="Employees" styleClass="title-label"/>
         </VBox>
     </top>
@@ -23,8 +23,9 @@
                     <Region minHeight="10"/>
                 </VBox>
             </VBox>
-
-            <Button fx:id="newUserButton" text="Create User" alignment="TOP_RIGHT" onAction="#openCreateNewUserPopup"/>
+            <VBox HBox.hgrow="ALWAYS" alignment="TOP_RIGHT">
+                <Button fx:id="newUserButton" text="Create User" alignment="TOP_RIGHT" onAction="#openCreateNewUserPopup" styleClass="create-product-button-refresh-button"/>
+            </VBox>
         </HBox>
     </center>
 </BorderPane>

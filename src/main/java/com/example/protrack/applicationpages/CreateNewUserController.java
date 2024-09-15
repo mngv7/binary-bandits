@@ -1,4 +1,5 @@
 package com.example.protrack.applicationpages;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import com.example.protrack.Main;
@@ -46,5 +47,8 @@ public class CreateNewUserController {
         } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
             alert.close();
         }
+    }
+
+    public void createNewUser() {
     }
 }

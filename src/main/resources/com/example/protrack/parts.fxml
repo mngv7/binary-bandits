@@ -7,7 +7,9 @@
             fx:controller="com.example.protrack.applicationpages.PartsController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <Label text="Parts" styleClass="title-label"/>
+        <VBox style="-fx-padding: 0 0 10 0;">
+            <Label text="Parts" styleClass="title-label"/>
+        </VBox>
     </top>
     <center>
         <VBox spacing="20">

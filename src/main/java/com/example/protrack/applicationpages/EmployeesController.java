@@ -1,10 +1,9 @@
 package com.example.protrack.applicationpages;
 import java.io.IOException;
-import java.util.List;  // Ensure this import is correct
+import java.util.List;
 import java.util.Objects;
 
 import com.example.protrack.Main;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -56,8 +55,8 @@ public class EmployeesController {
     }
 
     private static final String TITLE = "Create User";
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 360;
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
 
     public void openCreateNewUserPopup() {
         try {
