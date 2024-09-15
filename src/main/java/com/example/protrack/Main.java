@@ -1,6 +1,5 @@
 package com.example.protrack;
 
-import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;

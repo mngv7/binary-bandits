@@ -1,5 +1,5 @@
-import com.example.protrack.users.ProductionUser;
 import com.example.protrack.customer.Customer;
+import com.example.protrack.users.ProductionUser;
 import com.example.protrack.workorder.WorkOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
