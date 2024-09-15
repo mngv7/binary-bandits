@@ -16,14 +16,9 @@
     <center>
         <HBox>
             <VBox prefWidth="600">
-                <Label text="My Team"/>
+                <Label text="My Team:" styleClass="parts-table-title"/>
+                <VBox fx:id="employeeNames" />
                 <Region minHeight="10"/>
-                <Label text="Location"/>
-            </VBox>
-            <VBox prefWidth="400">
-                <Label text="Organisation"/>
-                <Region minHeight="10"/>
-                <Label text="Team:"/>
             </VBox>
         </HBox>
     </center>
