@@ -40,19 +40,73 @@
                 <Insets top="10" bottom="10" left="20" right="20"/>
             </padding>
             <!-- Menu Buttons -->
-            <Button text="Dashboard" onAction="#dashboard" styleClass="menu-button"/>
-            <Button text="Inventory ▾" onAction="#inventory" styleClass="menu-button"/>
+            <Button text="Dashboard" onAction="#dashboard" styleClass="menu-button">
+                <graphic>
+                    <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                        <Image url="@dashboard_icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Inventory ▾" onAction="#inventory" styleClass="menu-button">
+                <graphic>
+                    <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                        <Image url="@inventory_icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
             <VBox fx:id="inventoryVBox" managed="false" visible="false" spacing="10">
-                <Button text="Products" onAction="#products" styleClass="menu-button"/>
-                <Button text="Parts" onAction="#parts" styleClass="menu-button"/>
+                <Button text="Products" onAction="#products" styleClass="menu-button">
+                    <graphic>
+                        <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                            <Image url="@product_icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button text="Parts" onAction="#parts" styleClass="menu-button">
+                    <graphic>
+                        <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                            <Image url="@parts_icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
             </VBox>
-            <Button text="Purchase Orders" onAction="#purchaseOrders" styleClass="menu-button"/>
-            <Button text="Customers" onAction="#customers" styleClass="menu-button"/>
-            <Button text="Suppliers" onAction="#suppliers" styleClass="menu-button"/>
-            <Button text="Employees" onAction="#employees" styleClass="menu-button"/>
+            <Button text="Work Orders" onAction="#purchaseOrders" styleClass="menu-button">
+                <graphic>
+                    <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                        <Image url="@purchase_orders_icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Customers" onAction="#customers" styleClass="menu-button">
+                <graphic>
+                    <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                        <Image url="@customers_icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Suppliers" onAction="#suppliers" styleClass="menu-button">
+                <graphic>
+                    <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                        <Image url="@supplier_icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Employees" onAction="#employees" styleClass="menu-button">
+                <graphic>
+                    <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                        <Image url="@employee_icon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
             <BorderPane VBox.vgrow="ALWAYS">
                 <bottom>
-                    <Button text="Warehouse" prefHeight="100" onAction="#warehouse" styleClass="menu-button"/>
+                    <Button text="Warehouse" prefHeight="100" onAction="#warehouse" styleClass="menu-button">
+                        <graphic>
+                            <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
+                                <Image url="@warehouse_icon.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
                 </bottom>
             </BorderPane>
         </VBox>
