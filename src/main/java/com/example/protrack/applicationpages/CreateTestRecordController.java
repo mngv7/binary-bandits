@@ -1,21 +1,21 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.databaseutil.DatabaseConnection;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.products.TestRecordDAO;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class CreateTestRecordController {
     /*
@@ -49,6 +49,7 @@ public class CreateTestRecordController {
         HBox newColumn = new HBox();
         numSteps++;
         Label label = new Label("Step " + numSteps + ": ");
+        label.getStyleClass().add("parts-table-label");
 
         TextField textField = new TextField();
         textField.setPromptText("Description");
@@ -60,6 +61,7 @@ public class CreateTestRecordController {
         textField2.setPromptText("Check Criteria");
 
         Button removeButton = new Button("Remove Step");
+        removeButton.getStyleClass().add("create-product-button-small");
         removeButton.setOnAction(event -> removeRow(newColumn));
 
         newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
@@ -78,6 +80,7 @@ public class CreateTestRecordController {
 
     private void updateButtonVisibility() {
         Button removeAllButton = new Button("Remove all Steps");
+        removeAllButton.getStyleClass().add("create-product-button");
         removeAllButton.setOnAction(event -> {
             //Do things here
             testRecordsVBox.getChildren().clear();
@@ -103,6 +106,7 @@ public class CreateTestRecordController {
         HBox newColumn = new HBox();
         numSteps++;
         Label label = new Label("Step " + numSteps + ": ");
+        label.getStyleClass().add("parts-table-label");
 
         TextField textField = new TextField();
         textField.setPromptText("Description");
@@ -114,17 +118,12 @@ public class CreateTestRecordController {
         textField2.setPromptText("Check Criteria");
 
         Button removeButton = new Button("Remove Step");
+        removeButton.getStyleClass().add("create-product-button-small");
         removeButton.setOnAction(event -> removeRow(newColumn));
 
         newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
 
         testRecordsVBox.getChildren().add(newColumn);
-
-        /*
-        Make Vbox
-            Make HBox
-
-         */
     }
 
     private void removeRow(HBox newColumn) {
@@ -156,6 +155,7 @@ public class CreateTestRecordController {
                 TextField textField2 = (TextField) column.getChildren().get(3);
 
                 Button removeButton = new Button("Remove Step");
+
                 removeButton.setOnAction(event -> removeRow(column));
 
                 newColumn2.getChildren().addAll(label, textField1, column.getChildren().get(2), textField2, removeButton);
@@ -202,9 +202,9 @@ public class CreateTestRecordController {
 
     @FXML
     protected void onCreateProductButton() {
-
         insertTestRecordsToDB();
-
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 
     private void insertTestRecordsToDB() {
@@ -259,8 +259,36 @@ public class CreateTestRecordController {
 
     @FXML
     protected void onClosePopupButton() {
-        Stage stage = (Stage) closePopupButton.getScene().getWindow();
-        stage.close();
-    }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UNDECORATED);
+        alert.setHeaderText("Cancel Test Record Creation");
+        alert.setContentText("Are you sure you want to cancel?");
+        alert.setGraphic(null);
 
+        DialogPane dialogPane = alert.getDialogPane();
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("cancelAlert.css")).toExternalForm();
+        dialogPane.getStyleClass().add("cancelDialog");
+        dialogPane.getStylesheets().add(stylesheet);
+
+        ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
+        ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
+
+
+
+        alert.getButtonTypes().setAll(confirmBtn, backBtn);
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        Node confirmButton = dialogPane.lookupButton(confirmBtn);
+        ButtonBar.setButtonData(confirmButton, ButtonBar.ButtonData.LEFT);
+        confirmButton.setId("confirmBtn");
+        Node backButton = dialogPane.lookupButton(backBtn);
+        ButtonBar.setButtonData(backButton, ButtonBar.ButtonData.RIGHT);
+        backButton.setId("backBtn");
+        alert.showAndWait();
+        if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
+            alert.close();
+            stage.close();
+        } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
+            alert.close();
+        }
+    }
 }

@@ -139,7 +139,7 @@
 }
 
 .add-parts-popup {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: white;
     -fx-border-color: #390B91;
     -fx-border-width: 2px;
     -fx-border-style: solid;
@@ -200,6 +200,24 @@
 .create-product-button:pressed {
     -fx-background-color: #310B91;
 }
+
+.create-product-button-small {
+    -fx-background-color: #310B91;
+    -fx-text-fill: white;
+    -fx-font-size: 12px; /* Smaller font size */
+    -fx-padding: 5px 10px; /* Smaller padding */
+    -fx-border-radius: 4px; /* Slightly smaller border radius */
+    -fx-background-radius: 4px; /* Slightly smaller background radius */
+}
+
+.create-product-button-small:hover {
+    -fx-background-color: #926cf4;
+}
+
+.create-product-button-small:pressed {
+    -fx-background-color: #310B91;
+}
+
 
 .welcome-label {
     -fx-font-size: 48px;
@@ -291,6 +309,10 @@
 
 #pendingWorkOrdersListView .list-cell {
     -fx-font-size: 20px;
+}
+
+.create-product-scrollpane {
+    -fx-background-color: white;
 }
 
 <img src="application_logo.png">
