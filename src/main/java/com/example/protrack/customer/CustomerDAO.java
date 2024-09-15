@@ -45,6 +45,20 @@ public class CustomerDAO {
         }
     }
 
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM customer");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
+    }
+
     /**
      * Adds a new customer to the database
      *

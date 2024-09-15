@@ -58,6 +58,20 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
         }
     }
 
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM work_orders");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
+    }
+
     /**
      * Drops the work_orders table from the database
      */
