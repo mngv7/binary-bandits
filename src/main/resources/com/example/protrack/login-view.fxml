@@ -18,7 +18,7 @@
 
     <VBox alignment="CENTER" maxWidth="600" spacing="20.0" styleClass="login-box" HBox.hgrow="ALWAYS">
         <Label text="Welcome" styleClass="welcome-label"/>
-        <TextField fx:id="usernameTextField" promptText="First Name" maxWidth="500" styleClass="username-field"/>
+        <TextField fx:id="fullNameTextField" promptText="First Name" maxWidth="500" styleClass="username-field"/>
         <PasswordField fx:id="passwordTextField" promptText="Password" maxWidth="500" styleClass="password-field"/>
 
         <HBox alignment="CENTER">

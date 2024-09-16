@@ -13,8 +13,6 @@ public interface IUsersDAO {
     List<WarehouseUser> getWarehouseUsers() throws SQLException;
     HashMap<Integer, ProductionUser> getProductionUsers() throws SQLException;
     void dropTable();
-    String getPasswordByFirstName(String firstname);
-    String getAccessLevelByFirstName(String firstname);
     void newUser(AbstractUser user);
     boolean isTableEmpty();
 }

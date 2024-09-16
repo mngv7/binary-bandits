@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginPageController {
 
@@ -24,7 +25,7 @@ public class LoginPageController {
     private PasswordField passwordTextField;
 
     @FXML
-    private TextField usernameTextField;
+    private TextField fullNameTextField;
 
     @FXML
     private Button loginButton;
@@ -32,18 +33,18 @@ public class LoginPageController {
     private Integer loginAttempts = 0;
 
     @FXML
-    protected void onLoginButtonClick() throws IOException {
-        String firstName = usernameTextField.getText();
+    protected void onLoginButtonClick() throws IOException, SQLException {
+        String fullName = fullNameTextField.getText();
 
         // DO NOT MERGE TO MAIN WITH (true) IN THE IF CHECK.
-        if (checkLoginDetails(firstName)) {
-            usernameTextField.getStyleClass().remove("login-error");
+        if (checkLoginDetails(fullName)) {
+            fullNameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
             loginAttempts = 0;
             loadHomePage();
         } else {
             loginErrorMessage.setText("Invalid first name or password.");
-            usernameTextField.getStyleClass().add("login-error");
+            fullNameTextField.getStyleClass().add("login-error");
             passwordTextField.getStyleClass().add("login-error");
             loginAttempts++;
         }
@@ -59,7 +60,7 @@ public class LoginPageController {
         loginErrorMessage.setText("Too many incorrect login attempts, please contact supervisor.");
     }
 
-    private void loadHomePage() throws IOException {
+    private void loadHomePage() throws IOException, SQLException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.hide();
 
@@ -68,8 +69,12 @@ public class LoginPageController {
 
         MainController mainController = fxmlLoader.getController();
         UsersDAO usersDAO = new UsersDAO();
-        mainController.setEmployeeName(usernameTextField.getText());
-        mainController.setEmployeeTitle(usersDAO.getAccessLevelByFirstName(usernameTextField.getText()));
+
+        String fullName = fullNameTextField.getText();
+
+        mainController.setEmployeeName(fullName);
+        Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName);
+        mainController.setEmployeeTitle(usersDAO.getUserById(employeeId).getAccessLevel());
 
         Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
         stage.setScene(scene);
@@ -78,16 +83,24 @@ public class LoginPageController {
     }
 
 
-    private boolean isInputValid() {
-        String username = usernameTextField.getText();
+    private boolean isInputValid() throws SQLException {
+        String fullName = fullNameTextField.getText();
         String password = passwordTextField.getText();
-        return !username.trim().isEmpty() && !password.trim().isEmpty();
+
+        UsersDAO usersDAO = new UsersDAO();
+
+        return !fullName.trim().isEmpty() &&
+                !password.trim().isEmpty() &&
+                usersDAO.getEmployeeIdByFullName(fullName) != null;
     }
 
-    private boolean checkLoginDetails(String firstName) {
+    private boolean checkLoginDetails(String fullName) throws SQLException {
         if (isInputValid()) {
             UsersDAO usersDAO = new UsersDAO();
-            String usersPassword = usersDAO.getPasswordByFirstName(firstName);
+
+            Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName);
+
+            String usersPassword = usersDAO.getUserById(employeeId).getPassword();
 
             if (usersPassword != null) {
                 return BCrypt.checkpw(passwordTextField.getText(), usersPassword);
@@ -99,13 +112,13 @@ public class LoginPageController {
     public void initialize() {
         toggleFocusTraversal(false);
 
-        usernameTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
+        fullNameTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
         passwordTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
         loginButton.setOnMouseClicked(event -> toggleFocusTraversal(true));
     }
 
     private void toggleFocusTraversal(boolean status) {
-        usernameTextField.setFocusTraversable(status);
+        fullNameTextField.setFocusTraversable(status);
         passwordTextField.setFocusTraversable(status);
         loginButton.setFocusTraversable(status);
     }
