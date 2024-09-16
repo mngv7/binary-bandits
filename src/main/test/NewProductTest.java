@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NewProductTest {
     private Product product;
-    //Integer productId, String productName, Date dateCreated
+    long millis = System.currentTimeMillis();
     java.sql.Date date = new java.sql.Date(millis);
 
     @BeforeEach
