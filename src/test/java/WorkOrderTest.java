@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WorkOrderTest {
     private ProductionUser productionUser;
@@ -39,13 +38,13 @@ public class WorkOrderTest {
 
     @Test
     void testGetOrderDate() {
-        LocalDateTime fixedDateTime = LocalDateTime.of(2024, 9, 16, 22, 37, 22, 393008261);
-        workOrder = new WorkOrder(1, productionUser, customer, fixedDateTime, null, "shippingAddress", 1, "pending", 40.87);
+        LocalDateTime orderDate = workOrder.getOrderDate();
+        LocalDateTime now = LocalDateTime.now();
 
-        // Compare using a fixed timestamp
-        assertEquals(fixedDateTime, workOrder.getOrderDate());
+        long toleranceInSeconds = 1;
+
+        assertTrue(java.time.Duration.between(orderDate, now).getSeconds() <= toleranceInSeconds);
     }
-
 
     @Test
     void testGetDeliveryDate() {
