@@ -39,8 +39,13 @@ public class WorkOrderTest {
 
     @Test
     void testGetOrderDate() {
-        assertEquals(LocalDateTime.now(), workOrder.getOrderDate());
+        LocalDateTime fixedDateTime = LocalDateTime.of(2024, 9, 16, 22, 37, 22, 393008261);
+        workOrder = new WorkOrder(1, productionUser, customer, fixedDateTime, null, "shippingAddress", 1, "pending", 40.87);
+
+        // Compare using a fixed timestamp
+        assertEquals(fixedDateTime, workOrder.getOrderDate());
     }
+
 
     @Test
     void testGetDeliveryDate() {
