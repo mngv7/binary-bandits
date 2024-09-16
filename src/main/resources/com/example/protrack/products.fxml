@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.ProductsController"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
+            <Label text="Products" styleClass="title-label"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20">
+            <HBox spacing="10">
+                <HBox>
+                    <TextField promptText="🔎 Search..." minWidth="300" styleClass="search-field"/>
+                </HBox>
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Button text="Refresh Table" onAction="#refreshTable" styleClass="create-product-button-refresh-button"/>
+                </HBox>
+                <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
+                    <Button text="Create Product" onAction="#openCreateProductPopup" styleClass="create-product-button-refresh-button"/>
+                </HBox>
+            </HBox>
+            <TableView fx:id="productTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colProductId" text="Product ID"/>
+                    <TableColumn fx:id="colProductName" text="Product Name"/>
+                    <TableColumn fx:id="colDateCreated" text="Date Created"/>
+                    <TableColumn fx:id="colPrice" text="Price"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.EmployeesController"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <VBox style="-fx-padding: 0 0 10 0;">
+            <Label text="Employees" styleClass="title-label"/>
+        </VBox>
+    </top>
+
+    <center>
+        <HBox>
+            <VBox spacing="10">
+                <TextField promptText="🔎 Search..." maxWidth="300"/>
+
+                <VBox prefWidth="600">
+                    <Label text="My Team:" styleClass="parts-table-title"/>
+                    <VBox fx:id="employeeNames" />
+                    <Region minHeight="10"/>
+                </VBox>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS" alignment="TOP_RIGHT">
+                <Button fx:id="newUserButton" text="Create User" alignment="TOP_RIGHT" onAction="#openCreateNewUserPopup" styleClass="create-product-button-refresh-button"/>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

@@ -36,3 +36,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Database Files ###
+*.db
+*.db-journal
+
+### Libraries Folder ###
+lib/

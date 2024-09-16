@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.WarehouseController"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <Label text="Warehouse" styleClass="title-label"/>
+        <!-- Workstation Content -->
+        <VBox>
+            <children>
+                <Label text="Workstations" styleClass="title-label"/>
+
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" spacing="10">
+                    <Button text="Add Workstation" onAction="#handleAddWorkstation" styleClass="add-parts-button"/>
+
+                    <Button text="Allocate Workstation" onAction="#handleAllocateWorkstation" styleClass="add-parts-button"/>
+                </HBox>
+
+
+                <TableView fx:id="workstationTable">
+                    <columns>
+                        <TableColumn text="Workstation">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="workstationName"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <!--TableColumn text="Employee ID">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="employeeId"/>
+                            </cellValueFactory>
+                        </TableColumn-->
+                        <!--TableColumn text="Worker">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="workerName"/>
+                            </cellValueFactory>
+                        </TableColumn-->
+                        <!--TableColumn text="Stock Level">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="stockLevel"/>
+                            </cellValueFactory>
+                        </TableColumn-->
+                        <!--TableColumn text="Production Output">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="productionOutput"/>
+                            </cellValueFactory>
+                        </TableColumn-->
+                    </columns>
+                </TableView>
+
+                <!-- Pagination -->
+                <HBox>
+                    <children>
+                        <Button text="Previous"/>
+                        <Label text="1"/>
+                        <Label text="2"/>
+                        <Button text="Next"/>
+                    </children>
+                </HBox>
+
+                <!-- Sale Orders -->
+                <Label text="Completed Sale Orders" styleClass="section-label"/>
+                <TableView fx:id="saleOrderTable">
+                    <columns>
+                        <TableColumn text="SO ID">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="soId"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Workstation">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="workstation"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Worker">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="worker"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Products">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="products"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Components Used">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="componentsUsed"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn text="Flags">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="flags"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+
+                <!-- Pagination -->
+                <HBox>
+                    <children>
+                        <Button text="Previous"/>
+                        <Label text="1"/>
+                        <Button text="Next"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+
+</BorderPane>

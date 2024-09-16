@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.protrack.profile.ProfileReportController"
+      prefHeight="550.0" prefWidth="300.0">
+
+        <!-- Column 3 [2] -->
+        <!-- To add - Work Reporting -->
+        <Label text="Work Insights" styleClass="heading"/>
+
+</VBox>
