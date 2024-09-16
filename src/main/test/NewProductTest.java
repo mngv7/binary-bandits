@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NewProductTest {
     private Product product;
+
     long millis = System.currentTimeMillis();
     java.sql.Date date = new java.sql.Date(millis);
 
