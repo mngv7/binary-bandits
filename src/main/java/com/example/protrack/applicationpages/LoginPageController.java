@@ -16,6 +16,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class LoginPageController {
 
@@ -84,18 +85,34 @@ public class LoginPageController {
         Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
         stage.setScene(scene);
         stage.show();
-        scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/protrack/stylesheet.css")).toExternalForm());
     }
 
-    private boolean isInputValid() throws SQLException {
+    private boolean isInputValid() {
         String fullName = fullNameTextField.getText();
         String password = passwordTextField.getText();
 
+        if (fullName.trim().isEmpty()) {
+            return false;
+        }
+
+        if (password.trim().isEmpty()) {
+            return false;
+        }
+
         UsersDAO usersDAO = new UsersDAO();
 
-        return !fullName.trim().isEmpty() &&
-                !password.trim().isEmpty() &&
-                usersDAO.getEmployeeIdByFullName(fullName) != null;
+        try {
+            String[] nameParts = fullName.trim().split("\\s+");
+            if (nameParts.length < 2) {
+                return false;
+            }
+
+            return usersDAO.getEmployeeIdByFullName(fullName) != null;
+        } catch (SQLException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private boolean checkLoginDetails(String fullName) throws SQLException {

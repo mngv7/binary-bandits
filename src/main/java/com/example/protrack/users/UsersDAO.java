@@ -131,24 +131,23 @@ public class UsersDAO implements IUsersDAO {
         return managerialUsers;
     }
 
-
     public List<WarehouseUser> getWarehouseUsers() throws SQLException {
         List<WarehouseUser> warehouseUsers = new ArrayList<>();
         String query = "SELECT * FROM users WHERE accessLevel = 'MEDIUM'";
 
-        
-        ResultSet rs = getWarehouseUsers.executeQuery()) {
+        try (PreparedStatement getWarehouseUsers = connection.prepareStatement(query);
+             ResultSet rs = getWarehouseUsers.executeQuery()) {
 
-        while (rs.next()) {
-            AbstractUser warehouseUser = mapResultSetToUser(rs);
-            if (warehouseUser instanceof WarehouseUser) {
-                warehouseUsers.add((WarehouseUser) warehouseUser);
+            while (rs.next()) {
+                AbstractUser warehouseUser = mapResultSetToUser(rs);
+                if (warehouseUser instanceof WarehouseUser) {
+                    warehouseUsers.add((WarehouseUser) warehouseUser);
+                }
             }
         }
 
         return warehouseUsers;
     }
-
 
     public List<ProductionUser> getProductionUsers() throws SQLException {
         List<ProductionUser> productionUsers = new ArrayList<>();
@@ -198,7 +197,7 @@ public class UsersDAO implements IUsersDAO {
     }
 
     public Integer getEmployeeIdByFullName(String fullName) throws SQLException {
-        String[] splitFullName = fullName.split(" ");
+        String[] splitFullName = fullName.trim().split("\\s+");
 
         if (splitFullName.length < 2) {
             throw new IllegalArgumentException("Full name must contain both first and last name.");
