@@ -1,22 +1,20 @@
 package com.example.protrack.users;
 
-import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.parts.Parts;
+import com.example.protrack.utility.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.TooManyListenersException;
 
-public class UsersDAO {
+public class UsersDAO implements IUsersDAO {
     private final Connection connection;
 
     public UsersDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
+    @Override
     public void createTable() {
         try {
             Statement createTable = connection.createStatement();
@@ -38,6 +36,7 @@ public class UsersDAO {
         }
     }
 
+    @Override
     public List<AbstractUser> getAllUsers() {
         List<AbstractUser> users = new ArrayList<>();
 
@@ -75,7 +74,7 @@ public class UsersDAO {
         return users;
     }
 
-
+    @Override
     public AbstractUser mapResultSetToUser(ResultSet resultSet) throws SQLException {
         String userType = resultSet.getString("accessLevel");
 
@@ -114,8 +113,10 @@ public class UsersDAO {
         };
     }
 
-    public HashMap<Integer, ManagerialUser> getManagerialUsers() throws SQLException {
-        HashMap<Integer, ManagerialUser> managerialUsers = new HashMap<>();
+
+        public List<ManagerialUser> getManagerialUsers() throws SQLException {
+        List<ManagerialUser> managerialUsers = new ArrayList<>();
+
         String query = "SELECT * FROM users WHERE accessLevel = 'HIGH'";
 
         PreparedStatement getManagerialUsers = connection.prepareStatement(query);
@@ -124,45 +125,47 @@ public class UsersDAO {
 
         while (rs.next()) {
             AbstractUser managerialUser = mapResultSetToUser(rs);
-            managerialUsers.put(managerialUser.getEmployeeId(), (ManagerialUser) managerialUser);
+            managerialUsers.add((ManagerialUser) managerialUser);
         }
 
         return managerialUsers;
     }
 
-    public HashMap<Integer, WarehouseUser> getWarehouseUsers() throws SQLException {
-        HashMap<Integer, WarehouseUser> warehouseUsers = new HashMap<>();
+    public List<WarehouseUser> getWarehouseUsers() throws SQLException {
+        List<WarehouseUser> warehouseUsers = new ArrayList<>();
         String query = "SELECT * FROM users WHERE accessLevel = 'MEDIUM'";
 
-        PreparedStatement getWarehouseUsers = connection.prepareStatement(query);
+        try (PreparedStatement getWarehouseUsers = connection.prepareStatement(query);
+             ResultSet rs = getWarehouseUsers.executeQuery()) {
 
-        ResultSet rs = getWarehouseUsers.executeQuery();
-
-        while (rs.next()) {
-            AbstractUser warehouseUser = mapResultSetToUser(rs);
-            warehouseUsers.put(warehouseUser.getEmployeeId(), (WarehouseUser) warehouseUser);
+            while (rs.next()) {
+                AbstractUser warehouseUser = mapResultSetToUser(rs);
+                if (warehouseUser instanceof WarehouseUser) {
+                    warehouseUsers.add((WarehouseUser) warehouseUser);
+                }
+            }
         }
 
         return warehouseUsers;
     }
 
-    public HashMap<Integer, ProductionUser> getProductionUsers() throws SQLException {
-        HashMap<Integer, ProductionUser> productionUsers = new HashMap<>();
+    public List<ProductionUser> getProductionUsers() throws SQLException {
+        List<ProductionUser> productionUsers = new ArrayList<>();
+
         String query = "SELECT * FROM users WHERE accessLevel = 'LOW'";
 
         PreparedStatement getProductionUsers = connection.prepareStatement(query);
-
-
         ResultSet rs = getProductionUsers.executeQuery();
 
         while (rs.next()) {
             AbstractUser productionUser = mapResultSetToUser(rs);
-            productionUsers.put(productionUser.getEmployeeId(), (ProductionUser) productionUser);
+            productionUsers.add((ProductionUser) productionUser);
         }
 
         return productionUsers;
     }
 
+    @Override
     public void dropTable() {
         String query = "DROP TABLE IF EXISTS users";  // SQL statement to drop the work_orders table
 
@@ -174,38 +177,78 @@ public class UsersDAO {
         }
     }
 
-    public String getPasswordByFirstName(String firstName) {
-        try {
-            PreparedStatement getAccount = connection.prepareStatement("SELECT password FROM users WHERE firstName = ?");
-            getAccount.setString(1, firstName);
+    public AbstractUser getUserById(Integer employeeId) {
+        String query = "SELECT * FROM users WHERE employeeId = ?";
 
-            ResultSet rs = getAccount.executeQuery();
+        try (PreparedStatement getUser = connection.prepareStatement(query)) {
+            getUser.setInt(1, employeeId);
 
-            if (rs.next()) {
-                return rs.getString("password");
+            try (ResultSet rs = getUser.executeQuery()) {
+                if (rs.next()) {
+                    String accessLevel = rs.getString("accessLevel");
+                    return mapResultSetToUser(rs, accessLevel);
+                } else {
+                    return null;
+                }
             }
-        } catch (SQLException ex) {
-            System.err.println(ex);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
-    public String getAccessLevelByFirstName(String firstName) {
-        try {
-            PreparedStatement getAccount = connection.prepareStatement("SELECT accessLevel FROM users WHERE firstName = ?");
-            getAccount.setString(1, firstName);
+    public Integer getEmployeeIdByFullName(String fullName) throws SQLException {
+        String[] splitFullName = fullName.trim().split("\\s+");
 
-            ResultSet rs = getAccount.executeQuery();
-
-            if (rs.next()) {
-                return rs.getString("accessLevel");
-            }
-        } catch (SQLException ex) {
-            System.err.println(ex);
+        if (splitFullName.length < 2) {
+            throw new IllegalArgumentException("Full name must contain both first and last name.");
         }
-        return null;
+
+        String firstName = splitFullName[0];
+        String lastName = splitFullName[1];
+
+        String query = "SELECT employeeId FROM users WHERE firstName = ? AND lastName = ?";
+
+        try (PreparedStatement getEmployeeId = connection.prepareStatement(query)) {
+            getEmployeeId.setString(1, firstName);
+            getEmployeeId.setString(2, lastName);
+
+            try (ResultSet rs = getEmployeeId.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("employeeId");
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+
+    private AbstractUser mapResultSetToUser(ResultSet rs, String accessLevel) throws SQLException {
+        Integer employeeId = rs.getInt("employeeId");
+        String firstName = rs.getString("firstName");
+        String lastName = rs.getString("lastName");
+        Date dob = rs.getDate("dob");
+        String email = rs.getString("email");
+        String phoneNo = rs.getString("phoneNo");
+        String gender = rs.getString("gender");
+        String password = rs.getString("password");
+
+        switch (accessLevel) {
+            case "HIGH":
+                return new ManagerialUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+            case "MEDIUM":
+                return new WarehouseUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+            case "LOW":
+                return new ProductionUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+            default:
+                throw new IllegalArgumentException("Unknown access level: " + accessLevel);
+        }
+    }
+
+
+    @Override
     public void newUser(AbstractUser user) {
         try {
             PreparedStatement insertAccount = connection.prepareStatement(
@@ -229,6 +272,7 @@ public class UsersDAO {
         }
     }
 
+    @Override
     public boolean isTableEmpty() {
         try {
             Statement stmt = connection.createStatement();

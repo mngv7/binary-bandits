@@ -2,6 +2,7 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.utility.LoggedInUserSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,8 @@ import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Objects;
 
 public class LoginPageController {
 
@@ -24,7 +27,7 @@ public class LoginPageController {
     private PasswordField passwordTextField;
 
     @FXML
-    private TextField usernameTextField;
+    private TextField fullNameTextField;
 
     @FXML
     private Button loginButton;
@@ -32,18 +35,22 @@ public class LoginPageController {
     private Integer loginAttempts = 0;
 
     @FXML
-    protected void onLoginButtonClick() throws IOException {
-        String firstName = usernameTextField.getText();
+    protected void onLoginButtonClick() throws IOException, SQLException {
+        UsersDAO usersDAO = new UsersDAO();
+        String fullName = fullNameTextField.getText();
 
-        // DO NOT MERGE TO MAIN WITH (true) IN THE IF CHECK.
-        if (checkLoginDetails(firstName)) {
-            usernameTextField.getStyleClass().remove("login-error");
+        if (checkLoginDetails(fullName)) {
+            fullNameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
             loginAttempts = 0;
+
+            Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName);
+            LoggedInUserSingleton.getInstance().setEmployeeId(employeeId);
+
             loadHomePage();
         } else {
             loginErrorMessage.setText("Invalid first name or password.");
-            usernameTextField.getStyleClass().add("login-error");
+            fullNameTextField.getStyleClass().add("login-error");
             passwordTextField.getStyleClass().add("login-error");
             loginAttempts++;
         }
@@ -59,7 +66,7 @@ public class LoginPageController {
         loginErrorMessage.setText("Too many incorrect login attempts, please contact supervisor.");
     }
 
-    private void loadHomePage() throws IOException {
+    private void loadHomePage() throws IOException, SQLException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.hide();
 
@@ -68,26 +75,51 @@ public class LoginPageController {
 
         MainController mainController = fxmlLoader.getController();
         UsersDAO usersDAO = new UsersDAO();
-        mainController.setEmployeeName(usernameTextField.getText());
-        mainController.setEmployeeTitle(usersDAO.getAccessLevelByFirstName(usernameTextField.getText()));
+
+        String fullName = fullNameTextField.getText();
+
+        mainController.setEmployeeName(fullName);
+        Integer employeeId = LoggedInUserSingleton.getInstance().getEmployeeId();
+        mainController.setEmployeeTitle(usersDAO.getUserById(employeeId).getAccessLevel());
 
         Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
         stage.setScene(scene);
         stage.show();
-        scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/protrack/stylesheet.css")).toExternalForm());
     }
-
 
     private boolean isInputValid() {
-        String username = usernameTextField.getText();
+        String fullName = fullNameTextField.getText();
         String password = passwordTextField.getText();
-        return !username.trim().isEmpty() && !password.trim().isEmpty();
+
+        if (fullName.trim().isEmpty()) {
+            return false;
+        }
+
+        if (password.trim().isEmpty()) {
+            return false;
+        }
+
+        UsersDAO usersDAO = new UsersDAO();
+
+        try {
+            String[] nameParts = fullName.trim().split("\\s+");
+            if (nameParts.length < 2) {
+                return false;
+            }
+
+            return usersDAO.getEmployeeIdByFullName(fullName) != null;
+        } catch (SQLException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    private boolean checkLoginDetails(String firstName) {
+    private boolean checkLoginDetails(String fullName) throws SQLException {
         if (isInputValid()) {
             UsersDAO usersDAO = new UsersDAO();
-            String usersPassword = usersDAO.getPasswordByFirstName(firstName);
+            Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName);
+            String usersPassword = usersDAO.getUserById(employeeId).getPassword();
 
             if (usersPassword != null) {
                 return BCrypt.checkpw(passwordTextField.getText(), usersPassword);
@@ -99,13 +131,13 @@ public class LoginPageController {
     public void initialize() {
         toggleFocusTraversal(false);
 
-        usernameTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
+        fullNameTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
         passwordTextField.setOnMouseClicked(event -> toggleFocusTraversal(true));
         loginButton.setOnMouseClicked(event -> toggleFocusTraversal(true));
     }
 
     private void toggleFocusTraversal(boolean status) {
-        usernameTextField.setFocusTraversable(status);
+        fullNameTextField.setFocusTraversable(status);
         passwordTextField.setFocusTraversable(status);
         loginButton.setFocusTraversable(status);
     }

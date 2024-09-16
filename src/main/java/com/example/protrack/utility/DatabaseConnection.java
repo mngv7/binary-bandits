@@ -1,4 +1,4 @@
-package com.example.protrack.databaseutil;
+package com.example.protrack.utility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

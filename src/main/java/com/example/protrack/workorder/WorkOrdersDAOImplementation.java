@@ -2,7 +2,7 @@ package com.example.protrack.workorder;
 
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
 
@@ -10,6 +10,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Interface to the database relevant to WorkOrder operations, providing abstraction
@@ -18,11 +19,11 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
 
     // Instantiation of necessary class variables
     private final Connection connection;
-    private final HashMap<Integer, ProductionUser> productionUsers;
-    private final HashMap<Integer, Customer> customers;
+    private final List<ProductionUser> productionUsers;
+    private final List<Customer> customers;
 
     // Constructor for WorkOrdersDAOImplementation
-    public WorkOrdersDAOImplementation(HashMap<Integer, ProductionUser> productionUsers, HashMap<Integer, Customer> customers) throws SQLException {
+    public WorkOrdersDAOImplementation(List<ProductionUser> productionUsers, List<Customer> customers) throws SQLException {
 
         // Initialises the JDBC connection using the singleton instance
         connection = DatabaseConnection.getInstance();
@@ -115,9 +116,9 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
         return null;
     }
 
-    public ArrayList<WorkOrder> getAllWorkOrders() throws SQLException {
+    public List<WorkOrder> getAllWorkOrders() throws SQLException {
         String sqlAllWorkOrders = "SELECT * FROM work_orders";
-        ArrayList<WorkOrder> allWorkOrders = new ArrayList<>();
+        List<WorkOrder> allWorkOrders = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -136,13 +137,13 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
      * @return 'ArrayList<WorkOrder>'  all orders that satisfy the status
      * @throws SQLException if the SQL Prepared Statement fails
      */
-    public ArrayList<WorkOrder> getWorkOrderByStatus(String status) throws SQLException {
+    public List<WorkOrder> getWorkOrderByStatus(String status) throws SQLException {
 
         // SQL query retrieves Work Orders based on status
         String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE status = ?";
 
         // Initialises the to-be-returned ArrayList<WorkOrder>
-        ArrayList<WorkOrder> allWorkOrders = new ArrayList<>();
+        List<WorkOrder> allWorkOrders = new ArrayList<>();
 
         // Executes the PreparedStatement with the status String
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
@@ -152,7 +153,6 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
 
                 // Iterates through each returned row (ResultSet) from the SQL query execution
                 while (resultSet.next()) {
-
                     // Calls mapToWorkOrder(resultSet) to return a new WorkOrder instance, instantiated with the returned ResultSet information
                     WorkOrder workOrder = mapToWorkOrder(resultSet);
                     allWorkOrders.add(workOrder);   // Adds the new WorkOrder instance to the ArrayList
@@ -176,10 +176,22 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
         Integer customerId = resultSet.getInt("customer_id");
 
         // Retrieves the relevant Production User as specified by the resultSet
-        AbstractUser orderOwner = productionUsers.get(orderOwnerId);
+        AbstractUser orderOwner  = null;
+        for (AbstractUser user : productionUsers) {
+            if (user.getEmployeeId().equals(orderOwnerId)) {
+                orderOwner = user;
+                break;
+            }
+        }
 
         // Retrieves the relevant Production User as specified by the resultSet
-        Customer customer = customers.get(customerId);
+        Customer orderCustomer = null;
+        for (Customer customer : customers) {
+            if (customer.getCustomerId().equals(customerId)) {
+                orderCustomer = customer;
+                break;
+            }
+        }
 
         LocalDateTime orderDate = resultSet.getObject("order_date", LocalDateTime.class);
         LocalDateTime deliveryDate = resultSet.getObject("delivery_date", LocalDateTime.class);
@@ -192,7 +204,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
         return new WorkOrder(
                 workOrderId,
                 (ProductionUser) orderOwner,
-                customer,
+                orderCustomer,
                 orderDate,
                 deliveryDate,
                 shippingAddress,

@@ -1,11 +1,12 @@
 package com.example.protrack.customer;
 
-import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.workorder.WorkOrder;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * DAO for managing Customer entities in the database
@@ -13,7 +14,6 @@ import java.util.HashMap;
  */
 public class CustomerDAO {
     private final Connection connection;
-    private HashMap<Integer, Customer> customers;
 
     /**
      * Initializes the DAO with a database connection
@@ -121,8 +121,8 @@ public class CustomerDAO {
      * @return 'HashMap<Integer, Customer>' containing all customers.
      * @throws SQLException If an SQL error occurs during the operation.
      */
-    public HashMap<Integer, Customer> getAllCustomers() throws SQLException {
-        HashMap<Integer, Customer> customers = new HashMap<>();
+    public List<Customer> getAllCustomers() throws SQLException {
+        List<Customer> customers = new ArrayList<>();
         String query = "SELECT * FROM customer";
 
         try (Connection conn = DatabaseConnection.getInstance();
@@ -131,7 +131,7 @@ public class CustomerDAO {
 
             while (rs.next()) {
                 Customer customer = mapResultSetToCustomer(rs);
-                customers.put(customer.getCustomerId(), customer);
+                customers.add(customer);
             }
         } catch (SQLException e) {
             e.printStackTrace();

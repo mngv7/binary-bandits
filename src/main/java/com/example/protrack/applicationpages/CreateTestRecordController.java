@@ -1,7 +1,7 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.products.TestRecordDAO;
 import javafx.collections.ListChangeListener;

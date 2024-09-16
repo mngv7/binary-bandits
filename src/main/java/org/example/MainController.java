@@ -1,22 +1,24 @@
-package com.example.protrack.applicationpages;
+package org.example;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.beans.property.StringProperty;
+import javafx.collections.transformation.FilteredList;
 
 import java.io.IOException;
 
 public class MainController {
-
-    @FXML
-    private Label employeeName;
-
-    @FXML
-    private Label employeeTitle;
 
     @FXML
     private VBox dynamicVBox;
@@ -38,68 +40,58 @@ public class MainController {
 
     @FXML
     private void dashboard() {
-        loadContent("/com/example/protrack/dashboard.fxml");
+        loadContent("dashboard.fxml");
     }
 
     @FXML
     private void products() {
-        loadContent("/com/example/protrack/products.fxml");
+        loadContent("products.fxml");
     }
 
     @FXML
     private void parts() {
-        loadContent("/com/example/protrack/parts.fxml");
+        loadContent("parts.fxml");
+    }
+
+    @FXML
+    private void workOrders() {
+        loadContent("work_orders.fxml");
     }
 
     @FXML
     private void purchaseOrders() {
-        loadContent("/com/example/protrack/work_orders.fxml");
+        loadContent("work_orders.fxml");
     }
 
     @FXML
     private void customers() {
-        loadContent("/com/example/protrack/customers.fxml");
+        loadContent("customers.fxml");
     }
 
     @FXML
     private void suppliers() {
-        loadContent("/com/example/protrack/suppliers.fxml");
+        loadContent("suppliers.fxml");
     }
 
     @FXML
     private void employees() {
-        loadContent("/com/example/protrack/employees.fxml");
-    }
-
-    @FXML
-    private void myProfile() {
-        loadContent("/profile/my_profile.fxml");
+        loadContent("employees.fxml");
     }
 
     @FXML
     private void warehouse() {
-        loadContent("/com/example/protrack/warehouse.fxml");
+        loadContent("warehouse.fxml");
     }
 
     private void loadContent(String fxmlFile) {
         try {
-            Scene scene = dynamicVBox.getScene();
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
             dynamicVBox.getChildren().add(content);
-            //scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             // Handle the exception (e.g., show an error message)
         }
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName.setText(employeeName);
-    }
-
-    public void setEmployeeTitle(String employeeTitle) {
-        this.employeeTitle.setText("Access Level: " + employeeTitle);
     }
 }

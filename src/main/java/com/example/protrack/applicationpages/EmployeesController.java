@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-
+import com.example.protrack.utility.LoggedInUserSingleton;
 
 import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.UsersDAO;
@@ -28,6 +28,11 @@ public class EmployeesController {
     public Button newUserButton;
 
     public void initialize() {
+        Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
+        UsersDAO usersDAO = new UsersDAO();
+
+        newUserButton.setDisable(!usersDAO.getUserById(loggedInId).getAccessLevel().equals("HIGH"));
+
         loadAllUsers();
     }
 
