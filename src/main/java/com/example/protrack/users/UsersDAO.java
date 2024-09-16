@@ -6,7 +6,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TooManyListenersException;
 
@@ -114,8 +113,8 @@ public class UsersDAO {
         };
     }
 
-    public HashMap<Integer, ManagerialUser> getManagerialUsers() throws SQLException {
-        HashMap<Integer, ManagerialUser> managerialUsers = new HashMap<>();
+    public List<ManagerialUser> getManagerialUsers() throws SQLException {
+        List<ManagerialUser> managerialUsers = new ArrayList<>();
         String query = "SELECT * FROM users WHERE accessLevel = 'HIGH'";
 
         PreparedStatement getManagerialUsers = connection.prepareStatement(query);
@@ -124,14 +123,14 @@ public class UsersDAO {
 
         while (rs.next()) {
             AbstractUser managerialUser = mapResultSetToUser(rs);
-            managerialUsers.put(managerialUser.getEmployeeId(), (ManagerialUser) managerialUser);
+            managerialUsers.add((ManagerialUser) managerialUser);
         }
 
         return managerialUsers;
     }
 
-    public HashMap<Integer, WarehouseUser> getWarehouseUsers() throws SQLException {
-        HashMap<Integer, WarehouseUser> warehouseUsers = new HashMap<>();
+    public List<WarehouseUser> getWarehouseUsers() throws SQLException {
+        List<WarehouseUser> warehouseUsers = new ArrayList<>();
         String query = "SELECT * FROM users WHERE accessLevel = 'MEDIUM'";
 
         PreparedStatement getWarehouseUsers = connection.prepareStatement(query);
@@ -140,24 +139,22 @@ public class UsersDAO {
 
         while (rs.next()) {
             AbstractUser warehouseUser = mapResultSetToUser(rs);
-            warehouseUsers.put(warehouseUser.getEmployeeId(), (WarehouseUser) warehouseUser);
+            warehouseUsers.add((WarehouseUser) warehouseUser);
         }
 
         return warehouseUsers;
     }
 
-    public HashMap<Integer, ProductionUser> getProductionUsers() throws SQLException {
-        HashMap<Integer, ProductionUser> productionUsers = new HashMap<>();
+    public List<ProductionUser> getProductionUsers() throws SQLException {
+        List<ProductionUser> productionUsers = new ArrayList<>();
         String query = "SELECT * FROM users WHERE accessLevel = 'LOW'";
 
         PreparedStatement getProductionUsers = connection.prepareStatement(query);
-
-
         ResultSet rs = getProductionUsers.executeQuery();
 
         while (rs.next()) {
             AbstractUser productionUser = mapResultSetToUser(rs);
-            productionUsers.put(productionUser.getEmployeeId(), (ProductionUser) productionUser);
+            productionUsers.add((ProductionUser) productionUser);
         }
 
         return productionUsers;

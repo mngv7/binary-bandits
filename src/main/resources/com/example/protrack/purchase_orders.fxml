@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.applicationpages.MainController"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="com.example.protrack.workorder.WorkOrderController"
+            prefHeight="Infinity" prefWidth="600.0">
     <top>
-        <Label text="Purchase Orders" styleClass="title-label"/>
+        <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
+            <Label text="Work Orders" styleClass="title-label"/>
+        </VBox>
     </top>
+
+    <center>
+        <VBox spacing="20" maxHeight="Infinity">
+            <HBox spacing="10">
+                <HBox>
+                    <TextField promptText="🔎 Search..." minWidth="300" styleClass="search-field"/>
+                </HBox>
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Button text="Refresh Table" styleClass="create-product-button-refresh-button"/>
+                </HBox>
+                <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
+                    <Button text="Create Work Order" styleClass="create-product-button-refresh-button"/>
+                </HBox>
+            </HBox>
+            <TableView fx:id="workOrderTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colProductId" text="Work Order ID"/>
+                    <TableColumn fx:id="colProductName" text="Work Order Owner"/>
+                    <TableColumn fx:id="colDateCreated" text="Customer"/>
+                    <TableColumn text="field" />
+                    <TableColumn text="field"/>
+                    <TableColumn text="field"/>
+                    <TableColumn text="field"/>
+
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+    <bottom>
+        <Region minHeight="10"/>
+    </bottom>
 </BorderPane>

@@ -2,15 +2,16 @@ package com.example.protrack.workorder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WorkOrdersDAO {
 
     public interface WorkOrdersDAOInterface {
-        ArrayList<WorkOrder> getAllWorkOrders() throws SQLException;
+        List<WorkOrder> getAllWorkOrders() throws SQLException;
 
         WorkOrder getWorkOrder(Integer id) throws SQLException;
 
-        ArrayList<WorkOrder> getWorkOrderByStatus(String status) throws SQLException;
+        List<WorkOrder> getWorkOrderByStatus(String status) throws SQLException;
 
         boolean createWorkOrder(WorkOrder workOrder) throws SQLException;
 
