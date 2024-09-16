@@ -25,15 +25,20 @@
                     <Button text="Create Work Order" styleClass="create-product-button-refresh-button"/>
                 </HBox>
             </HBox>
-            <TableView fx:id="workOrderTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">
+            <TableView fx:id="workOrderTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="1000.0" styleClass="products-table" VBox.vgrow="ALWAYS">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
                 <columns>
-                    <TableColumn fx:id="colProductId" text="Work Order ID"/>
-                    <TableColumn fx:id="colProductName" text="Work Order Owner"/>
-                    <TableColumn fx:id="colDateCreated" text="Customer"/>
-                    <TableColumn text="field" />
-                    <TableColumn text="field"/>
-                    <TableColumn text="field"/>
-                    <TableColumn text="field"/>
+                    <TableColumn text="Work Order ID"/>
+                    <TableColumn text="Assigned to:"/>
+                    <TableColumn text="Customer"/>
+                    <TableColumn text="Order Date" />
+                    <TableColumn text="Delivery Date"/>
+                    <TableColumn text="Shipping Address"/>
+                    <TableColumn text="Products"/>
+                    <TableColumn text="Status"/>
+                    <TableColumn text="Subtotal"/>
 
                 </columns>
             </TableView>

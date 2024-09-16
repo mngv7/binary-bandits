@@ -60,7 +60,7 @@ public class MainController {
 
     @FXML
     private void purchaseOrders() {
-        loadContent("purchase_orders.fxml");
+        loadContent("work_orders.fxml");
     }
 
     @FXML
