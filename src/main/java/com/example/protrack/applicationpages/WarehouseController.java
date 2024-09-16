@@ -20,13 +20,9 @@ import java.util.Objects;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
-
     @FXML
     private TableView<Workstation> workstationTable;
     private List<Workstation> workstations; /* Loaded workstations from a database. */
-
-    //@FXML
-    //private TableView<SaleOrder> saleOrderTable;
 
     @FXML
     public void initialize() {
@@ -90,11 +86,6 @@ public class WarehouseController {
                 /* TODO: DAO linking later; ideally we also want to return any parts in the workstation to the warehouse as well. */
             }
         }
-    }
-
-    /* TODO: Sale orders are not implemented yet. */
-    private void loadSaleOrderData() {
-        System.out.println("FIXME: loadSaleOrderData stubbed.");
     }
 
     /* TODO: Workstation DB and related code is very incomplete, attempt to resolve with the database guys later. */
