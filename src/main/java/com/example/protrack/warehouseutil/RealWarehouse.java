@@ -1,41 +1,41 @@
 package com.example.protrack.warehouseutil;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-public class MockWarehouse {
+public class RealWarehouse implements Warehouse {
     private int warehouseId;
     private String warehouseName;
     private String warehouseLocation;
-    public int maxParts;
     private final List<partIdWithQuantity> partsId;
+    private int maxParts;
 
-    public MockWarehouse() {
+    public RealWarehouse () {
         this.warehouseId = 0;
         this.warehouseName = "Default Warehouse";
-        this.warehouseLocation = "Spike Site A";
+        this.warehouseLocation = "Default location"; /* TODO: Unused by DAO */
         this.partsId = new ArrayList<>();
+        this.maxParts = 5000;
     }
 
-    public MockWarehouse(int warehouseId) {
-        this.warehouseId = warehouseId;
-        this.warehouseName = "Default Warehouse";
-        this.warehouseLocation = "Spike Site A";
+    public RealWarehouse (int locationID, String locationAlias, int locationCapacity) {
+        this.warehouseId = locationID;
+        this.warehouseName = locationAlias;
+        this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
         this.partsId = new ArrayList<>();
+        this.maxParts = locationCapacity;
+
+        /* TODO: automatic DB load for existing entry if present in DB */
     }
 
-    public MockWarehouse(int warehouseId, String warehouseName) {
-        this.warehouseId = warehouseId;
-        this.warehouseName = warehouseName;
-        this.warehouseLocation = "Spike Site A";
-        this.partsId = new ArrayList<>();
-    }
+    public RealWarehouse (int locationID, String locationAlias, int locationCapacity, List<partIdWithQuantity> partsLinked) {
+        this.warehouseId = locationID;
+        this.warehouseName = locationAlias;
+        this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
+        this.partsId = partsLinked;
+        this.maxParts = locationCapacity;
 
-    public MockWarehouse(int warehouseId, String warehouseName, String warehouseLocation) {
-        this.warehouseId = 0;
-        this.warehouseName = warehouseName;
-        this.warehouseLocation = warehouseLocation;
-        this.partsId = new ArrayList<>();
+        /* TODO: automatic DB load for existing entry if present in DB */
     }
 
     public String getWarehouseName() {
@@ -71,7 +71,10 @@ public class MockWarehouse {
         newPart.partsId = partsId;
         newPart.quantity = quantity;
         this.partsId.add(newPart);
+
+        /* TODO: DAO stuff here. */
     }
+
     public void removePartsIdWithQuantity (int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
@@ -89,5 +92,7 @@ public class MockWarehouse {
                 return; /* We don't need to progress any further. */
             }
         }
+
+        /* TODO: DAO stuff here. */
     }
 }

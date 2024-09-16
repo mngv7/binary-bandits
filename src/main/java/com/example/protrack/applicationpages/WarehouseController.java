@@ -44,15 +44,28 @@ public class WarehouseController {
         });
     }
 
+    private void mockLoadWorkstationData() {
+        if (workstations == null) {
+            workstations = new ArrayList<>();
+
+            /* TODO: load from mock/real DB later. For now, make dummy data. */
+            workstations.add(new MockWorkstation(0, "Workstation 1", "Warehouse room A"));
+            workstations.add(new MockWorkstation(1, "Workstation 2", "Warehouse room A"));
+            workstations.add(new MockWorkstation(2, "Workstation 3", "Warehouse room A"));
+            workstations.add(new MockWorkstation(3, "Workstation 4", "Warehouse room A"));
+        }
+        workstationTable.setItems(FXCollections.observableArrayList(workstations));
+    }
+
     private void loadWorkstationData() {
         if (workstations == null) {
             workstations = new ArrayList<>();
 
             /* TODO: load from mock/real DB later. For now, make dummy data. */
-            workstations.add(new MockWorkstation(0, "Workstation for noobs.", "Warehouse room A"));
-            workstations.add(new MockWorkstation(1, "Workstation 2", "Warehouse room A"));
-            workstations.add(new MockWorkstation(2, "Workstation 3", "Warehouse room A"));
-            workstations.add(new MockWorkstation(3, "Workstation 4", "Warehouse room A"));
+            workstations.add(new RealWorkstation(0, "Workstation 1", 300));
+            workstations.add(new RealWorkstation(1, "Workstation 2", 20));
+            workstations.add(new RealWorkstation(2, "Workstation 3", 54));
+            workstations.add(new RealWorkstation(3, "Workstation 4", 255));
         }
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
@@ -74,6 +87,7 @@ public class WarehouseController {
                 workstationTable.getItems().remove(selectedWorkstation);
                 // Optionally, remove it from the database or data source here
                 workstations.remove(selectedWorkstation);
+                /* TODO: DAO linking later; ideally we also want to return any parts in the workstation to the warehouse as well. */
             }
         }
     }
@@ -117,7 +131,6 @@ public class WarehouseController {
     public void openWorkstation (Workstation workstation) {
         /* TODO: Connect selected workstation to new page. */
         try {
-            //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
             Parent root = loader.load();
 
