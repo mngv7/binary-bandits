@@ -57,6 +57,10 @@ public class WarehouseController {
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
 
+    public List<Workstation> getAllWorkstations() {
+        return this.workstations;
+    }
+
     private void handleDeleteWorkstation() {
         Workstation selectedWorkstation = workstationTable.getSelectionModel().getSelectedItem();
         if (selectedWorkstation != null) {
