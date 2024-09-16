@@ -35,7 +35,7 @@ public class WorkStationController {
         this.selectedWorkstation = selectedWorkstation;
     }
 
-public void initialize() {
+    public void initialize() {
         // Initialize the list of orders
         orderList.setItems(FXCollections.observableArrayList("P-0001-1", "P-0001-2", "P-0001-3", "P-0001-4", "P-0002"));
 
