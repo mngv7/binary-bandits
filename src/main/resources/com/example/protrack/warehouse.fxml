@@ -27,7 +27,7 @@
                 </HBox>
 
 
-                <TableView fx:id="workhouseTable"  layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
+                <TableView fx:id="warehouseTable"  layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn text="Warehouse ID">
                             <cellValueFactory>
@@ -64,8 +64,8 @@
                 </HBox>
 
                 <!-- Sale Orders -->
-                <Label text="WarestationTable" styleClass="title-label"/>
-                <TableView fx:id="WarestationTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
+                <Label text="workstationTable" styleClass="title-label"/>
+                <TableView fx:id="workstationTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn text="Workstation Id">
                             <cellValueFactory>
