@@ -24,9 +24,10 @@ public class LocationsAndContentsDAO {
                                                     "locationCapacity INTEGER NOT NULL" +
                                                     ")");
             Statement createTableForLocationContents = connection.createStatement();
+            /* TODO: Try and fulfill PK1 and PK2 requirements. (Maybe a composite primary key?) */
             createTableForLocationContents.execute("CREATE TABLE IF NOT EXISTS locationContents (" +
                                                             "locationID INTEGER PRIMARY KEY, " +
-                                                            "partID INTEGER PRIMARY KEY, " +
+                                                            "partID INTEGER NOT NULL, " +
                                                             "quantity INTEGER NOT NULL" +
                                                             ")");
         } catch (SQLException e) {
@@ -194,7 +195,7 @@ public class LocationsAndContentsDAO {
     public List<Warehouse> getAllWarehouses () {
         List<Warehouse> warehouses = new ArrayList<>();
 
-        String query = "SELECT * FROM locations WHERE locationType = WAREHOUSE";
+        String query = "SELECT * FROM locations WHERE locationType = \"WAREHOUSE\"";
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -202,7 +203,7 @@ public class LocationsAndContentsDAO {
             while (rs.next()) {
                 int locationID = rs.getInt("locationID");
                 String locationAlias = rs.getString("locationAlias");
-                int capacity = rs.getInt("capacity");
+                int capacity = rs.getInt("locationCapacity");
 
                 Warehouse warehouseItem = new RealWarehouse();
                 warehouses.add(warehouseItem);
@@ -214,23 +215,62 @@ public class LocationsAndContentsDAO {
         return warehouses;
     }
 
-    public void getAllWorkstations () {
+    public List<Workstation> getAllWorkstations () {
+        List<Workstation> workstations = new ArrayList<>();
 
+        String query = "SELECT * FROM locations WHERE locationType = \"WORKSTATION\"";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int locationID = rs.getInt("locationID");
+                String locationAlias = rs.getString("locationAlias");
+                int capacity = rs.getInt("locationCapacity");
+
+                Workstation workstationItem = new RealWorkstation(locationID, locationAlias, capacity);
+                workstations.add(workstationItem);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        return workstations;
     }
 
     public void getAllPartsInWarehouse () {
-
+        System.out.println("FIXME: getAllPartsInWarehouse not implemented.");
     }
 
     public void getAllPartsForWorkstation () {
-
+        System.out.println("FIXME: getAllPartsForWorkstation not implemented.");
     }
 
-    public void isLocationsTableEmpty () {
-
+    public boolean isLocationsTableEmpty () {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM locations");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
     }
 
-    public void isLocationContentsTableEmpty () {
-
+    public boolean isLocationContentsTableEmpty () {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM locationContents");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
     }
 }
