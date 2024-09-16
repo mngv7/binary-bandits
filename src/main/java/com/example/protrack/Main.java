@@ -40,7 +40,7 @@ public class Main extends Application {
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("application_logo.png")));
         stage.getIcons().add(icon);
         stage.setScene(scene);
-        stage.setMaximized(true);
+        stage.setMaximized(false);
         stage.show();
     }
 

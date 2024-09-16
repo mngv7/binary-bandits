@@ -13,6 +13,7 @@
                     GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
         </GridPane>
     </top>
+
     <center>
         <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER">
             <HBox spacing="20" styleClass="create-product-scrollpane" VBox.vgrow="ALWAYS">

@@ -7,7 +7,7 @@
             fx:controller="com.example.protrack.applicationpages.ProductsController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <VBox spacing="10">
+        <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
             <Label text="Products" styleClass="title-label"/>
         </VBox>
     </top>
