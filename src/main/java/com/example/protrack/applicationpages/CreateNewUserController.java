@@ -1,4 +1,8 @@
 package com.example.protrack.applicationpages;
+import com.example.protrack.users.ManagerialUser;
+import com.example.protrack.users.ProductionUser;
+import com.example.protrack.users.UsersDAO;
+import com.example.protrack.users.WarehouseUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -8,6 +12,9 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class CreateNewUserController {
@@ -37,9 +44,6 @@ public class CreateNewUserController {
     public ComboBox accessLevelComboBox;
 
     @FXML
-    public PasswordField createPassword;
-
-    @FXML
     public Button addUserButton;
 
     public void onClosePopupButton() {
@@ -56,8 +60,6 @@ public class CreateNewUserController {
 
         ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
-
 
         alert.getButtonTypes().setAll(confirmBtn, backBtn);
         Stage stage = (Stage) closePopupButton.getScene().getWindow();
@@ -76,6 +78,36 @@ public class CreateNewUserController {
         }
     }
 
-    public void createNewUser() {
+    public void createNewUser() throws SQLException {
+        UsersDAO usersDAO = new UsersDAO();
+
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
+        String phone = phoneNumberField.getText();
+        String gender = genderComboBox.getValue().toString();
+        String password = "default";
+        LocalDate localDate = dobPicker.getValue();
+        Date sqlDate = Date.valueOf(localDate);
+        Integer employeeId = usersDAO.getMaxEmployeeId() + 1;
+
+
+        switch (accessLevelComboBox.getValue().toString()) {
+            case "HIGH":
+                usersDAO.newUser(new ManagerialUser(employeeId, firstName, lastName, sqlDate, email, phone, gender, password));
+                break;
+            case "MEDIUM":
+                usersDAO.newUser(new WarehouseUser(employeeId, firstName, lastName, sqlDate, email, phone, gender, password));
+                break;
+            case "LOW":
+                usersDAO.newUser(new ProductionUser(employeeId, firstName, lastName, sqlDate, email, phone, gender, password));
+                break;
+            default:
+                System.out.println("Unknown access level.");
+                break;
+        }
+
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 }

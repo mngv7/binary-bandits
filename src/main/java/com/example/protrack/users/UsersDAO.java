@@ -272,6 +272,42 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
+    public Integer getMaxEmployeeId() throws SQLException {
+        String query = "SELECT MAX(employeeID) AS maxId FROM users";
+
+        try (PreparedStatement getMaxId = connection.prepareStatement(query)) {
+
+            try(ResultSet rs = getMaxId.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("maxId");
+                } else {
+                    return -1;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public AbstractUser getUserB2yId(Integer employeeId) {
+        String query = "SELECT * FROM users WHERE employeeId = ?";
+
+        try (PreparedStatement getUser = connection.prepareStatement(query)) {
+            getUser.setInt(1, employeeId);
+
+            try (ResultSet rs = getUser.executeQuery()) {
+                if (rs.next()) {
+                    String accessLevel = rs.getString("accessLevel");
+                    return mapResultSetToUser(rs, accessLevel);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public boolean isTableEmpty() {
         try {
