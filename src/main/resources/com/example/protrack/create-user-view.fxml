@@ -56,9 +56,6 @@
                 </items>
             </ComboBox>
 
-            <Label text="Password:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-            <PasswordField fx:id="createPassword" promptText="Password" maxWidth="700" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
-
             <Button fx:id="addUserButton" text="Create User" onAction="#createNewUser" styleClass="add-parts-button"
                     GridPane.columnIndex="0" GridPane.rowIndex="10"
                     GridPane.columnSpan="2" GridPane.rowSpan="2"
