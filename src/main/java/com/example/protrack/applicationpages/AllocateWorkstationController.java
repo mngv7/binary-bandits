@@ -1,5 +1,6 @@
 package com.example.protrack.applicationpages;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,11 +12,17 @@ import com.example.protrack.warehouseutil.*;
 
 import java.io.IOException;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class AllocateWorkstationController {
     private WarehouseController parentWarehouse;
 
     @FXML
     private ComboBox<String> workstationComboBox;
+
+    public void initialize() {
+    }
 
     @FXML
     private void handleClose() {
@@ -25,19 +32,27 @@ public class AllocateWorkstationController {
 
     @FXML
     private void handleAllocate() {
-        String selectedWorkstation = workstationComboBox.getValue();
+        Workstation selectedWorkstation = parentWarehouse.getAllWorkstations().get(workstationComboBox.getSelectionModel().getSelectedIndex());
         if (selectedWorkstation != null) {
             // Handle allocation logic here
-            System.out.println("Allocated: " + selectedWorkstation);
+            System.out.println("Allocated: " + selectedWorkstation.getWorkstationName());
             // try to connect WorkStation page
-            /* TODO: Connect actual workstation; the combo box doesn't yet have enough data. */
-            this.parentWarehouse.openWorkstation(null);
+            this.parentWarehouse.openWorkstation(selectedWorkstation);
             handleClose();
         }
     }
 
     public void setParentWarehouseController(WarehouseController warehouse) {
         this.parentWarehouse = warehouse;
+
+        /* HACK: Initialise the workstationComboBox here too; this guarantees warehouse isn't null when it's filled. */
+        if (this.parentWarehouse != null) {
+            List<String> workstationNames = new ArrayList<>();
+            for (int i = 0; i < parentWarehouse.getAllWorkstations().size(); ++i) {
+                workstationNames.add(parentWarehouse.getAllWorkstations().get(i).getWorkstationName());
+            }
+            workstationComboBox.setItems(FXCollections.observableArrayList(workstationNames));
+        }
     }
 
     //function to loadNewPage
