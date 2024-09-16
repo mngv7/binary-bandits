@@ -1,6 +1,6 @@
 package com.example.protrack.customer;
 
-import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.workorder.WorkOrder;
 
 import java.sql.*;

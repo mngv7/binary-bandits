@@ -2,7 +2,7 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.database.ProductDBTable;
-import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.utility.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -50,6 +50,7 @@ public class ProductsController {
         productList = FXCollections.observableArrayList();
         productTable.setItems(productList);
         productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         refreshTable();
     }
 
