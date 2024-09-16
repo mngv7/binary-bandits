@@ -24,44 +24,7 @@
                     <Button text="Allocate Workstation" onAction="#handleAllocateWorkstation" styleClass="add-parts-button"/>
                 </HBox>
 
-
-                <TableView fx:id="warehouseTable"  layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn text="Warehouse ID">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="WarehouseId"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Warehouse">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="WarehouseName"/>
-                            </cellValueFactory>
-                        </TableColumn>
-
-                        <TableColumn text="Warehouse Location">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="WarehouseLocation"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="parts Id">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="partsId"/>
-                            </cellValueFactory>
-                        </TableColumn>
-
-                    </columns>
-                </TableView>
-
-                <!-- Pagination -->
-                <HBox>
-                    <children>
-                        <Button text="Previous"/>
-                        <Label text="1"/>
-                        <Button text="Next"/>
-                    </children>
-                </HBox>
-
-                <!-- Sale Orders -->
+                <!-- Workstations -->
                 <Label text="Workstations" styleClass="title-label"/>
                 <TableView fx:id="workstationTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                     <columns>
