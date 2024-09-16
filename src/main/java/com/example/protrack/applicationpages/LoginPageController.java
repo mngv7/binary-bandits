@@ -18,6 +18,8 @@ import java.sql.SQLException;
 
 public class LoginPageController {
 
+    private Integer loggedInId;
+
     @FXML
     private Label loginErrorMessage;
 
@@ -34,6 +36,7 @@ public class LoginPageController {
 
     @FXML
     protected void onLoginButtonClick() throws IOException, SQLException {
+        UsersDAO usersDAO = new UsersDAO();
         String fullName = fullNameTextField.getText();
 
         // DO NOT MERGE TO MAIN WITH (true) IN THE IF CHECK.
@@ -41,6 +44,7 @@ public class LoginPageController {
             fullNameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
             loginAttempts = 0;
+            loggedInId = usersDAO.getEmployeeIdByFullName(fullName);
             loadHomePage();
         } else {
             loginErrorMessage.setText("Invalid first name or password.");
@@ -121,5 +125,9 @@ public class LoginPageController {
         fullNameTextField.setFocusTraversable(status);
         passwordTextField.setFocusTraversable(status);
         loginButton.setFocusTraversable(status);
+    }
+
+    public Integer getLoggedInId() {
+        return loggedInId;
     }
 }
