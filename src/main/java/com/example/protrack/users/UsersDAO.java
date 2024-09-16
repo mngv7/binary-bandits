@@ -1,21 +1,20 @@
 package com.example.protrack.users;
 
 import com.example.protrack.databaseutil.DatabaseConnection;
-import com.example.protrack.parts.Parts;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TooManyListenersException;
 
-public class UsersDAO {
+public class UsersDAO implements IUsersDAO {
     private final Connection connection;
 
     public UsersDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
+    @Override
     public void createTable() {
         try {
             Statement createTable = connection.createStatement();
@@ -37,6 +36,7 @@ public class UsersDAO {
         }
     }
 
+    @Override
     public List<AbstractUser> getAllUsers() {
         List<AbstractUser> users = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class UsersDAO {
         return users;
     }
 
-
+    @Override
     public AbstractUser mapResultSetToUser(ResultSet resultSet) throws SQLException {
         String userType = resultSet.getString("accessLevel");
 
@@ -113,8 +113,10 @@ public class UsersDAO {
         };
     }
 
-    public List<ManagerialUser> getManagerialUsers() throws SQLException {
+
+        public List<ManagerialUser> getManagerialUsers() throws SQLException {
         List<ManagerialUser> managerialUsers = new ArrayList<>();
+
         String query = "SELECT * FROM users WHERE accessLevel = 'HIGH'";
 
         PreparedStatement getManagerialUsers = connection.prepareStatement(query);
@@ -129,24 +131,28 @@ public class UsersDAO {
         return managerialUsers;
     }
 
+
     public List<WarehouseUser> getWarehouseUsers() throws SQLException {
         List<WarehouseUser> warehouseUsers = new ArrayList<>();
         String query = "SELECT * FROM users WHERE accessLevel = 'MEDIUM'";
 
-        PreparedStatement getWarehouseUsers = connection.prepareStatement(query);
-
-        ResultSet rs = getWarehouseUsers.executeQuery();
+        
+        ResultSet rs = getWarehouseUsers.executeQuery()) {
 
         while (rs.next()) {
             AbstractUser warehouseUser = mapResultSetToUser(rs);
-            warehouseUsers.add((WarehouseUser) warehouseUser);
+            if (warehouseUser instanceof WarehouseUser) {
+                warehouseUsers.add((WarehouseUser) warehouseUser);
+            }
         }
 
         return warehouseUsers;
     }
 
+
     public List<ProductionUser> getProductionUsers() throws SQLException {
         List<ProductionUser> productionUsers = new ArrayList<>();
+
         String query = "SELECT * FROM users WHERE accessLevel = 'LOW'";
 
         PreparedStatement getProductionUsers = connection.prepareStatement(query);
@@ -160,6 +166,7 @@ public class UsersDAO {
         return productionUsers;
     }
 
+    @Override
     public void dropTable() {
         String query = "DROP TABLE IF EXISTS users";  // SQL statement to drop the work_orders table
 
@@ -171,6 +178,7 @@ public class UsersDAO {
         }
     }
 
+    @Override
     public String getPasswordByFirstName(String firstName) {
         try {
             PreparedStatement getAccount = connection.prepareStatement("SELECT password FROM users WHERE firstName = ?");
@@ -187,6 +195,7 @@ public class UsersDAO {
         return null;
     }
 
+    @Override
     public String getAccessLevelByFirstName(String firstName) {
         try {
             PreparedStatement getAccount = connection.prepareStatement("SELECT accessLevel FROM users WHERE firstName = ?");
@@ -203,6 +212,7 @@ public class UsersDAO {
         return null;
     }
 
+    @Override
     public void newUser(AbstractUser user) {
         try {
             PreparedStatement insertAccount = connection.prepareStatement(
@@ -226,6 +236,7 @@ public class UsersDAO {
         }
     }
 
+    @Override
     public boolean isTableEmpty() {
         try {
             Statement stmt = connection.createStatement();
