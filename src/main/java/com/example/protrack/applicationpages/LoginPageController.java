@@ -2,6 +2,7 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.utility.LoggedInUserSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,8 +18,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class LoginPageController {
-
-    private Integer loggedInId;
 
     @FXML
     private Label loginErrorMessage;
@@ -39,12 +38,14 @@ public class LoginPageController {
         UsersDAO usersDAO = new UsersDAO();
         String fullName = fullNameTextField.getText();
 
-        // DO NOT MERGE TO MAIN WITH (true) IN THE IF CHECK.
         if (checkLoginDetails(fullName)) {
             fullNameTextField.getStyleClass().remove("login-error");
             passwordTextField.getStyleClass().remove("login-error");
             loginAttempts = 0;
-            loggedInId = usersDAO.getEmployeeIdByFullName(fullName);
+
+            Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName);
+            LoggedInUserSingleton.getInstance().setEmployeeId(employeeId);
+
             loadHomePage();
         } else {
             loginErrorMessage.setText("Invalid first name or password.");
@@ -77,7 +78,7 @@ public class LoginPageController {
         String fullName = fullNameTextField.getText();
 
         mainController.setEmployeeName(fullName);
-        Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName);
+        Integer employeeId = LoggedInUserSingleton.getInstance().getEmployeeId();
         mainController.setEmployeeTitle(usersDAO.getUserById(employeeId).getAccessLevel());
 
         Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
@@ -85,7 +86,6 @@ public class LoginPageController {
         stage.show();
         scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
     }
-
 
     private boolean isInputValid() throws SQLException {
         String fullName = fullNameTextField.getText();
@@ -101,9 +101,7 @@ public class LoginPageController {
     private boolean checkLoginDetails(String fullName) throws SQLException {
         if (isInputValid()) {
             UsersDAO usersDAO = new UsersDAO();
-
             Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName);
-
             String usersPassword = usersDAO.getUserById(employeeId).getPassword();
 
             if (usersPassword != null) {
@@ -125,9 +123,5 @@ public class LoginPageController {
         fullNameTextField.setFocusTraversable(status);
         passwordTextField.setFocusTraversable(status);
         loginButton.setFocusTraversable(status);
-    }
-
-    public Integer getLoggedInId() {
-        return loggedInId;
     }
 }
