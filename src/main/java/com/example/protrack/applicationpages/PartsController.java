@@ -3,12 +3,15 @@ package com.example.protrack.applicationpages;
 import com.example.protrack.Main;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
+import com.example.protrack.users.UsersDAO;
+import com.example.protrack.utility.LoggedInUserSingleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,6 +23,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class PartsController {
+
+    @FXML
+    public Button addPartsButton;
 
     @FXML
     private TableView<Parts> partsTable;
@@ -42,6 +48,11 @@ public class PartsController {
     private ObservableList<Parts> partsList;
 
     public void initialize() {
+        Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
+        UsersDAO usersDAO = new UsersDAO();
+
+        addPartsButton.setDisable(usersDAO.getUserById(loggedInId).getAccessLevel().equals("LOW"));
+
         colPartsId.setCellValueFactory(new PropertyValueFactory<>("partsId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));

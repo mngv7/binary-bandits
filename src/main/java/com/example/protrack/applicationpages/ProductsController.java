@@ -2,13 +2,16 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.database.ProductDBTable;
+import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.DatabaseConnection;
+import com.example.protrack.utility.LoggedInUserSingleton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProductsController {
+
+    @FXML
+    public Button addProductButton;
 
     @FXML
     private TableView<ProductDBTable> productTable;
@@ -42,6 +48,11 @@ public class ProductsController {
     private ObservableList<ProductDBTable> productList;
 
     public void initialize() {
+        Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
+        UsersDAO usersDAO = new UsersDAO();
+
+        addProductButton.setDisable(!usersDAO.getUserById(loggedInId).getAccessLevel().equals("HIGH"));
+
         colProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
         colProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         colDateCreated.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));

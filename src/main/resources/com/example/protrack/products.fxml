@@ -22,7 +22,7 @@
                     <Button text="Refresh Table" onAction="#refreshTable" styleClass="create-product-button-refresh-button"/>
                 </HBox>
                 <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
-                    <Button text="Create Product" onAction="#openCreateProductPopup" styleClass="create-product-button-refresh-button"/>
+                    <Button fx:id="addProductButton" text="Create Product" onAction="#openCreateProductPopup" styleClass="create-product-button-refresh-button"/>
                 </HBox>
             </HBox>
             <TableView fx:id="productTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">

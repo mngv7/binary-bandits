@@ -18,11 +18,6 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class CreateTestRecordController {
-    /*
-    private static final String TITLE = "Create Test Record";
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 360;
-    */
 
     private int numSteps = 0;
 
@@ -144,13 +139,8 @@ public class CreateTestRecordController {
                 numNewSteps++;
                 Label label = new Label("Step " + numNewSteps + ": ");
 
-                // Get the labels and text field from the HBox
                 TextField textField1 = (TextField) column.getChildren().get(1);
 
-                //ComboBox<Object> comboBox = new ComboBox<>();
-                //comboBox.setItems(FXCollections.observableArrayList("Checkbox 1", "Text Entry");
-                //comboBox.getItems().addAll("Checkbox 1", "Text Entry");
-                //comboBox.setValue();
 
                 TextField textField2 = (TextField) column.getChildren().get(3);
 
@@ -164,39 +154,6 @@ public class CreateTestRecordController {
 
             }
         }
-
-        /*
-        for (var node : testRecordsVBox.getChildren()) {
-            if (node instanceof HBox column) {
-
-                numNewSteps++;
-                Label label = new Label("Step " + numNewSteps + ": ");
-
-                // Get the labels and text field from the VBox
-                TextField textField1 = (TextField) column.getChildren().get(1);
-
-                ComboBox<Object> comboBox = new ComboBox<>();
-                //comboBox.setItems(FXCollections.observableArrayList("Checkbox 1", "Text Entry");
-                comboBox.getItems().addAll("Checkbox 1", "Text Entry");
-                comboBox.setValue(column.getChildren().get(2));
-
-                TextField textField2 = (TextField) column.getChildren().get(3);
-
-
-
-                String partsId = idLabel.getText().replace("Part ID: ", "");
-
-                TextField amountField = (TextField) column.getChildren().get(2); // Assuming the third element is the TextField for required amount
-                String requiredAmount = amountField.getText();
-
-                RequiredPartsDAO requiredPartsDAO = new RequiredPartsDAO();
-                requiredPartsDAO.newRequiredParts(new RequiredParts(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
-
-
-            }
-        }
-        */
-
     }
 
 
