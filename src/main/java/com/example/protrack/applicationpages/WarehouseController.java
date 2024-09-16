@@ -9,7 +9,6 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -20,13 +19,16 @@ import java.util.Objects;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
+    public LocationsAndContentsDAO locationsAndContents;
+
     @FXML
     private TableView<Workstation> workstationTable;
     private List<Workstation> workstations; /* Loaded workstations from a database. */
 
     @FXML
     public void initialize() {
-        loadWorkstationData();
+        locationsAndContents = new LocationsAndContentsDAO();
+        loadWorkstationData(); /* TODO: Could probably remove this part and populate workstations directly. */
 
         // Create and set the context menu for the workstationTable
         ContextMenu contextMenu = new ContextMenu();
@@ -55,18 +57,12 @@ public class WarehouseController {
 
     private void loadWorkstationData() {
         if (workstations == null) {
-            workstations = new ArrayList<>();
-
-            /* TODO: load from mock/real DB later. For now, make dummy data. */
-            workstations.add(new RealWorkstation(0, "Workstation 1", 300));
-            workstations.add(new RealWorkstation(1, "Workstation 2", 20));
-            workstations.add(new RealWorkstation(2, "Workstation 3", 54));
-            workstations.add(new RealWorkstation(3, "Workstation 4", 255));
+            workstations = locationsAndContents.getAllWorkstations();
         }
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
 
-    public List<Workstation> getAllWorkstations() {
+    public List<Workstation> getAllWorkstationsInRAM() {
         return this.workstations;
     }
 

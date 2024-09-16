@@ -24,8 +24,6 @@ public class RealWarehouse implements Warehouse {
         this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
         this.partsId = new ArrayList<>();
         this.maxParts = locationCapacity;
-
-        /* TODO: automatic DB load for existing entry if present in DB */
     }
 
     public RealWarehouse (int locationID, String locationAlias, int locationCapacity, List<partIdWithQuantity> partsLinked) {
@@ -34,8 +32,6 @@ public class RealWarehouse implements Warehouse {
         this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
         this.partsId = partsLinked;
         this.maxParts = locationCapacity;
-
-        /* TODO: automatic DB load for existing entry if present in DB */
     }
 
     public String getWarehouseName() {
@@ -59,7 +55,7 @@ public class RealWarehouse implements Warehouse {
     public int getMaxParts() { return this.maxParts; }
     public void setMaxParts(int maxParts) { this.maxParts = maxParts; }
 
-    public void addPartsIdWithQuantity (int partsId, int quantity) {
+    public void addPartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
@@ -72,10 +68,10 @@ public class RealWarehouse implements Warehouse {
         newPart.quantity = quantity;
         this.partsId.add(newPart);
 
-        /* TODO: DAO stuff here. */
+        dao.insertPartsIdWithQuantityIntoLocation(this.warehouseId, newPart);
     }
 
-    public void removePartsIdWithQuantity (int partsId, int quantity) {
+    public void removePartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
@@ -84,6 +80,7 @@ public class RealWarehouse implements Warehouse {
                     amountToSubtract = this.partsId.get(i).quantity;
                 }
                 this.partsId.get(i).quantity -= amountToSubtract;
+                dao.removePartsIdWithQuantityFromLocation(this.warehouseId, this.partsId.get(i));
                 if (this.partsId.get(i).quantity <= 0) {
                     /* Remove part from workstation entirely. */
                     this.partsId.remove(this.partsId.get(i));
@@ -92,7 +89,5 @@ public class RealWarehouse implements Warehouse {
                 return; /* We don't need to progress any further. */
             }
         }
-
-        /* TODO: DAO stuff here. */
     }
 }

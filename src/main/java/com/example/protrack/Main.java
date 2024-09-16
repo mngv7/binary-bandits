@@ -6,12 +6,14 @@ import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
+import com.example.protrack.warehouseutil.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import javax.xml.stream.Location;
 import java.sql.Date;
 import java.io.IOException;
 import java.util.Objects;
@@ -51,12 +53,14 @@ public class Main extends Application {
         BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
         TestRecordDAO testRecordDAO = new TestRecordDAO();
         UsersDAO usersDAO = new UsersDAO();
+        LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
 
         partsDAO.createTable();
         productDAO.createTable();
         usersDAO.createTable();
         testRecordDAO.createTable();
         billOfMaterial.createTable();
+        locationsAndContentsDAO.createTables();
 
         if (usersDAO.isTableEmpty()) {
             usersDAO.newUser(new ManagerialUser(100, "John", "Doe", Date.valueOf("1985-01-01"), "john.doe@example.com", "0400125123", "Male", "password"));
@@ -122,6 +126,20 @@ public class Main extends Application {
             partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
             partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 51, 2.10));
         }
+
+        if (locationsAndContentsDAO.isLocationsTableEmpty()) {
+            locationsAndContentsDAO.newWarehouse(new RealWarehouse(0, "Lotus", 5000));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(1, "Workstation 1", 300));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(2, "Workstation 2", 40));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(3, "Workstation 3", 54));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(4, "Workstation 4", 255));
+        }
+
+        if (locationsAndContentsDAO.isLocationContentsTableEmpty()) {
+            /* TODO: Probe partsDAO and populate Warehouse with it. */
+            System.out.println("Warning: location Contents table created empty intentionally.");
+        }
+
         launch();
     }
 }
