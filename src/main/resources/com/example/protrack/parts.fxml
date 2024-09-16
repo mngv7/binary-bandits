@@ -21,7 +21,7 @@
                     <Button text="Refresh Table" onAction="#refreshTable" styleClass="add-parts-button"/>
                 </HBox>
                 <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
-                    <Button text="Add Parts" onAction="#openAddPartsPopup" styleClass="add-parts-button"/>
+                    <Button fx:id="addPartsButton" text="Add Parts" onAction="#openAddPartsPopup" styleClass="add-parts-button"/>
                 </HBox>
             </HBox>
             <TableView fx:id="partsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
