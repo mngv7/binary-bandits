@@ -31,7 +31,7 @@ public class MockWarehouse {
     }
 
     public MockWarehouse(int warehouseId, String warehouseName, String warehouseLocation) {
-        this.warehouseId = 0;
+        this.warehouseId = warehouseId;
         this.warehouseName = warehouseName;
         this.warehouseLocation = warehouseLocation;
         this.partsId = new ArrayList<>();

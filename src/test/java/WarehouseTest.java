@@ -1,5 +1,4 @@
-package com.example.protrack.warehouseutil;
-
+import com.example.protrack.warehouseutil.MockWarehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
