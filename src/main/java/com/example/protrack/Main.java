@@ -22,6 +22,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -128,14 +129,14 @@ public class Main extends Application {
             usersDAO.newUser(new ProductionUser(105, "Eve", "Davis", Date.valueOf("1993-07-22"), "eve.davis@example.com", "0400473123", "Female", "evepass"));
             usersDAO.newUser(new ProductionUser(106, "Frank", "Miller", Date.valueOf("1989-12-09"), "frank.miller@example.com", "0400192123", "Male", "frankpass"));
         }
-        HashMap<Integer, ProductionUser> productionUsers = usersDAO.getProductionUsers();
+        List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
 
         CustomerDAO customerDAO = new CustomerDAO();
         customerDAO.createTable();
         if (customerDAO.isTableEmpty()) {
             customerDAO.addCustomer(new Customer(1, "Jane", "Doe", "jane.doe@example.com", "0400187362", "billingAddress", "shippingAddress", "Active"));
         }
-        HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
+        List<Customer> customers = customerDAO.getAllCustomers();
 
         WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();

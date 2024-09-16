@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Controller for managing and displaying work orders on the profile page.
@@ -33,8 +34,8 @@ public class ProfileWorkOrdersController {
         CustomerDAO customerDAO = new CustomerDAO();
 
         // Creates HashMaps that retrieve HashMaps containing all users and customers
-        HashMap<Integer, ProductionUser> productionUsers = usersDAO.getProductionUsers();
-        HashMap<Integer, Customer> customers = customerDAO.getAllCustomers();
+        List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
+        List<Customer> customers = customerDAO.getAllCustomers();
 
         // Initialises WorkOrdersDAOImplementation using the recently initialised UsersDAO and CustomersDAO objects
         this.workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
@@ -56,7 +57,7 @@ public class ProfileWorkOrdersController {
      */
     @FXML
     private void displayPendingWorkOrders() {
-        ArrayList<WorkOrder> pendingWorkOrders;
+        List<WorkOrder> pendingWorkOrders;
         try {
             // Retrieves pending work orders
             pendingWorkOrders = workOrdersDAO.getWorkOrderByStatus("pending");
