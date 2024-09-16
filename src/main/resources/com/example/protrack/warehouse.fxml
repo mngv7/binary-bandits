@@ -25,33 +25,30 @@
                 </HBox>
 
 
-                <TableView fx:id="workstationTable">
+                <TableView fx:id="workhouseTable"  layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn text="Workstation">
+                        <TableColumn text="Warehouse ID">
                             <cellValueFactory>
-                                <PropertyValueFactory property="workstationName"/>
+                                <PropertyValueFactory property="WarehouseId"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <!--TableColumn text="Employee ID">
+                        <TableColumn text="Warehouse">
                             <cellValueFactory>
-                                <PropertyValueFactory property="employeeId"/>
+                                <PropertyValueFactory property="WarehouseName"/>
                             </cellValueFactory>
-                        </TableColumn-->
-                        <!--TableColumn text="Worker">
+                        </TableColumn>
+
+                        <TableColumn text="Warehouse Location">
                             <cellValueFactory>
-                                <PropertyValueFactory property="workerName"/>
+                                <PropertyValueFactory property="WarehouseLocation"/>
                             </cellValueFactory>
-                        </TableColumn-->
-                        <!--TableColumn text="Stock Level">
+                        </TableColumn>
+                        <TableColumn text="parts Id">
                             <cellValueFactory>
-                                <PropertyValueFactory property="stockLevel"/>
+                                <PropertyValueFactory property="partsId"/>
                             </cellValueFactory>
-                        </TableColumn-->
-                        <!--TableColumn text="Production Output">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="productionOutput"/>
-                            </cellValueFactory>
-                        </TableColumn-->
+                        </TableColumn>
+
                     </columns>
                 </TableView>
 
@@ -60,43 +57,37 @@
                     <children>
                         <Button text="Previous"/>
                         <Label text="1"/>
-                        <Label text="2"/>
                         <Button text="Next"/>
                     </children>
                 </HBox>
 
                 <!-- Sale Orders -->
-                <Label text="Completed Sale Orders" styleClass="section-label"/>
-                <TableView fx:id="saleOrderTable">
+                <Label text="WarestationTable" styleClass="title-label"/>
+                <TableView fx:id="WarestationTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn text="SO ID">
+                        <TableColumn text="Workstation Id">
                             <cellValueFactory>
-                                <PropertyValueFactory property="soId"/>
+                                <PropertyValueFactory property="WorkstationId"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Workstation">
+                        <TableColumn text="Workstation Name">
                             <cellValueFactory>
-                                <PropertyValueFactory property="workstation"/>
+                                <PropertyValueFactory property="WorkstationName"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Worker">
+                        <TableColumn text="Workstation Location">
                             <cellValueFactory>
-                                <PropertyValueFactory property="worker"/>
+                                <PropertyValueFactory property="WorkstationLocation"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Products">
+                        <TableColumn text="WorkstationMaxParts">
                             <cellValueFactory>
-                                <PropertyValueFactory property="products"/>
+                                <PropertyValueFactory property="maxParts"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Components Used">
+                        <TableColumn text="parts Id">
                             <cellValueFactory>
-                                <PropertyValueFactory property="componentsUsed"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Flags">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="flags"/>
+                                <PropertyValueFactory property="partsId"/>
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
