@@ -82,14 +82,9 @@
                                 <PropertyValueFactory property="WorkstationLocation"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="WorkstationMaxParts">
+                        <TableColumn text="Workstation Capacity">
                             <cellValueFactory>
-                                <PropertyValueFactory property="maxParts"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="parts Id">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="partsId"/>
+                                <PropertyValueFactory property="WorkstationMaxParts"/>
                             </cellValueFactory>
                         </TableColumn>
                     </columns>

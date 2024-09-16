@@ -9,6 +9,6 @@ public interface Workstation {
     void setWorkstationId(int workstationID);
     int getWorkstationMaxParts();
     void setWorkstationMaxParts(int maxParts);
-    void importPartsIdWithQuantityFromWarehouse(Warehouse targetWarehouse, int componentId, int quantity);
-    void returnPartsIdWithQuantityToWarehouse(Warehouse targetWarehouse, int componentId, int quantity);
+    void importPartsIdWithQuantityFromWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao, int componentId, int quantity);
+    void returnPartsIdWithQuantityToWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao, int componentId, int quantity);
 }

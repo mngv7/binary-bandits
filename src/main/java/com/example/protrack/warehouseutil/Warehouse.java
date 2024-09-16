@@ -9,6 +9,6 @@ public interface Warehouse {
     void setWarehouseId(int warehouseId);
     int getMaxParts();
     void setMaxParts(int maxParts);
-    void addPartsIdWithQuantity (int partsId, int quantity);
-    void removePartsIdWithQuantity (int partsId, int quantity);
+    void addPartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity);
+    void removePartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity);
 }

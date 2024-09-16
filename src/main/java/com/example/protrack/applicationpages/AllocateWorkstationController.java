@@ -32,7 +32,7 @@ public class AllocateWorkstationController {
 
     @FXML
     private void handleAllocate() {
-        Workstation selectedWorkstation = parentWarehouse.getAllWorkstations().get(workstationComboBox.getSelectionModel().getSelectedIndex());
+        Workstation selectedWorkstation = parentWarehouse.getAllWorkstationsInRAM().get(workstationComboBox.getSelectionModel().getSelectedIndex());
         if (selectedWorkstation != null) {
             // Handle allocation logic here
             System.out.println("Allocated: " + selectedWorkstation.getWorkstationName());
@@ -48,8 +48,8 @@ public class AllocateWorkstationController {
         /* HACK: Initialise the workstationComboBox here too; this guarantees warehouse isn't null when it's filled. */
         if (this.parentWarehouse != null) {
             List<String> workstationNames = new ArrayList<>();
-            for (int i = 0; i < parentWarehouse.getAllWorkstations().size(); ++i) {
-                workstationNames.add(parentWarehouse.getAllWorkstations().get(i).getWorkstationName());
+            for (int i = 0; i < parentWarehouse.getAllWorkstationsInRAM().size(); ++i) {
+                workstationNames.add(parentWarehouse.getAllWorkstationsInRAM().get(i).getWorkstationName());
             }
             workstationComboBox.setItems(FXCollections.observableArrayList(workstationNames));
         }

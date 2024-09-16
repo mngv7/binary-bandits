@@ -76,12 +76,15 @@ public class MockWorkstation implements Workstation {
     public int getWorkstationMaxParts() { return this.maxParts; }
     public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
 
-    public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse, int partsId, int quantity) {
+    public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse,
+                                                        LocationsAndContentsDAO dao,
+                                                        int partsId,
+                                                        int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
                 if (targetWarehouse != null)
-                    targetWarehouse.removePartsIdWithQuantity(partsId, quantity);
+                    targetWarehouse.removePartsIdWithQuantity(dao, partsId, quantity);
                 return;
             }
         }
@@ -92,7 +95,10 @@ public class MockWorkstation implements Workstation {
         this.partsId.add(newPart);
     }
 
-    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse, int partsId, int quantity) {
+    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse,
+                                                      LocationsAndContentsDAO dao,
+                                                      int partsId,
+                                                      int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
@@ -107,7 +113,7 @@ public class MockWorkstation implements Workstation {
                     return;
                 }
                 if (targetWarehouse != null)
-                    targetWarehouse.addPartsIdWithQuantity(partsId, quantity);
+                    targetWarehouse.addPartsIdWithQuantity(dao, partsId, quantity);
                 return; /* We don't need to progress any further. */
             }
         }

@@ -9,6 +9,7 @@ import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
+import com.example.protrack.warehouseutil.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.application.Application;
@@ -17,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import javax.xml.stream.Location;
+import java.sql.Date;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -143,6 +146,23 @@ public class Main extends Application {
         if (wdao.isTableEmpty()) {
             wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", 1, "pending", 40.87));
         }
+
+        LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
+        locationsAndContentsDAO.createTables();
+
+        if (locationsAndContentsDAO.isLocationsTableEmpty()) {
+            locationsAndContentsDAO.newWarehouse(new RealWarehouse(0, "Lotus", 5000));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(1, "Workstation 1", 300));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(2, "Workstation 2", 40));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(3, "Workstation 3", 54));
+            locationsAndContentsDAO.newWorkstation(new RealWorkstation(4, "Workstation 4", 255));
+        }
+
+        if (locationsAndContentsDAO.isLocationContentsTableEmpty()) {
+            /* TODO: Probe partsDAO and populate Warehouse with it. */
+            System.out.println("Warning: location Contents table created empty intentionally.");
+        }
+
 
         launch();
     }

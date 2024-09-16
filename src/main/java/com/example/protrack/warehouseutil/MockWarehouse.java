@@ -59,7 +59,7 @@ public class MockWarehouse {
     public int getMaxParts() { return this.maxParts; }
     public void setMaxParts(int maxParts) { this.maxParts = maxParts; }
 
-    public void addPartsIdWithQuantity (int partsId, int quantity) {
+    public void addPartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
@@ -72,7 +72,7 @@ public class MockWarehouse {
         newPart.quantity = quantity;
         this.partsId.add(newPart);
     }
-    public void removePartsIdWithQuantity (int partsId, int quantity) {
+    public void removePartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;

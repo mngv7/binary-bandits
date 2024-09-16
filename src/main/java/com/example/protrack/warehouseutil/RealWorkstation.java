@@ -24,8 +24,6 @@ public class RealWorkstation implements Workstation {
         this.workstationLocation = "Spike Site A";
         this.maxParts = maxParts;
         this.partsId = new ArrayList<>();
-
-        /* TODO: automatic DB load for existing entry if present in DB */
     }
 
     public RealWorkstation (int locationID, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
@@ -34,8 +32,6 @@ public class RealWorkstation implements Workstation {
         this.workstationLocation = "Spike Site A";
         this.maxParts = maxParts;
         this.partsId = parts;
-
-        /* TODO: automatic DB load for existing entry if present in DB */
     }
 
     public String getWorkstationName() {
@@ -64,12 +60,15 @@ public class RealWorkstation implements Workstation {
     public int getWorkstationMaxParts() { return this.maxParts; }
     public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
 
-    public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse, int partsId, int quantity) {
+    public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse,
+                                                        LocationsAndContentsDAO dao,
+                                                        int partsId,
+                                                        int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
                 if (targetWarehouse != null)
-                    targetWarehouse.removePartsIdWithQuantity(partsId, quantity);
+                    targetWarehouse.removePartsIdWithQuantity(dao, partsId, quantity);
                 return;
             }
         }
@@ -79,10 +78,10 @@ public class RealWorkstation implements Workstation {
         newPart.quantity = quantity;
         this.partsId.add(newPart);
 
-        /* TODO: Add DAO calls here. */
+        dao.insertPartsIdWithQuantityIntoLocation (this.workstationId, newPart);
     }
 
-    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse, int partsId, int quantity) {
+    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
@@ -91,17 +90,16 @@ public class RealWorkstation implements Workstation {
                     amountToSubtract = this.partsId.get(i).quantity;
                 }
                 this.partsId.get(i).quantity -= amountToSubtract;
+                dao.removePartsIdWithQuantityFromLocation(this.workstationId, this.partsId.get(i));
                 if (this.partsId.get(i).quantity <= 0) {
                     /* Remove part from workstation entirely. */
                     this.partsId.remove(this.partsId.get(i));
                     return;
                 }
                 if (targetWarehouse != null)
-                    targetWarehouse.addPartsIdWithQuantity(partsId, quantity);
+                    targetWarehouse.addPartsIdWithQuantity(dao, partsId, quantity);
                 return; /* We don't need to progress any further. */
             }
         }
-
-        /* TODO: Add DAO calls here. */
     }
 }
