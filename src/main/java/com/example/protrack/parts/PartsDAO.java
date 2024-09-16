@@ -39,14 +39,15 @@ public class PartsDAO {
             insertPart.setInt(1, parts.getPartsId());
             insertPart.setString(2, parts.getName());
             insertPart.setString(3, parts.getDescription());
-            insertPart.setInt(5, parts.getSupplierId());
-            insertPart.setDouble(6, parts.getCost());
+            insertPart.setInt(4, parts.getSupplierId());
+            insertPart.setDouble(5, parts.getCost());
 
             insertPart.execute();
         } catch (SQLException ex) {
             System.err.println(ex);
         }
     }
+
 
     public List<Parts> getAllParts() {
         List<Parts> parts = new ArrayList<>();
