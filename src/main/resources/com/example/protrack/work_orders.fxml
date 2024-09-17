@@ -18,10 +18,10 @@
                         <TextField promptText="🔎 Search..." minWidth="300" styleClass="search-field"/>
                     </HBox>
                     <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
-                        <Button text="Refresh Table" styleClass="create-product-button-refresh-button"/>
+                        <Button fx:id="refreshButton" text="Refresh Table" styleClass="create-product-button-refresh-button"/>
                     </HBox>
                     <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
-                        <Button text="Create Work Order" styleClass="create-product-button-refresh-button"/>
+                        <Button fx:id="createWorkOrderButton" text="Create Work Order" styleClass="create-product-button-refresh-button" onMouseClicked="#createWorkOrderPopup"/>
                     </HBox>
                 </HBox>
 

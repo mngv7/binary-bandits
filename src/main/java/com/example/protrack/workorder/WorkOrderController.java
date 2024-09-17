@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class WorkOrderController {
+
 
     @FXML
     private TableView<WorkOrder> workOrderTable;
@@ -61,6 +63,12 @@ public class WorkOrderController {
 
     private ObservableList<WorkOrder> workOrderList;
 
+    @FXML
+    private Button createWorkOrderButton;
+
+    @FXML
+    private Button refreshButton;
+
     public void initialize() {
         colWorkOrderId.setCellValueFactory(new PropertyValueFactory<>("workOrderId"));
         colOrderOwner.setCellValueFactory(new PropertyValueFactory<>("orderOwner"));
@@ -91,31 +99,30 @@ public class WorkOrderController {
             workOrderList.addAll(workOrdersDAO.getAllWorkOrders());
     }
 
-    private static final String TITLE = "Create Work Order";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
+    public void createWorkOrderPopup() {
 
-    public void openAddPartsPopup () {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/add-parts-view.fxml"));
-            Parent addPartsRoot = fxmlLoader.load();
-
-            Stage popupStage = new Stage();
-            popupStage.initStyle(StageStyle.UNDECORATED);
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle(TITLE);
-
-            Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-            scene.getStylesheets().add(stylesheet);
-            popupStage.setScene(scene);
-            popupStage.setY(150);
-            popupStage.setX(390);
-            popupStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
+
+    public void addWorkOrder ( ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, Integer productId) {
+        UsersDAO usersDAO = new UsersDAO();
+        List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
+
+        CustomerDAO customerDAO = new CustomerDAO();
+        List<Customer> customers = customerDAO.getAllCustomers();
+
+        WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
+        WorkOrder newWorkOrder = new WorkOrder(1,
+                orderOwner,
+                customer,
+                LocalDateTime.now(),
+                null,
+                customer.getShippingAddress(),
+                1,
+                "Pending",
+                21.00);
+        workOrdersDAO.createWorkOrder(newWorkOrder);
+    }
+
 }
 
 
