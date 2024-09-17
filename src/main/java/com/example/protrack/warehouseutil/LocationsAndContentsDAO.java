@@ -182,8 +182,6 @@ public class LocationsAndContentsDAO {
                         }
                     }
 
-
-
                     i += 1;
                 }
             }
