@@ -1,6 +1,6 @@
 package com.example.protrack.warehouseutil;
 
-import com.example.protrack.databaseutil.DatabaseConnection;
+import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.parts.Parts;
 
 import java.sql.*;
