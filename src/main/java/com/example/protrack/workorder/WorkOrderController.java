@@ -88,9 +88,7 @@ public class WorkOrderController {
             WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
 
             workOrderList.clear();
-            System.out.println(workOrdersDAO.getAllWorkOrders());
-            System.out.println(workOrderList.addAll(workOrdersDAO.getAllWorkOrders()));
-            System.out.println(workOrderList);
+            workOrderList.addAll(workOrdersDAO.getAllWorkOrders());
     }
 
     private static final String TITLE = "Create Work Order";

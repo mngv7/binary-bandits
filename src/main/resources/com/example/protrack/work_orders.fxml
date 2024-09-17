@@ -5,46 +5,45 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.workorder.WorkOrderController"
-            prefHeight="Infinity" prefWidth="600.0">
+            prefHeight="Infinity" prefWidth="Infinity">
     <top>
-        <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
-            <Label text="Work Orders" styleClass="title-label"/>
+        <VBox>
+            <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
+                <Label text="Work Orders" styleClass="title-label"/>
+            </VBox>
+
+            <VBox spacing="20" maxHeight="Infinity">
+                <HBox spacing="10">
+                    <HBox>
+                        <TextField promptText="🔎 Search..." minWidth="300" styleClass="search-field"/>
+                    </HBox>
+                    <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                        <Button text="Refresh Table" styleClass="create-product-button-refresh-button"/>
+                    </HBox>
+                    <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
+                        <Button text="Create Work Order" styleClass="create-product-button-refresh-button"/>
+                    </HBox>
+                </HBox>
+
+                <TableView fx:id="workOrderTable" minHeight="100" styleClass="products-table" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                    <columns>
+                        <TableColumn fx:id="colWorkOrderId" text="Work Order ID"/>
+                        <TableColumn fx:id="colOrderOwner" text="Assigned to:"/>
+                        <TableColumn fx:id="colCustomer" text="Customer"/>
+                        <TableColumn fx:id="colOrderDate" text="Order Date" />
+                        <TableColumn fx:id="colDeliveryDate" text="Delivery Date"/>
+                        <TableColumn fx:id="colShippingAddress" text="Shipping Address"/>
+                        <TableColumn fx:id="colProducts" text="Products"/>
+                        <TableColumn fx:id="colStatus" text="Status"/>
+                        <TableColumn fx:id="colSubtotal" text="Subtotal"/>
+                    </columns>
+                </TableView>
+
+            </VBox>
         </VBox>
     </top>
 
-    <center>
-        <VBox spacing="20" maxHeight="Infinity">
-            <HBox spacing="10">
-                <HBox>
-                    <TextField promptText="🔎 Search..." minWidth="300" styleClass="search-field"/>
-                </HBox>
-                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
-                    <Button text="Refresh Table" styleClass="create-product-button-refresh-button"/>
-                </HBox>
-                <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
-                    <Button text="Create Work Order" styleClass="create-product-button-refresh-button"/>
-                </HBox>
-            </HBox>
-            <TableView fx:id="workOrderTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" minHeight="20" prefWidth="1000.0" styleClass="products-table" VBox.vgrow="ALWAYS">
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                </columnResizePolicy>
-                <columns>
-                    <TableColumn fx:id="colWorkOrderId" text="Work Order ID"/>
-                    <TableColumn fx:id="colOrderOwner" text="Assigned to:"/>
-                    <TableColumn fx:id="colCustomer" text="Customer"/>
-                    <TableColumn fx:id="colOrderDate" text="Order Date" />
-                    <TableColumn fx:id="colDeliveryDate" text="Delivery Date"/>
-                    <TableColumn fx:id="colShippingAddress" text="Shipping Address"/>
-                    <TableColumn fx:id="colProducts" text="Products"/>
-                    <TableColumn fx:id="colStatus" text="Status"/>
-                    <TableColumn fx:id="colSubtotal" text="Subtotal"/>
-
-                </columns>
-            </TableView>
-        </VBox>
-    </center>
-    <bottom>
-        <Region minHeight="10"/>
-    </bottom>
 </BorderPane>

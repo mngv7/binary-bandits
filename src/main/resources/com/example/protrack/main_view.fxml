@@ -113,7 +113,7 @@
     </left>
     <center>
         <!-- Dynamic Pane -->
-        <VBox fx:id="dynamicVBox" styleClass="dynamic-vbox">
+        <VBox fx:id="dynamicVBox" styleClass="dynamic-vbox" VBox.vgrow="ALWAYS">
             <padding>
                 <Insets top="20"/>
             </padding>
