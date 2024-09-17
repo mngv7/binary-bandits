@@ -58,13 +58,11 @@ public class ProfileWorkOrdersController {
     @FXML
     private void displayPendingWorkOrders() {
         List<WorkOrder> pendingWorkOrders;
-        try {
+
             // Retrieves pending work orders
-            pendingWorkOrders = workOrdersDAO.getWorkOrderByStatus("pending");
-            System.out.println("Fetched Work Orders: " + pendingWorkOrders);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        pendingWorkOrders = workOrdersDAO.getWorkOrderByStatus("pending");
+        System.out.println("Fetched Work Orders: " + pendingWorkOrders);
+
 
         // Sets cell factory for work order display
         pendingWorkOrdersListView.setCellFactory(listView -> new ListCell<>() {

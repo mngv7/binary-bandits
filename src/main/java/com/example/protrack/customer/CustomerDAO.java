@@ -66,7 +66,7 @@ public class CustomerDAO {
      * @return true if the customer was added successfully to the database, false otherwise
      * @throws SQLException If an SQL error occurs
      */
-    public boolean addCustomer(Customer customer) throws SQLException {
+    public boolean addCustomer(Customer customer) {
         String query = "INSERT INTO customer (first_name, last_name, email, phone_number, billing_address, shipping_address, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getInstance();
@@ -86,7 +86,7 @@ public class CustomerDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e;
+            return false;
         }
     }
 
@@ -97,7 +97,7 @@ public class CustomerDAO {
      * @return The Customer object if found, otherwise null.
      * @throws SQLException If an SQL error occurs.
      */
-    public Customer getCustomer(Integer customerId) throws SQLException {
+    public Customer getCustomer(Integer customerId) {
         return null; // Need to implement.
     }
 
@@ -118,10 +118,9 @@ public class CustomerDAO {
     /**
      * Retrieves all customers from the database.
      *
-     * @return 'HashMap<Integer, Customer>' containing all customers.
-     * @throws SQLException If an SQL error occurs during the operation.
+     * @return 'List<Customer>' containing all customers.
      */
-    public List<Customer> getAllCustomers() throws SQLException {
+    public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
         String query = "SELECT * FROM customer";
 
@@ -144,28 +143,32 @@ public class CustomerDAO {
      *
      * @param rs The ResultSet containing customer data.
      * @return The Customer object mapped from the ResultSet.
-     * @throws SQLException If an SQL error occurs.
      */
-    private Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
-        int customerId = rs.getInt("customer_id");
-        String firstName = rs.getString("first_name");
-        String lastName = rs.getString("last_name");
-        String email = rs.getString("email");
-        String phoneNumber = rs.getString("phone_number");
-        String billingAddress = rs.getString("billing_address");
-        String shippingAddress = rs.getString("shipping_address");
-        String status = rs.getString("status");
+    private Customer mapResultSetToCustomer(ResultSet rs) {
 
-        return new Customer(customerId, firstName, lastName, email, phoneNumber, billingAddress, shippingAddress, status);
+        try {
+            Integer customerId = rs.getInt("customer_id");
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String email = rs.getString("email");
+            String phoneNumber = rs.getString("phone_number");
+            String billingAddress = rs.getString("billing_address");
+            String shippingAddress = rs.getString("shipping_address");
+            String status = rs.getString("status");
+
+            return new Customer(customerId, firstName, lastName, email, phoneNumber, billingAddress, shippingAddress, status);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
      * Updates an existing customer in the database.
      *
      * @param customer The Customer object containing the (to be) updated details.
-     * @throws SQLException If an SQL error occurs.
      */
-    public void updateCustomer(Customer customer) throws SQLException {
+    public void updateCustomer(Customer customer) {
 
     }
 
@@ -182,9 +185,9 @@ public class CustomerDAO {
      * Searches for customers based on a query string from a search box.
      *
      * @param query The search query.
-     * @return An ArrayList of Customer objects alike to the search.
+     * @return A List of Customer objects alike to the search.
      */
-    public ArrayList<Customer> searchCustomers(String query) {
+    public List<Customer> searchCustomers(String query) {
         return null;
     }
 
@@ -192,10 +195,9 @@ public class CustomerDAO {
      * Retrieves all work orders associated with a specific customer.
      *
      * @param customerId The ID of the customer whose work orders are to be retrieved.
-     * @return An ArrayList of WorkOrder objects associated with the customer.
-     * @throws SQLException If an SQL error occurs during the operation.
+     * @return A List of WorkOrder objects associated with the customer.
      */
-    public ArrayList<WorkOrder> getOrdersForCustomer(Integer customerId) throws SQLException {
+    public List<WorkOrder> getOrdersForCustomer(Integer customerId) {
         return null;
     }
 

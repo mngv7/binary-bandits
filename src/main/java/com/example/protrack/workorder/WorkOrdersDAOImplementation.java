@@ -23,7 +23,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
     private final List<Customer> customers;
 
     // Constructor for WorkOrdersDAOImplementation
-    public WorkOrdersDAOImplementation(List<ProductionUser> productionUsers, List<Customer> customers) throws SQLException {
+    public WorkOrdersDAOImplementation(List<ProductionUser> productionUsers, List<Customer> customers) {
 
         // Initialises the JDBC connection using the singleton instance
         connection = DatabaseConnection.getInstance();
@@ -54,8 +54,8 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
                             + "subtotal DOUBLE NOT NULL "
                             + ")"
             );
-        } catch (SQLException ex) {
-            System.err.println(ex);
+        } catch (SQLException e) {
+            System.err.println(e);
         }
     }
 
@@ -67,8 +67,8 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
             int count = rs.getInt("rowcount");
             rs.close();
             return count == 0;
-        } catch (SQLException ex) {
-            System.err.println(ex);
+        } catch (SQLException e) {
+            System.err.println(e);
         }
         return false;
     }
@@ -91,9 +91,8 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
      *
      * @param workOrder the WorkOrder to be inserted into the database
      * @return true if at least one row is affected from the SQL insertion, otherwise false
-     * @throws SQLException if the SQL query fails
      */
-    public boolean createWorkOrder(WorkOrder workOrder) throws SQLException {
+    public boolean createWorkOrder(WorkOrder workOrder) {
         String sqlNewWorkOrder = "INSERT INTO work_orders (work_order_owner_id, customer_id, order_date, delivery_date, shipping_address, status, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlNewWorkOrder)) {
@@ -109,14 +108,17 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
 
             // Execute the PreparedStatement and return true if at least one row is affected, otherwise false
             return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
-    public WorkOrder getWorkOrder(Integer workOrderId) throws SQLException {
+    public WorkOrder getWorkOrder(Integer workOrderId) {
         return null;
     }
 
-    public List<WorkOrder> getAllWorkOrders() throws SQLException {
+    public List<WorkOrder> getAllWorkOrders() {
         String sqlAllWorkOrders = "SELECT * FROM work_orders";
         List<WorkOrder> allWorkOrders = new ArrayList<>();
 
@@ -127,6 +129,8 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
                 WorkOrder workOrder = mapToWorkOrder(resultSet);
                 allWorkOrders.add(workOrder);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return allWorkOrders;
     }
@@ -135,9 +139,8 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
      *
      * @param status String containing the status of the Work Order
      * @return 'ArrayList<WorkOrder>'  all orders that satisfy the status
-     * @throws SQLException if the SQL Prepared Statement fails
      */
-    public List<WorkOrder> getWorkOrderByStatus(String status) throws SQLException {
+    public List<WorkOrder> getWorkOrderByStatus(String status) {
 
         // SQL query retrieves Work Orders based on status
         String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE status = ?";
@@ -149,15 +152,17 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
             preparedStatement.setString(1, status);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                // Iterates through each returned row (ResultSet) from the SQL query execution
-                while (resultSet.next()) {
-                    // Calls mapToWorkOrder(resultSet) to return a new WorkOrder instance, instantiated with the returned ResultSet information
-                    WorkOrder workOrder = mapToWorkOrder(resultSet);
-                    allWorkOrders.add(workOrder);   // Adds the new WorkOrder instance to the ArrayList
-                }
+            // Iterates through each returned row (ResultSet) from the SQL query execution
+            while (resultSet.next()) {
+                // Calls mapToWorkOrder(resultSet) to return a new WorkOrder instance, instantiated with the returned ResultSet information
+                WorkOrder workOrder = mapToWorkOrder(resultSet);
+                allWorkOrders.add(workOrder);   // Adds the new WorkOrder instance to the ArrayList
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return allWorkOrders;   // Returns all new WorkOrder instances from the SQL query execution as an ArrayList<WorkOrder>
     }
@@ -166,59 +171,63 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
      *
      * @param resultSet value returned from a SQL PreparedStatement execution
      * @return new WorkOrder instance populated with the values from the resultSet
-     * @throws SQLException for if an SQL operation fails
      */
-    private WorkOrder mapToWorkOrder(ResultSet resultSet) throws SQLException {
+    private WorkOrder mapToWorkOrder(ResultSet resultSet) {
 
-        // Maps the returned SQL query (resultSet) to relevant Work Order variables
-        Integer workOrderId = resultSet.getInt("work_order_id");
-        Integer orderOwnerId = resultSet.getInt("work_order_owner_id");
-        Integer customerId = resultSet.getInt("customer_id");
+        try {
+            // Maps the returned SQL query (resultSet) to relevant Work Order variables
+            Integer workOrderId = resultSet.getInt("work_order_id");
+            Integer orderOwnerId = resultSet.getInt("work_order_owner_id");
+            Integer customerId = resultSet.getInt("customer_id");
 
-        // Retrieves the relevant Production User as specified by the resultSet
-        AbstractUser orderOwner  = null;
-        for (AbstractUser user : productionUsers) {
-            if (user.getEmployeeId().equals(orderOwnerId)) {
-                orderOwner = user;
-                break;
+            // Retrieves the relevant Production User as specified by the resultSet
+            AbstractUser orderOwner  = null;
+            for (AbstractUser user : productionUsers) {
+                if (user.getEmployeeId().equals(orderOwnerId)) {
+                    orderOwner = user;
+                    break;
+                }
             }
-        }
 
-        // Retrieves the relevant Production User as specified by the resultSet
-        Customer orderCustomer = null;
-        for (Customer customer : customers) {
-            if (customer.getCustomerId().equals(customerId)) {
-                orderCustomer = customer;
-                break;
+            // Retrieves the relevant Production User as specified by the resultSet
+            Customer orderCustomer = null;
+            for (Customer customer : customers) {
+                if (customer.getCustomerId().equals(customerId)) {
+                    orderCustomer = customer;
+                    break;
+                }
             }
+
+            LocalDateTime orderDate = resultSet.getObject("order_date", LocalDateTime.class);
+            LocalDateTime deliveryDate = resultSet.getObject("delivery_date", LocalDateTime.class);
+            String shippingAddress = resultSet.getString("shipping_address");
+            Integer productId = resultSet.getInt("products_id");
+            String status = resultSet.getString("status");
+            Double subtotal = resultSet.getDouble("subtotal");
+
+            // uses the new mapped variables to create a new WorkOrder instance
+            return new WorkOrder(
+                    workOrderId,
+                    (ProductionUser) orderOwner,
+                    orderCustomer,
+                    orderDate,
+                    deliveryDate,
+                    shippingAddress,
+                    productId,
+                    status,
+                    subtotal
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        LocalDateTime orderDate = resultSet.getObject("order_date", LocalDateTime.class);
-        LocalDateTime deliveryDate = resultSet.getObject("delivery_date", LocalDateTime.class);
-        String shippingAddress = resultSet.getString("shipping_address");
-        Integer productId = resultSet.getInt("products_id");
-        String status = resultSet.getString("status");
-        Double subtotal = resultSet.getDouble("subtotal");
-
-        // uses the new mapped variables to create a new WorkOrder instance
-        return new WorkOrder(
-                workOrderId,
-                (ProductionUser) orderOwner,
-                orderCustomer,
-                orderDate,
-                deliveryDate,
-                shippingAddress,
-                productId,
-                status,
-                subtotal
-        );
+        return null;
     }
 
-    public boolean updateWorkOrder(WorkOrder workOrder) throws SQLException {
+    public boolean updateWorkOrder(WorkOrder workOrder) {
         return true;
     }
 
-    public boolean deleteWorkOrder(Integer workOrderId) throws SQLException {
+    public boolean deleteWorkOrder(Integer workOrderId) {
         return true;
     }
 }
