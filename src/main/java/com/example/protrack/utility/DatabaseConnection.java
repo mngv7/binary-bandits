@@ -5,16 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
+    // Single connection instance
     private static Connection connection;
 
+    // Private constructor to prevent instantiation
     private DatabaseConnection() {
-        // Private constructor to prevent instantiation
     }
 
+    // Get the single connection instance
     public static Connection getInstance() {
         if (connection == null || !isConnectionValid()) {
             try {
-                // Initialises the database connection
+                // Initialize the database connection
                 connection = DriverManager.getConnection("jdbc:sqlite:database.db");
                 System.out.println("Database connection established.");
             } catch (SQLException e) {
@@ -24,21 +26,22 @@ public class DatabaseConnection {
         return connection;
     }
 
+    // Check if the connection is valid
     private static boolean isConnectionValid() {
         try {
-            return connection != null && connection.isValid(2); // Check if connection is valid with a timeout of 2 seconds
+            return connection != null && connection.isValid(2); // 2-second timeout
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // Method to close the connection
+    // Close the database connection
     public static void close() {
         if (connection != null) {
             try {
                 connection.close();
-                connection = null; // Clear reference to allow reinitialization
+                connection = null; // Allow reinitialization
                 System.out.println("Database connection closed.");
             } catch (SQLException e) {
                 e.printStackTrace();
