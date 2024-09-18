@@ -62,7 +62,7 @@ public class WorkStationController {
             updateStepsBasedOnSelection(selectedItem);
         }
     }
-
+    // update the Steps box
     private void updateStepsBasedOnSelection(String selectedItem) {
         stepsBox.getChildren().clear();
         switch (selectedItem) {
@@ -92,7 +92,7 @@ public class WorkStationController {
                 break;
         }
     }
-
+    // setup the orderlist
     private void updateSteps(String step1Text, String step2Text, String step3Text, String textAreaContent) {
         HBox step1 = new HBox();
         Label step1Label = new Label(step1Text);
@@ -124,6 +124,7 @@ public class WorkStationController {
         stepsBox.getChildren().addAll(step1, step2);//step3
     }
 
+    // Returning to warehouse page
     @FXML
     private void handleClose() {
         /* TODO: Load warehouse page again. */
