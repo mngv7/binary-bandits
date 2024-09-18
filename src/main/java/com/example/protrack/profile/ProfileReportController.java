@@ -1,6 +1,5 @@
 package com.example.protrack.profile;
 
-import com.example.protrack.Report;
 import javafx.fxml.FXML;
 
 public class ProfileReportController {
