@@ -3,6 +3,7 @@ package com.example.protrack.users;
 import java.sql.Date;
 
 public abstract class AbstractUser {
+    // Protected fields for user attributes
     protected Integer employeeId;
     protected String firstName;
     protected String lastName;
@@ -12,6 +13,7 @@ public abstract class AbstractUser {
     protected String gender;
     protected String password;
 
+    // Constructor to initialize the AbstractUser with given attributes
     public AbstractUser(Integer employeeId, String firstName, String lastName, Date dob, String email, String phoneNo, String gender, String password) {
         this.employeeId = employeeId;
         this.firstName = firstName;
@@ -23,6 +25,7 @@ public abstract class AbstractUser {
         this.password = password;
     }
 
+    // Getter methods for user attributes
     public Integer getEmployeeId() {
         return employeeId;
     }
@@ -55,5 +58,6 @@ public abstract class AbstractUser {
         return password;
     }
 
+    // Abstract method to get the access level of the user
     public abstract String getAccessLevel();
 }
