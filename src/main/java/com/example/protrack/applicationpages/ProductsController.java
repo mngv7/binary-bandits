@@ -47,10 +47,14 @@ public class ProductsController {
 
     private ObservableList<ProductDBTable> productList;
 
+    /**
+     * Initialise product page with values
+     */
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
 
+        // disable add product button if access level is not high
         addProductButton.setDisable(!usersDAO.getUserById(loggedInId).getAccessLevel().equals("HIGH"));
 
         colProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
@@ -62,14 +66,22 @@ public class ProductsController {
         productTable.setItems(productList);
         productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+        // refresh product table
         refreshTable();
     }
 
+    /**
+     * Refreshes the table
+     */
     public void refreshTable() {
         productList.clear();
         productList.addAll(productDBtoTable());
     }
 
+    /**
+     * Generates list of products from product database with price
+     * @return list of products with price
+     */
     public List<ProductDBTable> productDBtoTable() {
         Connection connection;
         connection = DatabaseConnection.getInstance();
@@ -78,6 +90,7 @@ public class ProductsController {
 
         String query = "SELECT * FROM products";
 
+        // get all products in database
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -87,6 +100,7 @@ public class ProductsController {
                 Date dateCreated = rs.getDate("dateCreated");
                 double price = 0.0;
 
+                // add price of total parts to products
                 try {
                     PreparedStatement getPrice = connection.prepareStatement(
                             "SELECT SUM (a.requiredAmount * b.cost) AS TotalValue " +
@@ -106,11 +120,14 @@ public class ProductsController {
 
                 ProductDBTable product = new ProductDBTable(productId, productName, dateCreated, price);
 
+                // add product to list
                 products.add(product);
             }
         } catch (SQLException ex) {
             System.err.println(ex);
         }
+
+        // return list
         return products;
     }
 
@@ -118,6 +135,9 @@ public class ProductsController {
     private static final int WIDTH = 900;
     private static final int HEIGHT = 360;
 
+    /**
+     * Create pop-up when "Create Product" is pressed
+     */
     public void openCreateProductPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-product-view.fxml"));
