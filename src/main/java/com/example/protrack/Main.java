@@ -141,7 +141,7 @@ public class Main extends Application {
         WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
         if (wdao.isTableEmpty()) {
-            wdao.createWorkOrder(new WorkOrder(100, productionUsers.get(105), customers.get(1), LocalDateTime.now(), null, "shipAdd", 1, "pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", 1, "pending", 40.87));
         }
 
         launch();
