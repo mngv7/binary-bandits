@@ -95,6 +95,10 @@ public class CreateTestRecordController {
     }
 
     //Adds Test record to page
+
+    /**
+     * Add test record to page
+     */
     @FXML
     protected void addTestRecord() {
         VBox newRow = new VBox();
@@ -112,6 +116,7 @@ public class CreateTestRecordController {
         TextField textField2 = new TextField();
         textField2.setPromptText("Check Criteria");
 
+        // for each row add a button that removes that row.
         Button removeButton = new Button("Remove Step");
         removeButton.getStyleClass().add("create-product-button-small");
         removeButton.setOnAction(event -> removeRow(newColumn));
@@ -121,7 +126,13 @@ public class CreateTestRecordController {
         testRecordsVBox.getChildren().add(newColumn);
     }
 
+    /**
+     * Delete the selected row from test records table,
+     * rearrange the table to account for deleted row.
+     * @param newColumn column being deleted
+     */
     private void removeRow(HBox newColumn) {
+        // Find column being removed and remove it.
         testRecordsVBox.getChildren().remove(newColumn);
 
         //Remove 1 from numSteps
@@ -129,7 +140,7 @@ public class CreateTestRecordController {
 
         int numNewSteps = 0;
 
-        //Redo each column
+        //Redo each column while accounting for removed row
         for (int i = 0; i < testRecordsVBox.getChildren().size(); i++) {
             var node = testRecordsVBox.getChildren().getFirst();
 
@@ -157,6 +168,10 @@ public class CreateTestRecordController {
     }
 
 
+    /**
+     * Upon an attempt at closing the tab
+     * close the tab
+     */
     @FXML
     protected void onCreateProductButton() {
         insertTestRecordsToDB();
@@ -164,11 +179,14 @@ public class CreateTestRecordController {
         stage.close();
     }
 
+    /**
+     * Inserts test record to test record database
+     */
     private void insertTestRecordsToDB() {
         //Got productId
 
+        // Converts productIdLabel to integer
         int productIdValue = Integer.parseInt(productIdLabel);
-        //System.out.println("This is productValue " + productIdValue);
 
         Connection connection;
         connection = DatabaseConnection.getInstance();
@@ -176,24 +194,29 @@ public class CreateTestRecordController {
         int currentRow = 0;
         try {
             connection.setAutoCommit(false); // Use transaction to handle multiple inserts
+            // for each column in testRecordsVBox
             for (var node : testRecordsVBox.getChildren()) {
                 if (node instanceof HBox column) {
 
+                    // Add 1 to current row / step
                     currentRow++;
 
                     int stepId = currentRow;
                     int stepNum = currentRow;
 
+                    // Get Description from first column
                     TextField textField1 = (TextField) column.getChildren().get(1);
                     String description = textField1.getText();
 
+                    // Get Check type from second column
                     ComboBox<Object> comboBox = (ComboBox<Object>) column.getChildren().get(2);
                     String checkType = (String) comboBox.getValue();
-                    //System.out.println("CheckType " + checkType);
 
+                    // Get Check criteria from third column
                     TextField textField2 = (TextField) column.getChildren().get(3);
                     String checkCriteria = textField2.getText();
 
+                    // Create new test record using previous values
                     TestRecordDAO testRecordDAO = new TestRecordDAO();
                     testRecordDAO.newTestRecordStep(new TestRecord(stepId, productIdValue, stepNum, description, checkType, checkCriteria));
 

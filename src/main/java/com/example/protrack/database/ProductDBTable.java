@@ -8,6 +8,7 @@ public class ProductDBTable {
     private final Date dateCreated;
     private final Double price;
 
+    // Constructor initialises the products with specific attributes
     public ProductDBTable(Integer productId, String productName, Date dateCreated, Double price) {
         this.productId = productId;
         this.productName = productName;
@@ -15,6 +16,7 @@ public class ProductDBTable {
         this.price = price;
     }
 
+    // Getters for the updated fields
     public Integer getProductId() {
         return productId;
     }

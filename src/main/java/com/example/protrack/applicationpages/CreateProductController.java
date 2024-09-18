@@ -87,28 +87,42 @@ public class CreateProductController {
         //createProductButton.disableProperty().bind(fieldsEmpty);
     }
 
+    /**
+     * Searches for part with partId from text field
+     * If found, generate a new row with part's id and name
+     */
     @FXML
     protected void partSearch() {
         Connection connection;
         connection = DatabaseConnection.getInstance();
 
+        // get text value of text field "partIdSearchField"
         String partIdStr = partIdSearchField.getText();
 
+        // if partIdStr is not null and not empty run
         if (partIdStr != null && !partIdStr.trim().isEmpty()) {
 
+            // convert string into integer (PartId is always an integer)
             int partIdInt = Integer.parseInt(partIdStr);
             try {
 
+                // Create statement
+                // Get all from parts where PartsId = PartsId
                 PreparedStatement getPartId = connection.prepareStatement(
                         "SELECT * " +
                                 "FROM parts a " +
                                 "WHERE a.partsId = ?");
+                // Set PartsId with current value
                 getPartId.setInt(1, partIdInt);
+
+                //execute query and get a list of results
                 ResultSet rs = getPartId.executeQuery();
 
+                // While there is a next row of results
+                // Generate a new row with partId and a partName
                 if (rs.next()) {
                     //Make the new vbox with those partid
-                    // Create a new row with the productID and a TextField
+                    // Create a new row with the partId and a partName
                     VBox newRow = new VBox();
                     Label idLabel = new Label("Part ID: " + rs.getString("partsId"));
                     Label idLabel2 = new Label("Part Name: " + rs.getString("name"));
@@ -118,10 +132,9 @@ public class CreateProductController {
                     // Add the new row to the result VBox
                     partResultVBox.getChildren().add(newRow);
                 }
-
             } catch(SQLException ex) {
+                // Catch and print any SQL exceptions that may occur during table creation
                 System.err.println(ex);
-
             }
         }
     }
@@ -151,6 +164,12 @@ public class CreateProductController {
     RequiredPartsDB
     TestRecordsDB
      */
+
+    /**
+     * Upon clicking "Create Product", create the product in the product table and generate
+     * the product's BoM. Also proceed towards creating the product's test records through
+     * a popup.
+     */
     @FXML
     protected void onCreateProductButton() {
 
@@ -158,6 +177,7 @@ public class CreateProductController {
         BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
 
         try {
+
             int productId = Integer.parseInt(productIdField.getText());
 
             String productName = productNameField.getText();
@@ -165,10 +185,13 @@ public class CreateProductController {
             long millis = System.currentTimeMillis();
             java.sql.Date date = new java.sql.Date(millis);
 
+            // Create new product in product table with previous values
             productDAO.newProduct(new Product(productId, productName, date));
 
+            // Creates new BoM using values
             insertReqPartsFromVbox(productId);
 
+            // Pop-up of create test records
             openCreateTestRecordPopup();
 
         } catch (NumberFormatException e) {
@@ -176,21 +199,29 @@ public class CreateProductController {
         }
     }
 
+    /**
+     * Creates new BoM using values
+     * @param productId product id of product
+     */
     private void insertReqPartsFromVbox(int productId) {
         Connection connection;
         connection = DatabaseConnection.getInstance();
 
         try {
             connection.setAutoCommit(false); // Use transaction to handle multiple inserts
+            // for each child of partResultBox (Rows)
             for (var node : partResultVBox.getChildren()) {
                 if (node instanceof VBox row) {
                     // Get the labels and text field from the VBox
+                    // Get partId from label
                     Label idLabel = (Label) row.getChildren().get(0);
                     String partsId = idLabel.getText().replace("Part ID: ", "");
 
+                    // Get part amount from label
                     TextField amountField = (TextField) row.getChildren().get(2); // Assuming the third element is the TextField for required amount
                     String requiredAmount = amountField.getText();
 
+                    // Create new BoM using previous values
                     BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
                     billOfMaterial.newRequiredParts(new BillOfMaterials(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
                 }
@@ -208,6 +239,9 @@ public class CreateProductController {
     }
 
 
+    /**
+     * Opens and starts up Test record tab
+     */
     public void openCreateTestRecordPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-test-record-view.fxml"));
@@ -231,12 +265,17 @@ public class CreateProductController {
         }
     }
 
+    /**
+     * If there are values from parts search, show the delete all parts button.
+     * Else, delete button.
+     */
     private void updateButtonVisibility() {
+        // Creates delete all parts button
         Button removeAllButton = new Button("Remove all parts");
         removeAllButton.getStyleClass().add("create-product-button");
 
         removeAllButton.setOnAction(event -> {
-            //Do things here
+            //Delete all children in partsResultVbox and container
             partResultVBox.getChildren().clear();
             removeAllPartsButtonContainer.getChildren().clear();
         });
@@ -252,6 +291,10 @@ public class CreateProductController {
         }
     }
 
+    /**
+     * During an attempt at closing the pop-up, ask the user whether
+     * they really would like the close the tab
+     */
     @FXML
     protected void onClosePopupButton() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
