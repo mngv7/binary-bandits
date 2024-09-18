@@ -305,53 +305,51 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
+@Override
+public Integer getMaxEmployeeId() throws SQLException {
+    // Query to get the maximum employee ID from the 'users' table
+    String query = "SELECT MAX(employeeID) AS maxId FROM users";
 
-    @Override
-    public Integer getMaxEmployeeId() throws SQLException {
-        // Query to get the maximum employee ID from the 'users' table
-        String query = "SELECT MAX(employeeID) AS maxId FROM users";
-
-        try (PreparedStatement getMaxId = connection.prepareStatement(query)) {
-
-            try (ResultSet rs = getMaxId.executeQuery()) {
-                // Check if a result is returned and get the maximum employee ID
-                if (rs.next()) {
-                    return rs.getInt("maxId");
-                } else {
-                    // Return -1 if no results are found
-                    return -1;
-                }
-            }
-        } catch (SQLException e) {
-            // Wrap and rethrow the SQLException as a RuntimeException
-            throw new RuntimeException(e);
+    try (PreparedStatement getMaxId = connection.prepareStatement(query);
+         ResultSet rs = getMaxId.executeQuery()) {
+        // Check if a result is returned and get the maximum employee ID
+        if (rs.next()) {
+            return rs.getInt("maxId");
+        } else {
+            // Return -1 if no results are found
+            return -1;
         }
+    } catch (SQLException e) {
+        // Wrap and rethrow the SQLException as a RuntimeException
+        throw new RuntimeException(e);
     }
+}
 
-    @Override
-    public AbstractUser getUserById(Integer employeeId) {
-        // Query to select a user by employee ID
-        String query = "SELECT * FROM users WHERE employeeId = ?";
+@Override
+public AbstractUser getUserById(Integer employeeId) {
+    // Query to select a user by employee ID
+    String query = "SELECT * FROM users WHERE employeeId = ?";
 
-        try (PreparedStatement getUser = connection.prepareStatement(query)) {
-            // Set the employee ID parameter for the query
-            getUser.setInt(1, employeeId);
+    try (PreparedStatement getUser = connection.prepareStatement(query)) {
+        // Set the employee ID parameter for the query
+        getUser.setInt(1, employeeId);
 
-            try (ResultSet rs = getUser.executeQuery()) {
-                // Check if a result is returned and map it to an AbstractUser
-                if (rs.next()) {
-                    String accessLevel = rs.getString("accessLevel");
-                    return mapResultSetToUser(rs, accessLevel);
-                } else {
-                    // Return null if no user is found
-                    return null;
-                }
+        try (ResultSet rs = getUser.executeQuery()) {
+            // Check if a result is returned and map it to an AbstractUser
+            if (rs.next()) {
+                String accessLevel = rs.getString("accessLevel");
+                return mapResultSetToUser(rs, accessLevel);
+            } else {
+                // Return null if no user is found
+                return null;
             }
-        } catch (SQLException e) {
-            // Wrap and rethrow the SQLException as a RuntimeException
-            throw new RuntimeException(e);
         }
+    } catch (SQLException e) {
+        // Wrap and rethrow the SQLException as a RuntimeException
+        throw new RuntimeException(e);
     }
+}
+
 
     @Override
     public boolean isTableEmpty() {
