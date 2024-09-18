@@ -57,15 +57,11 @@ public class CreateWorkOrderController {
     @FXML
     private TextField productQuantityField;
 
-    private final UsersDAO usersDAO = new UsersDAO();
-    private final CustomerDAO customerDAO = new CustomerDAO();
-    private final ProductDAO productDAO = new ProductDAO();
-
     public void initialize() {
         // Populate the ComboBoxes with data from the database
-        workOrderOwnerComboBox.getItems().setAll(usersDAO.getProductionUsers());
-        customerComboBox.getItems().setAll(customerDAO.getAllCustomers());
-        productComboBox.getItems().setAll(productDAO.getAllProducts());
+        workOrderOwnerComboBox.getItems().setAll(new UsersDAO().getProductionUsers());
+        customerComboBox.getItems().setAll(new CustomerDAO().getAllCustomers());
+        productComboBox.getItems().setAll(new ProductDAO().getAllProducts());
 
         // Create a binding to check if any essential field is empty
         BooleanBinding emptyFields = Bindings.createBooleanBinding(() ->
