@@ -27,23 +27,28 @@
                 </HBox>
 
                 <!-- Workstations -->
+                <!--add warehouse table-->
                 <TableView fx:id="workstationTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                     <columns>
+                        <!--set warehouse id column-->
                         <TableColumn text="Workstation Id">
                             <cellValueFactory>
                                 <PropertyValueFactory property="WorkstationId"/>
                             </cellValueFactory>
                         </TableColumn>
+                        <!--set Workstation Name column-->
                         <TableColumn text="Workstation Name">
                             <cellValueFactory>
                                 <PropertyValueFactory property="WorkstationName"/>
                             </cellValueFactory>
                         </TableColumn>
+                        <!--set Workstation Location column-->
                         <TableColumn text="Workstation Location">
                             <cellValueFactory>
                                 <PropertyValueFactory property="WorkstationLocation"/>
                             </cellValueFactory>
                         </TableColumn>
+                        <!--set Workstation Capacity column-->
                         <TableColumn text="Workstation Capacity">
                             <cellValueFactory>
                                 <PropertyValueFactory property="WorkstationMaxParts"/>

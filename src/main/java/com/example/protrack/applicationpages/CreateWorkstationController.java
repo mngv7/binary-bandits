@@ -25,14 +25,14 @@ public class CreateWorkstationController {
     public void setParentWarehouseController (WarehouseController parentWarehouse) {
         this.parentWarehouse = parentWarehouse;
     }
-
+    // the function to create the data in workstation table
     @FXML
     private void handleCreate() {
         Workstation station = new MockWorkstation(11, nameField.getText(), "null", Integer.parseInt(capacityField.getText()));
         parentWarehouse.addWorkstation(station);
         closeDialog();
     }
-
+    // the function to close the createWorkstation page
     @FXML
     private void handleCancel() {
         closeDialog();

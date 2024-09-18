@@ -71,7 +71,7 @@ public class AllocateWorkstationController {
             System.out.println("Failed to load FXML file: " + fxmlFilePath);
         }
     }
-
+//  the function to close the allocateWorkstation page
     @FXML
     private void handleCancel() {
         closeDialog();
