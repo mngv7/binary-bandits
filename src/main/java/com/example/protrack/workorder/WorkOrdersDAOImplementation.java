@@ -103,7 +103,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
             preparedStatement.setObject(3, workOrder.getOrderDate());
             preparedStatement.setObject(4, workOrder.getDeliveryDate());
             preparedStatement.setString(5, workOrder.getShippingAddress());
-            preparedStatement.setString(6, workOrder.getStatus());
+            preparedStatement.setObject(6, workOrder.getStatus());
             preparedStatement.setDouble(7, workOrder.getSubtotal());
 
             // Execute the PreparedStatement and return true if at least one row is affected, otherwise false
@@ -204,6 +204,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
             Integer productId = resultSet.getInt("products_id");
             String status = resultSet.getString("status");
             Double subtotal = resultSet.getDouble("subtotal");
+
 
             // uses the new mapped variables to create a new WorkOrder instance
             return new WorkOrder(

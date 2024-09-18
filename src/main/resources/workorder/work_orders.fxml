@@ -31,7 +31,7 @@
                     </columnResizePolicy>
                     <columns>
                         <TableColumn fx:id="colWorkOrderId" text="Work Order ID"/>
-                        <TableColumn fx:id="colOrderOwner" text="Assigned to:"/>
+                        <TableColumn fx:id="colOrderOwner" text="Owner:"/>
                         <TableColumn fx:id="colCustomer" text="Customer"/>
                         <TableColumn fx:id="colOrderDate" text="Order Date" />
                         <TableColumn fx:id="colDeliveryDate" text="Delivery Date"/>

@@ -18,7 +18,7 @@ public class WorkOrderTest {
     public void setUp() {
         productionUser = new ProductionUser(1, "productionUserFirstName", "productionUserLastName", Date.valueOf("2000-01-01"), "production@user.com", "0444444444", "Female", "password");
         customer = new Customer(1, "customerFirstName", "customerLastName", "customer@email.com", "555-5555", "billingAddress", "shippingAddress", "Active");
-        workOrder = new WorkOrder(1, productionUser, customer, LocalDateTime.now(), null, "shippingAddress", 1, "pending", 40.87);
+        workOrder = new WorkOrder(1, productionUser, customer, LocalDateTime.now(), null, "shippingAddress", 1, WorkOrder.Status.PENDING, 40.87);
     }
 
     @Test
