@@ -26,4 +26,6 @@ public interface IUsersDAO {
     void newUser(AbstractUser user);
 
     boolean isTableEmpty();
+
+    Integer getMaxEmployeeId() throws SQLException;
 }

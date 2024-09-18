@@ -177,25 +177,6 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
-    public AbstractUser getUserById(Integer employeeId) {
-        String query = "SELECT * FROM users WHERE employeeId = ?";
-
-        try (PreparedStatement getUser = connection.prepareStatement(query)) {
-            getUser.setInt(1, employeeId);
-
-            try (ResultSet rs = getUser.executeQuery()) {
-                if (rs.next()) {
-                    String accessLevel = rs.getString("accessLevel");
-                    return mapResultSetToUser(rs, accessLevel);
-                } else {
-                    return null;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Integer getEmployeeIdByFullName(String fullName) throws SQLException {
         String[] splitFullName = fullName.trim().split("\\s+");
 
@@ -289,7 +270,7 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
-    public AbstractUser getUserB2yId(Integer employeeId) {
+    public AbstractUser getUserById(Integer employeeId) {
         String query = "SELECT * FROM users WHERE employeeId = ?";
 
         try (PreparedStatement getUser = connection.prepareStatement(query)) {
