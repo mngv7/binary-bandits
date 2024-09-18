@@ -62,10 +62,14 @@
 
                 <Label text="Quantity:" styleClass="parts-table-label"/>
                 <TextField fx:id="productQuantityField" promptText="Quantity" maxWidth="100"/>
+
+                <Region minWidth="10"/>
+
+                <Button fx:id="addProductButton" text="Add Product" styleClass="create-product-button-refresh-button" onAction="#addProductToTable"/>
             </HBox>
 
             <!-- Order Table -->
-            <TableView minHeight="200">
+            <TableView fx:id="workOrderTableView" minHeight="200">
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
@@ -92,7 +96,7 @@
                 <HBox alignment="TOP_RIGHT">
                     <Label textAlignment="RIGHT" text="Total:"/>
                     <Label fx:id="totalLabel" textAlignment="RIGHT" text="0.00" styleClass="parts-table-label"/>
-                    <Button fx:id="createWorkOrderButton" alignment="CENTER_RIGHT" text="Create Order" disable="true" onMouseClicked="#createWorkOrder"/>
+                    <Button fx:id="createWorkOrderButton" alignment="CENTER_RIGHT" text="Create Order" disable="true" styleClass="create-product-button-refresh-button" onMouseClicked="#createWorkOrder"/>
                 </HBox>
             </HBox>
         </VBox>

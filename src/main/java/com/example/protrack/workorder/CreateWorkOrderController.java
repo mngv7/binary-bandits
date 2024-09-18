@@ -1,6 +1,7 @@
 package com.example.protrack.workorder;
 
 import com.example.protrack.Main;
+import com.example.protrack.workorder.WorkOrderProduct;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.products.Product;
@@ -57,6 +58,11 @@ public class CreateWorkOrderController {
     @FXML
     private TextField productQuantityField;
 
+    @FXML
+    private TableView workOrderTableView;
+
+    private List<WorkOrderProduct> workOrderProducts;
+
     public void initialize() {
         // Populate the ComboBoxes with data from the database
         workOrderOwnerComboBox.getItems().setAll(new UsersDAO().getProductionUsers());
@@ -79,6 +85,49 @@ public class CreateWorkOrderController {
 
         // Disable the button if any required field is empty
         createWorkOrderButton.disableProperty().bind(emptyFields);
+    }
+
+    protected void addProductToTable() {
+        try {
+            // Get the selected product from the ComboBox
+            Product selectedProduct = productComboBox.getSelectionModel().getSelectedItem();
+
+            // Get the quantity entered by the user
+            int quantity = Integer.parseInt(productQuantityField.getText());
+
+            // Calculate the total price for the selected product
+            double totalPriceForProduct = selectedProduct.getPrice() * quantity;
+
+            WorkOrderProduct workOrderProduct = new WorkOrderProduct(
+                    selectedProduct.getProductId(),
+                    selectedProduct.getProductName(),
+                    selectedProduct.getDescription(),
+                    quantity,
+                    selectedProduct.getPrice(),
+                    totalPriceForProduct
+            );
+
+            // Add the WorkOrderProduct to the list
+            workOrderProducts.add(workOrderProduct);
+
+            // Update the TableView
+            workOrderTableView.setItems(workOrderProducts);
+
+            // Update the total price label
+            totalOrderPrice += totalPriceForProduct;
+            totalLabel.setText(String.format("%.2f", totalOrderPrice));
+
+            // Optionally, reset the product selection and quantity fields
+            productComboBox.getSelectionModel().clearSelection();
+            productQuantityField.clear();
+        } catch (NumberFormatException e) {
+            // Handle invalid number format for quantity
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText("Invalid Quantity");
+            alert.setContentText("Please enter a valid number for quantity.");
+            alert.showAndWait();
+        }
     }
 
     @FXML

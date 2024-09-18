@@ -1,57 +1,44 @@
 package com.example.protrack.workorder;
 
-import com.example.protrack.products.Product;
-
 public class WorkOrderProduct {
+    private int productId;
+    private String productName;
+    private String description;
+    private int quantity;
+    private double price;
+    private double total;
 
-    private int workOrderId;   // FK to WorkOrder
-    private int productId;     // FK to Product
-    private int quantity;      // Quantity of product in the work order
-    private Product product;   // Reference to the Product object
-
-    // Constructor
-    public WorkOrderProduct(int workOrderId, int productId, int quantity, Product product) {
-        this.workOrderId = workOrderId;
+    public WorkOrderProduct(int productId, String productName, String description, int quantity, double price, double total) {
         this.productId = productId;
+        this.productName = productName;
+        this.description = description;
         this.quantity = quantity;
-        this.product = product;
+        this.price = price;
+        this.total = total;
     }
 
-    // Getters and setters
-    public int getWorkOrderId() {
-        return workOrderId;
-    }
-
-    public void setWorkOrderId(int workOrderId) {
-        this.workOrderId = workOrderId;
-    }
-
+    // Getters and Setters
     public int getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public String getProductName() {
+        return productName;
     }
+
+    //public String getDescription() {
+    //    return description;
+    //}
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    // Method to calculate the total cost of this product in the work order
-    //public double calculateTotal() {
-    //   return product.getPrice() * quantity;
+    //public double getPrice() {
+    //    return price;
     //}
+
+    public double getTotal() {
+        return total;
+    }
 }
