@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Interface to the database relevant to WorkOrder operations, providing abstraction
  */
-public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOInterface {
+public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
 
     // Instantiation of necessary class variables
     private final Connection connection;
@@ -225,10 +225,10 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO.WorkOrdersDAOI
     }
 
     public boolean updateWorkOrder(WorkOrder workOrder) {
-        return true;
+        return true; // Yet to be implemented
     }
 
     public boolean deleteWorkOrder(Integer workOrderId) {
-        return true;
+        return true; // Yet to be implemented
     }
 }

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.workorder.CreateWorkOrderController"
+            fx:controller="com.example.protrack.workorderproducts.CreateWorkOrderController"
             prefHeight="800.0" prefWidth="900.0" styleClass="add-parts-popup">
 
     <top>

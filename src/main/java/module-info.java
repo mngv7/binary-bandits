@@ -31,4 +31,6 @@ module com.example.protrack {
 
     exports com.example.protrack.warehouseutil;
     opens com.example.protrack.warehouseutil to javafx.fxml;
+    exports com.example.protrack.workorderproducts;
+    opens com.example.protrack.workorderproducts to javafx.fxml;
 }

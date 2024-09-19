@@ -1,4 +1,4 @@
-package com.example.protrack.workorder;
+package com.example.protrack.workorderproducts;
 
 public class WorkOrderProduct {
     private int productId;
@@ -8,13 +8,13 @@ public class WorkOrderProduct {
     private double price;
     private double total;
 
+    // Constructor for WorkOrderProduct class
     public WorkOrderProduct(int productId, String productName, String description, int quantity, double price, double total) {
         this.productId = productId;
         this.productName = productName;
         this.description = description;
-        this.quantity = quantity;
-        this.price = price;
-        this.total = total;
+        setQuantity(quantity); // Ensure total is calculated based on initial quantity and price
+        setPrice(price);       // Ensure total is calculated based on initial quantity and price
     }
 
     // Getters and Setters
@@ -34,11 +34,25 @@ public class WorkOrderProduct {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        updateTotal(); // Update total whenever quantity changes
+    }
+
     public double getPrice() {
         return price;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+        updateTotal(); // Update total whenever price changes
+    }
+
     public double getTotal() {
         return total;
+    }
+
+    private void updateTotal() {
+        this.total = quantity * price; // Calculate total based on quantity and price
     }
 }

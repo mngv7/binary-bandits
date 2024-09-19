@@ -1,7 +1,6 @@
-package com.example.protrack.workorder;
+package com.example.protrack.workorderproducts;
 
-import com.example.protrack.Main;
-import com.example.protrack.workorder.WorkOrderProduct;
+import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.products.Product;
@@ -13,15 +12,12 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 
 public class CreateWorkOrderController {
 
@@ -115,32 +111,32 @@ public class CreateWorkOrderController {
                 shippingAddressField.textProperty(), shippingMethodField.textProperty()
         );
 
-        // Disable the button if any required field is empty
+        // Disables the button if any required field is empty
         createWorkOrderButton.disableProperty().bind(emptyFields);
     }
 
     @FXML
     protected void addProductToTable() {
         try {
-            // Get the selected product from the ComboBox
+            // Gets selected product from the 'Product' ComboBox
             Product selectedProduct = productComboBox.getSelectionModel().getSelectedItem();
 
-            // Get the quantity entered by the user
+            // Gets quantity entered by the user
             int quantity = Integer.parseInt(productQuantityField.getText());
 
             // Calculate the total price for the selected product
-        //       double totalPriceForProduct = selectedProduct.getPrice() * quantity;
+            // --double totalPriceForProduct = selectedProduct.getPrice() * quantity;
 
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
-                    "testDescription", //desc
+                    "testDescription", // description, to be implemented
                     quantity,
-                    6.9, //price
-                    12.2 //totalprice
+                    6.9, // price, to be implemented
+                    12.2 // totalPrice, to be implemented
             );
 
-            // Add the WorkOrderProduct to the list
+            // Adds WorkOrderProduct to list
             workOrderProducts.add(workOrderProduct);
             System.out.println(workOrderProducts.toString());
 
@@ -148,14 +144,14 @@ public class CreateWorkOrderController {
             System.out.println(workOrderTableView.getItems().toString());
 
             // Update the total price label
-            // totalOrderPrice += totalPriceForProduct;
+            // --totalOrderPrice += totalPriceForProduct;
             totalLabel.setText(String.format("%.2f", 12.2));
 
-            // Optionally, reset the product selection and quantity fields
+            // Resets the product selection and quantity fields
             productComboBox.getSelectionModel().clearSelection();
             productQuantityField.clear();
         } catch (NumberFormatException e) {
-            // Handle invalid number format for quantity
+            // Alert handles invalid number formats for quantity
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Input");
             alert.setHeaderText("Invalid Quantity");
@@ -184,8 +180,8 @@ public class CreateWorkOrderController {
             int quantity = Integer.parseInt(productQuantityField.getText());
 
             // Add the product to the work order
-            WorkOrderProductsDAO workOrderProductsDAO = new WorkOrderProductsDAO();
-            workOrderProductsDAO.addWorkOrderProduct(workOrder, selectedProduct, quantity);
+            WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
+            workOrderProductsDAOImplementation.addWorkOrderProduct(workOrder, selectedProduct, quantity);
 
             // Optionally, reset the form fields after creation
             clearFormFields();
@@ -221,6 +217,7 @@ public class CreateWorkOrderController {
      */
     private void clearFormFields() {
 
+        // JavaFX objects to be cleared
         addressField.clear();
         emailField.clear();
         phoneField.clear();
