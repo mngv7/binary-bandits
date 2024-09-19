@@ -47,12 +47,17 @@ public class PartsController {
 
     private ObservableList<Parts> partsList;
 
+    /**
+     * Initialize parts page with values
+     */
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
 
+        // Disable add parts button if access level is low
         addPartsButton.setDisable(usersDAO.getUserById(loggedInId).getAccessLevel().equals("LOW"));
 
+        // Set cell value factories for table columns
         colPartsId.setCellValueFactory(new PropertyValueFactory<>("partsId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -62,9 +67,14 @@ public class PartsController {
         partsList = FXCollections.observableArrayList();
         partsTable.setItems(partsList);
         partsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // Refresh parts table
         refreshTable();
     }
 
+    /**
+     * Refreshes the table with parts data
+     */
     public void refreshTable() {
         PartsDAO partsDAO = new PartsDAO();
         partsList.clear();
@@ -75,7 +85,10 @@ public class PartsController {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 500;
 
-    public void openAddPartsPopup () {
+    /**
+     * Create pop-up when "Add Parts" is pressed
+     */
+    public void openAddPartsPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/add-parts-view.fxml"));
             Parent addPartsRoot = fxmlLoader.load();
@@ -85,6 +98,7 @@ public class PartsController {
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(TITLE);
 
+            // Set the scene for the pop-up
             Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
