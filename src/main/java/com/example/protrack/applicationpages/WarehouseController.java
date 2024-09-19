@@ -42,6 +42,7 @@ public class WarehouseController {
         });
     }
 
+    /* Mock workstation data load. Intended for testing purposes only. */
     private void mockLoadWorkstationData() {
         if (workstations == null) {
             workstations = new ArrayList<>();
@@ -55,6 +56,12 @@ public class WarehouseController {
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
 
+    /*
+     * This loads workstation data from the DAO into the workstationTable UI.
+     *
+     * TODO: Explicit overriding of the workstations == null statement to
+     *       allow functions to reload from the DAO.
+     */
     private void loadWorkstationData() {
         if (workstations == null) {
             workstations = locationsAndContents.getAllWorkstations();
@@ -62,10 +69,12 @@ public class WarehouseController {
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
 
+    /* Basically just a getter for functions that only need the in-RAM copy of the DAO data. */
     public List<Workstation> getAllWorkstationsInRAM() {
         return this.workstations;
     }
 
+    /* Handles the delete dialog that removes a workstation. */
     private void handleDeleteWorkstation() {
         Workstation selectedWorkstation = workstationTable.getSelectionModel().getSelectedItem();
         if (selectedWorkstation != null) {

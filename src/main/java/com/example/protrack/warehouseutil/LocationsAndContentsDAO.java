@@ -8,9 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationsAndContentsDAO {
-    private Connection connection;
+    private Connection connection; /* This database connection instance. */
 
     public LocationsAndContentsDAO() { connection = DatabaseConnection.getInstance(); }
+
+    /*
+     * Unlike other DAOs in ProTrack, this one manipulates two database tables.
+     * Incidentally we create them both here.
+     */
     public void createTables () {
         try {
             /* NOTE: locationCapacity has been made an integer as a percentage makes zero sense here.
@@ -35,6 +40,12 @@ public class LocationsAndContentsDAO {
         }
     }
 
+    /*
+     * Inserts a new Warehouse into the locations table.
+     * In ProTrack, we only have one global warehouse but this code was written with the old
+     * Warehouse interface design in mind before the database ERD changed.
+     * Incidentally, it is now possible to support multiple warehouses in future!
+     */
     public void newWarehouse (Warehouse warehouse) {
         try {
             PreparedStatement insertWarehouse = connection.prepareStatement(
@@ -52,6 +63,9 @@ public class LocationsAndContentsDAO {
         }
     }
 
+    /*
+     * Inserts a new Workstation into the locations table.
+     */
     public void newWorkstation (Workstation workstation) {
         try {
             PreparedStatement insertWorkstation = connection.prepareStatement(
@@ -69,6 +83,11 @@ public class LocationsAndContentsDAO {
         }
     }
 
+    /*
+     * Inserts parts into a location by making links between the locationID and partID in the locationcontents table.
+     * This is more or less generic but intended to be utilised by Warehouse and Workstation in specific ways.
+     * If a locationID and partsID pair already exists, the quantity is added to the existing quantity instead.
+     */
     public void insertPartsIdWithQuantityIntoLocation (Integer locationID, partIdWithQuantity newPart) {
         try {
             String query = "SELECT * FROM locationContents WHERE locationID = ? AND partID = ?";
@@ -128,6 +147,12 @@ public class LocationsAndContentsDAO {
         }
     }
 
+    /*
+     * Removes parts from a location by decreasing the quantity value for a given locationID/partID pair.
+     * This is more or less generic but intended to be utilised by Warehouse and Workstation in specific ways.
+     * If the quantity to be removed exceeds the remaining quantity in the database, the database entry is removed
+     * entirely.
+     */
     public void removePartsIdWithQuantityFromLocation (Integer locationID, partIdWithQuantity partToRemove) {
         try {
             String query = "SELECT * FROM locationContents WHERE locationID = ? AND partID = ?";
@@ -190,6 +215,10 @@ public class LocationsAndContentsDAO {
         }
     }
 
+    /*
+     * Retrieves all warehouses from the locations database and returns them as an ArrayList of type Warehouse.
+     * This will likely only ever return 1 element due to the changes to the database ERD.
+     */
     public List<Warehouse> getAllWarehouses () {
         List<Warehouse> warehouses = new ArrayList<>();
 
@@ -213,6 +242,9 @@ public class LocationsAndContentsDAO {
         return warehouses;
     }
 
+    /*
+     * Retrieve all workstations in the locations database and return them as an ArrayList of type Workstation.
+     */
     public List<Workstation> getAllWorkstations () {
         List<Workstation> workstations = new ArrayList<>();
 
@@ -236,14 +268,23 @@ public class LocationsAndContentsDAO {
         return workstations;
     }
 
+    /*
+     * Retrieves all the parts in a warehouse.
+     * Currently unimplemented.
+     */
     public void getAllPartsInWarehouse () {
         System.out.println("FIXME: getAllPartsInWarehouse not implemented.");
     }
 
+    /*
+     * Retrieves all the parts allocated to a Workstation.
+     * Currently unimplemented.
+     */
     public void getAllPartsForWorkstation () {
         System.out.println("FIXME: getAllPartsForWorkstation not implemented.");
     }
 
+    /* Self-explanatory. */
     public boolean isLocationsTableEmpty () {
         try {
             Statement stmt = connection.createStatement();
@@ -258,6 +299,7 @@ public class LocationsAndContentsDAO {
         return false;
     }
 
+    /* Self-explanatory. */
     public boolean isLocationContentsTableEmpty () {
         try {
             Statement stmt = connection.createStatement();

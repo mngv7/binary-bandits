@@ -55,6 +55,11 @@ public class RealWarehouse implements Warehouse {
     public int getMaxParts() { return this.maxParts; }
     public void setMaxParts(int maxParts) { this.maxParts = maxParts; }
 
+    /*
+     * Adds a specific quantity of the given partsID to the Warehouse.
+     * RealWorkstation utilises this function when returning stock.
+     * It can also be called directly to add parts to a given Warehouse.
+     */
     public void addPartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
@@ -71,6 +76,11 @@ public class RealWarehouse implements Warehouse {
         dao.insertPartsIdWithQuantityIntoLocation(this.warehouseId, newPart);
     }
 
+    /*
+     * Removes a specific quantity of the given partsID from the warehouse.
+     * RealWorkstation utilises this function when importing stock.
+     * It can also be called directly to remove parts from a given Warehouse.
+     */
     public void removePartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {

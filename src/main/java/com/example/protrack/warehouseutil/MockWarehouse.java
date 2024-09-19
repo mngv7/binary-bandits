@@ -59,6 +59,12 @@ public class MockWarehouse {
     public int getMaxParts() { return this.maxParts; }
     public void setMaxParts(int maxParts) { this.maxParts = maxParts; }
 
+    /*
+     * Adds a specific quantity of the given partsID to the warehouse.
+     * The Mock implementation deliberately leaves the dao variable unused and
+     * only includes it for interface implementation requirements, it is
+     * therefore safe to call this function with a null DAO.
+     */
     public void addPartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
@@ -72,6 +78,13 @@ public class MockWarehouse {
         newPart.quantity = quantity;
         this.partsId.add(newPart);
     }
+
+    /*
+     * Removes a specific quantity of the given partsID from the warehouse.
+     * The Mock implementation deliberately leaves the dao variable unused and
+     * only includes it for interface implementation requirements, it is
+     * therefore safe to call this function with a null DAO.
+     */
     public void removePartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {

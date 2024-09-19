@@ -60,6 +60,10 @@ public class RealWorkstation implements Workstation {
     public int getWorkstationMaxParts() { return this.maxParts; }
     public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
 
+    /*
+     * Imports a specific quantity of the given partsID from the target warehouse into this workstation.
+     * This also removes said quantity of the given partsID from the warehouse.
+     */
     public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse,
                                                         LocationsAndContentsDAO dao,
                                                         int partsId,
@@ -81,6 +85,10 @@ public class RealWorkstation implements Workstation {
         dao.insertPartsIdWithQuantityIntoLocation (this.workstationId, newPart);
     }
 
+    /*
+     * Returns a specific quantity of the given partsID to the target warehouse from this workstation.
+     * This also adds back said quantity of the given partsID to the warehouse.
+     */
     public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {

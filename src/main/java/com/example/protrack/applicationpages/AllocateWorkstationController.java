@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class AllocateWorkstationController {
+    /*
+     * Handling Workstation allocations means we have to read the Workstation data loaded by
+     * WarehouseController, therefore an instance of it is put here by code in WarehouseController.
+     */
     private WarehouseController parentWarehouse;
 
     @FXML
@@ -24,6 +28,7 @@ public class AllocateWorkstationController {
     public void initialize() {
     }
 
+    // TODO: Why do we have both handleClose and closeDialog?
     @FXML
     private void handleClose() {
         Stage stage = (Stage) workstationComboBox.getScene().getWindow();
@@ -55,7 +60,7 @@ public class AllocateWorkstationController {
         }
     }
 
-    //function to loadNewPage
+    // This function loads a new FXML page when called, complete with an error handler.
     private void loadNewPage(String fxmlFilePath) {
         try {
             //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
@@ -71,7 +76,8 @@ public class AllocateWorkstationController {
             System.out.println("Failed to load FXML file: " + fxmlFilePath);
         }
     }
-//  the function to close the allocateWorkstation page
+
+    // These both close the combo box this controller controls.
     @FXML
     private void handleCancel() {
         closeDialog();

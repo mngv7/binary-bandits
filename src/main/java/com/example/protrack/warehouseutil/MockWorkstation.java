@@ -76,6 +76,14 @@ public class MockWorkstation implements Workstation {
     public int getWorkstationMaxParts() { return this.maxParts; }
     public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
 
+    /*
+     * Imports a specific quantity of the given partsID from the target warehouse into this workstation.
+     * This also removes said quantity of the given partsID from the warehouse.
+     *
+     * The Mock implementation deliberately leaves the dao variable unused and
+     * only includes it for interface implementation requirements, it is
+     * therefore safe to call this function with a null DAO.
+     */
     public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse,
                                                         LocationsAndContentsDAO dao,
                                                         int partsId,
@@ -95,6 +103,14 @@ public class MockWorkstation implements Workstation {
         this.partsId.add(newPart);
     }
 
+    /*
+     * Returns a specific quantity of the given partsID from the workstation to the target warehouse.
+     * This also adds said quantity of the given partsID back to the warehouse.
+     *
+     * The Mock implementation deliberately leaves the dao variable unused and
+     * only includes it for interface implementation requirements, it is
+     * therefore safe to call this function with a null DAO.
+     */
     public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse,
                                                       LocationsAndContentsDAO dao,
                                                       int partsId,
