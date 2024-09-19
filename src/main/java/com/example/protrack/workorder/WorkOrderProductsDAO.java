@@ -60,7 +60,7 @@ public class WorkOrderProductsDAO {
     /**
      * Retrieves all products associated with a work order
      */
-    public List<Product> getWorkOrderProducts(int workOrderId) {
+    public List<Product> getWorkOrderProductsByWorkOrderId(int workOrderId) {
         String sqlGetWorkOrderProducts = """
             SELECT p.product_id, p.product_name, wop.quantity 
             FROM Product p 

@@ -10,9 +10,12 @@ import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -61,9 +64,38 @@ public class CreateWorkOrderController {
     @FXML
     private TableView workOrderTableView;
 
-    private List<WorkOrderProduct> workOrderProducts;
+    @FXML
+    private TableColumn<WorkOrderProduct, String> colWorkOrderProductName;
+
+    @FXML
+    private TableColumn<WorkOrderProduct, String> colWorkOrderProductDescription;
+
+    @FXML
+    private TableColumn<WorkOrderProduct, Integer> colWorkOrderProductQuantity;
+
+    @FXML
+    private TableColumn<WorkOrderProduct, Double> colWorkOrderProductPrice;
+
+    @FXML
+    private TableColumn<WorkOrderProduct, Double> colWorkOrderTotal;
+
+    @FXML
+    private TableColumn<WorkOrderProduct, String> colTrash;
+
+    private ObservableList<WorkOrderProduct> workOrderProducts;
 
     public void initialize() {
+
+        // Update the TableView
+        colWorkOrderProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        colWorkOrderProductDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colWorkOrderProductQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colWorkOrderProductPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        // Initialises ObservableList
+        workOrderProducts = FXCollections.observableArrayList();
+        workOrderTableView.setItems(workOrderProducts);
+
         // Populate the ComboBoxes with data from the database
         workOrderOwnerComboBox.getItems().setAll(new UsersDAO().getProductionUsers());
         customerComboBox.getItems().setAll(new CustomerDAO().getAllCustomers());
@@ -87,6 +119,7 @@ public class CreateWorkOrderController {
         createWorkOrderButton.disableProperty().bind(emptyFields);
     }
 
+    @FXML
     protected void addProductToTable() {
         try {
             // Get the selected product from the ComboBox
@@ -96,26 +129,27 @@ public class CreateWorkOrderController {
             int quantity = Integer.parseInt(productQuantityField.getText());
 
             // Calculate the total price for the selected product
-            double totalPriceForProduct = selectedProduct.getPrice() * quantity;
+        //       double totalPriceForProduct = selectedProduct.getPrice() * quantity;
 
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
-                    selectedProduct.getDescription(),
+                    "testDescription", //desc
                     quantity,
-                    selectedProduct.getPrice(),
-                    totalPriceForProduct
+                    6.9, //price
+                    12.2 //totalprice
             );
 
             // Add the WorkOrderProduct to the list
             workOrderProducts.add(workOrderProduct);
+            System.out.println(workOrderProducts.toString());
 
-            // Update the TableView
             workOrderTableView.setItems(workOrderProducts);
+            System.out.println(workOrderTableView.getItems().toString());
 
             // Update the total price label
-            totalOrderPrice += totalPriceForProduct;
-            totalLabel.setText(String.format("%.2f", totalOrderPrice));
+            // totalOrderPrice += totalPriceForProduct;
+            totalLabel.setText(String.format("%.2f", 12.2));
 
             // Optionally, reset the product selection and quantity fields
             productComboBox.getSelectionModel().clearSelection();

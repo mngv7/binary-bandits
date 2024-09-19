@@ -26,17 +26,17 @@ public class WorkOrderProduct {
         return productName;
     }
 
-    //public String getDescription() {
-    //    return description;
-    //}
+    public String getDescription() {
+        return description;
+    }
 
     public int getQuantity() {
         return quantity;
     }
 
-    //public double getPrice() {
-    //    return price;
-    //}
+    public double getPrice() {
+        return price;
+    }
 
     public double getTotal() {
         return total;
