@@ -1,41 +1,37 @@
 package com.example.protrack.warehouseutil;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-public class MockWarehouse {
+public class RealWarehouse implements Warehouse {
     private int warehouseId;
     private String warehouseName;
     private String warehouseLocation;
-    public int maxParts;
     private final List<partIdWithQuantity> partsId;
+    private int maxParts;
 
-    public MockWarehouse() {
+    public RealWarehouse () {
         this.warehouseId = 0;
         this.warehouseName = "Default Warehouse";
-        this.warehouseLocation = "Spike Site A";
+        this.warehouseLocation = "Default location"; /* TODO: Unused by DAO */
         this.partsId = new ArrayList<>();
+        this.maxParts = 5000;
     }
 
-    public MockWarehouse(int warehouseId) {
-        this.warehouseId = warehouseId;
-        this.warehouseName = "Default Warehouse";
-        this.warehouseLocation = "Spike Site A";
+    public RealWarehouse (int locationID, String locationAlias, int locationCapacity) {
+        this.warehouseId = locationID;
+        this.warehouseName = locationAlias;
+        this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
         this.partsId = new ArrayList<>();
+        this.maxParts = locationCapacity;
     }
 
-    public MockWarehouse(int warehouseId, String warehouseName) {
-        this.warehouseId = warehouseId;
-        this.warehouseName = warehouseName;
-        this.warehouseLocation = "Spike Site A";
-        this.partsId = new ArrayList<>();
-    }
-
-    public MockWarehouse(int warehouseId, String warehouseName, String warehouseLocation) {
-        this.warehouseId = warehouseId;
-        this.warehouseName = warehouseName;
-        this.warehouseLocation = warehouseLocation;
-        this.partsId = new ArrayList<>();
+    public RealWarehouse (int locationID, String locationAlias, int locationCapacity, List<partIdWithQuantity> partsLinked) {
+        this.warehouseId = locationID;
+        this.warehouseName = locationAlias;
+        this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
+        this.partsId = partsLinked;
+        this.maxParts = locationCapacity;
     }
 
     public String getWarehouseName() {
@@ -60,10 +56,9 @@ public class MockWarehouse {
     public void setMaxParts(int maxParts) { this.maxParts = maxParts; }
 
     /*
-     * Adds a specific quantity of the given partsID to the warehouse.
-     * The Mock implementation deliberately leaves the dao variable unused and
-     * only includes it for interface implementation requirements, it is
-     * therefore safe to call this function with a null DAO.
+     * Adds a specific quantity of the given partsID to the Warehouse.
+     * RealWorkstation utilises this function when returning stock.
+     * It can also be called directly to add parts to a given Warehouse.
      */
     public void addPartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
@@ -77,13 +72,14 @@ public class MockWarehouse {
         newPart.partsId = partsId;
         newPart.quantity = quantity;
         this.partsId.add(newPart);
+
+        dao.insertPartsIdWithQuantityIntoLocation(this.warehouseId, newPart);
     }
 
     /*
      * Removes a specific quantity of the given partsID from the warehouse.
-     * The Mock implementation deliberately leaves the dao variable unused and
-     * only includes it for interface implementation requirements, it is
-     * therefore safe to call this function with a null DAO.
+     * RealWorkstation utilises this function when importing stock.
+     * It can also be called directly to remove parts from a given Warehouse.
      */
     public void removePartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
@@ -94,6 +90,7 @@ public class MockWarehouse {
                     amountToSubtract = this.partsId.get(i).quantity;
                 }
                 this.partsId.get(i).quantity -= amountToSubtract;
+                dao.removePartsIdWithQuantityFromLocation(this.warehouseId, this.partsId.get(i));
                 if (this.partsId.get(i).quantity <= 0) {
                     /* Remove part from workstation entirely. */
                     this.partsId.remove(this.partsId.get(i));

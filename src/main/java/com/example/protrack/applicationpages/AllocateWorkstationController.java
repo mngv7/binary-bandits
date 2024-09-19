@@ -1,5 +1,6 @@
 package com.example.protrack.applicationpages;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,12 +12,23 @@ import com.example.protrack.warehouseutil.*;
 
 import java.io.IOException;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class AllocateWorkstationController {
+    /*
+     * Handling Workstation allocations means we have to read the Workstation data loaded by
+     * WarehouseController, therefore an instance of it is put here by code in WarehouseController.
+     */
     private WarehouseController parentWarehouse;
 
     @FXML
     private ComboBox<String> workstationComboBox;
 
+    public void initialize() {
+    }
+
+    // TODO: Why do we have both handleClose and closeDialog?
     @FXML
     private void handleClose() {
         Stage stage = (Stage) workstationComboBox.getScene().getWindow();
@@ -25,22 +37,30 @@ public class AllocateWorkstationController {
 
     @FXML
     private void handleAllocate() {
-        String selectedWorkstation = workstationComboBox.getValue();
+        Workstation selectedWorkstation = parentWarehouse.getAllWorkstationsInRAM().get(workstationComboBox.getSelectionModel().getSelectedIndex());
         if (selectedWorkstation != null) {
             // Handle allocation logic here
-            System.out.println("Allocated: " + selectedWorkstation);
+            System.out.println("Allocated: " + selectedWorkstation.getWorkstationName());
             // try to connect WorkStation page
-            /* TODO: Connect actual workstation; the combo box doesn't yet have enough data. */
-            this.parentWarehouse.openWorkstation(null);
+            this.parentWarehouse.openWorkstation(selectedWorkstation);
             handleClose();
         }
     }
 
     public void setParentWarehouseController(WarehouseController warehouse) {
         this.parentWarehouse = warehouse;
+
+        /* HACK: Initialise the workstationComboBox here too; this guarantees warehouse isn't null when it's filled. */
+        if (this.parentWarehouse != null) {
+            List<String> workstationNames = new ArrayList<>();
+            for (int i = 0; i < parentWarehouse.getAllWorkstationsInRAM().size(); ++i) {
+                workstationNames.add(parentWarehouse.getAllWorkstationsInRAM().get(i).getWorkstationName());
+            }
+            workstationComboBox.setItems(FXCollections.observableArrayList(workstationNames));
+        }
     }
 
-    //function to loadNewPage
+    // This function loads a new FXML page when called, complete with an error handler.
     private void loadNewPage(String fxmlFilePath) {
         try {
             //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
@@ -57,6 +77,7 @@ public class AllocateWorkstationController {
         }
     }
 
+    // These both close the combo box this controller controls.
     @FXML
     private void handleCancel() {
         closeDialog();

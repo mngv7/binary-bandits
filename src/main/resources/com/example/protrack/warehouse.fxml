@@ -26,79 +26,32 @@
                     <Button text="Allocate Workstation" onAction="#handleAllocateWorkstation" styleClass="add-parts-button"/>
                 </HBox>
 
-
-                <TableView fx:id="workstationTable">
+                <!-- Workstations -->
+                <!--add warehouse table-->
+                <TableView fx:id="workstationTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn text="Workstation">
+                        <!--set warehouse id column-->
+                        <TableColumn text="Workstation Id">
                             <cellValueFactory>
-                                <PropertyValueFactory property="workstationName"/>
+                                <PropertyValueFactory property="WorkstationId"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <!--TableColumn text="Employee ID">
+                        <!--set Workstation Name column-->
+                        <TableColumn text="Workstation Name">
                             <cellValueFactory>
-                                <PropertyValueFactory property="employeeId"/>
-                            </cellValueFactory>
-                        </TableColumn-->
-                        <!--TableColumn text="Worker">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="workerName"/>
-                            </cellValueFactory>
-                        </TableColumn-->
-                        <!--TableColumn text="Stock Level">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="stockLevel"/>
-                            </cellValueFactory>
-                        </TableColumn-->
-                        <!--TableColumn text="Production Output">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="productionOutput"/>
-                            </cellValueFactory>
-                        </TableColumn-->
-                    </columns>
-                </TableView>
-
-                <!-- Pagination -->
-                <HBox>
-                    <children>
-                        <Button text="Previous"/>
-                        <Label text="1"/>
-                        <Label text="2"/>
-                        <Button text="Next"/>
-                    </children>
-                </HBox>
-
-                <!-- Sale Orders -->
-                <Label text="Completed Sale Orders" styleClass="section-label"/>
-                <TableView fx:id="saleOrderTable">
-                    <columns>
-                        <TableColumn text="SO ID">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="soId"/>
+                                <PropertyValueFactory property="WorkstationName"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Workstation">
+                        <!--set Workstation Location column-->
+                        <TableColumn text="Workstation Location">
                             <cellValueFactory>
-                                <PropertyValueFactory property="workstation"/>
+                                <PropertyValueFactory property="WorkstationLocation"/>
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn text="Worker">
+                        <!--set Workstation Capacity column-->
+                        <TableColumn text="Workstation Capacity">
                             <cellValueFactory>
-                                <PropertyValueFactory property="worker"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Products">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="products"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Components Used">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="componentsUsed"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Flags">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="flags"/>
+                                <PropertyValueFactory property="WorkstationMaxParts"/>
                             </cellValueFactory>
                         </TableColumn>
                     </columns>

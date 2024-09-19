@@ -9,7 +9,6 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -20,17 +19,16 @@ import java.util.Objects;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
+    public LocationsAndContentsDAO locationsAndContents;
 
     @FXML
     private TableView<Workstation> workstationTable;
     private List<Workstation> workstations; /* Loaded workstations from a database. */
 
-    //@FXML
-    //private TableView<SaleOrder> saleOrderTable;
-
     @FXML
     public void initialize() {
-        loadWorkstationData();
+        locationsAndContents = new LocationsAndContentsDAO();
+        loadWorkstationData(); /* TODO: Could probably remove this part and populate workstations directly. */
 
         // Create and set the context menu for the workstationTable
         ContextMenu contextMenu = new ContextMenu();
@@ -44,12 +42,13 @@ public class WarehouseController {
         });
     }
 
-    private void loadWorkstationData() {
+    /* Mock workstation data load. Intended for testing purposes only. */
+    private void mockLoadWorkstationData() {
         if (workstations == null) {
             workstations = new ArrayList<>();
 
             /* TODO: load from mock/real DB later. For now, make dummy data. */
-            workstations.add(new MockWorkstation(0, "Workstation for noobs.", "Warehouse room A"));
+            workstations.add(new MockWorkstation(0, "Workstation 1", "Warehouse room A"));
             workstations.add(new MockWorkstation(1, "Workstation 2", "Warehouse room A"));
             workstations.add(new MockWorkstation(2, "Workstation 3", "Warehouse room A"));
             workstations.add(new MockWorkstation(3, "Workstation 4", "Warehouse room A"));
@@ -57,6 +56,25 @@ public class WarehouseController {
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
 
+    /*
+     * This loads workstation data from the DAO into the workstationTable UI.
+     *
+     * TODO: Explicit overriding of the workstations == null statement to
+     *       allow functions to reload from the DAO.
+     */
+    private void loadWorkstationData() {
+        if (workstations == null) {
+            workstations = locationsAndContents.getAllWorkstations();
+        }
+        workstationTable.setItems(FXCollections.observableArrayList(workstations));
+    }
+
+    /* Basically just a getter for functions that only need the in-RAM copy of the DAO data. */
+    public List<Workstation> getAllWorkstationsInRAM() {
+        return this.workstations;
+    }
+
+    /* Handles the delete dialog that removes a workstation. */
     private void handleDeleteWorkstation() {
         Workstation selectedWorkstation = workstationTable.getSelectionModel().getSelectedItem();
         if (selectedWorkstation != null) {
@@ -70,13 +88,9 @@ public class WarehouseController {
                 workstationTable.getItems().remove(selectedWorkstation);
                 // Optionally, remove it from the database or data source here
                 workstations.remove(selectedWorkstation);
+                /* TODO: DAO linking later; ideally we also want to return any parts in the workstation to the warehouse as well. */
             }
         }
-    }
-
-    /* TODO: Sale orders are not implemented yet. */
-    private void loadSaleOrderData() {
-        System.out.println("FIXME: loadSaleOrderData stubbed.");
     }
 
     /* TODO: Workstation DB and related code is very incomplete, attempt to resolve with the database guys later. */
@@ -113,7 +127,6 @@ public class WarehouseController {
     public void openWorkstation (Workstation workstation) {
         /* TODO: Connect selected workstation to new page. */
         try {
-            //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
             Parent root = loader.load();
 

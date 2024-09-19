@@ -3,51 +3,35 @@ package com.example.protrack.warehouseutil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockWorkstation implements Workstation {
+public class RealWorkstation implements Workstation {
     private int workstationId;
     private String workstationName;
     private String workstationLocation;
     private final List<partIdWithQuantity> partsId;
     private int maxParts;
 
-    public MockWorkstation() {
-        this.workstationId = 0; /* lol */
-        this.workstationName = "Default workstation";
-        this.workstationLocation = "Default location";
+    public RealWorkstation () {
+        this.workstationId = 0;
+        this.workstationName = "Workstation 1";
+        this.workstationLocation = "Spike Site A";
+        this.maxParts = 200;
         this.partsId = new ArrayList<>();
-        this.maxParts = 100;
     }
 
-    public MockWorkstation(int workstationId) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = "Default workstation";
-        this.workstationLocation = "Default location";
-        this.partsId = new ArrayList<>();
-        this.maxParts = 100;
-    }
-
-    public MockWorkstation(int workstationId, String workstationName) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = workstationName;
-        this.workstationLocation = "Default Location";
-        this.partsId = new ArrayList<>();
-        this.maxParts = 100;
-    }
-
-    public MockWorkstation(int workstationId, String workstationName, String workstationLocation) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = workstationName;
-        this.workstationLocation = workstationLocation;
-        this.partsId = new ArrayList<>();
-        this.maxParts = 100;
-    }
-
-    public MockWorkstation(int workstationId, String workstationName, String workstationLocation, int maxParts) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = workstationName;
-        this.workstationLocation = workstationLocation;
-        this.partsId = new ArrayList<>();
+    public RealWorkstation (int locationID, String locationAlias, int maxParts) {
+        this.workstationId = locationID;
+        this.workstationName = locationAlias;
+        this.workstationLocation = "Spike Site A";
         this.maxParts = maxParts;
+        this.partsId = new ArrayList<>();
+    }
+
+    public RealWorkstation (int locationID, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
+        this.workstationId = locationID;
+        this.workstationName = locationAlias;
+        this.workstationLocation = "Spike Site A";
+        this.maxParts = maxParts;
+        this.partsId = parts;
     }
 
     public String getWorkstationName() {
@@ -79,10 +63,6 @@ public class MockWorkstation implements Workstation {
     /*
      * Imports a specific quantity of the given partsID from the target warehouse into this workstation.
      * This also removes said quantity of the given partsID from the warehouse.
-     *
-     * The Mock implementation deliberately leaves the dao variable unused and
-     * only includes it for interface implementation requirements, it is
-     * therefore safe to call this function with a null DAO.
      */
     public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse,
                                                         LocationsAndContentsDAO dao,
@@ -101,20 +81,15 @@ public class MockWorkstation implements Workstation {
         newPart.partsId = partsId;
         newPart.quantity = quantity;
         this.partsId.add(newPart);
+
+        dao.insertPartsIdWithQuantityIntoLocation (this.workstationId, newPart);
     }
 
     /*
-     * Returns a specific quantity of the given partsID from the workstation to the target warehouse.
-     * This also adds said quantity of the given partsID back to the warehouse.
-     *
-     * The Mock implementation deliberately leaves the dao variable unused and
-     * only includes it for interface implementation requirements, it is
-     * therefore safe to call this function with a null DAO.
+     * Returns a specific quantity of the given partsID to the target warehouse from this workstation.
+     * This also adds back said quantity of the given partsID to the warehouse.
      */
-    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse,
-                                                      LocationsAndContentsDAO dao,
-                                                      int partsId,
-                                                      int quantity) {
+    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
@@ -123,6 +98,7 @@ public class MockWorkstation implements Workstation {
                     amountToSubtract = this.partsId.get(i).quantity;
                 }
                 this.partsId.get(i).quantity -= amountToSubtract;
+                dao.removePartsIdWithQuantityFromLocation(this.workstationId, this.partsId.get(i));
                 if (this.partsId.get(i).quantity <= 0) {
                     /* Remove part from workstation entirely. */
                     this.partsId.remove(this.partsId.get(i));
@@ -135,4 +111,3 @@ public class MockWorkstation implements Workstation {
         }
     }
 }
-

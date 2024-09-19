@@ -15,6 +15,7 @@
     </top>
     <center>
         <VBox>
+            <!--the collect workstation data to add workstation table-->
             <Label text="Workstation Details"/>
             <TextField fx:id="nameField" promptText="Workstation Name"/>
             <TextField fx:id="capacityField" promptText="Stock Capacity"/>

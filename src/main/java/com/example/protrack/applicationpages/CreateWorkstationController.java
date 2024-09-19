@@ -7,6 +7,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class CreateWorkstationController {
+    /*
+     * Creating a new Workstation requires adding new entries to the LocationsAndContentsDAO which
+     * requires having a reference to the WarehouseController that opened the CreateWarehouse dialog.
+     */
     public WarehouseController parentWarehouse;
     @FXML
     private TextField nameField;
@@ -26,6 +30,7 @@ public class CreateWorkstationController {
         this.parentWarehouse = parentWarehouse;
     }
 
+    // the function to create the data in workstation table
     @FXML
     private void handleCreate() {
         Workstation station = new MockWorkstation(11, nameField.getText(), "null", Integer.parseInt(capacityField.getText()));
@@ -33,6 +38,8 @@ public class CreateWorkstationController {
         closeDialog();
     }
 
+    // the functions to close the createWorkstation page from two different places.
+    // TODO: Condense this code into a single function to close the window in question.
     @FXML
     private void handleCancel() {
         closeDialog();
