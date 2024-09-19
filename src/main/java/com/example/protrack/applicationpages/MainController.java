@@ -53,7 +53,7 @@ public class MainController {
 
     @FXML
     private void purchaseOrders() {
-        loadContent("/com/example/protrack/work_orders.fxml");
+        loadContent("/workorder/work_orders.fxml");
     }
 
     @FXML

@@ -103,68 +103,74 @@ public class UsersDAO implements IUsersDAO {
 
 
     @Override
-    public AbstractUser mapResultSetToUser(ResultSet resultSet) throws SQLException {
-        // Determine the user type and map the result set to the appropriate user class
-        String userType = resultSet.getString("accessLevel");
+    public AbstractUser mapResultSetToUser(ResultSet resultSet) {
 
-        // Return the specific user object based on the access level
-        return switch (userType) {
-            case "HIGH" -> new ManagerialUser(
-                    resultSet.getInt("employeeId"),
-                    resultSet.getString("firstName"),
-                    resultSet.getString("lastName"),
-                    resultSet.getDate("dob"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phoneNo"),
-                    resultSet.getString("gender"),
-                    resultSet.getString("password")
-            );
-            case "MEDIUM" -> new WarehouseUser(
-                    resultSet.getInt("employeeId"),
-                    resultSet.getString("firstName"),
-                    resultSet.getString("lastName"),
-                    resultSet.getDate("dob"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phoneNo"),
-                    resultSet.getString("gender"),
-                    resultSet.getString("password")
-            );
-            case "LOW" -> new ProductionUser(
-                    resultSet.getInt("employeeId"),
-                    resultSet.getString("firstName"),
-                    resultSet.getString("lastName"),
-                    resultSet.getDate("dob"),
-                    resultSet.getString("email"),
-                    resultSet.getString("phoneNo"),
-                    resultSet.getString("gender"),
-                    resultSet.getString("password")
-            );
-            default -> throw new SQLException("Invalid user type: " + userType);
-        };
+        try {
+            String userType = resultSet.getString("accessLevel");
+
+            return switch (userType) {
+                case "HIGH" -> new ManagerialUser(
+                        resultSet.getInt("employeeId"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getDate("dob"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phoneNo"),
+                        resultSet.getString("gender"),
+                        resultSet.getString("password")
+                );
+                case "MEDIUM" -> new WarehouseUser(
+                        resultSet.getInt("employeeId"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getDate("dob"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phoneNo"),
+                        resultSet.getString("gender"),
+                        resultSet.getString("password")
+                );
+                case "LOW" -> new ProductionUser(
+                        resultSet.getInt("employeeId"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getDate("dob"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phoneNo"),
+                        resultSet.getString("gender"),
+                        resultSet.getString("password")
+                );
+                default -> throw new SQLException("Invalid user type: " + userType);
+            };
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
-    @Override
-    public List<ManagerialUser> getManagerialUsers() throws SQLException {
+    public List<ManagerialUser> getManagerialUsers() {
         List<ManagerialUser> managerialUsers = new ArrayList<>();
 
         // Query to select users with 'HIGH' access level
         String query = "SELECT * FROM users WHERE accessLevel = 'HIGH'";
 
-        PreparedStatement getManagerialUsers = connection.prepareStatement(query);
-        ResultSet rs = getManagerialUsers.executeQuery();
+        try {
+            PreparedStatement getManagerialUsers = connection.prepareStatement(query);
 
-        // Map each result to a ManagerialUser and add it to the list
-        while (rs.next()) {
-            AbstractUser managerialUser = mapResultSetToUser(rs);
-            managerialUsers.add((ManagerialUser) managerialUser); // Cast to ManagerialUser
+            ResultSet rs = getManagerialUsers.executeQuery();
+
+            while (rs.next()) {
+                AbstractUser managerialUser = mapResultSetToUser(rs);
+                managerialUsers.add((ManagerialUser) managerialUser);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         return managerialUsers;
     }
 
-    @Override
-    public List<WarehouseUser> getWarehouseUsers() throws SQLException {
+    public List<WarehouseUser> getWarehouseUsers() {
         List<WarehouseUser> warehouseUsers = new ArrayList<>();
         // Query to select users with 'MEDIUM' access level
         String query = "SELECT * FROM users WHERE accessLevel = 'MEDIUM'";
@@ -180,24 +186,28 @@ public class UsersDAO implements IUsersDAO {
                     warehouseUsers.add((WarehouseUser) warehouseUser); // Cast to WarehouseUser
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return warehouseUsers;
     }
 
-    @Override
-    public List<ProductionUser> getProductionUsers() throws SQLException {
+    public List<ProductionUser> getProductionUsers() {
         List<ProductionUser> productionUsers = new ArrayList<>();
         // Query to select users with 'LOW' access level
         String query = "SELECT * FROM users WHERE accessLevel = 'LOW'";
 
-        PreparedStatement getProductionUsers = connection.prepareStatement(query);
-        ResultSet rs = getProductionUsers.executeQuery();
+        try {
+            PreparedStatement getProductionUsers = connection.prepareStatement(query);
+            ResultSet rs = getProductionUsers.executeQuery();
 
-        // Map each result to a ProductionUser and add it to the list
-        while (rs.next()) {
-            AbstractUser productionUser = mapResultSetToUser(rs);
-            productionUsers.add((ProductionUser) productionUser); // Cast to ProductionUser
+            while (rs.next()) {
+                AbstractUser productionUser = mapResultSetToUser(rs);
+                productionUsers.add((ProductionUser) productionUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return productionUsers;
@@ -218,9 +228,26 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
-    @Override
-    public Integer getEmployeeIdByFullName(String fullName) throws SQLException {
-        // Split the full name into first and last names
+    public AbstractUser getUserById(Integer employeeId) {
+        String query = "SELECT * FROM users WHERE employeeId = ?";
+
+        try (PreparedStatement getUser = connection.prepareStatement(query)) {
+            getUser.setInt(1, employeeId);
+
+            try (ResultSet rs = getUser.executeQuery()) {
+                if (rs.next()) {
+                    String accessLevel = rs.getString("accessLevel");
+                    return mapResultSetToUser(rs, accessLevel);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer getEmployeeIdByFullName(String fullName) {
         String[] splitFullName = fullName.trim().split("\\s+");
 
         if (splitFullName.length < 2) {
@@ -252,25 +279,32 @@ public class UsersDAO implements IUsersDAO {
     }
 
 
+    private AbstractUser mapResultSetToUser(ResultSet rs, String accessLevel) {
 
-    private AbstractUser mapResultSetToUser(ResultSet rs, String accessLevel) throws SQLException {
-        // Extract user details from the ResultSet
-        Integer employeeId = rs.getInt("employeeId");
-        String firstName = rs.getString("firstName");
-        String lastName = rs.getString("lastName");
-        Date dob = rs.getDate("dob");
-        String email = rs.getString("email");
-        String phoneNo = rs.getString("phoneNo");
-        String gender = rs.getString("gender");
-        String password = rs.getString("password");
+        try {
+            Integer employeeId = rs.getInt("employeeId");
+            String firstName = rs.getString("firstName");
+            String lastName = rs.getString("lastName");
+            Date dob = rs.getDate("dob");
+            String email = rs.getString("email");
+            String phoneNo = rs.getString("phoneNo");
+            String gender = rs.getString("gender");
+            String password = rs.getString("password");
 
-        // Create and return the appropriate user object based on access level
-        return switch (accessLevel) {
-            case "HIGH" -> new ManagerialUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
-            case "MEDIUM" -> new WarehouseUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
-            case "LOW" -> new ProductionUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
-            default -> throw new IllegalArgumentException("Unknown access level: " + accessLevel);
-        };
+            switch (accessLevel) {
+                case "HIGH":
+                    return new ManagerialUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+                case "MEDIUM":
+                    return new WarehouseUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+                case "LOW":
+                    return new ProductionUser(employeeId, firstName, lastName, dob, email, phoneNo, gender, password);
+                default:
+                    throw new IllegalArgumentException("Unknown access level: " + accessLevel);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -324,32 +358,6 @@ public Integer getMaxEmployeeId() throws SQLException {
         throw new RuntimeException(e);
     }
 }
-
-@Override
-public AbstractUser getUserById(Integer employeeId) {
-    // Query to select a user by employee ID
-    String query = "SELECT * FROM users WHERE employeeId = ?";
-
-    try (PreparedStatement getUser = connection.prepareStatement(query)) {
-        // Set the employee ID parameter for the query
-        getUser.setInt(1, employeeId);
-
-        try (ResultSet rs = getUser.executeQuery()) {
-            // Check if a result is returned and map it to an AbstractUser
-            if (rs.next()) {
-                String accessLevel = rs.getString("accessLevel");
-                return mapResultSetToUser(rs, accessLevel);
-            } else {
-                // Return null if no user is found
-                return null;
-            }
-        }
-    } catch (SQLException e) {
-        // Wrap and rethrow the SQLException as a RuntimeException
-        throw new RuntimeException(e);
-    }
-}
-
 
     @Override
     public boolean isTableEmpty() {

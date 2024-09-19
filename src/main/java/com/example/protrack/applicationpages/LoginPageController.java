@@ -109,19 +109,15 @@ public class LoginPageController {
 
         UsersDAO usersDAO = new UsersDAO();
 
-        try {
-            // Ensure full name contains at least two parts
-            String[] nameParts = fullName.trim().split("\\s+");
-            if (nameParts.length < 2) {
-                return false;
-            }
-
-            // Check if employee ID exists for the given full name
-            return usersDAO.getEmployeeIdByFullName(fullName) != null;
-        } catch (SQLException | IllegalArgumentException e) {
-            e.printStackTrace();
+        // Ensure full name contains at least two parts
+        String[] nameParts = fullName.trim().split("\\s+");
+        if (nameParts.length < 2) {
             return false;
         }
+
+        // Check if employee ID exists for the given full name
+        return usersDAO.getEmployeeIdByFullName(fullName) != null;
+
     }
 
 
