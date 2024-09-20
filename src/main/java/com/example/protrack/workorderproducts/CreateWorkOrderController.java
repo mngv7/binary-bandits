@@ -124,7 +124,6 @@ public class CreateWorkOrderController {
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
-                    "testDescription", // description, to be implemented
                     quantity,
                     6.9, // price, to be implemented
                     12.2 // totalPrice, to be implemented
