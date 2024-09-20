@@ -287,6 +287,15 @@ public class CreateWorkOrderController {
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(confirmBtn, backBtn);
 
+        Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
+
+        confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
+        cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
+
+        // Load the CSS file
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+
         // Show confirmation dialog and close if confirmed
         alert.showAndWait().ifPresent(result -> {
             if (result == confirmBtn) {
