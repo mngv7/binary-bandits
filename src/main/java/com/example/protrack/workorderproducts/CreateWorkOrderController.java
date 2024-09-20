@@ -63,6 +63,9 @@ public class CreateWorkOrderController {
     private TableView workOrderTableView;
 
     @FXML
+    private TableColumn<WorkOrderProduct, String> colWorkOrderProductId;
+
+    @FXML
     private TableColumn<WorkOrderProduct, String> colWorkOrderProductName;
 
     @FXML
@@ -82,6 +85,7 @@ public class CreateWorkOrderController {
     public void initialize() {
 
         // Update the TableView
+        colWorkOrderProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
         colWorkOrderProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         colWorkOrderProductQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colWorkOrderProductPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -180,7 +184,7 @@ public class CreateWorkOrderController {
 
             WorkOrdersDAOImplementation workOrdersDAOImplementation = new WorkOrdersDAOImplementation(productionUsers, customers);
 
-            workOrdersDAOImplementation.createWorkOrder(workOrder); //cant getemployeeid since null orderowner
+            workOrdersDAOImplementation.createWorkOrder(workOrder);
 
             WorkOrder newWorkOrder = workOrdersDAOImplementation.getWorkOrderByCustomerAndDate(customer, orderDate);
 

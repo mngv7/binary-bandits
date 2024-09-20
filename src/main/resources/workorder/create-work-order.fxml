@@ -76,7 +76,7 @@
 
                 <columns>
                     <TableColumn maxWidth="15"/>
-                    <TableColumn fx:id="colWorkOrderProduct" text="Product ID"/>
+                    <TableColumn fx:id="colWorkOrderProductId" text="Product ID"/>
                     <TableColumn fx:id="colWorkOrderProductName" text="Product Name"/>
                     <TableColumn fx:id="colWorkOrderProductQuantity" text="Quantity" />
                     <TableColumn fx:id="colWorkOrderProductPrice" text="Price"/>
