@@ -3,16 +3,14 @@ package com.example.protrack.workorderproducts;
 public class WorkOrderProduct {
     private int productId;
     private String productName;
-    private String description;
     private int quantity;
     private double price;
     private double total;
 
     // Constructor for WorkOrderProduct class
-    public WorkOrderProduct(int productId, String productName, String description, int quantity, double price, double total) {
+    public WorkOrderProduct(int productId, String productName, int quantity, double price, double total) {
         this.productId = productId;
         this.productName = productName;
-        this.description = description;
         setQuantity(quantity); // Ensure total is calculated based on initial quantity and price
         setPrice(price);       // Ensure total is calculated based on initial quantity and price
     }
@@ -24,10 +22,6 @@ public class WorkOrderProduct {
 
     public String getProductName() {
         return productName;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public int getQuantity() {

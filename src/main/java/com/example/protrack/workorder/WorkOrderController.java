@@ -174,7 +174,6 @@ public class WorkOrderController {
                 orderDate,
                 null,
                 customer.getShippingAddress(),
-                productId,
                 "Pending",
                 21.00
         );

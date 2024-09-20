@@ -64,9 +64,6 @@ public class CreateWorkOrderController {
     private TableColumn<WorkOrderProduct, String> colWorkOrderProductName;
 
     @FXML
-    private TableColumn<WorkOrderProduct, String> colWorkOrderProductDescription;
-
-    @FXML
     private TableColumn<WorkOrderProduct, Integer> colWorkOrderProductQuantity;
 
     @FXML
@@ -84,7 +81,6 @@ public class CreateWorkOrderController {
 
         // Update the TableView
         colWorkOrderProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        colWorkOrderProductDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colWorkOrderProductQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colWorkOrderProductPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
@@ -104,9 +100,7 @@ public class CreateWorkOrderController {
                                 emailField.getText().trim().isEmpty() ||
                                 shippingAddressField.getText().trim().isEmpty() ||
                                 shippingMethodField.getText().trim().isEmpty() ||
-                                workOrderOwnerComboBox.getSelectionModel().isEmpty() ||
-                                customerComboBox.getSelectionModel().isEmpty() ||
-                                productComboBox.getSelectionModel().isEmpty(),
+                                customerComboBox.getSelectionModel().isEmpty(),
                 addressField.textProperty(), emailField.textProperty(),
                 shippingAddressField.textProperty(), shippingMethodField.textProperty()
         );
@@ -161,6 +155,11 @@ public class CreateWorkOrderController {
     }
 
     @FXML
+    protected void removeProductFromTable() {
+
+    }
+
+    @FXML
     protected void createWorkOrder() {
         // Create WorkOrder and associate products
         try {
@@ -170,10 +169,10 @@ public class CreateWorkOrderController {
             String shippingAddress = shippingAddressField.getText();
             String shippingMethod = shippingMethodField.getText();
             LocalDateTime orderDate = LocalDateTime.now();
-            LocalDateTime deliveryDate = orderDate.plusDays(7);  // Example logic for delivery date
+            LocalDateTime deliveryDate = orderDate.plusDays(7);  // estimated delivery
 
             // Create a new WorkOrder instance
-            WorkOrder workOrder = new WorkOrder(0, orderOwner, customer, orderDate, deliveryDate, shippingAddress, null, "Pending", 0.0);
+            WorkOrder workOrder = new WorkOrder(0, orderOwner, customer, orderDate, deliveryDate, shippingAddress, "Pending", 0.0);
 
             // Fetch product details and quantity
             Product selectedProduct = productComboBox.getSelectionModel().getSelectedItem();

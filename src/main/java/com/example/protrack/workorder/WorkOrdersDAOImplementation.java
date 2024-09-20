@@ -214,7 +214,6 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
                     orderDate,
                     deliveryDate,
                     shippingAddress,
-                    productId,
                     status,
                     subtotal
             );

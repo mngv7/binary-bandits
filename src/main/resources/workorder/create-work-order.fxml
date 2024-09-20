@@ -78,7 +78,6 @@
                     <TableColumn maxWidth="15"/>
                     <TableColumn fx:id="colWorkOrderProduct" text="Product ID"/>
                     <TableColumn fx:id="colWorkOrderProductName" text="Product Name"/>
-                    <TableColumn fx:id="colWorkOrderProductDescription" text="Description"/>
                     <TableColumn fx:id="colWorkOrderProductQuantity" text="Quantity" />
                     <TableColumn fx:id="colWorkOrderProductPrice" text="Price"/>
                     <TableColumn fx:id="colWorkOrderTotal" text="Total"/>
