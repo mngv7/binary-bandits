@@ -82,7 +82,6 @@ public class WorkOrderController {
         colOrderDate.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
         colDeliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
         colShippingAddress.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
-        colProducts.setCellValueFactory(new PropertyValueFactory<>("products"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 

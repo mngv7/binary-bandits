@@ -1,6 +1,7 @@
 package com.example.protrack.workorderproducts;
 
 public class WorkOrderProduct {
+    private int workOrderId;
     private int productId;
     private String productName;
     private int quantity;
@@ -8,11 +9,21 @@ public class WorkOrderProduct {
     private double total;
 
     // Constructor for WorkOrderProduct class
-    public WorkOrderProduct(int productId, String productName, int quantity, double price, double total) {
+    public WorkOrderProduct(int workOrderId, int productId, String productName, int quantity, double price, double total) {
+        this.workOrderId = workOrderId;
         this.productId = productId;
         this.productName = productName;
         setQuantity(quantity); // Ensure total is calculated based on initial quantity and price
         setPrice(price);       // Ensure total is calculated based on initial quantity and price
+    }
+
+    // Getters and Setters
+    public int getWorkOrderId() {
+        return workOrderId;
+    }
+
+    public int setWorkOrderId(Integer workOrderId) {
+        return this.workOrderId = workOrderId;
     }
 
     // Getters and Setters

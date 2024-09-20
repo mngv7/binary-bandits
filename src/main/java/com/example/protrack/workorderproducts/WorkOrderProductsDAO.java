@@ -18,12 +18,10 @@ public interface WorkOrderProductsDAO {
     /**
      * Adds a product to a work order.
      *
-     * @param workOrder The work order which the product will be added to.
-     * @param product   The product to be added.
-     * @param quantity  The quantity of the product to be added.
+     * @param workOrderProduct The work order product to be added.
      * @return true if the operation was successful, false otherwise.
      */
-    boolean addWorkOrderProduct(WorkOrder workOrder, Product product, Integer quantity);
+    boolean addWorkOrderProduct(WorkOrderProduct workOrderProduct);
 
     /**
      * Retrieves all products associated with the specified work order.
@@ -41,4 +39,6 @@ public interface WorkOrderProductsDAO {
      * @return true if the operation was successful, false otherwise.
      */
     boolean deleteWorkOrderProduct(int workOrderId, int productId);
+
+    boolean isTableEmpty();
 }

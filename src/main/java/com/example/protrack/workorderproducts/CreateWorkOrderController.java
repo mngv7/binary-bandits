@@ -7,6 +7,7 @@ import com.example.protrack.products.Product;
 import com.example.protrack.products.ProductDAO;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CreateWorkOrderController {
 
@@ -100,12 +102,12 @@ public class CreateWorkOrderController {
                                 emailField.getText().trim().isEmpty() ||
                                 shippingAddressField.getText().trim().isEmpty() ||
                                 shippingMethodField.getText().trim().isEmpty() ||
+                                workOrderTableView.getItems().isEmpty() ||
                                 customerComboBox.getSelectionModel().isEmpty(),
                 addressField.textProperty(), emailField.textProperty(),
-                shippingAddressField.textProperty(), shippingMethodField.textProperty()
+                shippingAddressField.textProperty(), shippingMethodField.textProperty(), workOrderTableView.getItems()
         );
 
-        // Disables the button if any required field is empty
         createWorkOrderButton.disableProperty().bind(emptyFields);
     }
 
@@ -122,6 +124,7 @@ public class CreateWorkOrderController {
             // --double totalPriceForProduct = selectedProduct.getPrice() * quantity;
 
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
+                    -1, //no Work Order has an ID of -1, this is a placeholder to be overwritten when added to DB
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
                     quantity,
@@ -131,10 +134,9 @@ public class CreateWorkOrderController {
 
             // Adds WorkOrderProduct to list
             workOrderProducts.add(workOrderProduct);
-            System.out.println(workOrderProducts.toString());
 
             workOrderTableView.setItems(workOrderProducts);
-            System.out.println(workOrderTableView.getItems().toString());
+
 
             // Update the total price label
             // --totalOrderPrice += totalPriceForProduct;
@@ -173,13 +175,23 @@ public class CreateWorkOrderController {
             // Create a new WorkOrder instance
             WorkOrder workOrder = new WorkOrder(0, orderOwner, customer, orderDate, deliveryDate, shippingAddress, "Pending", 0.0);
 
+            List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
+            List<Customer> customers = new CustomerDAO().getAllCustomers();
+
+            WorkOrdersDAOImplementation workOrdersDAOImplementation = new WorkOrdersDAOImplementation(productionUsers, customers);
+
+            workOrdersDAOImplementation.createWorkOrder(workOrder); //cant getemployeeid since null orderowner
+
+            WorkOrder newWorkOrder = workOrdersDAOImplementation.getWorkOrderByCustomerAndDate(customer, orderDate);
+
             // Fetch product details and quantity
-            Product selectedProduct = productComboBox.getSelectionModel().getSelectedItem();
-            int quantity = Integer.parseInt(productQuantityField.getText());
+            for (WorkOrderProduct product : workOrderProducts) {
+                product.setWorkOrderId(newWorkOrder.getWorkOrderId());
+                new WorkOrderProductsDAOImplementation().addWorkOrderProduct(product);
+            }
 
             // Add the product to the work order
-            WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
-            workOrderProductsDAOImplementation.addWorkOrderProduct(workOrder, selectedProduct, quantity);
+
 
             // Optionally, reset the form fields after creation
             clearFormFields();

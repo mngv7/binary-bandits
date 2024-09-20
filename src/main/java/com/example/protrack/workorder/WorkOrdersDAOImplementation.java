@@ -9,7 +9,6 @@ import com.example.protrack.users.ProductionUser;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -98,7 +97,14 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlNewWorkOrder)) {
 
             // Sets parameters for the PreparedStatement
-            preparedStatement.setInt(1, workOrder.getOrderOwner().getEmployeeId());
+            // Check if orderOwner is null and set the appropriate value
+            if (workOrder.getOrderOwner() != null) {
+                preparedStatement.setInt(1, workOrder.getOrderOwner().getEmployeeId());
+            } else {
+                preparedStatement.setNull(1, java.sql.Types.INTEGER);  // Set NULL for the order_owner field if it's null
+            }
+
+            // other params
             preparedStatement.setInt(2, workOrder.getCustomer().getCustomerId());
             preparedStatement.setObject(3, workOrder.getOrderDate());
             preparedStatement.setObject(4, workOrder.getDeliveryDate());
@@ -229,5 +235,30 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
 
     public boolean deleteWorkOrder(Integer workOrderId) {
         return true; // Yet to be implemented
+    }
+
+    // Since DB auto-increments primary key (workOrderId) it is hard to associate a WorkOrderProduct with a WorkOrder
+    // so retrieval via a candidate key (such as Customer & Order Date) is necessary to return the work order from DB
+    // to get the ID
+    public WorkOrder getWorkOrderByCustomerAndDate(Customer customer, LocalDateTime orderDate) {
+
+        WorkOrder workOrder = null;
+
+        // SQL query retrieves Work Orders based on status
+        String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE customer_id = ? AND order_date = ?";
+
+        // Executes the PreparedStatement with the status String
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
+            preparedStatement.setInt(1, customer.getCustomerId());
+            preparedStatement.setObject(2, orderDate);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            workOrder = mapToWorkOrder(resultSet);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return workOrder;
     }
 }

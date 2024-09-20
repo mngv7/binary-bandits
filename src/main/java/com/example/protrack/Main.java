@@ -12,6 +12,7 @@ import com.example.protrack.users.WarehouseUser;
 import com.example.protrack.warehouseutil.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
+import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -163,6 +164,8 @@ public class Main extends Application {
             System.out.println("Warning: location Contents table created empty intentionally.");
         }
 
+        WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
+        workOrderProductsDAOImplementation.createTable();
 
         launch();
     }
