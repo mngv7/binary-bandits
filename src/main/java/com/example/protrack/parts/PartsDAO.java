@@ -95,6 +95,31 @@ public class PartsDAO {
         return parts;
     }
 
+    public Parts getPartById(Integer partId) {
+        String query = "SELECT * FROM parts WHERE partsId = ?";
+
+        Parts part = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, partId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            int partsId = resultSet.getInt("partsId");
+            String name = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            int supplierId = resultSet.getInt("supplierId");
+            Double cost = resultSet.getDouble("cost");
+
+            part = new Parts(partsId, name, description, supplierId, cost);
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        return part;
+    }
+
     /**
      * Checks if the 'parts' table is empty
      * @return true if the table is empty, false otherwise

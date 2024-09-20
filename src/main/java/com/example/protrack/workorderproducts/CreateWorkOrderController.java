@@ -1,10 +1,11 @@
 package com.example.protrack.workorderproducts;
 
+import com.example.protrack.parts.Parts;
+import com.example.protrack.parts.PartsDAO;
+import com.example.protrack.products.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
-import com.example.protrack.products.Product;
-import com.example.protrack.products.ProductDAO;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
@@ -13,10 +14,13 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -75,7 +79,7 @@ public class CreateWorkOrderController {
     private TableColumn<WorkOrderProduct, Double> colWorkOrderProductPrice;
 
     @FXML
-    private TableColumn<WorkOrderProduct, Double> colWorkOrderTotal;
+    private TableColumn<WorkOrderProduct, Double> colWorkOrderProductTotal;
 
     @FXML
     private TableColumn<WorkOrderProduct, String> colTrash;
@@ -89,6 +93,39 @@ public class CreateWorkOrderController {
         colWorkOrderProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         colWorkOrderProductQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colWorkOrderProductPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        colWorkOrderProductTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        // Sets cell factory for 'colTrash' column to display a bin icon
+        colTrash.setCellFactory(new Callback<TableColumn<WorkOrderProduct, String>, TableCell<WorkOrderProduct, String>>() {
+            @Override
+            public TableCell<WorkOrderProduct, String> call(TableColumn<WorkOrderProduct, String> param) {
+                return new TableCell<>() {
+                    private final Button deleteButton = new Button("  \uD83D\uDDD1"  ); // Trash icon as button
+
+                    {
+                        deleteButton.getStyleClass().add("trash-button");
+
+                        // Handles row deletion
+                        deleteButton.setOnAction(event -> {
+                            WorkOrderProduct product = getTableView().getItems().get(getIndex());
+                            getTableView().getItems().remove(product);  // Remove from table
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+
+                            setGraphic(deleteButton);  // Set the button to trash icon if there is an active row
+                        }
+                    }
+                };
+            }
+        });
 
         // Initialises ObservableList
         workOrderProducts = FXCollections.observableArrayList();
@@ -118,37 +155,45 @@ public class CreateWorkOrderController {
     @FXML
     protected void addProductToTable() {
         try {
-            // Gets selected product from the 'Product' ComboBox
+            // Get the selected product from the 'Product' ComboBox
             Product selectedProduct = productComboBox.getSelectionModel().getSelectedItem();
 
-            // Gets quantity entered by the user
+            // Get the quantity entered by the user
             int quantity = Integer.parseInt(productQuantityField.getText());
 
-            // Calculate the total price for the selected product
-            // --double totalPriceForProduct = selectedProduct.getPrice() * quantity;
+            // Check if the product is already in the table
+            for (WorkOrderProduct workOrderProduct : workOrderProducts) {
+                if (workOrderProduct.getProductId() == selectedProduct.getProductId()) {
+                    // If the product exists, update the quantity
+                    workOrderProduct.setQuantity(workOrderProduct.getQuantity() + quantity);
+                    // Recalculate the total price based on the updated quantity
+                    workOrderProduct.setPrice(calculateTotalPrice(selectedProduct.getProductId())); // Price based on BOM
+                    updateTotalPrice();  // Update the displayed total price
+                    workOrderTableView.refresh();  // Refresh the TableView
+                    clearProductInputFields();  // Clear input fields
+                    return;  // Exit the method
+                }
+            }
 
+            // If the product is not in the list, create a new WorkOrderProduct
+            double totalPrice = calculateTotalPrice(selectedProduct.getProductId());
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
-                    -1, //no Work Order has an ID of -1, this is a placeholder to be overwritten when added to DB
+                    -1, // no Work Order has an ID of -1; this is a placeholder
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
                     quantity,
-                    6.9, // price, to be implemented
-                    12.2 // totalPrice, to be implemented
+                    totalPrice, // Use the calculated price
+                    totalPrice * quantity // Initial total price for the product
             );
 
-            // Adds WorkOrderProduct to list
+            // Add WorkOrderProduct to the list
             workOrderProducts.add(workOrderProduct);
 
-            workOrderTableView.setItems(workOrderProducts);
-
-
             // Update the total price label
-            // --totalOrderPrice += totalPriceForProduct;
-            totalLabel.setText(String.format("%.2f", 12.2));
+            updateTotalPrice();
 
-            // Resets the product selection and quantity fields
-            productComboBox.getSelectionModel().clearSelection();
-            productQuantityField.clear();
+            // Reset the product selection and quantity fields
+            clearProductInputFields();
         } catch (NumberFormatException e) {
             // Alert handles invalid number formats for quantity
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -159,9 +204,36 @@ public class CreateWorkOrderController {
         }
     }
 
-    @FXML
-    protected void removeProductFromTable() {
+    // Method to calculate total price for a given product ID based on BOM
+    private double calculateTotalPrice(int productId) {
+        // Fetch Bill of Materials for the product
+        BillOfMaterialsDAO bomDAO = new BillOfMaterialsDAO();
+        List<BillOfMaterials> bomList = bomDAO.getBillOfMaterialsForProduct(productId);
 
+        // Calculate the total cost based on parts
+        double totalPrice = 0.0;
+        PartsDAO partsDAO = new PartsDAO();
+
+        for (BillOfMaterials bom : bomList) {
+            Parts part = partsDAO.getPartById(bom.getPartsId());
+            totalPrice += part.getCost() * bom.getRequiredAmount(); // Calculate cost for the required amount of parts
+        }
+
+        return totalPrice; // Return the total price for the product based on BOM
+    }
+
+    // Method to update the total price label
+    private void updateTotalPrice() {
+        double totalOrderPrice = workOrderProducts.stream()
+                .mapToDouble(WorkOrderProduct::getTotal)
+                .sum();
+        totalLabel.setText(String.format("%.2f", totalOrderPrice));
+    }
+
+    // Method to clear product input fields
+    private void clearProductInputFields() {
+        productComboBox.getSelectionModel().clearSelection();
+        productQuantityField.clear();
     }
 
     @FXML
@@ -195,9 +267,6 @@ public class CreateWorkOrderController {
             }
 
             // Add the product to the work order
-
-
-            // Optionally, reset the form fields after creation
             clearFormFields();
 
         } catch (NumberFormatException e) {

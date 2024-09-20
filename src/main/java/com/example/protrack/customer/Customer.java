@@ -99,4 +99,9 @@ public class Customer {
     public void setOrders(ArrayList<WorkOrder> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public String toString() {
+        return this.firstName + " " + this.lastName + ", " + this.shippingAddress; // Adjust according to your attribute
+    }
 }

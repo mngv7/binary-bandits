@@ -32,4 +32,9 @@ public class Product {
     public Date getDateCreated() {
         return dateCreated;
     }
+
+    @Override
+    public String toString() {
+        return this.productName; // Adjust according to your attribute
+    }
 }

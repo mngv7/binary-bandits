@@ -315,4 +315,28 @@
     -fx-background-color: white;
 }
 
+.trash-button {
+    -fx-font-size: 22px;
+    -fx-style: bolder;
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+    -fx-padding: 1px;
+}
+
+.trash-button:hover {
+    -fx-text-fill: darkred;
+    -fx-background-color: lightgray;
+}
+
+.work-orders-table-cell {
+    -fx-font-size: 16px;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 1em;
+}
+
+.work-orders-table-cell-centered {
+    -fx-font-size: 16px;
+    -fx-alignment: center;
+}
+
 <img src="application_logo.png">
