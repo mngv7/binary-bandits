@@ -19,7 +19,10 @@
 
                 <VBox prefWidth="600">
                     <Label text="My Team:" styleClass="parts-table-title"/>
-                    <VBox fx:id="employeeNames" />
+                    <HBox>
+                        <VBox fx:id="employeeIcons"/>
+                        <VBox fx:id="employeeNames" />
+                    </HBox>
                     <Region minHeight="10"/>
                 </VBox>
             </VBox>

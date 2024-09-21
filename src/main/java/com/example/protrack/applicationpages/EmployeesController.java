@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import com.example.protrack.utility.LoggedInUserSingleton;
 import com.example.protrack.users.AbstractUser;
@@ -27,6 +28,9 @@ public class EmployeesController {
 
     @FXML
     public Button newUserButton; // Button to create a new user
+
+    @FXML
+    public VBox employeeIcons;
 
     // Initializes the controller and sets up UI components
     public void initialize() {
@@ -47,7 +51,8 @@ public class EmployeesController {
 
         // Iterate through the list of all users and add their information to the UI
         for (AbstractUser user : allUsers) {
-            VBox newRow = new VBox();
+            VBox columns = new VBox();
+            VBox rows = new VBox();
 
             // Determine the title of the employee based on their access level
             String employeeTitle = switch (user.getAccessLevel()) {
@@ -61,7 +66,6 @@ public class EmployeesController {
             Button employeeNameButton = new Button();
             employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
             employeeNameButton.getStyleClass().add("text-button");
-
             employeeNameButton.setOnAction(event -> {
                 handleButtonPress(user.getFirstName(), user.getLastName());
             });
@@ -69,11 +73,17 @@ public class EmployeesController {
             Label employeeTitleLabel = new Label(employeeTitle);
             Label spacing = new Label(" "); // Spacer to separate labels
 
+            String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0,1);
+            Label initialsIcon = new Label(initials);
+
             // Add labels to the newRow VBox
-            newRow.getChildren().addAll(employeeNameButton, employeeTitleLabel, spacing);
+            rows.getChildren().addAll(employeeNameButton, employeeTitleLabel, spacing);
+
+            columns.getChildren().add(initialsIcon);
 
             // Add the newRow VBox to the employeeNames VBox
-            employeeNames.getChildren().add(newRow);
+            employeeNames.getChildren().add(rows);
+            employeeIcons.getChildren().add(columns);
         }
     }
 
