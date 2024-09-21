@@ -147,6 +147,9 @@ public class EmployeesController {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
+            CreateNewUserController createNewUserController = fxmlLoader.getController();
+            createNewUserController.setEmployeesController(this);  // Pass EmployeesController to it
+
             // Set the position and show the popup window
             popupStage.setY(150);
             popupStage.setX(390);
