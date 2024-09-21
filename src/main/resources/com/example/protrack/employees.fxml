@@ -19,10 +19,12 @@
 
                 <VBox prefWidth="600">
                     <Label text="My Team:" styleClass="parts-table-title"/>
-                    <HBox>
-                        <VBox fx:id="employeeIcons"/>
-                        <VBox fx:id="employeeNames" />
-                    </HBox>
+                    <GridPane fx:id="employeesGridPane" hgap="10" vgap="20" alignment="CENTER_LEFT">
+                        <VBox fx:id="iconAndNameGroup">
+                            <VBox fx:id="employeeIcons"/>
+                            <VBox fx:id="employeeNames" />
+                        </VBox>
+                    </GridPane>
                     <Region minHeight="10"/>
                 </VBox>
             </VBox>

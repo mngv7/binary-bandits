@@ -11,7 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import com.example.protrack.utility.LoggedInUserSingleton;
 import com.example.protrack.users.AbstractUser;
@@ -32,6 +32,12 @@ public class EmployeesController {
     @FXML
     public VBox employeeIcons;
 
+    @FXML
+    public GridPane employeesGridPane;
+
+    @FXML
+    public VBox iconAndNameGroup;
+
     // Initializes the controller and sets up UI components
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
@@ -48,6 +54,10 @@ public class EmployeesController {
     public void loadAllUsers() {
         UsersDAO usersDAO = new UsersDAO();
         List<AbstractUser> allUsers = usersDAO.getAllUsers();
+
+        // Initialize column and row indexes
+        int columnIndex = 0;
+        int rowIndex = 0;
 
         // Iterate through the list of all users and add their information to the UI
         for (AbstractUser user : allUsers) {
@@ -66,26 +76,32 @@ public class EmployeesController {
             Button employeeNameButton = new Button();
             employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
             employeeNameButton.getStyleClass().add("text-button");
-            employeeNameButton.setOnAction(event -> {
-                handleButtonPress(user.getFirstName(), user.getLastName());
-            });
+            employeeNameButton.setOnAction(event -> handleButtonPress(user.getFirstName(), user.getLastName()));
 
             Label employeeTitleLabel = new Label(employeeTitle);
             Label spacing = new Label(" "); // Spacer to separate labels
 
+            // Create initials label for the icon
             String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0,1);
             Label initialsIcon = new Label(initials);
+            initialsIcon.getStyleClass().add("initials-icon");
 
-            // Add labels to the newRow VBox
+            // Add labels to the rows and columns
             rows.getChildren().addAll(employeeNameButton, employeeTitleLabel, spacing);
-
             columns.getChildren().add(initialsIcon);
 
-            // Add the newRow VBox to the employeeNames VBox
-            employeeNames.getChildren().add(rows);
-            employeeIcons.getChildren().add(columns);
+            employeesGridPane.add(columns, columnIndex, rowIndex);
+            employeesGridPane.add(rows, columnIndex + 1, rowIndex);
+
+            // Update the row and column indexes
+            rowIndex++;
+            if (rowIndex > 4) { // Number of rows before changing columns.
+                rowIndex = 0;
+                columnIndex += 2; // Skip to the next set of columns for icons and labels
+            }
         }
     }
+
 
     private MainController mainController;  // Store the MainController instance
 
