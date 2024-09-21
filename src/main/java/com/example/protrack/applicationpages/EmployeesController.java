@@ -77,18 +77,25 @@ public class EmployeesController {
         }
     }
 
+    private MainController mainController;  // Store the MainController instance
+
+    // Setter for MainController
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
+    @FXML
+    private void loadEmployeeProfile() {
+        if (mainController != null) {
+            mainController.employeesExpanded();  // Use the injected MainController instance
+        }
+    }
+
     private void handleButtonPress(String firstName, String lastName) {
         SelectedEmployeeSingleton.getInstance().setEmployeeFirstName(firstName);
         SelectedEmployeeSingleton.getInstance().setEmployeeLastName(lastName);
         loadEmployeeProfile();
     }
-
-    @FXML
-    private void loadEmployeeProfile() {
-        MainController mainController = new MainController();
-        mainController.loadContent("/com/example/protrack/expanded-employee-view.fxml");
-    }
-
 
     // Constants for the popup window
     private static final String TITLE = "Create User";
