@@ -83,7 +83,6 @@ public class MainController {
         }
     }
 
-
     @FXML
     public void employeesExpanded() {
         loadContent("/com/example/protrack/expanded-employee-view.fxml");

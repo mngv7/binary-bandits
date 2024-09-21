@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.ExpandedEmployeeController"
             prefHeight="400.0" prefWidth="600.0">
+    <top>
 
-</AnchorPane>
+    </top>
+    <center>
+        <VBox spacing="20">
+            <HBox spacing="10">
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                    <Button onAction="#backToEmployees" text="Back" styleClass="add-parts-button"/>
+                </HBox>
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Button fx:id="removeEmployeeButton" text="Remove Employee" styleClass="add-parts-button"/>
+                </HBox>
+            </HBox>
+            <VBox style="-fx-padding: 0 0 10 0;">
+                <Label fx:id="employeeNameTitle" text="Employee" styleClass="title-label"/>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
