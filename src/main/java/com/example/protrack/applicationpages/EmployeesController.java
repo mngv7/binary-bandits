@@ -57,12 +57,14 @@ public class EmployeesController {
             };
 
             // Create labels for the employee's name and title
-            Label employeeNameLabel = new Label(user.getFirstName());
+            Button employeeNameButton = new Button();
+            employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
+            employeeNameButton.getStyleClass().add("text-button");
             Label employeeTitleLabel = new Label(employeeTitle);
             Label spacing = new Label(" "); // Spacer to separate labels
 
             // Add labels to the newRow VBox
-            newRow.getChildren().addAll(employeeNameLabel, employeeTitleLabel, spacing);
+            newRow.getChildren().addAll(employeeNameButton, employeeTitleLabel, spacing);
 
             // Add the newRow VBox to the employeeNames VBox
             employeeNames.getChildren().add(newRow);
