@@ -137,7 +137,13 @@ public class Main extends Application {
             usersDAO.newUser(new WarehouseUser(104, "Diana", "White", Date.valueOf("1987-03-12"), "diana.white@example.com", "0400123093", "Female", "dianapass"));
             usersDAO.newUser(new ProductionUser(105, "Eve", "Davis", Date.valueOf("1993-07-22"), "eve.davis@example.com", "0400473123", "Female", "evepass"));
             usersDAO.newUser(new ProductionUser(106, "Frank", "Miller", Date.valueOf("1989-12-09"), "frank.miller@example.com", "0400192123", "Male", "frankpass"));
+            usersDAO.newUser(new ManagerialUser(106, "Frank", "Taylor", Date.valueOf("1980-04-16"), "frank.taylor@example.com", "0400123456", "Male", "frankpass"));
+            usersDAO.newUser(new WarehouseUser(107, "Grace", "Harris", Date.valueOf("1992-12-11"), "grace.harris@example.com", "0400987654", "Female", "gracepass"));
+            usersDAO.newUser(new ProductionUser(108, "Henry", "Martinez", Date.valueOf("1985-08-05"), "henry.martinez@example.com", "0400543210", "Male", "henrypass"));
+            usersDAO.newUser(new WarehouseUser(109, "Isabella", "Garcia", Date.valueOf("1991-06-19"), "isabella.garcia@example.com", "0400789345", "Female", "isabellapass"));
+            usersDAO.newUser(new ManagerialUser(110, "Jack", "Wilson", Date.valueOf("1975-02-28"), "jack.wilson@example.com", "0400129876", "Male", "jackpass"));
         }
+
         List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
 
         CustomerDAO customerDAO = new CustomerDAO();

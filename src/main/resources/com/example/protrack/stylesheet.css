@@ -381,17 +381,17 @@
 }
 
 .initials-icon {
-    width: 50px;
-    height: 50px;
-    background-color: #4a90e2;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
+    -fx-min-width: 50px; /* Minimum width */
+    -fx-min-height: 50px; /* Minimum height */
+    -fx-background-color: #390B91; /* Background color */
+    -fx-background-radius: 25px; /* Half of width/height for a circle */
+    -fx-text-fill: #e4d7fc; /* Text color */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-font-size: 20px; /* Font size */
+    -fx-alignment: center; /* Align text to center */
+    -fx-padding: 10px; /* Padding to center text within the circle */
 }
+
 
 
 
