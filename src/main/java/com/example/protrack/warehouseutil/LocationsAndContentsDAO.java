@@ -84,6 +84,20 @@ public class LocationsAndContentsDAO {
         }
     }
 
+    public  void newPartToLocation(Integer locationID, partIdWithQuantity newPart) {
+        try {
+            String insertQuery = "INSERT INTO locationContents (locationID, partID, quantity) VALUES (?, ?, ?)";
+            PreparedStatement insertStmt = connection.prepareStatement(insertQuery);
+            insertStmt.setInt(1, locationID);
+            insertStmt.setInt(2, newPart.partsId);
+            insertStmt.setInt(3, newPart.quantity);
+
+            insertStmt.execute();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     /*
      * Inserts parts into a location by making links between the locationID and partID in the locationcontents table.
      * This is more or less generic but intended to be utilised by Warehouse and Workstation in specific ways.
@@ -94,17 +108,16 @@ public class LocationsAndContentsDAO {
             String query = "SELECT * FROM locationContents WHERE locationID = ? AND partID = ?";
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-
             int i = 0;
             if (rs.wasNull()) {
                 /*
                  * Insert new locationContents record.
                  * TODO: An exception handler in an exception handler... pray it doesn't explode.
+                 *  ... It exploded (Column 0 out of bounds [1,3]
                  */
                 try {
                     String insertQuery = "INSERT INTO locationContents (locationID, partID, quantity) VALUES (?, ?, ?)";
                     PreparedStatement insertStmt = connection.prepareStatement(insertQuery);
-
                     insertStmt.setInt(1, locationID);
                     insertStmt.setInt(2, newPart.partsId);
                     insertStmt.setInt(3, newPart.quantity);
@@ -116,6 +129,8 @@ public class LocationsAndContentsDAO {
             } else {
                 while (rs.next()) {
                     /* There should be only one result here but just in case... */
+
+
                     if (i > 0) {
                         System.out.println("Warning: Duplicate partID at location; contents may not update properly.");
                         break;

@@ -75,7 +75,10 @@ public class Main extends Application {
             partsDAO.newPart(new Parts(50, "TestPart", "Testing", 50, 12.50));
             partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", 50, 6.69));
             partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
+            partsDAO.newPart(new Parts(2, "Wooden Panel", "Panels from Tom's workshop", 52, 3.75));
             partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 51, 2.10));
+            partsDAO.newPart(new Parts(4, "Copper Cables", "Cables from Mann.co", 53, 52.1));
+            partsDAO.newPart(new Parts(5, "Glass Panel", "Panels from Bob Industry", 51, 20.50));
         }
 
         BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
@@ -159,9 +162,43 @@ public class Main extends Application {
             locationsAndContentsDAO.newWorkstation(new RealWorkstation(4, "Workstation 4", 255));
         }
 
+        partIdWithQuantity testPart1 = new partIdWithQuantity();
+        partIdWithQuantity testPart2 = new partIdWithQuantity();
+        partIdWithQuantity testPart3 = new partIdWithQuantity();
+        partIdWithQuantity testPart4 = new partIdWithQuantity();
+        partIdWithQuantity testPart5 = new partIdWithQuantity();
+
+        testPart1.partsId = 1;
+        testPart1.quantity = 7;
+        testPart2.partsId = 3;
+        testPart2.quantity = 10;
+        testPart3.partsId = 2;
+        testPart3.quantity = 12;
+        testPart4.partsId = 4;
+        testPart4.quantity = 4;
+        testPart5.partsId = 5;
+        testPart5.quantity = 8;
+
         if (locationsAndContentsDAO.isLocationContentsTableEmpty()) {
             /* TODO: Probe partsDAO and populate Warehouse with it. */
-            System.out.println("Warning: location Contents table created empty intentionally.");
+            /* TODO: Originally used locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation();
+                but that causes errors, so I changed it to a new method */
+
+            locationsAndContentsDAO.newPartToLocation(0, testPart1);
+            locationsAndContentsDAO.newPartToLocation(0, testPart2);
+            locationsAndContentsDAO.newPartToLocation(0, testPart3);
+            locationsAndContentsDAO.newPartToLocation(0, testPart4);
+            locationsAndContentsDAO.newPartToLocation(0, testPart5);
+
+            locationsAndContentsDAO.newPartToLocation(1, testPart1);
+            locationsAndContentsDAO.newPartToLocation(1, testPart3);
+            locationsAndContentsDAO.newPartToLocation(1, testPart5);
+
+            locationsAndContentsDAO.newPartToLocation(2, testPart2);
+            locationsAndContentsDAO.newPartToLocation(2, testPart4);
+
+            //
+            //System.out.println("Warning: location Contents table created empty intentionally.");
         }
 
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
