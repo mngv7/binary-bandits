@@ -3,9 +3,13 @@ package com.example.protrack.applicationpages;
 import com.example.protrack.employees.SelectedEmployeeSingleton;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import java.sql.SQLException;
+import java.util.Objects;
 
 public class ExpandedEmployeeController {
 
@@ -18,6 +22,8 @@ public class ExpandedEmployeeController {
     @FXML
     private Label employeeNameTitle;
 
+    private Integer employeeId;
+
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
@@ -27,7 +33,7 @@ public class ExpandedEmployeeController {
         String firstName = SelectedEmployeeSingleton.getInstance().getEmployeeFirstName();
         String lastname = SelectedEmployeeSingleton.getInstance().getEmployeeLastName();
 
-        Integer employeeId = usersDAO.getEmployeeIdByFullName(firstName + " " + lastname);
+        employeeId = usersDAO.getEmployeeIdByFullName(firstName + " " + lastname);
 
         employeeNameTitle.setText(firstName + " " + lastname);
 
@@ -52,6 +58,20 @@ public class ExpandedEmployeeController {
     public void backToEmployees() {
         if (mainController != null) {
             mainController.employees();
+        }
+    }
+
+    public void onRemoveEmployeePress() throws SQLException {
+
+        Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
+
+        if (!Objects.equals(employeeId, loggedInId)) {
+            UsersDAO usersDAO = new UsersDAO();
+
+            usersDAO.deleteUserById(employeeId);
+            backToEmployees();
+        } else {
+            System.out.println("You can't do that silly!");
         }
     }
 }
