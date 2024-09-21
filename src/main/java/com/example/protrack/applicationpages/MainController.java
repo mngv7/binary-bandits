@@ -67,7 +67,7 @@ public class MainController {
     }
 
     @FXML
-    private void employees() {
+    public void employees() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/employees.fxml"));
             Parent content = loader.load();
@@ -85,7 +85,19 @@ public class MainController {
 
     @FXML
     public void employeesExpanded() {
-        loadContent("/com/example/protrack/expanded-employee-view.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/expanded-employee-view.fxml"));
+            Parent content = loader.load();
+
+            // Get the controller and inject MainController
+            ExpandedEmployeeController expandedController = loader.getController();
+            expandedController.setMainController(this);  // Inject the current MainController instance
+
+            dynamicVBox.getChildren().clear();
+            dynamicVBox.getChildren().add(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

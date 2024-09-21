@@ -16,11 +16,12 @@
                     <Button onAction="#backToEmployees" text="Back" styleClass="add-parts-button"/>
                 </HBox>
                 <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
-                    <Button fx:id="removeEmployeeButton" text="Remove Employee" styleClass="add-parts-button"/>
+                    <Button fx:id="removeEmployeeButton" text="Remove Employee" styleClass="remove-employee-button"/>
                 </HBox>
             </HBox>
             <VBox style="-fx-padding: 0 0 10 0;">
                 <Label fx:id="employeeNameTitle" text="Employee" styleClass="title-label"/>
+                <Label fx:id="employeeRole" text="Employee Role"/>
             </VBox>
         </VBox>
     </center>
