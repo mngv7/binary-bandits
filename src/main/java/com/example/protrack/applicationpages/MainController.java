@@ -81,7 +81,7 @@ public class MainController {
         loadContent("/com/example/protrack/warehouse.fxml");
     }
 
-    private void loadContent(String fxmlFile) {
+    public void loadContent(String fxmlFile) {
         try {
             Scene scene = dynamicVBox.getScene();
             dynamicVBox.getChildren().clear(); // Clears existing content
