@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.example.protrack.Main;
+import com.example.protrack.employees.SelectedEmployeeSingleton;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -60,6 +61,11 @@ public class EmployeesController {
             Button employeeNameButton = new Button();
             employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
             employeeNameButton.getStyleClass().add("text-button");
+
+            employeeNameButton.setOnAction(event -> {
+                handleButtonPress(user.getFirstName(), user.getLastName());
+            });
+
             Label employeeTitleLabel = new Label(employeeTitle);
             Label spacing = new Label(" "); // Spacer to separate labels
 
@@ -69,6 +75,11 @@ public class EmployeesController {
             // Add the newRow VBox to the employeeNames VBox
             employeeNames.getChildren().add(newRow);
         }
+    }
+
+    private void handleButtonPress(String firstName, String lastName) {
+        SelectedEmployeeSingleton.getInstance().setEmployeeFirstName(firstName);
+        SelectedEmployeeSingleton.getInstance().setEmployeeLastName(lastName);
     }
 
     // Constants for the popup window
