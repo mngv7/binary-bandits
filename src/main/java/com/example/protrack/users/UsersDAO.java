@@ -159,7 +159,6 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
-
     public List<ManagerialUser> getManagerialUsers() {
         List<ManagerialUser> managerialUsers = new ArrayList<>();
 
