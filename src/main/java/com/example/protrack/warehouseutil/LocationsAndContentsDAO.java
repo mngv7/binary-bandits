@@ -31,9 +31,10 @@ public class LocationsAndContentsDAO {
             Statement createTableForLocationContents = connection.createStatement();
             /* TODO: Try and fulfill PK1 and PK2 requirements. (Maybe a composite primary key?) */
             createTableForLocationContents.execute("CREATE TABLE IF NOT EXISTS locationContents (" +
-                                                            "locationID INTEGER PRIMARY KEY, " +
+                                                            "locationID INTEGER NOT NULL, " +
                                                             "partID INTEGER NOT NULL, " +
-                                                            "quantity INTEGER NOT NULL" +
+                                                            "quantity INTEGER NOT NULL, " +
+                                                            "PRIMARY KEY (locationID, partID)" +
                                                             ")");
         } catch (SQLException e) {
             System.err.println(e);
