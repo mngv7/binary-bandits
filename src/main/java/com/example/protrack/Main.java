@@ -181,21 +181,18 @@ public class Main extends Application {
 
         if (locationsAndContentsDAO.isLocationContentsTableEmpty()) {
             /* TODO: Probe partsDAO and populate Warehouse with it. */
-            /* TODO: Originally used locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation();
-                but that causes errors, so I changed it to a new method */
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart1);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart2);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart3);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart4);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart5);
 
-            locationsAndContentsDAO.newPartToLocation(0, testPart1);
-            locationsAndContentsDAO.newPartToLocation(0, testPart2);
-            locationsAndContentsDAO.newPartToLocation(0, testPart3);
-            locationsAndContentsDAO.newPartToLocation(0, testPart4);
-            locationsAndContentsDAO.newPartToLocation(0, testPart5);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart1);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart3);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart5);
 
-            locationsAndContentsDAO.newPartToLocation(1, testPart1);
-            locationsAndContentsDAO.newPartToLocation(1, testPart3);
-            locationsAndContentsDAO.newPartToLocation(1, testPart5);
-
-            locationsAndContentsDAO.newPartToLocation(2, testPart2);
-            locationsAndContentsDAO.newPartToLocation(2, testPart4);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(2, testPart2);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(2, testPart4);
 
             //
             //System.out.println("Warning: location Contents table created empty intentionally.");
