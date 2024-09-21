@@ -367,4 +367,18 @@
     -fx-cursor: hand;
 }
 
+.remove-employee-button {
+    -fx-background-color: #c70000; /* Red */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.remove-employee-button:hover {
+    -fx-background-color: #ff4d4d;
+}
+
+
 <img src="application_logo.png">
