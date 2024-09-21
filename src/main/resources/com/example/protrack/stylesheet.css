@@ -315,4 +315,48 @@
     -fx-background-color: white;
 }
 
+.trash-button {
+    -fx-font-size: 22px;
+    -fx-style: bolder;
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+    -fx-padding: 1px;
+}
+
+.trash-button:hover {
+    -fx-text-fill: darkred;
+    -fx-background-color: lightgray;
+}
+
+.work-orders-table-cell {
+    -fx-font-size: 16px;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 1em;
+}
+
+.work-orders-table-cell-centered {
+    -fx-font-size: 16px;
+    -fx-alignment: center;
+}
+
+.alert {
+    -fx-background-color: white;
+    -fx-border-color: lightgray;
+    -fx-border-width: 1px;
+    -fx-text-size: 30px;
+}
+
+.alert .header-panel {
+    -fx-background-color: red;
+}
+
+.alert .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.alert .content {
+    -fx-text-fill: black;
+}
+
 <img src="application_logo.png">

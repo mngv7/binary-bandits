@@ -45,12 +45,12 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
     /**
      * Adds a product to a work order in the work_order_products table
      */
-    public boolean addWorkOrderProduct(WorkOrder workOrder, Product product, Integer quantity) {
+    public boolean addWorkOrderProduct(WorkOrderProduct workOrderProduct) {
         String sqlAddWorkOrderProduct = "INSERT INTO work_order_products (work_order_id, product_id, quantity) VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAddWorkOrderProduct)) {
-            preparedStatement.setInt(1, workOrder.getWorkOrderId());
-            preparedStatement.setInt(2, product.getProductId());
-            preparedStatement.setInt(3, quantity);
+            preparedStatement.setInt(1, workOrderProduct.getWorkOrderId());
+            preparedStatement.setInt(2, workOrderProduct.getProductId());
+            preparedStatement.setInt(3, workOrderProduct.getQuantity());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,6 +103,20 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM work_order_products");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException e) {
+            System.err.println(e);
         }
         return false;
     }

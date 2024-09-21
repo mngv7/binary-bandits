@@ -13,19 +13,17 @@ public class WorkOrder {
     private final LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
     private String shippingAddress; // Address specific to this order
-    private Integer productId;
     private String status;
     private final Double subtotal;
 
     // Constructor
-    public WorkOrder(Integer workOrderId, ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, LocalDateTime deliveryDate, String shippingAddress, Integer productId, String status, Double subtotal) {
+    public WorkOrder(Integer workOrderId, ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, LocalDateTime deliveryDate, String shippingAddress, String status, Double subtotal) {
         this.workOrderId = workOrderId;
         this.orderOwner = orderOwner;
         this.customer = customer;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
         this.shippingAddress = shippingAddress;
-        this.productId = productId;
         this.status = status;
         this.subtotal = subtotal;
     }
@@ -65,14 +63,6 @@ public class WorkOrder {
 
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
-    }
-
-    public Integer getProducts() {
-        return productId;
-    }
-
-    public void setProducts(Integer products) {
-        this.productId = products;
     }
 
     public String getStatus() {

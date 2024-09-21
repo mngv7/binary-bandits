@@ -12,6 +12,7 @@ import com.example.protrack.users.WarehouseUser;
 import com.example.protrack.warehouseutil.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
+import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -144,7 +145,7 @@ public class Main extends Application {
         WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
         if (wdao.isTableEmpty()) {
-            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", 1, "pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", "pending", 40.87));
         }
 
         LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
@@ -163,6 +164,8 @@ public class Main extends Application {
             System.out.println("Warning: location Contents table created empty intentionally.");
         }
 
+        WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
+        workOrderProductsDAOImplementation.createTable();
 
         launch();
     }

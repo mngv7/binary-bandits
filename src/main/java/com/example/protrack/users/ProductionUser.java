@@ -17,4 +17,9 @@ public class ProductionUser extends AbstractUser {
     public String getAccessLevel() {
         return accessLevel;
     }
+
+    @Override
+    public String toString() {
+        return this.firstName + " " + this.getLastName(); // Adjust according to your attribute
+    }
 }

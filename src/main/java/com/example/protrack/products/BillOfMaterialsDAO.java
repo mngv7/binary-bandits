@@ -3,6 +3,8 @@ package com.example.protrack.products;
 import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BillOfMaterialsDAO {
     private final Connection connection;
@@ -51,6 +53,28 @@ public class BillOfMaterialsDAO {
             // Catch and print any SQL exceptions that may occur during table creation
             System.err.println(ex);
         }
+    }
+
+    public List<BillOfMaterials> getBillOfMaterialsForProduct(int productId) {
+        List<BillOfMaterials> billOfMaterialsList = new ArrayList<>();
+        String query = "SELECT * FROM requiredParts WHERE productId = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int partsId = rs.getInt("partsId");
+                int requiredAmount = rs.getInt("requiredAmount");
+
+                BillOfMaterials bom = new BillOfMaterials(partsId, productId, requiredAmount);
+                billOfMaterialsList.add(bom);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        return billOfMaterialsList;
     }
 
     /**

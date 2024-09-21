@@ -8,7 +8,7 @@ class WorkOrderProductTest {
 
     @Test
     void testSetQuantity() {
-        WorkOrderProduct product = new WorkOrderProduct(1, "Widget", "A standard widget", 10, 5.99, 59.90);
+        WorkOrderProduct product = new WorkOrderProduct(1, 1, "Widget", 10, 5.99, 59.90);
         product.setQuantity(20);
 
         assertEquals(20, product.getQuantity());
@@ -17,7 +17,7 @@ class WorkOrderProductTest {
 
     @Test
     void testZeroValues() {
-        WorkOrderProduct product = new WorkOrderProduct(2, "Gadget", "A basic gadget", 0, 0.0, 0.0);
+        WorkOrderProduct product = new WorkOrderProduct(2, 1, "Gadget", 0, 0.0, 0.0);
 
         assertEquals(0, product.getQuantity());
         assertEquals(0.0, product.getPrice());
@@ -28,7 +28,7 @@ class WorkOrderProductTest {
     void testLargeValues() {
         // Test with large values, ensuring no overflow occurs
         try {
-            WorkOrderProduct product = new WorkOrderProduct(3, "Product", "A product", Integer.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+            WorkOrderProduct product = new WorkOrderProduct(3, 1, "Product", Integer.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
 
             assertEquals(Integer.MAX_VALUE, product.getQuantity());
             assertTrue(Double.isInfinite(product.getTotal()));

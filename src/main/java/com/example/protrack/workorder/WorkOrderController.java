@@ -82,7 +82,6 @@ public class WorkOrderController {
         colOrderDate.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
         colDeliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
         colShippingAddress.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
-        colProducts.setCellValueFactory(new PropertyValueFactory<>("products"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 
@@ -113,7 +112,7 @@ public class WorkOrderController {
 
     private static final String TITLE = "Create Work Order";
     private static final int WIDTH = 900;
-    private static final int HEIGHT = 640;
+    private static final int HEIGHT = 650;
 
     /**
      * Opens a popup window to create a new work order.
@@ -138,7 +137,7 @@ public class WorkOrderController {
 
             // Center the popup window on the screen
             Bounds rootBounds = createWorkOrderButton.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 260);
+            popupStage.setY(rootBounds.getCenterY() - 280);
             popupStage.setX(rootBounds.getCenterX() - 310);
 
             // Show the popup window
@@ -174,7 +173,6 @@ public class WorkOrderController {
                 orderDate,
                 null,
                 customer.getShippingAddress(),
-                productId,
                 "Pending",
                 21.00
         );

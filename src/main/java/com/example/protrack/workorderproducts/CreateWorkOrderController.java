@@ -1,23 +1,29 @@
 package com.example.protrack.workorderproducts;
 
+import com.example.protrack.parts.Parts;
+import com.example.protrack.parts.PartsDAO;
+import com.example.protrack.products.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
-import com.example.protrack.products.Product;
-import com.example.protrack.products.ProductDAO;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CreateWorkOrderController {
 
@@ -61,10 +67,10 @@ public class CreateWorkOrderController {
     private TableView workOrderTableView;
 
     @FXML
-    private TableColumn<WorkOrderProduct, String> colWorkOrderProductName;
+    private TableColumn<WorkOrderProduct, String> colWorkOrderProductId;
 
     @FXML
-    private TableColumn<WorkOrderProduct, String> colWorkOrderProductDescription;
+    private TableColumn<WorkOrderProduct, String> colWorkOrderProductName;
 
     @FXML
     private TableColumn<WorkOrderProduct, Integer> colWorkOrderProductQuantity;
@@ -73,7 +79,7 @@ public class CreateWorkOrderController {
     private TableColumn<WorkOrderProduct, Double> colWorkOrderProductPrice;
 
     @FXML
-    private TableColumn<WorkOrderProduct, Double> colWorkOrderTotal;
+    private TableColumn<WorkOrderProduct, Double> colWorkOrderProductTotal;
 
     @FXML
     private TableColumn<WorkOrderProduct, String> colTrash;
@@ -83,10 +89,43 @@ public class CreateWorkOrderController {
     public void initialize() {
 
         // Update the TableView
+        colWorkOrderProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
         colWorkOrderProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        colWorkOrderProductDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colWorkOrderProductQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colWorkOrderProductPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        colWorkOrderProductTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        // Sets cell factory for 'colTrash' column to display a bin icon
+        colTrash.setCellFactory(new Callback<TableColumn<WorkOrderProduct, String>, TableCell<WorkOrderProduct, String>>() {
+            @Override
+            public TableCell<WorkOrderProduct, String> call(TableColumn<WorkOrderProduct, String> param) {
+                return new TableCell<>() {
+                    private final Button deleteButton = new Button("  \uD83D\uDDD1"  ); // Trash icon as button
+
+                    {
+                        deleteButton.getStyleClass().add("trash-button");
+
+                        // Handles row deletion
+                        deleteButton.setOnAction(event -> {
+                            WorkOrderProduct product = getTableView().getItems().get(getIndex());
+                            getTableView().getItems().remove(product);  // Remove from table
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+
+                            setGraphic(deleteButton);  // Set the button to trash icon if there is an active row
+                        }
+                    }
+                };
+            }
+        });
 
         // Initialises ObservableList
         workOrderProducts = FXCollections.observableArrayList();
@@ -104,52 +143,57 @@ public class CreateWorkOrderController {
                                 emailField.getText().trim().isEmpty() ||
                                 shippingAddressField.getText().trim().isEmpty() ||
                                 shippingMethodField.getText().trim().isEmpty() ||
-                                workOrderOwnerComboBox.getSelectionModel().isEmpty() ||
-                                customerComboBox.getSelectionModel().isEmpty() ||
-                                productComboBox.getSelectionModel().isEmpty(),
+                                workOrderTableView.getItems().isEmpty() ||
+                                customerComboBox.getSelectionModel().isEmpty(),
                 addressField.textProperty(), emailField.textProperty(),
-                shippingAddressField.textProperty(), shippingMethodField.textProperty()
+                shippingAddressField.textProperty(), shippingMethodField.textProperty(), workOrderTableView.getItems()
         );
 
-        // Disables the button if any required field is empty
         createWorkOrderButton.disableProperty().bind(emptyFields);
     }
 
     @FXML
     protected void addProductToTable() {
         try {
-            // Gets selected product from the 'Product' ComboBox
+            // Get the selected product from the 'Product' ComboBox
             Product selectedProduct = productComboBox.getSelectionModel().getSelectedItem();
 
-            // Gets quantity entered by the user
+            // Get the quantity entered by the user
             int quantity = Integer.parseInt(productQuantityField.getText());
 
-            // Calculate the total price for the selected product
-            // --double totalPriceForProduct = selectedProduct.getPrice() * quantity;
+            // Check if the product is already in the table
+            for (WorkOrderProduct workOrderProduct : workOrderProducts) {
+                if (workOrderProduct.getProductId() == selectedProduct.getProductId()) {
+                    // If the product exists, update the quantity
+                    workOrderProduct.setQuantity(workOrderProduct.getQuantity() + quantity);
+                    // Recalculate the total price based on the updated quantity
+                    workOrderProduct.setPrice(calculateTotalPrice(selectedProduct.getProductId())); // Price based on BOM
+                    updateTotalPrice();  // Update the displayed total price
+                    workOrderTableView.refresh();  // Refresh the TableView
+                    clearProductInputFields();  // Clear input fields
+                    return;  // Exit the method
+                }
+            }
 
+            // If the product is not in the list, create a new WorkOrderProduct
+            double totalPrice = calculateTotalPrice(selectedProduct.getProductId());
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
+                    -1, // no Work Order has an ID of -1; this is a placeholder
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
-                    "testDescription", // description, to be implemented
                     quantity,
-                    6.9, // price, to be implemented
-                    12.2 // totalPrice, to be implemented
+                    totalPrice, // Use the calculated price
+                    totalPrice * quantity // Initial total price for the product
             );
 
-            // Adds WorkOrderProduct to list
+            // Add WorkOrderProduct to the list
             workOrderProducts.add(workOrderProduct);
-            System.out.println(workOrderProducts.toString());
-
-            workOrderTableView.setItems(workOrderProducts);
-            System.out.println(workOrderTableView.getItems().toString());
 
             // Update the total price label
-            // --totalOrderPrice += totalPriceForProduct;
-            totalLabel.setText(String.format("%.2f", 12.2));
+            updateTotalPrice();
 
-            // Resets the product selection and quantity fields
-            productComboBox.getSelectionModel().clearSelection();
-            productQuantityField.clear();
+            // Reset the product selection and quantity fields
+            clearProductInputFields();
         } catch (NumberFormatException e) {
             // Alert handles invalid number formats for quantity
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -158,6 +202,38 @@ public class CreateWorkOrderController {
             alert.setContentText("Please enter a valid number for quantity.");
             alert.showAndWait();
         }
+    }
+
+    // Method to calculate total price for a given product ID based on BOM
+    private double calculateTotalPrice(int productId) {
+        // Fetch Bill of Materials for the product
+        BillOfMaterialsDAO bomDAO = new BillOfMaterialsDAO();
+        List<BillOfMaterials> bomList = bomDAO.getBillOfMaterialsForProduct(productId);
+
+        // Calculate the total cost based on parts
+        double totalPrice = 0.0;
+        PartsDAO partsDAO = new PartsDAO();
+
+        for (BillOfMaterials bom : bomList) {
+            Parts part = partsDAO.getPartById(bom.getPartsId());
+            totalPrice += part.getCost() * bom.getRequiredAmount(); // Calculate cost for the required amount of parts
+        }
+
+        return totalPrice; // Return the total price for the product based on BOM
+    }
+
+    // Method to update the total price label
+    private void updateTotalPrice() {
+        double totalOrderPrice = workOrderProducts.stream()
+                .mapToDouble(WorkOrderProduct::getTotal)
+                .sum();
+        totalLabel.setText(String.format("%.2f", totalOrderPrice));
+    }
+
+    // Method to clear product input fields
+    private void clearProductInputFields() {
+        productComboBox.getSelectionModel().clearSelection();
+        productQuantityField.clear();
     }
 
     @FXML
@@ -170,20 +246,27 @@ public class CreateWorkOrderController {
             String shippingAddress = shippingAddressField.getText();
             String shippingMethod = shippingMethodField.getText();
             LocalDateTime orderDate = LocalDateTime.now();
-            LocalDateTime deliveryDate = orderDate.plusDays(7);  // Example logic for delivery date
+            LocalDateTime deliveryDate = orderDate.plusDays(7);  // estimated delivery
 
             // Create a new WorkOrder instance
-            WorkOrder workOrder = new WorkOrder(0, orderOwner, customer, orderDate, deliveryDate, shippingAddress, null, "Pending", 0.0);
+            WorkOrder workOrder = new WorkOrder(0, orderOwner, customer, orderDate, deliveryDate, shippingAddress, "Pending", 0.0);
+
+            List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
+            List<Customer> customers = new CustomerDAO().getAllCustomers();
+
+            WorkOrdersDAOImplementation workOrdersDAOImplementation = new WorkOrdersDAOImplementation(productionUsers, customers);
+
+            workOrdersDAOImplementation.createWorkOrder(workOrder);
+
+            WorkOrder newWorkOrder = workOrdersDAOImplementation.getWorkOrderByCustomerAndDate(customer, orderDate);
 
             // Fetch product details and quantity
-            Product selectedProduct = productComboBox.getSelectionModel().getSelectedItem();
-            int quantity = Integer.parseInt(productQuantityField.getText());
+            for (WorkOrderProduct product : workOrderProducts) {
+                product.setWorkOrderId(newWorkOrder.getWorkOrderId());
+                new WorkOrderProductsDAOImplementation().addWorkOrderProduct(product);
+            }
 
             // Add the product to the work order
-            WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
-            workOrderProductsDAOImplementation.addWorkOrderProduct(workOrder, selectedProduct, quantity);
-
-            // Optionally, reset the form fields after creation
             clearFormFields();
 
         } catch (NumberFormatException e) {
@@ -203,6 +286,15 @@ public class CreateWorkOrderController {
         ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
         alert.getButtonTypes().setAll(confirmBtn, backBtn);
+
+        Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
+
+        confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
+        cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
+
+        // Load the CSS file
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
 
         // Show confirmation dialog and close if confirmed
         alert.showAndWait().ifPresent(result -> {
