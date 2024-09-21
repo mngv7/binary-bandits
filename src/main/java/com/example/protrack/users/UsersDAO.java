@@ -147,6 +147,18 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
+    @Override
+    public void deleteUserById(Integer employeeId) throws SQLException {
+        String query = "DELETE FROM users WHERE employeeId = ?";
+
+        try (PreparedStatement deleteUser = connection.prepareStatement(query)) {
+            deleteUser.setInt(1, employeeId);
+            deleteUser.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public List<ManagerialUser> getManagerialUsers() {
         List<ManagerialUser> managerialUsers = new ArrayList<>();

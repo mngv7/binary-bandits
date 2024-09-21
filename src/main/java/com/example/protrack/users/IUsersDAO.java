@@ -14,6 +14,9 @@ public interface IUsersDAO {
     // Method to map a ResultSet to an AbstractUser instance
     AbstractUser mapResultSetToUser(ResultSet resultSet) throws SQLException;
 
+    // Method to delete a user from the database.
+    void deleteUserById(Integer employeeId) throws SQLException;
+
     // Method to retrieve a list of ManagerialUser instances
     List<ManagerialUser> getManagerialUsers() throws SQLException;
 
