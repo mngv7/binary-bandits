@@ -359,4 +359,13 @@
     -fx-text-fill: black;
 }
 
+.text-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-text-fill: black;
+    -fx-font: inherit;
+    -fx-cursor: hand;
+}
+
 <img src="application_logo.png">
