@@ -1,5 +1,6 @@
 package com.example.protrack.products;
 
+import com.example.protrack.database.ProductDBTable;
 import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
@@ -119,6 +120,51 @@ public class ProductDAO {
             System.err.println(ex);
         }
         return false;
+    }
+
+    public List<ProductDBTable> getAllCost() {
+        List<ProductDBTable> products = new ArrayList<>();
+
+        String query = "SELECT * FROM products";
+
+        // get all products in database
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int productId = rs.getInt("productId");
+                String productName = rs.getString("productName");
+                Date dateCreated = rs.getDate("dateCreated");
+                double price = 0.0;
+
+                // add price of total parts to products
+                try {
+                    PreparedStatement getPrice = connection.prepareStatement(
+                            "SELECT SUM (a.requiredAmount * b.cost) AS TotalValue " +
+                                    "FROM requiredParts a " +
+                                    "JOIN parts b ON a.PartsId = b.PartsId " +
+                                    "WHERE a.productId = ?");
+                    getPrice.setInt(1, productId);
+                    ResultSet rs2 = getPrice.executeQuery();
+
+                    if (rs2.next()) {
+                        price += rs2.getDouble("TotalValue");
+                    }
+
+                } catch (SQLException ex) {
+                    System.err.println(ex);
+                }
+
+                ProductDBTable product = new ProductDBTable(productId, productName, dateCreated, price);
+
+                // add product to list
+                products.add(product);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        return products;
     }
 
 
