@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.ExpandedEmployeeController"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+
+    </top>
+    <center>
+        <VBox spacing="20">
+            <HBox spacing="10">
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                    <Button onAction="#backToEmployees" text="Back" styleClass="add-parts-button"/>
+                </HBox>
+                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <Button fx:id="removeEmployeeButton" onAction="#onRemoveEmployeePress" text="Remove Employee" styleClass="remove-employee-button"/>
+                </HBox>
+            </HBox>
+            <VBox style="-fx-padding: 0 0 10 0;">
+                <Label fx:id="employeeNameTitle" text="Employee" styleClass="title-label"/>
+            </VBox>
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS" spacing="20">
+                    <Label fx:id="initialsIcon" text="Initials" styleClass="initials-icon-large"/>
+                    <HBox>
+                        <Label text="Employee ID: " styleClass="parts-table-label"/>
+                        <Label fx:id="employeeIdLabel" text="ID"/>
+                    </HBox>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="10">
+                    <Label text="Personal Details" styleClass="parts-table-title"/>
+
+                    <Label text="Full Name" styleClass="parts-table-label"/>
+                    <Label fx:id="fullName" text="Full Name"/>
+
+                    <Label text="Title" styleClass="parts-table-label"/>
+                    <Label fx:id="employeeRole" text="Employee Role"/>
+
+                    <Label text="Email Address" styleClass="parts-table-label"/>
+                    <Label fx:id="emailAddress" text="Email Address"/>
+
+                    <Label text="Date of Birth" styleClass="parts-table-label"/>
+                    <Label fx:id="dob" text="DOB"/>
+
+                    <Label text="Phone Number" styleClass="parts-table-label"/>
+                    <Label fx:id="phoneNo" text="PhoneNo"/>
+
+                    <Label text="Gender" styleClass="parts-table-label"/>
+                    <Label fx:id="gender" text="Gender"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Work Insights" styleClass="parts-table-title"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

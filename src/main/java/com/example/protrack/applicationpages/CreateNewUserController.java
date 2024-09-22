@@ -47,6 +47,12 @@ public class CreateNewUserController {
     @FXML
     public Button addUserButton;
 
+    private EmployeesController employeesController;  // Reference to EmployeesController
+
+    public void setEmployeesController(EmployeesController employeesController) {
+        this.employeesController = employeesController;
+    }
+
     /**
      * Method to handle the action when the close popup button is clicked.
      * Displays a confirmation dialog asking if the user is sure they want to cancel.
@@ -121,6 +127,10 @@ public class CreateNewUserController {
             default:
                 System.out.println("Unknown access level."); // Handle unknown access level
                 break;
+        }
+
+        if (employeesController != null) {
+            employeesController.loadAllUsers();  // Refresh the employee list
         }
 
         // Close the popup window after user creation

@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Objects;
 
 import com.example.protrack.Main;
+import com.example.protrack.employees.SelectedEmployeeSingleton;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import com.example.protrack.utility.LoggedInUserSingleton;
 import com.example.protrack.users.AbstractUser;
@@ -26,6 +28,15 @@ public class EmployeesController {
 
     @FXML
     public Button newUserButton; // Button to create a new user
+
+    @FXML
+    public VBox employeeIcons;
+
+    @FXML
+    public GridPane employeesGridPane;
+
+    @FXML
+    public VBox iconAndNameGroup;
 
     // Initializes the controller and sets up UI components
     public void initialize() {
@@ -44,9 +55,14 @@ public class EmployeesController {
         UsersDAO usersDAO = new UsersDAO();
         List<AbstractUser> allUsers = usersDAO.getAllUsers();
 
+        // Initialize column and row indexes
+        int columnIndex = 0;
+        int rowIndex = 0;
+
         // Iterate through the list of all users and add their information to the UI
         for (AbstractUser user : allUsers) {
-            VBox newRow = new VBox();
+            VBox columns = new VBox();
+            VBox rows = new VBox();
 
             // Determine the title of the employee based on their access level
             String employeeTitle = switch (user.getAccessLevel()) {
@@ -57,16 +73,54 @@ public class EmployeesController {
             };
 
             // Create labels for the employee's name and title
-            Label employeeNameLabel = new Label(user.getFirstName());
+            Button employeeNameButton = new Button();
+            employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
+            employeeNameButton.getStyleClass().add("text-button");
+            employeeNameButton.setOnAction(event -> handleButtonPress(user.getFirstName(), user.getLastName()));
+
             Label employeeTitleLabel = new Label(employeeTitle);
             Label spacing = new Label(" "); // Spacer to separate labels
 
-            // Add labels to the newRow VBox
-            newRow.getChildren().addAll(employeeNameLabel, employeeTitleLabel, spacing);
+            // Create initials label for the icon
+            String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0,1);
+            Label initialsIcon = new Label(initials);
+            initialsIcon.getStyleClass().add("initials-icon");
 
-            // Add the newRow VBox to the employeeNames VBox
-            employeeNames.getChildren().add(newRow);
+            // Add labels to the rows and columns
+            rows.getChildren().addAll(employeeNameButton, employeeTitleLabel, spacing);
+            columns.getChildren().add(initialsIcon);
+
+            employeesGridPane.add(columns, columnIndex, rowIndex);
+            employeesGridPane.add(rows, columnIndex + 1, rowIndex);
+
+            // Update the row and column indexes
+            rowIndex++;
+            if (rowIndex > 4) { // Number of rows before changing columns.
+                rowIndex = 0;
+                columnIndex += 2; // Skip to the next set of columns for icons and labels
+            }
         }
+    }
+
+
+    private MainController mainController;  // Store the MainController instance
+
+    // Setter for MainController
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
+    @FXML
+    private void loadEmployeeProfile() {
+        if (mainController != null) {
+            mainController.employeesExpanded();  // Use the injected MainController instance
+        }
+    }
+
+    private void handleButtonPress(String firstName, String lastName) {
+        SelectedEmployeeSingleton.getInstance().setEmployeeFirstName(firstName);
+        SelectedEmployeeSingleton.getInstance().setEmployeeLastName(lastName);
+        loadEmployeeProfile();
     }
 
     // Constants for the popup window
@@ -92,6 +146,9 @@ public class EmployeesController {
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
+
+            CreateNewUserController createNewUserController = fxmlLoader.getController();
+            createNewUserController.setEmployeesController(this);  // Pass EmployeesController to it
 
             // Set the position and show the popup window
             popupStage.setY(150);

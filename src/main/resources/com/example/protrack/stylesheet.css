@@ -359,4 +359,50 @@
     -fx-text-fill: black;
 }
 
+.text-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+}
+
+.remove-employee-button {
+    -fx-background-color: #c70000; /* Red */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.remove-employee-button:hover {
+    -fx-background-color: #ff4d4d;
+}
+
+.initials-icon {
+    -fx-min-width: 50px; /* Minimum width */
+    -fx-min-height: 50px; /* Minimum height */
+    -fx-background-color: #390B91; /* Background color */
+    -fx-background-radius: 25px; /* Half of width/height for a circle */
+    -fx-text-fill: #e4d7fc; /* Text color */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-font-size: 20px; /* Font size */
+    -fx-alignment: center; /* Align text to center */
+    -fx-padding: 10px; /* Padding to center text within the circle */
+}
+
+.initials-icon-large {
+    -fx-min-width: 150px; /* 1.5 times the 100px width */
+    -fx-min-height: 150px; /* 1.5 times the 100px height */
+    -fx-background-color: #390B91; /* Background color */
+    -fx-background-radius: 75px; /* Half of width/height for a circle */
+    -fx-text-fill: #e4d7fc; /* Text color */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-font-size: 90px; /* 1.5 times the previous 60px font size */
+    -fx-alignment: center; /* Align text to center */
+    -fx-padding: 15px; /* Adjusted padding */
+}
+
+
 <img src="application_logo.png">
