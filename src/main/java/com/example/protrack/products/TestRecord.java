@@ -9,8 +9,11 @@ public class TestRecord {
     private final String stepCheckType;
     private final String stepCheckCriteria;
 
-    // Constructor initialises the test record with specific attributes
+    // Constructor initializes the test record with specific attributes
     public TestRecord(Integer stepId, Integer productId, Integer stepNumber, String stepDescription, String stepCheckType, String stepCheckCriteria) {
+        if (stepId == null || productId == null || stepNumber == null || stepDescription == null || stepCheckType == null || stepCheckCriteria == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
         this.stepId = stepId;
         this.productId = productId;
         this.stepNumber = stepNumber;

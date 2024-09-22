@@ -74,6 +74,7 @@ public class Main extends Application {
         if (partsDAO.isTableEmpty()) {
             partsDAO.newPart(new Parts(50, "TestPart", "Testing", 50, 12.50));
             partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", 50, 6.69));
+            partsDAO.newPart(new Parts(2, "TestPart3", "Testing3", 50, 1.00));
             partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
             partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 51, 2.10));
         }
@@ -150,7 +151,7 @@ public class Main extends Application {
         WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
         if (wdao.isTableEmpty()) {
-            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", "pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", "Pending", 40.87));
         }
 
         LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();

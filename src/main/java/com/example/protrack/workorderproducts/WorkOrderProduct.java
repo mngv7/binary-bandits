@@ -9,12 +9,29 @@ public class WorkOrderProduct {
     private double total;
 
     // Constructor for WorkOrderProduct class
-    public WorkOrderProduct(int workOrderId, int productId, String productName, int quantity, double price, double total) {
+    public WorkOrderProduct(int workOrderId, int productId, String productName, int quantity, double price) {
+        if (productName == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        if (workOrderId < 0) {
+            throw new IllegalArgumentException("Work order ID cannot be negative");
+        }
+        if (productId < 0) {
+            throw new IllegalArgumentException("Product ID cannot be negative");
+        }
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+
         this.workOrderId = workOrderId;
         this.productId = productId;
         this.productName = productName;
         setQuantity(quantity); // Ensure total is calculated based on initial quantity and price
         setPrice(price);       // Ensure total is calculated based on initial quantity and price
+        this.total = getTotal();
     }
 
     // Getters and Setters
@@ -22,11 +39,13 @@ public class WorkOrderProduct {
         return workOrderId;
     }
 
-    public int setWorkOrderId(Integer workOrderId) {
-        return this.workOrderId = workOrderId;
+    public void setWorkOrderId(int workOrderId) {
+        if (workOrderId < 0) {
+            throw new IllegalArgumentException("Work order ID cannot be negative");
+        }
+        this.workOrderId = workOrderId;
     }
 
-    // Getters and Setters
     public int getProductId() {
         return productId;
     }
@@ -40,6 +59,9 @@ public class WorkOrderProduct {
     }
 
     public void setQuantity(int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
         this.quantity = quantity;
         updateTotal(); // Update total whenever quantity changes
     }
@@ -49,6 +71,9 @@ public class WorkOrderProduct {
     }
 
     public void setPrice(double price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
         this.price = price;
         updateTotal(); // Update total whenever price changes
     }

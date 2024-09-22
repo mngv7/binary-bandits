@@ -178,12 +178,11 @@ public class CreateWorkOrderController {
             // If the product is not in the list, create a new WorkOrderProduct
             double totalPrice = calculateTotalPrice(selectedProduct.getProductId());
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
-                    -1, // no Work Order has an ID of -1; this is a placeholder
+                    0, // no Work Order has an ID of 0, this is a placeholder to be overwritten by SQL PKEY autoincrement
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
                     quantity,
-                    totalPrice, // Use the calculated price
-                    totalPrice * quantity // Initial total price for the product
+                    totalPrice // Use the calculated price
             );
 
             // Add WorkOrderProduct to the list
