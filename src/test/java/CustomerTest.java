@@ -2,96 +2,123 @@ import com.example.protrack.customer.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerTest {
+
     private Customer customer;
 
     @BeforeEach
     public void setUp() {
-        customer = new Customer(1, "John", "Doe", "john@doe.com", "0414444111", "billingAddress", "shippingAddress", "pending");
+        customer = new Customer(1, "John", "Doe", "john.doe@example.com", null, "Billing Address", "Shipping Address", "Active");
     }
 
     @Test
-    void testGetCustomerId() {
+    public void testGetCustomerId() {
         assertEquals(1, customer.getCustomerId());
     }
 
     @Test
-    void testGetFirstName() {
+    public void testGetFirstName() {
         assertEquals("John", customer.getFirstName());
     }
 
     @Test
-    void testGetLastName() {
+    public void testGetLastName() {
         assertEquals("Doe", customer.getLastName());
     }
 
     @Test
-    void testGetEmail() {
-        assertEquals("john@doe.com", customer.getEmail());
+    public void testGetEmail() {
+        assertEquals("john.doe@example.com", customer.getEmail());
     }
 
     @Test
-    void testGetPhoneNumber() {
-        assertEquals("0414444111", customer.getPhoneNumber());
+    public void testGetPhoneNumber() {
+        assertNull(customer.getPhoneNumber());
     }
 
     @Test
-    void testGetBillingAddress() {
-        assertEquals("billingAddress", customer.getBillingAddress());
+    public void testGetBillingAddress() {
+        assertEquals("Billing Address", customer.getBillingAddress());
     }
 
     @Test
-    void testGetShippingAddress() {
-        assertEquals("shippingAddress", customer.getShippingAddress());
+    public void testGetShippingAddress() {
+        assertEquals("Shipping Address", customer.getShippingAddress());
     }
 
     @Test
-    void testGetStatus() {
-        assertEquals("pending", customer.getStatus());
-    }
-
-
-    @Test
-    void setFirstName() {
-        customer.setFirstName("Jonathon");
-        assertEquals("Jonathon", customer.getFirstName());
+    public void testGetStatus() {
+        assertEquals("Active", customer.getStatus());
     }
 
     @Test
-    void setLastName() {
-        customer.setLastName("Doh");
-        assertEquals("Doh", customer.getLastName());
+    public void testSetFirstName() {
+        customer.setFirstName("Jane");
+        assertEquals("Jane", customer.getFirstName());
     }
 
     @Test
-    void setEmail() {
-        customer.setEmail("jonathon@doe.com");
-        assertEquals("jonathon@doe.com", customer.getEmail());
+    public void testSetLastName() {
+        customer.setLastName("Smith");
+        assertEquals("Smith", customer.getLastName());
     }
 
     @Test
-    void setPhoneNumber() {
-        customer.setPhoneNumber("0444696969");
-        assertEquals("0444696969", customer.getPhoneNumber());
+    public void testNegativeCustomerId() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Customer(-1, "John", "Doe", "email@example.com", "1234567890", "Billing Address", "Shipping Address", "Active");
+        });
+        assertEquals("No field can be null", exception.getMessage());
     }
 
     @Test
-    void setBillingAddress() {
-        customer.setBillingAddress("newBillingAddress");
-        assertEquals("newBillingAddress", customer.getBillingAddress());
+    public void testEmailExceedsLength() {
+        String longEmail = "a".repeat(256) + "@example.com";
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Customer(1, "John", "Doe", longEmail, "1234567890", "Billing Address", "Shipping Address", "Active");
+        });
+        assertEquals("Email must not exceed 255 characters", exception.getMessage());
     }
 
     @Test
-    void setShippingAddress() {
-        customer.setShippingAddress("newShippingAddress");
-        assertEquals("newShippingAddress", customer.getShippingAddress());
+    public void testSetPhoneNumberValid() {
+        customer.setPhoneNumber("0412345678");
+        assertEquals("0412345678", customer.getPhoneNumber());
     }
 
     @Test
-    void setStatus() {
-        customer.setStatus("inactive");
-        assertEquals("inactive", customer.getStatus());
+    public void testSetPhoneNumberExceedingMaxLength() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            customer.setPhoneNumber("041234567890");
+        });
+        assertEquals("Phone number cannot exceed 11 characters.", exception.getMessage());
+    }
+
+    @Test
+    public void testNullOrders() {
+        customer.setOrders(null);
+        assertNull(customer.getOrders());
+    }
+
+    @Test
+    public void testInvalidStatus() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            customer.setStatus("Unknown");
+        });
+        assertEquals("Status must be 'Active' or 'Inactive'", exception.getMessage());
+    }
+
+    @Test
+    public void testValidStatus() {
+        customer.setStatus("Inactive");
+        assertEquals("Inactive", customer.getStatus());
+    }
+
+    @Test
+    public void testSetPhoneNumberNull() {
+        customer.setPhoneNumber(null);
+        assertNull(customer.getPhoneNumber());
     }
 }

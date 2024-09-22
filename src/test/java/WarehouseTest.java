@@ -1,32 +1,55 @@
-import com.example.protrack.warehouseutil.MockWarehouse;
+import com.example.protrack.warehouseutil.RealWarehouse;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MockWarehouseTest {
+public class WarehouseTest {
 
-    private MockWarehouse warehouse;
-    //setup warehouse data
+    private RealWarehouse realWarehouse;
+
     @BeforeEach
-    void setUp() {
-        warehouse = new MockWarehouse(1, "Default Warehouse", "Spike Site A");
+    public void setUp() {
+        realWarehouse = new RealWarehouse(1, "Main Warehouse", 10000);
     }
-    //test warehouse name
-    @Test
-    void testGetWarehouseName() {
-        assertEquals("Default Warehouse", warehouse.getWarehouseName());
-    }
-    // test warehouse location
-    @Test
-    void testGetWarehouseLocation() {
-        assertEquals("Spike Site A", warehouse.getWarehouseLocation());
-    }
-    //test warehouse id
-    @Test
-    public void testGetWarehouseId() {
-        assertEquals(1, warehouse.getWarehouseId());
-    }
-    //
 
+    @Test
+    public void testValidInitialization() {
+        assertEquals(1, realWarehouse.getWarehouseId());
+        assertEquals("Main Warehouse", realWarehouse.getWarehouseName());
+        assertEquals(10000, realWarehouse.getMaxParts());
+    }
+
+    @Test
+    public void testNullLocation() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new RealWarehouse(1, null, 10000);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullPartsLinked() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new RealWarehouse(1, "Main Warehouse", 10000, null);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullWarehouseName() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            realWarehouse.setWarehouseName(null);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullWarehouseLocation() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            realWarehouse.setWarehouseLocation(null);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
 }

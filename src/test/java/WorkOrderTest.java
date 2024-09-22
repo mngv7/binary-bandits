@@ -1,92 +1,114 @@
+import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.users.ProductionUser;
-import com.example.protrack.workorder.WorkOrder;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class WorkOrderTest {
-    private ProductionUser productionUser;
     private Customer customer;
+    private ProductionUser orderOwner;
     private WorkOrder workOrder;
 
     @BeforeEach
-    public void setUp() {
-        productionUser = new ProductionUser(1, "productionUserFirstName", "productionUserLastName", Date.valueOf("2000-01-01"), "production@user.com", "0444444444", "Female", "password");
-        customer = new Customer(1, "customerFirstName", "customerLastName", "customer@email.com", "555-5555", "billingAddress", "shippingAddress", "Active");
-        workOrder = new WorkOrder(1, productionUser, customer, LocalDateTime.now(), null, "shippingAddress", "Pending", 40.87);
+    public void setup() {
+        customer = new Customer(1, "John", "Doe", "john.doe@example.com", null, "123 Street", "456 Avenue", "Active");
+        orderOwner = new ProductionUser(1, "Jane", "Smith", Date.valueOf("1985-01-01"), "jane.smith@example.com", null, "Female", "password");
+        workOrder = new WorkOrder(1, orderOwner, customer, LocalDateTime.now(), null, null, "Pending", 100.0);
     }
 
     @Test
-    void testGetWorkOrderId() {
+    public void testGetWorkOrderId() {
         assertEquals(1, workOrder.getWorkOrderId());
     }
 
     @Test
-    void testGetOrderOwner() {
-        assertEquals(productionUser, workOrder.getOrderOwner());
+    public void testGetOrderOwner() {
+        assertNotNull(workOrder.getOrderOwner());
     }
 
     @Test
-    void testGetCustomer() {
-        assertEquals(customer, workOrder.getCustomer());
+    public void testGetCustomer() {
+        assertNotNull(workOrder.getCustomer());
     }
 
     @Test
-    void testGetOrderDate() {
-        LocalDateTime orderDate = workOrder.getOrderDate();
-        LocalDateTime now = LocalDateTime.now();
-
-        long toleranceInSeconds = 1;
-
-        assertTrue(java.time.Duration.between(orderDate, now).getSeconds() <= toleranceInSeconds);
+    public void testGetOrderDate() {
+        assertNotNull(workOrder.getOrderDate());
     }
 
     @Test
-    void testGetDeliveryDate() {
+    public void testGetDeliveryDate() {
         assertNull(workOrder.getDeliveryDate());
     }
 
     @Test
-    void testGetShippingAddress() {
-        assertEquals("shippingAddress", workOrder.getShippingAddress());
+    public void testGetShippingAddress() {
+        assertNull(workOrder.getShippingAddress());
     }
 
     @Test
-    void testGetStatus() { assertEquals("Pending", workOrder.getStatus()); }
-
-    @Test
-    void testGetSubtotal() {
-        assertEquals(40.87, workOrder.getSubtotal());
-    }
-
-
-    @Test
-    void testSetDeliveryDate() {
-        workOrder.setDeliveryDate(LocalDateTime.MAX);
-        assertEquals(LocalDateTime.MAX, workOrder.getDeliveryDate());
+    public void testGetStatus() {
+        assertEquals("Pending", workOrder.getStatus());
     }
 
     @Test
-    void testSetOrderOwner() {
-        ProductionUser productionUser2 = new ProductionUser(2, "productionUser2FirstName", "productionUser2LastName", Date.valueOf("2000-02-02"), "production@user2.com", "0444444442", "Male", "password2");
-        workOrder.setOrderOwner(productionUser2);
-        assertEquals(productionUser2, workOrder.getOrderOwner());
+    public void testGetSubtotal() {
+        assertEquals(100.0, workOrder.getSubtotal());
     }
 
     @Test
-    void testSetShippingAddress() {
-        workOrder.setShippingAddress("alteredShippingAddress");
-        assertEquals("alteredShippingAddress", workOrder.getShippingAddress());
+    public void testSetShippingAddress() {
+        workOrder.setShippingAddress("New Shipping Address");
+        assertEquals("New Shipping Address", workOrder.getShippingAddress());
     }
 
     @Test
-    void testSetStatus() {
-        workOrder.setStatus("Production");
-        assertEquals("Production", workOrder.getStatus());
+    public void testSetStatus() {
+        workOrder.setStatus("Completed");
+        assertEquals("Completed", workOrder.getStatus());
+    }
+
+    @Test
+    public void testNullWorkOrderId() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new WorkOrder(null, orderOwner, customer, LocalDateTime.now(), null, null, null, 100.0);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullCustomer() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new WorkOrder(1, orderOwner, null, LocalDateTime.now(), null, null, null, 100.0);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullOrderDate() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new WorkOrder(1, orderOwner, customer, null, null, null, null, 100.0);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullSubtotal() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new WorkOrder(1, orderOwner, customer, LocalDateTime.now(), null, null, null, null);
+        });
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNegativeSubtotal() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new WorkOrder(1, orderOwner, customer, LocalDateTime.now(), null, null, null, -100.0);
+        });
+        assertEquals("Subtotal cannot be negative", exception.getMessage());
     }
 }

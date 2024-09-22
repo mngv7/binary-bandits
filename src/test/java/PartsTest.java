@@ -6,60 +6,91 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PartsTest {
 
-    private P
-    arts part;
+    private Parts part;
 
     @BeforeEach
     public void setUp() {
-        part = new Parts(1, "Widget", "A useful widget", 1001, 9.99);
+        part = new Parts(1, "Part Name", "Part Description", 1001, 9.99);
     }
 
     @Test
-    public void testConstructorWithValidInputs() {
+    public void testGetPartsId() {
         assertEquals(1, part.getPartsId());
-        assertEquals("Widget", part.getName());
-        assertEquals("A useful widget", part.getDescription());
+    }
+
+    @Test
+    public void testGetName() {
+        assertEquals("Part Name", part.getName());
+    }
+
+    @Test
+    public void testGetDescription() {
+        assertEquals("Part Description", part.getDescription());
+    }
+
+    @Test
+    public void testGetSupplierId() {
         assertEquals(1001, part.getSupplierId());
+    }
+
+    @Test
+    public void testGetCost() {
         assertEquals(9.99, part.getCost());
     }
 
     @Test
-    public void testConstructorWithNullPartsId() {
+    public void testNullPartsId() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Parts(null, "Widget", "A useful widget", 1001, 9.99);
+            new Parts(null, "Part", "Part Description", 1001, 9.99);
         });
-        assertEquals("None of the fields can be null", exception.getMessage());
+        assertEquals("No fields can be null", exception.getMessage());
     }
 
     @Test
-    public void testConstructorWithNullName() {
+    public void testNullName() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Parts(1, null, "A useful widget", 1001, 9.99);
+            new Parts(1, null, "Part Description", 1001, 9.99);
         });
-        assertEquals("None of the fields can be null", exception.getMessage());
+        assertEquals("No fields can be null", exception.getMessage());
     }
 
     @Test
-    public void testConstructorWithNullDescription() {
+    public void testNullDescription() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Parts(1, "Widget", null, 1001, 9.99);
+            new Parts(1, "Part", null, 1001, 9.99);
         });
-        assertEquals("None of the fields can be null", exception.getMessage());
+        assertEquals("No fields can be null", exception.getMessage());
     }
 
     @Test
-    public void testConstructorWithNullSupplierId() {
+    public void testNullSupplierId() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Parts(1, "Widget", "A useful widget", null, 9.99);
+            new Parts(1, "Part", "Part Description", null, 9.99);
         });
-        assertEquals("None of the fields can be null", exception.getMessage());
+        assertEquals("No fields can be null", exception.getMessage());
     }
 
     @Test
-    public void testConstructorWithNullCost() {
+    public void testNullCost() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Parts(1, "Widget", "A useful widget", 1001, null);
+            new Parts(1, "Part", "Part Description", 1001, null);
         });
-        assertEquals("None of the fields can be null", exception.getMessage());
+        assertEquals("No fields can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNegativePartsId() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Parts(-1, "Part Name", "Part Description", 1, 10.0);
+        });
+        assertEquals("ID cannot be negative", exception.getMessage());
+    }
+
+    @Test
+    public void testCostExceedsMaximum() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Parts(1, "Part Name", "Part Description", 1, 10001.00);
+        });
+        assertEquals("Cost must be between 0 and 10,000.00", exception.getMessage());
     }
 }

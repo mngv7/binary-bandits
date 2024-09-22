@@ -10,21 +10,36 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
-    private String phoneNumber;
+    private String phoneNumber; // Can be null
     private String billingAddress;
     private String shippingAddress;
-    private String status;
-    private ArrayList<WorkOrder> orders;
+    private String status; // Can only be "Active" or "Inactive"
+    private ArrayList<WorkOrder> orders; // Can be null
 
     public Customer(Integer customerId, String firstName, String lastName, String email, String phoneNumber, String billingAddress, String shippingAddress, String status) {
+        if (customerId == null || customerId <= 0 || firstName == null || lastName == null || email == null || status == null) {
+            throw new IllegalArgumentException("No field can be null");
+        }
+        if (email.length() > 255) {
+            throw new IllegalArgumentException("Email must not exceed 255 characters");
+        }
+        if (phoneNumber != null && (phoneNumber.length() != 10 || !phoneNumber.matches("\\d{10}"))) {
+            throw new IllegalArgumentException("Phone number must be 10 digits long");
+        }
+        if (!email.contains("@") || !email.contains(".")) {
+            throw new IllegalArgumentException("Email must contain '@' and '.'");
+        }
+        if (!status.equals("Active") && !status.equals("Inactive")) {
+            throw new IllegalArgumentException("Status must be either 'Active' or 'Inactive'");
+        }
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        setPhoneNumber(phoneNumber);
         this.billingAddress = billingAddress;
         this.shippingAddress = shippingAddress;
-        this.status = status;
+        setStatus(status);
     }
 
     // Getters and Setters
@@ -65,7 +80,10 @@ public class Customer {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        if (phoneNumber != null && phoneNumber.length() > 11) {
+            throw new IllegalArgumentException("Phone number cannot exceed 11 characters.");
+        }
+        this.phoneNumber = phoneNumber; // Can be null
     }
 
     public String getBillingAddress() {
@@ -89,6 +107,9 @@ public class Customer {
     }
 
     public void setStatus(String status) {
+        if (!"Active".equals(status) && !"Inactive".equals(status)) {
+            throw new IllegalArgumentException("Status must be 'Active' or 'Inactive'");
+        }
         this.status = status;
     }
 
@@ -102,6 +123,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return this.firstName + " " + this.lastName + ", " + this.shippingAddress; // Adjust according to your attribute
+        return this.firstName + " " + this.lastName + ", " + this.shippingAddress;
     }
 }
