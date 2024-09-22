@@ -11,14 +11,23 @@ public class BillOfMaterials {
     // number of parts required for BoM
     private final Integer requiredAmount;
 
-    // Constructor initialises the bill of materials with specific attributes
+    // initializes the BoM with specific attributes
     public BillOfMaterials(Integer partsId, Integer productId, Integer requiredAmount) {
+        if (partsId == null || productId == null || requiredAmount == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        if (partsId <= 0 || productId <= 0) {
+            throw new IllegalArgumentException("IDs must be positive integers");
+        }
+        if (requiredAmount < 1 || requiredAmount > 1000) {
+            throw new IllegalArgumentException("Required amount must be between 1 and 1000");
+        }
         this.partsId = partsId;
         this.productId = productId;
         this.requiredAmount = requiredAmount;
     }
 
-    // Getters for the updated fields
+    // Getters for the fields
     public Integer getPartsId() {
         return partsId;
     }

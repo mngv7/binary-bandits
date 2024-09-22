@@ -3,18 +3,20 @@ package com.example.protrack.products;
 import java.sql.Date;
 
 public class Product {
-
-    // id of product
     private final Integer productId;
-
-    // name of product
     private final String productName;
-
-    // date of product creation
     private final Date dateCreated;
 
-    // Constructor initialises the products with specific attributes
     public Product(Integer productId, String productName, Date dateCreated) {
+        if (productId == null || productId <= 0 || productName == null || productName.length() > 255 || dateCreated == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        if (productName.isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        }
+        if (dateCreated.after(new Date(System.currentTimeMillis()))) {
+            throw new IllegalArgumentException("Date created cannot be in the future");
+        }
         this.productId = productId;
         this.productName = productName;
         this.dateCreated = dateCreated;

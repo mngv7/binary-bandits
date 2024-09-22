@@ -4,38 +4,113 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductionUserTest {
-    private ProductionUser user;
+
+    private ProductionUser productionUser;
 
     @BeforeEach
     public void setUp() {
-        user = new ProductionUser(106, "Frank", "Miller", Date.valueOf("1989-12-09"), "frank.miller@example.com", "0400192123", "Male", "frankpass");
-    }
-
-    @Test
-    public void testGetAccessLevel() {
-        assertEquals("LOW", user.getAccessLevel());
+        productionUser = new ProductionUser(1, "Bob", "Johnson", Date.valueOf("1995-05-15"), "bob@example.com", "0412345678", "Male", "securePassword");
     }
 
     @Test
     public void testGetEmployeeId() {
-        assertEquals(106, user.getEmployeeId());
+        assertEquals(1, productionUser.getEmployeeId());
     }
 
     @Test
     public void testGetFirstName() {
-        assertEquals("Frank", user.getFirstName());
+        assertEquals("Bob", productionUser.getFirstName());
     }
 
     @Test
     public void testGetLastName() {
-        assertEquals("Miller", user.getLastName());
+        assertEquals("Johnson", productionUser.getLastName());
     }
 
     @Test
-    public void testGetPassword() {
-        assertEquals("frankpass", user.getPassword());
+    public void testGetDob() {
+        assertEquals(Date.valueOf("1995-05-15"), productionUser.getDob());
+    }
+
+    @Test
+    public void testGetEmail() {
+        assertEquals("bob@example.com", productionUser.getEmail());
+    }
+
+    @Test
+    public void testGetPhoneNo() {
+        assertEquals("0412345678", productionUser.getPhoneNo());
+    }
+
+    @Test
+    public void testGetGender() {
+        assertEquals("Male", productionUser.getGender());
+    }
+
+    @Test
+    public void testGetAccessLevel() {
+        assertEquals("LOW", productionUser.getAccessLevel());
+    }
+
+    @Test
+    public void testValidInputs() {
+        assertEquals(1, productionUser.getEmployeeId());
+        assertEquals("Bob", productionUser.getFirstName());
+        assertEquals("Johnson", productionUser.getLastName());
+        assertEquals(Date.valueOf("1995-05-15"), productionUser.getDob());
+        assertEquals("bob@example.com", productionUser.getEmail());
+        assertEquals("0412345678", productionUser.getPhoneNo());
+        assertEquals("LOW", productionUser.getAccessLevel());
+    }
+
+    @Test
+    public void testNullEmployeeId() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ProductionUser(null, "Bob", "Johnson", Date.valueOf("1995-05-15"), "bob@example.com", "0412345678", "Male", "securePassword");
+        });
+        assertEquals("No field can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullFirstName() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ProductionUser(1, null, "Johnson", Date.valueOf("1995-05-15"), "bob@example.com", "0412345678", "Male", "securePassword");
+        });
+        assertEquals("No field can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullLastName() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ProductionUser(1, "Bob", null, Date.valueOf("1995-05-15"), "bob@example.com", "0412345678", "Male", "securePassword");
+        });
+        assertEquals("No field can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullDob() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ProductionUser(1, "Bob", "Johnson", null, "bob@example.com", "0412345678", "Male", "securePassword");
+        });
+        assertEquals("No field can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullEmail() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ProductionUser(1, "Bob", "Johnson", Date.valueOf("1995-05-15"), null, "0412345678", "Male", "securePassword");
+        });
+        assertEquals("No field can be null", exception.getMessage());
+    }
+
+    @Test
+    public void testNullPassword() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new ProductionUser(1, "Bob", "Johnson", Date.valueOf("1995-05-15"), "bob@example.com", "0412345678", "Male", null);
+        });
+        assertEquals("No field can be null", exception.getMessage());
     }
 }
