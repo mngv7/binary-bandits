@@ -21,8 +21,40 @@
             </HBox>
             <VBox style="-fx-padding: 0 0 10 0;">
                 <Label fx:id="employeeNameTitle" text="Employee" styleClass="title-label"/>
-                <Label fx:id="employeeRole" text="Employee Role"/>
             </VBox>
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS" spacing="20">
+                    <Label fx:id="initialsIcon" text="Initials" styleClass="initials-icon-large"/>
+                    <HBox>
+                        <Label text="Employee ID: " styleClass="parts-table-label"/>
+                        <Label fx:id="employeeIdLabel" text="ID"/>
+                    </HBox>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="10">
+                    <Label text="Personal Details" styleClass="parts-table-title"/>
+
+                    <Label text="Full Name" styleClass="parts-table-label"/>
+                    <Label fx:id="fullName" text="Full Name"/>
+
+                    <Label text="Title" styleClass="parts-table-label"/>
+                    <Label fx:id="employeeRole" text="Employee Role"/>
+
+                    <Label text="Email Address" styleClass="parts-table-label"/>
+                    <Label fx:id="emailAddress" text="Email Address"/>
+
+                    <Label text="Date of Birth" styleClass="parts-table-label"/>
+                    <Label fx:id="dob" text="DOB"/>
+
+                    <Label text="Phone Number" styleClass="parts-table-label"/>
+                    <Label fx:id="phoneNo" text="PhoneNo"/>
+
+                    <Label text="Gender" styleClass="parts-table-label"/>
+                    <Label fx:id="gender" text="Gender"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Work Insights" styleClass="parts-table-title"/>
+                </VBox>
+            </HBox>
         </VBox>
     </center>
 </BorderPane>

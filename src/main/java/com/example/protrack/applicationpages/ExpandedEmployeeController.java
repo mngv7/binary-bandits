@@ -1,14 +1,15 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.employees.SelectedEmployeeSingleton;
+import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class ExpandedEmployeeController {
@@ -18,6 +19,27 @@ public class ExpandedEmployeeController {
 
     @FXML
     public Label employeeRole;
+
+    @FXML
+    public Label fullName;
+
+    @FXML
+    public Label emailAddress;
+
+    @FXML
+    public Label dob;
+
+    @FXML
+    public Label phoneNo;
+
+    @FXML
+    public Label gender;
+
+    @FXML
+    public Label initialsIcon;
+
+    @FXML
+    public Label employeeIdLabel;
 
     @FXML
     private Label employeeNameTitle;
@@ -37,7 +59,9 @@ public class ExpandedEmployeeController {
 
         employeeNameTitle.setText(firstName + " " + lastname);
 
-        String accessLevel = usersDAO.getUserById(employeeId).getAccessLevel();
+        AbstractUser selectedUser = usersDAO.getUserById(employeeId);
+
+        String accessLevel = selectedUser.getAccessLevel();
         String role = switch (accessLevel) {
             case "HIGH" -> "Manager";
             case "MEDIUM" -> "Stock Controller";
@@ -45,7 +69,21 @@ public class ExpandedEmployeeController {
             default -> "Unknown Role"; // Handle unexpected access levels
         };
 
+
+        String initials = selectedUser.getFirstName().charAt(0) + selectedUser.getLastName().substring(0,1);
+        initialsIcon.setText(initials);
+
         employeeRole.setText(role);
+        fullName.setText(firstName + " " + lastname);
+        emailAddress.setText(selectedUser.getEmail());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = dateFormat.format(selectedUser.getDob());
+
+        dob.setText(formattedDate);
+        phoneNo.setText(selectedUser.getPhoneNo());
+        gender.setText(selectedUser.getGender());
+        employeeIdLabel.setText(String.valueOf(selectedUser.getEmployeeId()));
     }
 
     private MainController mainController;

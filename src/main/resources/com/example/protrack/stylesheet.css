@@ -392,7 +392,17 @@
     -fx-padding: 10px; /* Padding to center text within the circle */
 }
 
-
+.initials-icon-large {
+    -fx-min-width: 150px; /* 1.5 times the 100px width */
+    -fx-min-height: 150px; /* 1.5 times the 100px height */
+    -fx-background-color: #390B91; /* Background color */
+    -fx-background-radius: 75px; /* Half of width/height for a circle */
+    -fx-text-fill: #e4d7fc; /* Text color */
+    -fx-font-weight: bold; /* Bold font */
+    -fx-font-size: 90px; /* 1.5 times the previous 60px font size */
+    -fx-alignment: center; /* Align text to center */
+    -fx-padding: 15px; /* Adjusted padding */
+}
 
 
 <img src="application_logo.png">
