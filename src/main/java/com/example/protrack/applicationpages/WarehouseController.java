@@ -162,5 +162,15 @@ public class WarehouseController {
         stage.setTitle("Allocate Workstation");
         stage.setScene(rootScene);
         stage.showAndWait();
+        //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/view-workstation.fxml"));
+        //String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+        //Parent createAllocateWSRoot = fxmlLoader.load();
+        //WorkStationController workStationController = fxmlLoader.getController();
+        //System.out.println("Back to wh");
+
+//        Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
+//        scene.getStylesheets().add(stylesheet);
+//        stage.setScene(scene);
+//        stage.show();
     }
 }

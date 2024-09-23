@@ -31,6 +31,8 @@ public class WorkStationController {
     @FXML
     private Button completeButton;
 
+    private int workStationId = -1;
+
     public void setSelectedWorkstation (Workstation selectedWorkstation) {
         this.selectedWorkstation = selectedWorkstation;
     }
@@ -39,8 +41,14 @@ public class WorkStationController {
         // Initialize the list of orders
         orderList.setItems(FXCollections.observableArrayList("P-0001-1", "P-0001-2", "P-0001-3", "P-0001-4", "P-0002"));
 
+        System.out.println("In ws");
+        System.out.println("This is ws id " + workStationId);
 
+    }
 
+    public void setWorkStationId(Integer value) {
+        workStationId = value;
+        System.out.println("WS ID HERE " + workStationId);
     }
 
 

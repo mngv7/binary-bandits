@@ -77,7 +77,7 @@ public class Main extends Application {
             partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
             partsDAO.newPart(new Parts(2, "Wooden Panel", "Panels from Tom's workshop", 52, 3.75));
             partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 51, 2.10));
-            partsDAO.newPart(new Parts(4, "Copper Cables", "Cables from Mann.co", 53, 52.1));
+            partsDAO.newPart(new Parts(4, "Australium Cables", "Cables from Mann.co", 53, 52.1));
             partsDAO.newPart(new Parts(5, "Glass Panel", "Panels from Bob Industry", 51, 20.50));
         }
 
