@@ -105,7 +105,7 @@ public class LocationsAndContentsDAO {
 
         try {
             PreparedStatement getWSParts = connection.prepareStatement(
-                    "SELECT *" +
+                    "SELECT * " +
                             "FROM locationContents a " +
                             "WHERE a.locationID = ?"
             );
@@ -120,8 +120,8 @@ public class LocationsAndContentsDAO {
                 String partName = "";
                 try {
                     PreparedStatement getPartName = connection.prepareStatement(
-                            "SELECT name " +
-                                    "FROM parts a" +
+                            "SELECT * " +
+                                    "FROM parts a " +
                                     "WHERE a.partsId = ?"
                     );
                     getPartName.setInt(1, partId);

@@ -46,8 +46,6 @@ public class AllocateWorkstationController {
         Workstation selectedWorkstation = parentWarehouse.getAllWorkstationsInRAM().get(workstationComboBox.getSelectionModel().getSelectedIndex());
         if (selectedWorkstation != null) {
 
-
-
             // Handle allocation logic here
             System.out.println("Allocated: " + selectedWorkstation.getWorkstationName());
             goToWorkstationPage();
@@ -106,7 +104,7 @@ public class AllocateWorkstationController {
         Stage stage = (Stage) allocateButton.getScene().getWindow();
         stage.hide();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/view-workstation.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/view-workstation2.fxml"));
 
         try {
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
@@ -122,11 +120,11 @@ public class AllocateWorkstationController {
 
 
             //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
-            ViewWorkstationController workStationController = fxmlLoader.getController();
+            ViewWorkstation2 workStationController = fxmlLoader.getController();
             LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
             //System.out.println("This is workstation alias" + workstationComboBox.getValue());
             int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
-            workStationController.setWorkStationIdV2(workstationId);
+            workStationController.setWorkStationIdV3(workstationId);
             System.out.println("This is ws id " + workstationId);
 
             Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());

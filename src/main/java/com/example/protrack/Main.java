@@ -181,6 +181,19 @@ public class Main extends Application {
 
         if (locationsAndContentsDAO.isLocationContentsTableEmpty()) {
             /* TODO: Probe partsDAO and populate Warehouse with it. */
+            locationsAndContentsDAO.newPartToLocation(0, testPart1);
+            locationsAndContentsDAO.newPartToLocation(0, testPart2);
+            locationsAndContentsDAO.newPartToLocation(0, testPart3);
+            locationsAndContentsDAO.newPartToLocation(0, testPart4);
+            locationsAndContentsDAO.newPartToLocation(0, testPart5);
+
+            locationsAndContentsDAO.newPartToLocation(1, testPart1);
+            locationsAndContentsDAO.newPartToLocation(1, testPart3);
+            locationsAndContentsDAO.newPartToLocation(1, testPart5);
+
+            locationsAndContentsDAO.newPartToLocation(2, testPart2);
+            locationsAndContentsDAO.newPartToLocation(2, testPart4);
+
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart1);
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart2);
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart3);
