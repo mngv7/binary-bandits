@@ -26,7 +26,7 @@ public class RequestsDAO {
                             + "locationId INTEGER NOT NULL, "
                             + "partId INTEGER NOT NULL, "
                             + "requestId INTEGER NOT NULL, "
-                            + "quantity INTEGER NOT NULL"
+                            + "quantity INTEGER NOT NULL, "
                             + "PRIMARY KEY (locationId, partId, requestId)"
                             + ")"
             );
