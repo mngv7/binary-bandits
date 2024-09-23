@@ -35,7 +35,7 @@
                             <TableColumn fx:id="colWSPartId" text="Part ID"/>
                             <TableColumn fx:id="colWSPartName" text="Part Name"/>
                             <TableColumn fx:id="colWSPartQuantity" text="Quantity"/>
-                            <TableColumn fx:id="colAddPart" maxWidth="70"/>
+                            <TableColumn fx:id="colAddPart" maxWidth="140"/>
                         </columns>
                     </TableView>
 

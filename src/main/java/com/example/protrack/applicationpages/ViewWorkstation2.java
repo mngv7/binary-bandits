@@ -64,6 +64,18 @@ public class ViewWorkstation2 {
                             System.out.println("Add this part to Product build " + wsPartDBTableItem.getPartName());
                         });
                     }
+
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+
+                            setGraphic(addPartToPB);  // Set the button to trash icon if there is an active row
+                        }
+                    }
                 };
             }
         });
