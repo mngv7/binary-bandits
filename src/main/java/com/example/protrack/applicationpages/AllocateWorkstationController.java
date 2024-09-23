@@ -111,21 +111,10 @@ public class AllocateWorkstationController {
 
             Parent createAllocateWSRoot = fxmlLoader.load();
 
-//            WorkStationController workStationController = fxmlLoader.getController();
-//            LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
-//            //System.out.println("This is workstation alias" + workstationComboBox.getValue());
-//            int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
-//            workStationController.setWorkStationId(workstationId);
-//            System.out.println("This is ws id " + workstationId);
-
-
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
             ViewWorkstation2 workStationController = fxmlLoader.getController();
             LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
-            //System.out.println("This is workstation alias" + workstationComboBox.getValue());
             int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
             workStationController.setWorkStationIdV3(workstationId);
-            System.out.println("This is ws id " + workstationId);
 
             Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
             scene.getStylesheets().add(stylesheet);
@@ -135,86 +124,7 @@ public class AllocateWorkstationController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-//        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-//
-//        //Parent createAllocateWSRoot = fxmlLoader.load();
-//
-//
-//        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
-//        ViewWorkstationController workStationController = fxmlLoader.getController();
-//        LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
-//        //System.out.println("This is workstation alias" + workstationComboBox.getValue());
-//        int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
-//        workStationController.setWorkStationIdV2(workstationId);
-//        System.out.println("This is ws id " + workstationId);
-
-
-        //Transfers productID to create test controller page
-        //CreateTestRecordController createTestRecordController = fxmlLoader.getController();
-        //String productIdValue = productIdField.getText();
-        //createTestRecordController.setProductId(productIdValue);
-
-        //Stage stage = (Stage) productIdField.getScene().getWindow();
-
-        //Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
-        //scene.getStylesheets().add(stylesheet);
-        //stage.setScene(scene);
-        //stage.show();
-
     }
-
-    /*
-    private void loadHomePage() throws IOException {
-        // Hide the current stage
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        stage.hide();
-
-        // Load the home page FXML and get the controller
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/main_view.fxml"));
-        Parent root = fxmlLoader.load();
-        MainController mainController = fxmlLoader.getController();
-
-        // Set employee details in the main controller
-        UsersDAO usersDAO = new UsersDAO();
-        String fullName = fullNameTextField.getText();
-        mainController.setEmployeeName(fullName);
-        Integer employeeId = LoggedInUserSingleton.getInstance().getEmployeeId();
-        mainController.setEmployeeTitle(usersDAO.getUserById(employeeId).getAccessLevel());
-
-        // Set up the new scene and show the stage
-        Scene scene = new Scene(root, Main.getWidth(), Main.getHeight());
-        stage.setScene(scene);
-        stage.show();
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/example/protrack/stylesheet.css")).toExternalForm());
-    }
-
-    public void openCreateTestRecordPopup() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/create-test-record-view.fxml"));
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-
-            Parent createProductRoot = fxmlLoader.load();
-
-            //Transfers productID to create test controller page
-            CreateTestRecordController createTestRecordController = fxmlLoader.getController();
-            String productIdValue = productIdField.getText();
-            createTestRecordController.setProductId(productIdValue);
-
-            Stage stage = (Stage) productIdField.getScene().getWindow();
-
-            Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
-            scene.getStylesheets().add(stylesheet);
-            stage.setScene(scene);
-
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
-
 
     // These both close the combo box this controller controls.
     @FXML

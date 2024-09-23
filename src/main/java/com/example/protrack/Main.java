@@ -5,6 +5,8 @@ import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.products.*;
+import com.example.protrack.requests.Requests;
+import com.example.protrack.requests.RequestsDAO;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
@@ -209,6 +211,22 @@ public class Main extends Application {
 
             //
             //System.out.println("Warning: location Contents table created empty intentionally.");
+        }
+
+        RequestsDAO requestsDAO = new RequestsDAO();
+        requestsDAO.createTable();
+
+        if (requestsDAO.isTableEmpty()) {
+            requestsDAO.newRequest(new Requests(1, 1, 1, 1));
+            requestsDAO.newRequest(new Requests(1, 2, 1, 7));
+            requestsDAO.newRequest(new Requests(1, 5, 1, 3));
+            requestsDAO.newRequest(new Requests(2, 1, 2, 2));
+            requestsDAO.newRequest(new Requests(2, 3, 2, 5));
+            requestsDAO.newRequest(new Requests(2, 1, 3, 3));
+            requestsDAO.newRequest(new Requests(2, 5, 3, 6));
+            requestsDAO.newRequest(new Requests(1, 2, 4, 10));
+            requestsDAO.newRequest(new Requests(1, 4, 4, 2));
+            requestsDAO.newRequest(new Requests(3, 1, 5, 3));
         }
 
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
