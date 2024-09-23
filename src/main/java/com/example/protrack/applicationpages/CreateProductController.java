@@ -249,6 +249,7 @@ public class CreateProductController {
 
             Parent createProductRoot = fxmlLoader.load();
 
+            //Transfers productID to create test controller page
             CreateTestRecordController createTestRecordController = fxmlLoader.getController();
             String productIdValue = productIdField.getText();
             createTestRecordController.setProductId(productIdValue);
@@ -310,8 +311,6 @@ public class CreateProductController {
 
         ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
-
 
         alert.getButtonTypes().setAll(confirmBtn, backBtn);
         Stage stage = (Stage) closePopupButton.getScene().getWindow();

@@ -21,6 +21,8 @@
                 <Label text="Workstations" styleClass="title-label"/>
 
                 <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" spacing="10">
+                    <Button text="View Part Requests" onAction="#handlePartRequests" styleClass="add-parts-button"/>
+
                     <Button text="Add Workstation" onAction="#handleAddWorkstation" styleClass="add-parts-button"/>
 
                     <Button text="Allocate Workstation" onAction="#handleAllocateWorkstation" styleClass="add-parts-button"/>
@@ -65,6 +67,26 @@
                         <Button text="Next"/>
                     </children>
                 </HBox>
+
+                <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER">
+                    <VBox spacing="20" styleClass="create-product-scrollpane" VBox.vgrow="ALWAYS">
+                        <VBox spacing="10" maxWidth="Infinity" VBox.vgrow="ALWAYS">
+
+                            <HBox maxWidth="Infinity">
+                                <Label text="Warehouse Parts" styleClass="parts-table-title"/>
+                            </HBox>
+
+                            <TableView fx:id="warehousePartTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colWSPartId" text="Part ID"/>
+                                    <TableColumn fx:id="colWSPartName" text="Part Name"/>
+                                    <TableColumn fx:id="colWSPartQuantity" text="Quantity"/>
+                                </columns>
+                            </TableView>
+
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
             </children>
         </VBox>
     </top>

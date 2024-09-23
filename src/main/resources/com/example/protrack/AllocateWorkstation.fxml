@@ -39,7 +39,7 @@
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <Button text="Allocate" onAction="#handleAllocate"/>
+                <Button fx:id="allocateButton" text="Allocate" onAction="#handleAllocate"/>
                 <Button text="Cancel" onAction="#handleCancel"/>
             </children>
             <spacing>10</spacing>

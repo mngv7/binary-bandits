@@ -1,11 +1,15 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.database.WorkstationPartDBTable;
 import com.example.protrack.warehouseutil.*;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
@@ -22,8 +26,24 @@ public class WarehouseController {
     public LocationsAndContentsDAO locationsAndContents;
 
     @FXML
+    private TableView warehousePartTable;
+
+    @FXML
     private TableView<Workstation> workstationTable;
     private List<Workstation> workstations; /* Loaded workstations from a database. */
+
+    @FXML
+    private TableColumn<WorkstationPartDBTable, Integer> colWSPartId;
+
+    @FXML
+    private TableColumn<WorkstationPartDBTable, String> colWSPartName;
+
+    @FXML
+    private TableColumn<WorkstationPartDBTable, Integer> colWSPartQuantity;
+
+    private ObservableList<WorkstationPartDBTable> whPartDBTable;
+
+    private int warehouseId = 0;
 
     @FXML
     public void initialize() {
@@ -40,6 +60,16 @@ public class WarehouseController {
         workstationTable.setOnContextMenuRequested(event -> {
             contextMenu.show(workstationTable, event.getScreenX(), event.getScreenY());
         });
+
+        colWSPartId.setCellValueFactory(new PropertyValueFactory<>("partID"));
+        colWSPartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
+        colWSPartQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+        whPartDBTable = FXCollections.observableArrayList();
+        warehousePartTable.setItems(whPartDBTable);
+        warehousePartTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        refreshTable();
     }
 
     /* Mock workstation data load. Intended for testing purposes only. */
@@ -162,5 +192,32 @@ public class WarehouseController {
         stage.setTitle("Allocate Workstation");
         stage.setScene(rootScene);
         stage.showAndWait();
+    }
+
+
+    public void refreshTable() {
+        whPartDBTable.clear();
+        whPartDBTable.addAll(workstationPartDBTableList());
+    }
+
+    public List<WorkstationPartDBTable> workstationPartDBTableList() {
+        List<WorkstationPartDBTable> wsDBParts = new ArrayList<>();
+        LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
+
+
+        System.out.println("This is WS ID" + warehouseId);
+
+        wsDBParts = locationsAndContentsDAO.getAllWSParts(warehouseId);
+
+        return wsDBParts;
+    }
+
+
+    /**
+     * TODO ID 20 - Process requests
+     * @param actionEvent
+     */
+    public void handlePartRequests(ActionEvent actionEvent) {
+
     }
 }
