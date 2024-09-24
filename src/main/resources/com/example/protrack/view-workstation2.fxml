@@ -28,7 +28,7 @@
                         <Label text="Workstation Parts" styleClass="parts-table-title"/>
                     </HBox>
                     <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
-                        <Button fx:id="sendRequest" text="Send Part Request" onAction="#sendPartRequest" styleClass="create-product-button-refresh-button"/>
+                        <Button fx:id="sendRequest" text="Request Stock Transfer" onAction="#createPartRequest" styleClass="create-product-button-refresh-button"/>
                     </HBox>
                     <TableView fx:id="wsPartTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">
                         <columns>
