@@ -2,6 +2,7 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.database.WorkstationPartDBTable;
+import com.example.protrack.requests.*;
 import com.example.protrack.warehouseutil.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -214,10 +215,15 @@ public class WarehouseController {
 
 
     /**
-     * TODO ID 20 - Process requests
+     * TODO ID 20 - Process requests. Requires an FXML pop-up.
      * @param actionEvent
      */
     public void handlePartRequests(ActionEvent actionEvent) {
-
+        RequestsDAO currentRequestsDao = new RequestsDAO(); /* TODO: Cache this somewhere? */
+        List<Requests> requestsToPassToPage = currentRequestsDao.getAllRequests();
+        for (int i = 0; i < requestsToPassToPage.size(); ++i) {
+            System.out.println(requestsToPassToPage.get(i));
+        }
+        /* TODO: Spawn new FXML page and set items on init with the list above. */
     }
 }
