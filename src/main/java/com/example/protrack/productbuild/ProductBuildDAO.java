@@ -1,0 +1,133 @@
+package com.example.protrack.productbuild;
+
+import com.example.protrack.products.Product;
+import com.example.protrack.products.TestRecord;
+import com.example.protrack.utility.DatabaseConnection;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductBuildDAO {
+    private final Connection connection;
+
+    public ProductBuildDAO() {
+        connection = DatabaseConnection.getInstance();
+    }
+
+    /**
+     * Creates product build table
+     */
+    public void createTable() {
+        try {
+            // Create a statement object for sending SQL queries to the database
+            Statement createTable = connection.createStatement();
+
+            // Execute the SQL query to create a table named 'productBuild' if it does not already exist
+            createTable.execute(
+                    "CREATE TABLE IF NOT EXISTS productBuild ("
+                            + "buildId INTEGER NOT NULL, "
+                            + "productOrderId INTEGER NOT NULL, "
+                            + "buildCompletion FLOAT NOT NULL, "
+                            + "productId INTEGER NOT NULL, "
+                            + "PRIMARY KEY (buildId)"
+                            + ")"
+            );
+        } catch (SQLException ex) {
+            // Catch and print any SQL exceptions that may occur during table creation
+            System.err.println(ex);
+        }
+    }
+
+    /**
+     * Inserts inputted product build into product build table
+     * @param productBuild a productBuild
+     */
+    public void newProductBuild(ProductBuild productBuild) {
+        try {
+            PreparedStatement insertStep = connection.prepareStatement(
+                    "INSERT INTO productBuild (buildId, productOrderId, buildCompletion, productId) "
+                            + "VALUES (?, ?, ?, ?)"
+            );
+
+            // sets test record value into statement
+            insertStep.setInt(1, productBuild.getBuildId());
+            insertStep.setInt(2, productBuild.getProductOrderId());
+            insertStep.setFloat(3, productBuild.getBuildCompletion());
+            insertStep.setInt(4, productBuild.getProductId());
+
+            // executes statement and enters test record values into test record table
+            insertStep.execute();
+        } catch (SQLException ex) {
+            // print error if error occurs
+            System.err.println(ex);
+        }
+    }
+
+    /**
+     * Deletes product build table
+     */
+    public void dropTable() {
+        String query = "DROP TABLE IF EXISTS productBuild";  // SQL statement to drop the product build table
+
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(query);    // executes SQL deletion statement
+            System.out.println("Table 'productBuild' dropped successfully.");
+        } catch (SQLException ex) {
+            // Catch and print any SQL exceptions that may occur during table creation
+            System.err.println("Error dropping table 'productBuild': " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Getter that gets all product builds of table
+     * @return all product builds in product build table
+     */
+    public List<ProductBuild> getAllProductBuilds() {
+        // empty list of products
+        List<ProductBuild> productBuilds = new ArrayList<>();
+
+        // query being run, get all from products
+        String query = "SELECT * FROM productBuilds";
+
+        // try running query
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            // while there is a row, get those values and add it to the list
+            while (rs.next()) {
+                int buildId = rs.getInt("buildId");
+                int productOrderId = rs.getInt("productOrderId");
+                float buildCompletion = rs.getFloat("buildCompletion");
+                int productId = rs.getInt("productId");
+
+
+                ProductBuild productBuild = new ProductBuild(buildId, productOrderId, buildCompletion, productId);
+                productBuilds.add(productBuild);
+            }
+        } catch (SQLException ex) {
+            // Catch and print any SQL exceptions that may occur during table creation
+            System.err.println(ex);
+        }
+        // return list of products in table
+        return productBuilds;
+    }
+
+    /**
+     * Checks if table is empty.
+     * @return true if empty, else returns false.
+     */
+    public boolean isTableEmpty() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM productBuild");
+            rs.next();
+            int count = rs.getInt("rowcount");
+            rs.close();
+            return count == 0;
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return false;
+    }
+}
