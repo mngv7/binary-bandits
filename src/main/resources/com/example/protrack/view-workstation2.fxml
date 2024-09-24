@@ -22,23 +22,26 @@
     <center>
         <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER">
             <VBox spacing="20" styleClass="create-product-scrollpane" VBox.vgrow="ALWAYS">
-                <VBox spacing="10" maxWidth="Infinity" VBox.vgrow="ALWAYS">
+                <VBox spacing="10" >
 
                     <HBox maxWidth="Infinity">
                         <Label text="Workstation Parts" styleClass="parts-table-title"/>
                     </HBox>
-                    <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
+                    <HBox maxWidth="Infinity" alignment="CENTER_RIGHT" spacing="10">
+                        <Button text="Refresh Table" onAction="#refreshTableButton" styleClass="create-product-button-refresh-button"/>
                         <Button fx:id="sendRequest" text="Send Part Request" onAction="#sendPartRequest" styleClass="create-product-button-refresh-button"/>
                     </HBox>
-                    <TableView fx:id="wsPartTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="colWSPartId" text="Part ID"/>
-                            <TableColumn fx:id="colWSPartName" text="Part Name"/>
-                            <TableColumn fx:id="colWSPartQuantity" text="Quantity"/>
-                            <TableColumn fx:id="colAddPart" maxWidth="140"/>
-                        </columns>
-                    </TableView>
 
+                    <VBox maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="dynamic-vbox" >
+                        <TableView fx:id="wsPartTable"  prefHeight="200.0" prefWidth="580.0" styleClass="products-table" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colWSPartId" text="Part ID"/>
+                                <TableColumn fx:id="colWSPartName" text="Part Name"/>
+                                <TableColumn fx:id="colWSPartQuantity" text="Quantity"/>
+                                <TableColumn fx:id="colAddPart" maxWidth="140"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
                 </VBox>
             </VBox>
         </ScrollPane>

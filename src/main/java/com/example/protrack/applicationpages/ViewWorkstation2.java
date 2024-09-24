@@ -153,4 +153,8 @@ public class ViewWorkstation2 {
     private void sendPartRequest(ActionEvent actionEvent) throws IOException {
         System.out.println("GET REQUEST FORM");
     }
+
+    public void refreshTableButton(ActionEvent actionEvent) {
+        refreshTable();
+    }
 }
