@@ -62,4 +62,7 @@ public class Parts {
     public Double getCost() {
         return cost;
     }
+
+    @Override
+    public String toString() {return this.name;}
 }

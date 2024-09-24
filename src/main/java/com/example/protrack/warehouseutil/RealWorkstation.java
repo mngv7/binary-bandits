@@ -110,4 +110,7 @@ public class RealWorkstation implements Workstation {
             }
         }
     }
+
+    @Override
+    public String toString() {return this.workstationName;}
 }
