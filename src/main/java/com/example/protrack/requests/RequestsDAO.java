@@ -23,11 +23,10 @@ public class RequestsDAO {
             // Execute the SQL query to create a table named 'requests' if it does not already exist
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS requests ("
+                            + "requestId INTEGER PRIMARY KEY AUTOINCREMENT, "
                             + "locationId INTEGER NOT NULL, "
                             + "partId INTEGER NOT NULL, "
-                            + "requestId INTEGER NOT NULL, "
-                            + "quantity INTEGER NOT NULL, "
-                            + "PRIMARY KEY (locationId, partId, requestId)"
+                            + "quantity INTEGER NOT NULL"
                             + ")"
             );
         } catch (SQLException ex) {
