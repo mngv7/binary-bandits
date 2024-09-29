@@ -182,4 +182,8 @@ public class ViewWorkstation2 {
             e.printStackTrace();
         }
     }
+
+    public void refreshTableButton(ActionEvent actionEvent) {
+        refreshTable();
+    }
 }
