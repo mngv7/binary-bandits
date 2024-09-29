@@ -4,6 +4,8 @@ import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
+import com.example.protrack.productbuild.ProductBuild;
+import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
@@ -222,6 +224,19 @@ public class Main extends Application {
 
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
         workOrderProductsDAOImplementation.createTable();
+
+        ProductBuildDAO productBuildDAO = new ProductBuildDAO();
+        productBuildDAO.createTable();
+
+        if (productBuildDAO.isTableEmpty()) {
+            productBuildDAO.newProductBuild(new ProductBuild(500, 1, 0.00F, 36014));
+            productBuildDAO.newProductBuild(new ProductBuild(501, 1, 0.00F, 45021));
+            productBuildDAO.newProductBuild(new ProductBuild(502, 1, 0.00F, 67890));
+            productBuildDAO.newProductBuild(new ProductBuild(503, 2, 0.00F, 36014));
+            productBuildDAO.newProductBuild(new ProductBuild(504, 2, 0.00F, 45021));
+            productBuildDAO.newProductBuild(new ProductBuild(505, 3, 0.00F, 67890));
+
+        }
 
         launch();
     }

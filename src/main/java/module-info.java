@@ -13,6 +13,9 @@ module com.example.protrack {
     opens com.example.protrack.database to javafx.base;
     opens com.example.protrack.requests to javafx.base;
     exports com.example.protrack.requests;
+    opens  com.example.protrack.productbuild to javafx.base;
+    exports com.example.protrack.productbuild;
+
 
     exports com.example.protrack;
     exports com.example.protrack.products;

@@ -28,6 +28,7 @@
                         <Label text="Workstation Parts" styleClass="parts-table-title"/>
                     </HBox>
                     <HBox maxWidth="Infinity" alignment="CENTER_RIGHT" spacing="10">
+                        <Button fx:id="toProductBuild" text="Product Build" onAction="#goToProductBuild" styleClass="create-product-button-refresh-button"/>
                         <Button text="Refresh Table" onAction="#refreshTableButton" styleClass="create-product-button-refresh-button"/>
                         <Button fx:id="sendRequest" text="Send Part Request" onAction="#sendPartRequest" styleClass="create-product-button-refresh-button"/>
                     </HBox>
