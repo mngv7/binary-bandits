@@ -211,15 +211,15 @@ public class Main extends Application {
 
         if (requestsDAO.isTableEmpty()) {
             requestsDAO.newRequest(new Requests(1, 1, 1, 1));
-            requestsDAO.newRequest(new Requests(1, 2, 1, 7));
-            requestsDAO.newRequest(new Requests(1, 5, 1, 3));
-            requestsDAO.newRequest(new Requests(2, 1, 2, 2));
-            requestsDAO.newRequest(new Requests(2, 3, 2, 5));
-            requestsDAO.newRequest(new Requests(2, 1, 3, 3));
-            requestsDAO.newRequest(new Requests(2, 5, 3, 6));
-            requestsDAO.newRequest(new Requests(1, 2, 4, 10));
-            requestsDAO.newRequest(new Requests(1, 4, 4, 2));
-            requestsDAO.newRequest(new Requests(3, 1, 5, 3));
+            requestsDAO.newRequest(new Requests(1, 2, 2, 7));
+            requestsDAO.newRequest(new Requests(1, 5, 3, 3));
+            requestsDAO.newRequest(new Requests(2, 1, 4, 2));
+            requestsDAO.newRequest(new Requests(2, 3, 5, 5));
+            requestsDAO.newRequest(new Requests(2, 1, 6, 3));
+            requestsDAO.newRequest(new Requests(2, 5, 7, 6));
+            requestsDAO.newRequest(new Requests(1, 2, 8, 10));
+            requestsDAO.newRequest(new Requests(1, 4, 9, 2));
+            requestsDAO.newRequest(new Requests(3, 1, 10, 3));
         }
 
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();

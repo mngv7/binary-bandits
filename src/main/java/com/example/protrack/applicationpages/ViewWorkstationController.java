@@ -10,11 +10,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -116,9 +120,34 @@ public class ViewWorkstationController {
         return wsDBParts;
     }
 
-    @FXML
-    private void sendPartRequest() throws IOException {
-        System.out.println("GET REQUEST FORM");
+    private static final String TITLE = "Parts Request Form";
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
+
+    /**
+     * Create pop-up when "Create Part Request" is pressed
+     */
+     public void createPartRequest() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/add-parts-view.fxml"));
+            Parent addPartsRoot = fxmlLoader.load();
+
+            Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle(TITLE);
+
+            // Set the scene for the pop-up
+            Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+            popupStage.setScene(scene);
+            popupStage.setY(150);
+            popupStage.setX(390);
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
