@@ -3,6 +3,8 @@ package com.example.protrack.products;
 import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestRecordDAO {
     private final Connection connection;
@@ -80,5 +82,51 @@ public class TestRecordDAO {
             System.err.println(ex);
         }
         return false;
+    }
+
+    public List<TestRecord> getAllTRFromProductID(int productIdInput) {
+        // empty list of products
+        List<TestRecord> testRecords = new ArrayList<>();
+
+        try {
+
+            PreparedStatement getTestRecord = connection.prepareStatement(
+                    "SELECT * " +
+                        "FROM testRecord a " +
+                        "WHERE a.productId = ?");
+            getTestRecord.setInt(1, productIdInput);
+            ResultSet rs = getTestRecord.executeQuery();
+
+
+//            createTable.execute(
+//                    "CREATE TABLE IF NOT EXISTS testRecord ("
+//                            + "stepId INTEGER NOT NULL, "
+//                            + "productId INTEGER NOT NULL, "
+//                            + "stepNumber INTEGER NOT NULL, "
+//                            + "stepDescription VARCHAR NOT NULL, "
+//                            + "stepCheckType VARCHAR NOT NULL, "
+//                            + "stepCheckCriteria VARCHAR NOT NULL, "
+//                            + "PRIMARY KEY (stepId, productId)"
+//                            + ")"
+//            );
+
+            // while there is a row, get those values and add it to the list
+            while (rs.next()) {
+                int stepId = rs.getInt("stepId");
+                int productId = rs.getInt("productId");
+                int stepNum = rs.getInt("stepNumber");
+                String stepDescription = rs.getString("stepDescription");
+                String stepCheckType = rs.getString("stepCheckType");
+                String stepCheckCriteria = rs.getString("stepCheckCriteria");
+
+                TestRecord testRecord = new TestRecord(stepId, productId, stepNum, stepDescription, stepCheckType, stepCheckCriteria);
+                testRecords.add(testRecord);
+            }
+        } catch (SQLException ex) {
+            // Catch and print any SQL exceptions that may occur during table creation
+            System.err.println(ex);
+        }
+        // return list of products in table
+        return testRecords;
     }
 }

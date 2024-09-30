@@ -31,7 +31,7 @@
                 <!--Right side tab -->
                 <HBox>
                     <!--Test Records -->
-                    <VBox>
+                    <VBox fx:id="productBuildTRVBox">
                         <!--TODO Need a scroll bar -->
                     </VBox>
                     <!--WS quantity -->

@@ -3,7 +3,8 @@ package com.example.protrack.applicationpages;
 import com.example.protrack.Main;
 import com.example.protrack.productbuild.ProductBuild;
 import com.example.protrack.productbuild.ProductBuildDAO;
-import com.example.protrack.warehouseutil.Workstation;
+import com.example.protrack.products.TestRecord;
+import com.example.protrack.products.TestRecordDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,11 +16,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 
-import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ProductBuildController {
+
 
     @FXML
     private Button SearchPBButton;
@@ -30,9 +32,15 @@ public class ProductBuildController {
     @FXML
     private VBox productBuildVBox;
 
+
+    @FXML
+    private VBox productBuildTRVBox;
+
     //private Workstation currentWorkstation = null;
 
     private Integer currentWorkstationId = -1;
+
+    private Integer currentProductBuild = -1;
 
     private ObservableList<ProductBuild> builds = FXCollections.observableArrayList();
 
@@ -78,7 +86,7 @@ public class ProductBuildController {
 
                 newRow.getChildren().addAll(idLabel, idLabel2, idLabel3, idLabel4);
 
-                newRow.setOnMouseClicked(event -> selectProductBuild(newRow));
+                newRow.setOnMouseClicked(event -> selectProductBuild(productId));
 
                 productBuildVBox.getChildren().add(newRow);
             }
@@ -124,15 +132,54 @@ public class ProductBuildController {
         });
     }*/
 
-    private void selectProductBuild(VBox vBox) {
-        System.out.println("Values in VBox:");
-        for (var node : vBox.getChildren()) {
-            if (node instanceof Label) {
-                System.out.println(((Label) node).getText());
-            }
+    private void selectProductBuild(int productId) {
+        System.out.println("This is productID in pb " + productId);
+
+        productBuildTRVBox.getChildren().clear();
+        List<TestRecord> testRecordsList;
+        testRecordsList = loadTestRecord(productId);
+        generateTestRecord(testRecordsList);
+
+    }
+
+    private List<TestRecord> loadTestRecord(int productId) {
+        List<TestRecord> testRecordsList = new ArrayList<>();
+        try {
+            TestRecordDAO testRecordDAO = new TestRecordDAO();
+            testRecordsList = testRecordDAO.getAllTRFromProductID(productId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        //itemDetails.setText(String.format("ID: %d\nName: %s\nDescription: %s", item.getId(), item.getName(), item.getDescription()));
-        //System.out.println("Select this build to show TR " + item.getBuildId());
+        return testRecordsList;
+    }
+
+    private void generateTestRecord(List<TestRecord> testRecordList) {
+        for (TestRecord testRecord : testRecordList) {
+
+            int stepId = testRecord.getStepId();
+            int productId = testRecord.getProductId();
+            int stepNum = testRecord.getStepNumber();
+            String stepDescription = testRecord.getStepDescription();
+            String stepCheckType = testRecord.getStepCheckType();
+            String stepCheckCriteria = testRecord.getStepCheckCriteria();
+
+            VBox newRow = new VBox();
+
+            Label idLabel = new Label("Step " + stepNum + ":");
+            Label idLabel2 = new Label(stepDescription);
+
+            if (stepCheckType.equals("CheckBox")) {
+                CheckBox checkBox = new CheckBox("Checkbox");
+                newRow.getChildren().addAll(idLabel, idLabel2, checkBox);
+            } else {
+
+                TextField textfield = new TextField("Enter stuff here");
+                newRow.getChildren().addAll(idLabel, idLabel2, textfield);
+            }
+
+            productBuildTRVBox.getChildren().add(newRow);
+        }
     }
 
     public void onClosePopupButton(ActionEvent actionEvent) {
@@ -171,6 +218,7 @@ public class ProductBuildController {
     }
 
 
+    /*
     @FXML
     protected void PBSearch(ActionEvent actionEvent) {
         for (ProductBuild build : builds) {
@@ -194,5 +242,5 @@ public class ProductBuildController {
 
             productBuildVBox.getChildren().add(newRow);
         }
-    }
+    }*/
 }
