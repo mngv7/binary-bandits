@@ -9,18 +9,51 @@
             prefHeight="Infinity" prefWidth="Infinity">
     <top>
         <VBox>
-            <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
+            <VBox style="-fx-padding: 0 0 10 0;">
                 <Label text="Work Order Details" styleClass="title-label"/>
 
-                <TextField fx:id="workOrderIdField"/>
-                <ComboBox fx:id="orderOwnerComboBox"/>
-                <ComboBox fx:id="customerComboBox"/>
-                <DatePicker fx:id="orderDatePicker"/>
-                <DatePicker fx:id="deliveryDatePicker"/>
-                <TextField fx:id="shippingAddressField"/>
-                <TextField fx:id="statusField"/>
-                <TextField fx:id="subtotalField"/>
-                <Button fx:id="saveButton" text="Save" onAction="#saveWorkOrder"/>
+                <!-- Edit Button to Toggle Between Edit and View Mode -->
+                <Button fx:id="editButton" text="Edit" onAction="#toggleEdit"/>
+
+                <Label text="Work Order ID:"/>
+                <Label fx:id="workOrderIdField"/>
+
+                <!-- Work Order Owner ComboBox (Initially Hidden, Disabled) -->
+                <Label text="Work Order Owner:"/>
+                <Label fx:id="orderOwnerLabel"/>
+                <ComboBox fx:id="orderOwnerComboBox" visible="false" editable="false"/>
+
+                <!-- Customer ComboBox (Initially Hidden, Disabled) -->
+                <Label text="Customer:"/>
+                <Label fx:id="customerLabel"/>
+                <ComboBox fx:id="customerComboBox" visible="false" editable="false"/>
+
+
+                <!-- Order Date DatePicker (Initially Hidden, Disabled) -->
+                <Label text="Order Date:"/>
+                <Label fx:id="orderDateLabel"/>
+                <DatePicker fx:id="orderDatePicker" editable="false" visible="false"/>
+
+                <!-- Delivery Date DatePicker (Initially Hidden, Disabled) -->
+                <Label text="Delivery Date:"/>
+                <Label fx:id="deliveryDateLabel"/>
+                <DatePicker fx:id="deliveryDatePicker" editable="false" visible="false"/>
+
+                <!-- Shipping Address TextField (Initially Not Editable) -->
+                <Label text="Shipping Address:"/>
+                <Label fx:id="shippingAddressLabel"/>
+                <TextField fx:id="shippingAddressField" editable="false"/>
+
+                <!-- Order Status TextField (Initially Not Editable) -->
+                <Label text="Order Status:"/>
+                <Label fx:id="orderStatusLabel"/>
+                <TextField fx:id="statusField" editable="false"/>
+
+                <Label text="Subtotal:"/>
+                <Label fx:id="subtotalLabel"/>
+
+                <!-- Save Button Initially Hidden -->
+                <Button fx:id="saveButton" text="Save" onAction="#saveWorkOrder" visible="false"/>
                 <Button fx:id="deleteButton" text="Delete" onAction="#deleteWorkOrder"/>
             </VBox>
         </VBox>
