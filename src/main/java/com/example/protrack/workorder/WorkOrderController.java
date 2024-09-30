@@ -3,9 +3,6 @@ package com.example.protrack.workorder;
 import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
-import com.example.protrack.parts.Parts;
-import com.example.protrack.parts.PartsDAO;
-import com.example.protrack.products.ProductDAO;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import javafx.collections.FXCollections;
@@ -13,21 +10,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 public class WorkOrderController {
@@ -89,6 +81,18 @@ public class WorkOrderController {
         workOrderList = FXCollections.observableArrayList();
         workOrderTable.setItems(workOrderList);
 
+        // Handles row clicks to display relevant information
+        workOrderTable.setRowFactory(tv -> {
+            TableRow<WorkOrder> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    WorkOrder selectedWorkOrder = row.getItem();
+                    editWorkOrderPopup(selectedWorkOrder);
+                }
+            });
+            return row;
+        });
+
         // Load and display the initial list of work orders
         refreshTable();
     }
@@ -120,7 +124,7 @@ public class WorkOrderController {
     public void createWorkOrderPopup() {
         try {
             // Load the FXML file for the create work order dialog
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/workorder/create-work-order.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/workorder/create_work_order.fxml"));
             Parent createWorkOrderRoot = fxmlLoader.load();
 
             // Set up the popup stage
@@ -141,6 +145,31 @@ public class WorkOrderController {
             popupStage.setX(rootBounds.getCenterX() - 310);
 
             // Show the popup window
+            popupStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editWorkOrderPopup(WorkOrder workOrder) {
+        try {
+            // Load the FXML file for the work order edit popup
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/workorder/edit_work_order.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Get the controller of the popup
+            EditWorkOrderController controller = fxmlLoader.getController();
+            controller.setWorkOrder(workOrder); // Pass the selected work order
+
+            // Set up the popup stage
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Edit Work Order");
+
+            // Create the scene and show the popup
+            Scene scene = new Scene(root);
+            popupStage.setScene(scene);
             popupStage.showAndWait();
 
         } catch (IOException e) {
