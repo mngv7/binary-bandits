@@ -230,11 +230,53 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
     }
 
     public boolean updateWorkOrder(WorkOrder workOrder) {
-        return true; // Yet to be implemented
+        String query = "UPDATE work_orders SET work_order_owner_id = ?, customer_id = ?, order_date = ?, delivery_date = ?, " +
+                "shipping_address = ?, status = ?, subtotal = ? WHERE work_order_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Order owner ID is nullable
+            if (workOrder.getOrderOwner() != null) {
+                statement.setObject(1, workOrder.getOrderOwner().getEmployeeId());
+            } else {
+                statement.setNull(1, Types.INTEGER);
+            }
+
+            statement.setInt(2, workOrder.getCustomer().getCustomerId());
+            statement.setObject(3, workOrder.getOrderDate());
+
+            // Delivery date is nullable
+            if (workOrder.getDeliveryDate() != null) {
+                statement.setObject(4, workOrder.getDeliveryDate());
+            } else {
+                statement.setNull(4, Types.DATE);
+            }
+
+            statement.setString(5, workOrder.getShippingAddress());
+            statement.setString(6, workOrder.getStatus());
+            statement.setDouble(7, workOrder.getSubtotal());
+
+            statement.setInt(8, workOrder.getWorkOrderId());
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean deleteWorkOrder(Integer workOrderId) {
-        return true; // Yet to be implemented
+        String query = "DELETE FROM work_orders WHERE work_order_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, workOrderId);
+
+            int rowsDeleted = statement.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Since DB auto-increments primary key (workOrderId) it is hard to associate a WorkOrderProduct with a WorkOrder

@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class CreateWorkOrderController {
             @Override
             public TableCell<WorkOrderProduct, String> call(TableColumn<WorkOrderProduct, String> param) {
                 return new TableCell<>() {
-                    private final Button deleteButton = new Button("  \uD83D\uDDD1"  ); // Trash icon as button
+                    private final Button deleteButton = new Button("  \uD83D\uDDD1  "  ); // Trash icon as button
 
                     {
                         deleteButton.getStyleClass().add("trash-button");
@@ -254,6 +255,12 @@ public class CreateWorkOrderController {
             List<Customer> customers = new CustomerDAO().getAllCustomers();
 
             WorkOrdersDAOImplementation workOrdersDAOImplementation = new WorkOrdersDAOImplementation(productionUsers, customers);
+
+            double totalOrderPrice = workOrderProducts.stream()
+                    .mapToDouble(WorkOrderProduct::getTotal)
+                    .sum();
+            // Set subtotal to two decimal places using String.format
+            workOrder.setSubtotal(Double.parseDouble(String.format("%.2f", totalOrderPrice)));
 
             workOrdersDAOImplementation.createWorkOrder(workOrder);
 

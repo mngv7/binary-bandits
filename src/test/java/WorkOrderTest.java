@@ -73,14 +73,6 @@ public class WorkOrderTest {
     }
 
     @Test
-    public void testNullWorkOrderId() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new WorkOrder(null, orderOwner, customer, LocalDateTime.now(), null, null, null, 100.0);
-        });
-        assertEquals("No fields can be null", exception.getMessage());
-    }
-
-    @Test
     public void testNullCustomer() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             new WorkOrder(1, orderOwner, null, LocalDateTime.now(), null, null, null, 100.0);

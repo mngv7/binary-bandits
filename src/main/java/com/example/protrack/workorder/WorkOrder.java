@@ -1,6 +1,7 @@
 package com.example.protrack.workorder;
 
 import com.example.protrack.customer.Customer;
+import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.users.ProductionUser;
 
 import java.time.LocalDateTime;
@@ -9,18 +10,15 @@ public class WorkOrder {
 
     private final Integer workOrderId;
     private ProductionUser orderOwner;
-    private final Customer customer;
-    private final LocalDateTime orderDate;
+    private Customer customer;
+    private LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
     private String shippingAddress; // Address specific to this order
     private String status;
-    private final Double subtotal;
+    private Double subtotal;
 
     // Constructor
     public WorkOrder(Integer workOrderId, ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, LocalDateTime deliveryDate, String shippingAddress, String status, Double subtotal) {
-        if (workOrderId == null) {
-            throw new IllegalArgumentException("No fields can be null");
-        }
         if (customer == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
@@ -91,5 +89,17 @@ public class WorkOrder {
 
     public Double getSubtotal() {
         return subtotal;
+    }
+
+    public void setCustomer(Customer customer){
+        this.customer = customer;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
 }

@@ -32,8 +32,9 @@ public class ProductionUser extends AbstractUser {
         return accessLevel;
     }
 
+    // Override method to return user full name
     @Override
     public String toString() {
-        return this.firstName + " " + this.getLastName(); // Adjust according to your attribute
+        return this.firstName + " " + this.getLastName();
     }
 }
