@@ -31,7 +31,6 @@
                         <Button text="Refresh Table" onAction="#refreshTableButton" styleClass="create-product-button-refresh-button"/>
                         <Button fx:id="sendRequest" text="Request Stock Transfer" onAction="#createPartRequest" styleClass="create-product-button-refresh-button"/>
                     </HBox>
-                    </HBox>
 
                     <VBox maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="dynamic-vbox" >
                         <TableView fx:id="wsPartTable"  prefHeight="200.0" prefWidth="580.0" styleClass="products-table" VBox.vgrow="ALWAYS">
