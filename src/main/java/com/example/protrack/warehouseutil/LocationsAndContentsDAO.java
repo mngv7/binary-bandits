@@ -68,6 +68,10 @@ public class LocationsAndContentsDAO {
 
     /*
      * Inserts a new Workstation into the locations table.
+     * TODO: Maybe change method naming? With its current usage often following a call to
+     *       operator new() on the implementation of Workstation in use, this could be renamed
+     *       addWorkstation instead.
+     *       The same can be said for Warehouse but typically in ProTrack we only use one.
      */
     public void newWorkstation (Workstation workstation) {
         try {

@@ -1,6 +1,5 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.warehouseutil.MockWorkstation;
 import com.example.protrack.warehouseutil.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,11 +11,17 @@ public class CreateWorkstationController {
      * requires having a reference to the WarehouseController that opened the CreateWarehouse dialog.
      */
     public WarehouseController parentWarehouse;
+    public LocationsAndContentsDAO dao;
+
     @FXML
     private TextField nameField;
 
     @FXML
     private TextField capacityField;
+
+    public void initialize() {
+        dao = new LocationsAndContentsDAO();
+    }
 
     public CreateWorkstationController() {
         this.parentWarehouse = null;
@@ -33,7 +38,9 @@ public class CreateWorkstationController {
     // the function to create the data in workstation table
     @FXML
     private void handleCreate() {
-        Workstation station = new MockWorkstation(11, nameField.getText(), "null", Integer.parseInt(capacityField.getText()));
+        /* TODO: Auto-increment ID number based on number of workstations already in the database. */
+        Workstation station = new RealWorkstation(11, nameField.getText(), Integer.parseInt(capacityField.getText()));
+        dao.newWorkstation(station);
         parentWarehouse.addWorkstation(station);
         closeDialog();
     }
