@@ -90,7 +90,6 @@ public class EditWorkOrderController {
     private LocalDate originalDeliveryDate;
     private String originalShippingAddress;
     private String originalStatus;
-    private Double originalSubtotal;
 
     @FXML
     private TableView<WorkOrderProduct> workOrderProductsTableView;
@@ -131,7 +130,11 @@ public class EditWorkOrderController {
         customerComboBox.setVisible(false);
         orderDatePicker.setVisible(false);
         deliveryDatePicker.setVisible(false);
+        shippingAddressField.setVisible(false);
+        statusField.setVisible(false);
+        statusField.setEditable(false);
         saveButton.setVisible(false);
+        statusField.setEditable(false);
 
         // Set managed properties
         orderOwnerComboBox.managedProperty().bind(orderOwnerComboBox.visibleProperty());
@@ -164,23 +167,29 @@ public class EditWorkOrderController {
             customerComboBox.setVisible(true);
             orderDatePicker.setVisible(true);
             deliveryDatePicker.setVisible(true);
+            shippingAddressField.setVisible(true);
+            shippingAddressField.setEditable(true);
+            statusField.setVisible(true);
+            statusField.setEditable(true);
 
             orderOwnerLabel.setVisible(false);
             customerLabel.setVisible(false);
             orderDateLabel.setVisible(false);
             deliveryDateLabel.setVisible(false);
+            shippingAddressLabel.setVisible(false);
+            orderStatusLabel.setVisible(false);
 
             shippingAddressField.setEditable(true);
             statusField.setEditable(true);
 
-            saveOriginalValues();
+            setOriginalValues();
         } else {
             // Switch to View Mode and reset fields
             resetFieldsToOriginal();
         }
     }
 
-    private void saveOriginalValues() {
+    private void setOriginalValues() {
         originalOrderOwner = workOrder.getOrderOwner();
         originalCustomer = workOrder.getCustomer();
         originalOrderDate = workOrder.getOrderDate().toLocalDate();
@@ -197,6 +206,10 @@ public class EditWorkOrderController {
         customerComboBox.setVisible(false);
         orderDatePicker.setVisible(false);
         deliveryDatePicker.setVisible(false);
+        shippingAddressField.setVisible(false);
+        shippingAddressField.setEditable(false);
+        statusField.setVisible(false);
+        statusField.setEditable(false);
 
         orderOwnerLabel.setVisible(true);
         customerLabel.setVisible(true);
@@ -205,15 +218,19 @@ public class EditWorkOrderController {
         shippingAddressLabel.setVisible(true);
         orderStatusLabel.setVisible(true);
 
-        shippingAddressField.setEditable(false);
-        statusField.setEditable(false);
-
         orderOwnerComboBox.setValue(originalOrderOwner);
         customerComboBox.setValue(originalCustomer);
         orderDatePicker.setValue(originalOrderDate);
         deliveryDatePicker.setValue(originalDeliveryDate);
         shippingAddressField.setText(originalShippingAddress);
         statusField.setText(originalStatus);
+
+        orderOwnerLabel.setText(originalOrderOwner.toString());
+        customerLabel.setText(originalCustomer.getFirstName() + " " + originalCustomer.getLastName());
+        orderDateLabel.setText(originalOrderDate.toString().substring(0,10));
+        deliveryDateLabel.setText(originalDeliveryDate.toString().substring(0,10));
+        shippingAddressLabel.setText(originalShippingAddress);
+        orderStatusLabel.setText(originalStatus);
     }
 
     // setWorkOrder acts as an initialiser as well, as is called through another controller,
@@ -228,13 +245,12 @@ public class EditWorkOrderController {
         }
         customerLabel.setText(workOrder.getCustomer().toString());
         shippingAddressLabel.setText(workOrder.getShippingAddress());
-        orderDateLabel.setText(workOrder.getOrderDate().toString().substring(0,9));
+        orderDateLabel.setText(workOrder.getOrderDate().toString().substring(0,10));
         if (workOrder.getDeliveryDate() != null) {
-            deliveryDateLabel.setText(workOrder.getDeliveryDate().toString().substring(0,9));
+            deliveryDateLabel.setText(workOrder.getDeliveryDate().toString().substring(0,10));
         }
         orderStatusLabel.setText(workOrder.getStatus());
         subtotalLabel.setText(workOrder.getSubtotal().toString());
-        System.out.println(workOrder.getSubtotal());
 
         // Populate editable fields with current work order data (initially hidden)
         workOrderIdLabel.setText(String.valueOf(workOrder.getWorkOrderId()));
@@ -246,7 +262,7 @@ public class EditWorkOrderController {
         statusField.setText(workOrder.getStatus());
 
         // Save the original values to reset if cancel is clicked
-        saveOriginalValues();
+        setOriginalValues();
 
         int workOrderId = workOrder.getWorkOrderId();
         loadWorkOrderProducts(workOrderId);
@@ -276,6 +292,8 @@ public class EditWorkOrderController {
 
         workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
         workOrdersDAO.updateWorkOrder(workOrder);
+
+        setOriginalValues();
         resetFieldsToOriginal();
     }
 
@@ -291,7 +309,36 @@ public class EditWorkOrderController {
 
     @FXML
     public void closePopup() {
-        Stage stage = (Stage) closePopupButton.getScene().getWindow();
-        stage.close();
+        if (editButton.getText().equals("Cancel")){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.setHeaderText("Close Work Order View");
+            alert.setContentText("Are you sure you want to cancel editing the work order?");
+            alert.setGraphic(null);
+
+            // Define dialog buttons
+            ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
+            ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
+            alert.getButtonTypes().setAll(confirmBtn, backBtn);
+
+            Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+            Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
+
+            confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
+            cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
+
+            // Load the CSS file
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+
+            // Show confirmation dialog and close if confirmed
+            alert.showAndWait().ifPresent(result -> {
+                if (result == confirmBtn) {
+                    ((Stage) closePopupButton.getScene().getWindow()).close();
+                }
+            });
+        } else {
+            Stage stage = (Stage) editButton.getScene().getWindow();
+            stage.close();
+        }
     }
 }
