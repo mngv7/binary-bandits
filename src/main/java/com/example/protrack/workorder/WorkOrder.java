@@ -9,12 +9,12 @@ public class WorkOrder {
 
     private final Integer workOrderId;
     private ProductionUser orderOwner;
-    private final Customer customer;
-    private final LocalDateTime orderDate;
+    private Customer customer;
+    private LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
     private String shippingAddress; // Address specific to this order
     private String status;
-    private final Double subtotal;
+    private Double subtotal;
 
     // Constructor
     public WorkOrder(Integer workOrderId, ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, LocalDateTime deliveryDate, String shippingAddress, String status, Double subtotal) {
@@ -91,5 +91,17 @@ public class WorkOrder {
 
     public Double getSubtotal() {
         return subtotal;
+    }
+
+    public void setCustomer(Customer customer){
+        this.customer = customer;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
 }

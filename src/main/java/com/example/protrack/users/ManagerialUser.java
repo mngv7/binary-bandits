@@ -31,4 +31,10 @@ public class ManagerialUser extends AbstractUser {
     public String getAccessLevel() {
         return accessLevel;
     }
+
+    // Override method to return user full name
+    @Override
+    public String toString() {
+        return this.firstName + " " + this.getLastName();
+    }
 }

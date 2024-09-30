@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.workorder.EditWorkOrderController"
+            prefHeight="Infinity" prefWidth="Infinity">
+    <top>
+        <VBox>
+            <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
+                <Label text="Work Order Details" styleClass="title-label"/>
+
+                <TextField fx:id="workOrderIdField"/>
+                <ComboBox fx:id="orderOwnerComboBox"/>
+                <ComboBox fx:id="customerComboBox"/>
+                <DatePicker fx:id="orderDatePicker"/>
+                <DatePicker fx:id="deliveryDatePicker"/>
+                <TextField fx:id="shippingAddressField"/>
+                <TextField fx:id="statusField"/>
+                <TextField fx:id="subtotalField"/>
+                <Button fx:id="saveButton"/>
+                <Button fx:id="deleteButton"/>
+            </VBox>
+        </VBox>
+    </top>
+
+</BorderPane>
