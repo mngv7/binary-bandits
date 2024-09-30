@@ -2,21 +2,30 @@ package com.example.protrack.workorder;
 
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.products.Product;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.workorderproducts.WorkOrderProduct;
+import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class EditWorkOrderController {
 
     @FXML
-    private Label workOrderIdField;
+    private Button closePopupButton;
+
+    @FXML
+    private Label workOrderIdLabel;
 
     @FXML
     private ComboBox<ProductionUser> orderOwnerComboBox;
@@ -56,10 +65,13 @@ public class EditWorkOrderController {
 
     @FXML
     private Label orderOwnerLabel;
+
     @FXML
     private Label customerLabel;
+
     @FXML
     private Label orderDateLabel;
+
     @FXML
     private Label deliveryDateLabel;
 
@@ -80,9 +92,22 @@ public class EditWorkOrderController {
     private String originalStatus;
     private Double originalSubtotal;
 
-    /**
-     * Initializes the controller, populating ComboBoxes with data from DAOs.
-     */
+    @FXML
+    private TableView<WorkOrderProduct> workOrderProductsTableView;
+
+    @FXML
+    private TableColumn<WorkOrderProduct, String> colProductId;
+    @FXML
+    private TableColumn<WorkOrderProduct, String> colProductName;
+    @FXML
+    private TableColumn<WorkOrderProduct, Integer> colQuantity;
+    @FXML
+    private TableColumn<WorkOrderProduct, Double> colPrice;
+    @FXML
+    private TableColumn<WorkOrderProduct, Double> colTotal;
+
+    private ObservableList<WorkOrderProduct> workOrderProducts;
+
     public void initialize() {
         usersList = FXCollections.observableArrayList(new UsersDAO().getProductionUsers());
         customerList = FXCollections.observableArrayList(new CustomerDAO().getAllCustomers());
@@ -90,12 +115,40 @@ public class EditWorkOrderController {
         orderOwnerComboBox.setItems(usersList);
         customerComboBox.setItems(customerList);
 
+        // Set up columns
+        colProductId.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        colProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        // Initialize the ObservableList and bind it to the TableView
+        workOrderProducts = FXCollections.observableArrayList();
+        workOrderProductsTableView.setItems(workOrderProducts);
+
         // Hide editable fields initially
         orderOwnerComboBox.setVisible(false);
         customerComboBox.setVisible(false);
         orderDatePicker.setVisible(false);
         deliveryDatePicker.setVisible(false);
         saveButton.setVisible(false);
+
+        // Set managed properties
+        orderOwnerComboBox.managedProperty().bind(orderOwnerComboBox.visibleProperty());
+        customerComboBox.managedProperty().bind(customerComboBox.visibleProperty());
+        orderDatePicker.managedProperty().bind(orderDatePicker.visibleProperty());
+        deliveryDatePicker.managedProperty().bind(deliveryDatePicker.visibleProperty());
+        saveButton.managedProperty().bind(saveButton.visibleProperty());
+    }
+
+    private void loadWorkOrderProducts(int workOrderId) {
+        // Fetch work order products from the database
+        WorkOrderProductsDAOImplementation workOrderProductsDAO = new WorkOrderProductsDAOImplementation();
+        List<WorkOrderProduct> products = workOrderProductsDAO.getWorkOrderProductsByWorkOrderId(workOrderId);
+
+        // Populate the ObservableList
+        workOrderProducts.clear(); // Clear existing products in case of reloading
+        workOrderProducts.addAll(products);
     }
 
     @FXML
@@ -127,9 +180,6 @@ public class EditWorkOrderController {
         }
     }
 
-    /**
-     * Saves the current work order's original values for later reset.
-     */
     private void saveOriginalValues() {
         originalOrderOwner = workOrder.getOrderOwner();
         originalCustomer = workOrder.getCustomer();
@@ -139,9 +189,6 @@ public class EditWorkOrderController {
         originalStatus = workOrder.getStatus();
     }
 
-    /**
-     * Resets the fields to their original values.
-     */
     private void resetFieldsToOriginal() {
         editButton.setText("Edit");
         saveButton.setVisible(false);
@@ -169,24 +216,28 @@ public class EditWorkOrderController {
         statusField.setText(originalStatus);
     }
 
+    // setWorkOrder acts as an initialiser as well, as is called through another controller,
+    // if called in initialize the workOrder instance cannot be accessed (until after init)
     public void setWorkOrder(WorkOrder workOrder) {
         this.workOrder = workOrder;
 
-        // Populates view with work order fields
+        // Populate view with work order fields
+        workOrderIdLabel.setText(workOrder.getWorkOrderId().toString());
         if (workOrder.getOrderOwner() != null) {
             orderOwnerLabel.setText(workOrder.getOrderOwner().toString());
         }
         customerLabel.setText(workOrder.getCustomer().toString());
         shippingAddressLabel.setText(workOrder.getShippingAddress());
-        orderDateLabel.setText(workOrder.getOrderDate().toString());
+        orderDateLabel.setText(workOrder.getOrderDate().toString().substring(0,9));
         if (workOrder.getDeliveryDate() != null) {
-            deliveryDateLabel.setText(workOrder.getDeliveryDate().toString());
+            deliveryDateLabel.setText(workOrder.getDeliveryDate().toString().substring(0,9));
         }
         orderStatusLabel.setText(workOrder.getStatus());
         subtotalLabel.setText(workOrder.getSubtotal().toString());
+        System.out.println(workOrder.getSubtotal());
 
         // Populate editable fields with current work order data (initially hidden)
-        workOrderIdField.setText(String.valueOf(workOrder.getWorkOrderId()));
+        workOrderIdLabel.setText(String.valueOf(workOrder.getWorkOrderId()));
         orderOwnerComboBox.setValue(workOrder.getOrderOwner());
         customerComboBox.setValue(workOrder.getCustomer());
         orderDatePicker.setValue(workOrder.getOrderDate().toLocalDate());
@@ -196,6 +247,9 @@ public class EditWorkOrderController {
 
         // Save the original values to reset if cancel is clicked
         saveOriginalValues();
+
+        int workOrderId = workOrder.getWorkOrderId();
+        loadWorkOrderProducts(workOrderId);
     }
 
     public void saveWorkOrder() {
@@ -215,26 +269,29 @@ public class EditWorkOrderController {
         workOrder.setOrderOwner(selectedUser);
         workOrder.setCustomer(selectedCustomer);
         workOrder.setOrderDate(LocalDateTime.of(orderDate, workOrder.getOrderDate().toLocalTime()));
-        workOrder.setDeliveryDate(deliveryDate != null ? LocalDateTime.of(deliveryDate, workOrder.getOrderDate().toLocalTime()) : null);
+        workOrder.setDeliveryDate(deliveryDate != null ? LocalDateTime.of(deliveryDate, workOrder.getDeliveryDate().toLocalTime()) : null);
         workOrder.setShippingAddress(shippingAddress);
         workOrder.setStatus(status);
         workOrder.setSubtotal(subtotal);
 
+        workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
         workOrdersDAO.updateWorkOrder(workOrder);
-
-        toggleEdit(); // Return to view mode
+        resetFieldsToOriginal();
     }
 
+    @FXML
     public void deleteWorkOrder() {
-        if (workOrder != null) {
-            WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
-            workOrdersDAO.deleteWorkOrder(workOrder.getWorkOrderId());
-            closeWindow();
-        }
+        // Add logic to delete the work order from the database
+        workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
+        workOrdersDAO.deleteWorkOrder(workOrder.getWorkOrderId());
+
+        // Close the popup after deletion
+        closePopup();
     }
 
-    private void closeWindow() {
-        Stage stage = (Stage) saveButton.getScene().getWindow();
+    @FXML
+    public void closePopup() {
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
         stage.close();
     }
 }

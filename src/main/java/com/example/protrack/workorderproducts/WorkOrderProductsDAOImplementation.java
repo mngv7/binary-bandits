@@ -61,30 +61,39 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
     /**
      * Retrieves all products associated with the specified work order
      */
-    public List<Product> getWorkOrderProductsByWorkOrderId(int workOrderId) {
-        String sqlGetWorkOrderProducts = """
-            SELECT p.product_id, p.product_name, wop.quantity 
-            FROM Product p 
-            JOIN work_order_products wop ON p.product_id = wop.product_id 
-            WHERE wop.work_order_id = ?;
-        """;
+    public List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId) {
+        String sqlGetWorkOrderProducts =
+            """ 
+            SELECT p.productId AS product_id, 
+                   p.productName AS product_name, 
+                   wop.quantity, 
+                   SUM(part.cost * bom.requiredAmount) AS totalPrice
+            FROM products p
+            JOIN work_order_products wop ON p.productId = wop.product_id
+            LEFT JOIN requiredParts bom ON p.productId = bom.productId
+            LEFT JOIN parts part ON bom.partsId = part.partsId
+            WHERE wop.work_order_id = ?
+            GROUP BY p.productId, p.productName, wop.quantity;
+            """;
 
-        // Initialises list that will store products in the work order
-        List<Product> productsInWorkOrder = new ArrayList<>();
+        // Initializes list that will store WorkOrderProduct instances
+        List<WorkOrderProduct> productsInWorkOrder = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlGetWorkOrderProducts)) {
             // Sets the SQL value to the desired work order ID
             preparedStatement.setInt(1, workOrderId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            // Iterates over the ResultSet returned from the executed SQL query, creating new Product instances with
-            // information stored on the database and adding it to a list of products for the work order
+            // Iterates over the ResultSet returned from the executed SQL query,
+            // creating new WorkOrderProduct instances with information stored in the database
             while (resultSet.next()) {
-                Product product = new Product(
-                        resultSet.getInt("product_id"),
-                        resultSet.getString("product_name"),
-                        resultSet.getDate("quantity")
+                WorkOrderProduct workOrderProduct = new WorkOrderProduct(
+                        workOrderId,                              // Work Order ID
+                        resultSet.getInt("product_id"),          // Product ID
+                        resultSet.getString("product_name"),      // Product name
+                        resultSet.getInt("quantity"),             // Quantity
+                        resultSet.getDouble("totalPrice")         // Total Price (corrected from "price" to "totalPrice")
                 );
-                productsInWorkOrder.add(product);
+                productsInWorkOrder.add(workOrderProduct);
             }
         } catch (SQLException e) {
             e.printStackTrace();
