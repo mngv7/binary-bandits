@@ -29,7 +29,7 @@ public interface WorkOrderProductsDAO {
      * @param workOrderId The ID of the work order.
      * @return A list of products associated with the work order.
      */
-    List<Product> getWorkOrderProductsByWorkOrderId(int workOrderId);
+    List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId);
 
     /**
      * Deletes a product from a work order.
