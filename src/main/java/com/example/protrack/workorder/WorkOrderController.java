@@ -164,12 +164,21 @@ public class WorkOrderController {
 
             // Set up the popup stage
             Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle("Edit Work Order");
 
             // Create the scene and show the popup
             Scene scene = new Scene(root);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
+
+            // Center the popup window on the screen
+            Bounds rootBounds = createWorkOrderButton.getScene().getRoot().getLayoutBounds();
+            popupStage.setY(rootBounds.getCenterY() - 195);
+            popupStage.setX(rootBounds.getCenterX() - 310);
+
             popupStage.showAndWait();
 
         } catch (IOException e) {
