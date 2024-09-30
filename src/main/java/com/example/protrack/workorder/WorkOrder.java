@@ -18,9 +18,6 @@ public class WorkOrder {
 
     // Constructor
     public WorkOrder(Integer workOrderId, ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, LocalDateTime deliveryDate, String shippingAddress, String status, Double subtotal) {
-        if (workOrderId == null) {
-            throw new IllegalArgumentException("No fields can be null");
-        }
         if (customer == null) {
             throw new IllegalArgumentException("No fields can be null");
         }

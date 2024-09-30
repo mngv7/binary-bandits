@@ -20,8 +20,8 @@
                 <TextField fx:id="shippingAddressField"/>
                 <TextField fx:id="statusField"/>
                 <TextField fx:id="subtotalField"/>
-                <Button fx:id="saveButton"/>
-                <Button fx:id="deleteButton"/>
+                <Button fx:id="saveButton" text="Save" onAction="#saveWorkOrder"/>
+                <Button fx:id="deleteButton" text="Delete" onAction="#deleteWorkOrder"/>
             </VBox>
         </VBox>
     </top>

@@ -58,20 +58,14 @@ public class EditWorkOrderController {
      * Initializes the controller, populating ComboBoxes with data from DAOs.
      */
     public void initialize() {
-        // Load ProductionUser and Customer data from DAOs
-        UsersDAO usersDAO = new UsersDAO();
-        CustomerDAO customerDAO = new CustomerDAO();
 
-        usersList = FXCollections.observableArrayList(usersDAO.getProductionUsers());
-        customerList = FXCollections.observableArrayList(customerDAO.getAllCustomers());
+        // Load ProductionUser and Customer data from DAOs into lists
+        usersList = FXCollections.observableArrayList(new UsersDAO().getProductionUsers());
+        customerList = FXCollections.observableArrayList(new CustomerDAO().getAllCustomers());
 
-        // Populate ComboBoxes with data
+        // Populate ComboBoxes
         orderOwnerComboBox.setItems(usersList);
         customerComboBox.setItems(customerList);
-
-        // Set action listeners
-        saveButton.setOnAction(event -> saveWorkOrder());
-        deleteButton.setOnAction(event -> deleteWorkOrder());
     }
 
     /**
@@ -96,7 +90,7 @@ public class EditWorkOrderController {
     /**
      * Saves the updated work order back to the database.
      */
-    private void saveWorkOrder() {
+    public void saveWorkOrder() {
         // Validate and get input values
         ProductionUser selectedUser = orderOwnerComboBox.getValue();
         Customer selectedCustomer = customerComboBox.getValue();
@@ -106,13 +100,14 @@ public class EditWorkOrderController {
         String status = statusField.getText();
         double subtotal = Double.parseDouble(subtotalField.getText());
 
-        if (selectedUser == null || selectedCustomer == null || orderDate == null || shippingAddress.isEmpty() || status.isEmpty()) {
+        if (selectedCustomer == null || orderDate == null || shippingAddress.isEmpty() || status.isEmpty()) {
             // Add validation logic as needed
             System.out.println("Validation failed");
             return;
         }
 
         // Update the current work order object
+
         workOrder.setOrderOwner(selectedUser);
         workOrder.setCustomer(selectedCustomer);
         workOrder.setOrderDate(LocalDateTime.of(orderDate, workOrder.getOrderDate().toLocalTime()));
@@ -122,6 +117,7 @@ public class EditWorkOrderController {
         workOrder.setSubtotal(subtotal);
 
         // Update work order in the database
+        workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
         workOrdersDAO.updateWorkOrder(workOrder);
 
         // Close the window
@@ -131,18 +127,19 @@ public class EditWorkOrderController {
     /**
      * Deletes the work order from the database.
      */
-    private void deleteWorkOrder() {
+    public void deleteWorkOrder() {
         if (workOrder != null) {
             // Delete the work order from the database
+            workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
             workOrdersDAO.deleteWorkOrder(workOrder.getWorkOrderId());
 
-            // Close the window
+            // Closes the popup stage
             closeWindow();
         }
     }
 
     /**
-     * Closes the current window.
+     * Closes the current window upon action completion
      */
     private void closeWindow() {
         Stage stage = (Stage) saveButton.getScene().getWindow();
