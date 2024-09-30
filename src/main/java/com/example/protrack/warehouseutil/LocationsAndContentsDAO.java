@@ -25,19 +25,19 @@ public class LocationsAndContentsDAO {
              */
             Statement createTableForLocations = connection.createStatement();
             createTableForLocations.execute("CREATE TABLE IF NOT EXISTS locations (" +
-                                                    "locationID INTEGER PRIMARY KEY, " +
-                                                    "locationAlias VARCHAR NOT NULL, " +
-                                                    "locationType VARCHAR NOT NULL, " +
-                                                    "locationCapacity INTEGER NOT NULL" +
-                                                    ")");
+                    "locationID INTEGER PRIMARY KEY, " +
+                    "locationAlias VARCHAR NOT NULL, " +
+                    "locationType VARCHAR NOT NULL, " +
+                    "locationCapacity INTEGER NOT NULL" +
+                    ")");
             Statement createTableForLocationContents = connection.createStatement();
             /* TODO: Try and fulfill PK1 and PK2 requirements. (Maybe a composite primary key?) */
             createTableForLocationContents.execute("CREATE TABLE IF NOT EXISTS locationContents (" +
-                                                            "locationID INTEGER NOT NULL, " +
-                                                            "partID INTEGER NOT NULL, " +
-                                                            "quantity INTEGER NOT NULL, " +
-                                                            "PRIMARY KEY (locationID, partID)" +
-                                                            ")");
+                    "locationID INTEGER NOT NULL, " +
+                    "partID INTEGER NOT NULL, " +
+                    "quantity INTEGER NOT NULL, " +
+                    "PRIMARY KEY (locationID, partID)" +
+                    ")");
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -68,6 +68,10 @@ public class LocationsAndContentsDAO {
 
     /*
      * Inserts a new Workstation into the locations table.
+     * TODO: Maybe change method naming? With its current usage often following a call to
+     *       operator new() on the implementation of Workstation in use, this could be renamed
+     *       addWorkstation instead.
+     *       The same can be said for Warehouse but typically in ProTrack we only use one.
      */
     public void newWorkstation (Workstation workstation) {
         try {
@@ -83,20 +87,6 @@ public class LocationsAndContentsDAO {
             insertWorkstation.execute();
         } catch (SQLException e) {
             System.err.println(e);
-        }
-    }
-
-    public void newPartToLocation(Integer locationID, partIdWithQuantity newPart) {
-        try {
-            String insertQuery = "INSERT INTO locationContents (locationID, partID, quantity) VALUES (?, ?, ?)";
-            PreparedStatement insertStmt = connection.prepareStatement(insertQuery);
-            insertStmt.setInt(1, locationID);
-            insertStmt.setInt(2, newPart.partsId);
-            insertStmt.setInt(3, newPart.quantity);
-
-            insertStmt.execute();
-        } catch (SQLException e) {
-            System.out.println(e);
         }
     }
 
@@ -200,11 +190,12 @@ public class LocationsAndContentsDAO {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             int i = 0;
-            if (rs.wasNull()) {
+            if (!rs.next()) {
                 /*
                  * Insert new locationContents record.
                  * TODO: An exception handler in an exception handler... pray it doesn't explode.
                  *  ... It exploded (Column 0 out of bounds [1,3]
+                 *  Explosion fixed; turns out rs.wasNull() does NOT do what I thought it does.
                  */
                 try {
                     String insertQuery = "INSERT INTO locationContents (locationID, partID, quantity) VALUES (?, ?, ?)";
@@ -218,10 +209,8 @@ public class LocationsAndContentsDAO {
                     System.out.println(e);
                 }
             } else {
-                while (rs.next()) {
+                while (true) {
                     /* There should be only one result here but just in case... */
-
-
                     if (i > 0) {
                         System.out.println("Warning: Duplicate partID at location; contents may not update properly.");
                         break;
@@ -247,6 +236,7 @@ public class LocationsAndContentsDAO {
                     }
 
                     i += 1;
+                    if (!rs.next()) break;
                 }
             }
         } catch (SQLException e) {
@@ -267,10 +257,10 @@ public class LocationsAndContentsDAO {
             ResultSet rs = stmt.executeQuery(query);
 
             int i = 0;
-            if (rs.wasNull()) {
+            if (!rs.next()) {
                 System.out.println("Warning: Tried to remove a nonexistent parts location.");
             } else {
-                while (rs.next()) {
+                while (true) {
                     /* There should be only one result here but just in case... */
                     if (i > 0) {
                         System.out.println("Warning: Duplicate partID at location; contents may not update properly.");
@@ -315,6 +305,7 @@ public class LocationsAndContentsDAO {
                     }
 
                     i += 1;
+                    if (!rs.next()) break;
                 }
             }
         } catch (SQLException e) {

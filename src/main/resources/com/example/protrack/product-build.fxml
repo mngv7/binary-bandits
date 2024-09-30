@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.ProductBuildController"
+            prefHeight="500.0" prefWidth="500.0" styleClass="add-parts-popup">
+    <top>
+        <GridPane styleClass="parts-title-container" hgap="165">
+            <Label text="Product Build" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Button fx:id="closePopupButton" text="❌" onAction="#onClosePopupButton" GridPane.halignment="RIGHT"
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
+        </GridPane>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER">
+        <!--Left side tab -->
+            <HBox spacing="20" styleClass="create-product-scrollpane" VBox.vgrow="ALWAYS">
+                <HBox>
+                    <!--TODO Need a scroll bar
+                        Need to give it only 1/4 of the window size.
+                    -->
+                    <!--<Button fx:id="SearchPBButton" text="Test" onAction="#PBSearch" styleClass="create-product-button-small"/>-->
+                    <VBox fx:id="productBuildVBox" />
+                </HBox>
+                <!--Right side tab -->
+                <VBox>
+                    <!--Test Records -->
+                    <VBox fx:id="productBuildTRVBox">
+                        <!--TODO Need a scroll bar -->
+                    </VBox>
+                    <!--WS quantity -->
+                    <VBox fx:id="PBWSRequirementBox">
+                        <!--TODO Need a scroll bar -->
+
+                        <TableView fx:id="PBWSRequirementTableView" styleClass="parts-table" maxHeight="175">
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+
+                            <columns>
+                                <TableColumn fx:id="colPBWSpartId" text="Part ID" styleClass="work-orders-table-cell" maxWidth="150"/>
+                                <TableColumn fx:id="colPBWSpartName" text="Part Name" styleClass="work-orders-table-cell"/>
+                                <TableColumn fx:id="colPBWSreqAmt" text="Required" styleClass="work-orders-table-cell-centered" maxWidth="100"/>
+                                <TableColumn fx:id="colWorkstationAmt" text="In Workstation" styleClass="work-orders-table-cell-centered" maxWidth="100"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </VBox>
+            </HBox>
+        </ScrollPane>
+    </center>
+</BorderPane>
+

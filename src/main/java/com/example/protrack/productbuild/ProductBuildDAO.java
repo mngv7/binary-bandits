@@ -88,7 +88,7 @@ public class ProductBuildDAO {
         List<ProductBuild> productBuilds = new ArrayList<>();
 
         // query being run, get all from products
-        String query = "SELECT * FROM productBuilds";
+        String query = "SELECT * FROM productBuild";
 
         // try running query
         try (Statement stmt = connection.createStatement();

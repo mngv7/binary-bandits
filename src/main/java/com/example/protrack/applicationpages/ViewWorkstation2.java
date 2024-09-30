@@ -42,6 +42,9 @@ public class ViewWorkstation2 {
     @FXML
     public Button closePopupButton;
 
+    @FXML
+    private Button toProductBuild;
+
     private ObservableList<WorkstationPartDBTable> wsPartDBTable;
 
     private int workStationId = -1;
@@ -66,6 +69,8 @@ public class ViewWorkstation2 {
                             //getTableView().getItems().remove(product);  // Remove from table
 
                             System.out.println("Add this part to Product build " + wsPartDBTableItem.getPartName());
+
+
                         });
                     }
 
@@ -153,6 +158,7 @@ public class ViewWorkstation2 {
         }
     }
 
+
     private static final String TITLE = "Parts Request Form";
     private static final int WIDTH = 500;
     private static final int HEIGHT = 500;
@@ -185,5 +191,29 @@ public class ViewWorkstation2 {
 
     public void refreshTableButton(ActionEvent actionEvent) {
         refreshTable();
+    }
+
+    public void goToProductBuild(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-build.fxml"));
+
+        try {
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+
+            Parent createAllocateWSRoot = fxmlLoader.load();
+
+            ProductBuildController productBuildController = fxmlLoader.getController();
+            //LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
+            //int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
+            productBuildController.setWorkStation(workStationId);
+
+            Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
+            scene.getStylesheets().add(stylesheet);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

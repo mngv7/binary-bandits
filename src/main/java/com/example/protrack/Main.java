@@ -4,6 +4,8 @@ import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
+import com.example.protrack.productbuild.ProductBuild;
+import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
@@ -187,20 +189,6 @@ public class Main extends Application {
         testPart5.quantity = 8;
 
         if (locationsAndContentsDAO.isLocationContentsTableEmpty()) {
-            /* TODO: Probe partsDAO and populate Warehouse with it. */
-            locationsAndContentsDAO.newPartToLocation(0, testPart1);
-            locationsAndContentsDAO.newPartToLocation(0, testPart2);
-            locationsAndContentsDAO.newPartToLocation(0, testPart3);
-            locationsAndContentsDAO.newPartToLocation(0, testPart4);
-            locationsAndContentsDAO.newPartToLocation(0, testPart5);
-
-            locationsAndContentsDAO.newPartToLocation(1, testPart1);
-            locationsAndContentsDAO.newPartToLocation(1, testPart3);
-            locationsAndContentsDAO.newPartToLocation(1, testPart5);
-
-            locationsAndContentsDAO.newPartToLocation(2, testPart2);
-            locationsAndContentsDAO.newPartToLocation(2, testPart4);
-
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart1);
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart2);
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart3);
@@ -236,6 +224,19 @@ public class Main extends Application {
 
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
         workOrderProductsDAOImplementation.createTable();
+
+        ProductBuildDAO productBuildDAO = new ProductBuildDAO();
+        productBuildDAO.createTable();
+
+        if (productBuildDAO.isTableEmpty()) {
+            productBuildDAO.newProductBuild(new ProductBuild(500, 1, 0.00F, 36014));
+            productBuildDAO.newProductBuild(new ProductBuild(501, 1, 0.00F, 45021));
+            productBuildDAO.newProductBuild(new ProductBuild(502, 1, 0.00F, 67890));
+            productBuildDAO.newProductBuild(new ProductBuild(503, 2, 0.00F, 36014));
+            productBuildDAO.newProductBuild(new ProductBuild(504, 2, 0.00F, 45021));
+            productBuildDAO.newProductBuild(new ProductBuild(505, 3, 0.00F, 67890));
+
+        }
 
         launch();
     }
