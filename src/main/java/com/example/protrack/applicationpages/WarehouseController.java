@@ -61,6 +61,7 @@ public class WarehouseController {
         workstationTable.setOnContextMenuRequested(event -> {
             contextMenu.show(workstationTable, event.getScreenX(), event.getScreenY());
         });
+        workstationTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         colWSPartId.setCellValueFactory(new PropertyValueFactory<>("partID"));
         colWSPartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
