@@ -435,4 +435,8 @@
     -fx-padding: 5px; /* Add some padding */
 }
 
+.subheading2 {
+    -fx-font-weight: bold; /* Make the text bold */
+}
+
 <img src="application_logo.png">

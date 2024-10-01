@@ -11,22 +11,22 @@ import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import java.util.Map;
 
 import java.io.IOException;
 import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class DashboardController {
     @FXML
@@ -34,6 +34,18 @@ public class DashboardController {
 
     @FXML
     public VBox partsAndQuantity;
+
+    @FXML
+    public GridPane inventoryUsageGrid;
+
+    @FXML
+    public VBox partAndAmountGroup;
+
+    @FXML
+    public VBox partName;
+
+    @FXML
+    public VBox partUsage;
 
     HashMap<Integer, Integer> sumOfParts = new HashMap<>();
 
@@ -60,7 +72,7 @@ public class DashboardController {
         if (monthComboBox.getValue() != null) {
             populateHashMap((Month.valueOf(monthComboBox.getValue().toUpperCase())).getValue());
             displayParts();
-            createPDF(sumOfParts); // Pass the sumOfParts HashMap to createPDF
+            createPDF(); // Pass the sumOfParts HashMap to createPDF
         }
     }
 
@@ -96,72 +108,68 @@ public class DashboardController {
     }
 
     public void displayParts() {
-        PartsDAO partsDAO = new PartsDAO();
-        partsAndQuantity.getChildren().clear();
 
-        // Loop through the sumOfParts HashMap
+        inventoryUsageGrid.getChildren().clear();
+
+        Label partNameLabel = new Label("Part Name");
+        partNameLabel.getStyleClass().add("subheading2"); // Add style class
+        inventoryUsageGrid.add(partNameLabel, 0, 0);
+
+        Label quantityUsedLabel = new Label("Quantity Used");
+        quantityUsedLabel.getStyleClass().add("subheading2"); // Add style class
+        inventoryUsageGrid.add(quantityUsedLabel, 1, 0);
+
+        Label costLabel = new Label("Cost");
+        costLabel.getStyleClass().add("subheading2"); // Add style class
+        inventoryUsageGrid.add(costLabel, 2, 0);
+
+        int columnIndex = 0;
+        int rowIndex = 1;
+
+        PartsDAO partsDAO = new PartsDAO();
+
         for (HashMap.Entry<Integer, Integer> entry : sumOfParts.entrySet()) {
             int partsId = entry.getKey();
-            int totalRequiredAmount = entry.getValue();
+            int totalAmount = entry.getValue();
+            double totalCost = partsDAO.getPartById(partsId).getCost() * totalAmount;
+            BigDecimal roundedTotalCost = new BigDecimal(totalCost).setScale(2, RoundingMode.HALF_UP);
+            totalCost = roundedTotalCost.doubleValue();
 
-            // Only print if the value is not zero
-            if (totalRequiredAmount > 0) {
-                Label label = new Label();
-                label.setText(partsDAO.getPartById(partsId).getName() + " " + totalRequiredAmount);
-                partsAndQuantity.getChildren().add(label);
+            if (totalAmount > 0) {
+                inventoryUsageGrid.add(new Label(partsDAO.getPartById(partsId).getName()), columnIndex, rowIndex);
+                inventoryUsageGrid.add(new Label(Integer.toString(totalAmount)), columnIndex + 1, rowIndex);
+                inventoryUsageGrid.add(new Label("$" + totalCost), columnIndex + 2, rowIndex);
+
+                rowIndex++;
+                if (rowIndex > 6) { // Number of rows before changing columns.
+                    rowIndex = 1;
+                    columnIndex += 3; // Skip to the next set of columns for icons and labels
+                }
             }
         }
         initializeHashMap();
     }
 
-    public static void createPDF(HashMap<Integer, Integer> sumOfParts) {
+    public static void createPDF() {
         String userHome = System.getProperty("user.home");
-        String downloadsPath = userHome + "/Downloads/InvoiceFromProTrack.pdf";
+        String downloadsPath = userHome + "/Downloads/PartsForecast.pdf";
 
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
             document.addPage(page);
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                // Set the font and size for the heading
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
                 contentStream.beginText();
-                contentStream.newLineAtOffset(100, 750);
-                contentStream.showText("Invoice from ProTrack");
+                contentStream.newLineAtOffset(100, 750); // Position the text
+                contentStream.showText("Parts Forecast"); // Set the text to display
                 contentStream.endText();
-
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
-                contentStream.beginText();
-                contentStream.newLineAtOffset(100, 700);
-                contentStream.showText("Part Name          Quantity");
-                contentStream.endText();
-
-                contentStream.setFont(PDType1Font.HELVETICA, 12);
-                float yPosition = 680; // Starting position for the parts list
-
-                PartsDAO partsDAO = new PartsDAO();
-
-                for (Map.Entry<Integer, Integer> entry : sumOfParts.entrySet()) {
-                    int partsId = entry.getKey();
-                    int totalRequiredAmount = entry.getValue();
-
-                    if (totalRequiredAmount > 0) {
-                        String partName = partsDAO.getPartById(partsId).getName();
-
-                        // Debugging: Print part info
-                        System.out.println("Part: " + partName + ", Quantity: " + totalRequiredAmount);
-
-                        String line = String.format("%-20s %d", partName, totalRequiredAmount);
-                        contentStream.beginText();
-                        contentStream.newLineAtOffset(100, yPosition);
-                        contentStream.showText(line);
-                        contentStream.endText();
-                        yPosition -= 20; // Move down for the next line
-                    }
-                }
             }
 
+            // Save the document to the specified path
             document.save(downloadsPath);
-            System.out.println("Invoice PDF created: " + downloadsPath);
+            System.out.println("PDF created: " + downloadsPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
