@@ -40,8 +40,8 @@ import java.util.Objects;
 public class Main extends Application {
 
     private static final String TITLE = "ProTrack";
-    private static final int WIDTH = 1280;
-    private static final int HEIGHT = 720;
+    private static final int WIDTH = 1920;
+    private static final int HEIGHT = 1080;
 
     @Override
     public void start(Stage stage) throws IOException {
