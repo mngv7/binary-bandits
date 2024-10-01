@@ -151,5 +151,4 @@ public class LoginPageController {
         passwordTextField.setFocusTraversable(status);
         loginButton.setFocusTraversable(status);
     }
-
 }
