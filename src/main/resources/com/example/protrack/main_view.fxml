@@ -22,6 +22,9 @@
                 <TextField promptText="🔎 Search..." maxWidth="300" styleClass="search-field"/>
             </VBox>
             <HBox spacing="10" minWidth="220" alignment="CENTER_RIGHT">
+                <VBox alignment="CENTER_LEFT" spacing="2">
+                    <Label fx:id="timesheet" text="Timesheets" styleClass="timesheet-title" onMouseClicked="#myTimesheets"/>
+                </VBox>
                 <VBox alignment="CENTER_RIGHT" spacing="1">
                     <Label fx:id="employeeName" text="employeeName" styleClass="employee-name"/>
                     <Label fx:id="employeeTitle" text="employeeTitle" styleClass="employee-title"/>
