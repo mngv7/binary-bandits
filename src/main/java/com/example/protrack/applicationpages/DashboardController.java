@@ -51,6 +51,8 @@ public class DashboardController {
 
     public void initialize() {
         initializeHashMap();
+        monthComboBox.setValue("October");
+        loadMonthlyReport();
     }
 
     private void initializeHashMap() {
