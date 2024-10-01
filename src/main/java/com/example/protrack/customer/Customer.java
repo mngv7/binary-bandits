@@ -17,7 +17,7 @@ public class Customer {
     private ArrayList<WorkOrder> orders; // Can be null
 
     public Customer(Integer customerId, String firstName, String lastName, String email, String phoneNumber, String billingAddress, String shippingAddress, String status) {
-        if (customerId == null || customerId <= 0 || firstName == null || lastName == null || email == null || status == null) {
+        if (customerId == null || customerId < 0 || firstName == null || lastName == null || email == null || status == null) {
             throw new IllegalArgumentException("No field can be null");
         }
         if (email.length() > 255) {

@@ -69,7 +69,7 @@ public class MainController {
 
     @FXML
     private void customers() {
-        loadContent("/com/example/protrack/customers.fxml");
+        loadContent("/customer/customers.fxml");
     }
 
     @FXML
