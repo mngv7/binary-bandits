@@ -48,7 +48,7 @@ public class MainController {
 
     @FXML
     private void parts() {
-        loadContent("/com/example/protrack/parts.fxml");
+        loadContent("/com/example/protrack/Parts/parts.fxml");
     }
 
     @FXML
