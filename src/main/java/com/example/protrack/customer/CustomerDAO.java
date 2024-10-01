@@ -169,16 +169,43 @@ public class CustomerDAO {
      * @param customer The Customer object containing the (to be) updated details.
      */
     public void updateCustomer(Customer customer) {
+        String sql = "UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone_number = ?, billing_address = ?, shipping_address = ?, status = ? WHERE customer_id = ?";
 
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, customer.getFirstName());
+            statement.setString(2, customer.getLastName());
+            statement.setString(3, customer.getEmail());
+            statement.setString(4, customer.getPhoneNumber());
+            statement.setString(5, customer.getBillingAddress());
+            statement.setString(6, customer.getShippingAddress());
+            statement.setString(7, customer.getStatus());
+            statement.setInt(8, customer.getCustomerId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Deletes a customer from the database.
      *
+     * @param customerId the ID of the customer to be deleted.
      * @return true if the customer was deleted, false otherwise.
      */
-    public boolean deleteCustomer() {
-        return true;
+    public boolean deleteCustomer(int customerId) {
+        String sql = "DELETE FROM customer WHERE customer_id = ?";
+
+        try (Connection conn = DatabaseConnection.getInstance();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, customerId);
+            int affectedRows = ps.executeUpdate();
+
+            return affectedRows > 0; // Return true if at least one row was deleted
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if there was an error
+        }
     }
 
     /**

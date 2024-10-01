@@ -5,31 +5,51 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.customer.CustomerController">
-    <VBox spacing="10" alignment="CENTER">
-        <Label text="Customers" styleClass="parts-title-label"/>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.protrack.customer.CustomerController"
+            prefHeight="Infinity" prefWidth="Infinity">
 
-        <HBox spacing="10" alignment="CENTER">
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Add Customer"/>
-            <Region minWidth="10"/>
-        </HBox>
+    <top>
+        <VBox spacing="10" alignment="CENTER">
+            <VBox spacing="10" style="-fx-padding: 0 0 10 0;">
+                <Label text="Customers" styleClass="title-label"/>
+            </VBox>
 
-        <TableView fx:id="customersTableView">
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-            </columnResizePolicy>
+            <HBox spacing="10" alignment="CENTER">
+                <VBox>
+                    <Text text="Customer ID"/>
+                    <TextField promptText="🔎 Customer ID" minWidth="300" styleClass="search-field"/>
+                </VBox>
 
-            <columns>
-                <TableColumn fx:id="customerIdColumn" text="ID" />
-                <TableColumn fx:id="firstNameColumn" text="First Name" />
-                <TableColumn fx:id="lastNameColumn" text="Last Name" />
-                <TableColumn fx:id="emailColumn" text="Email" />
-                <TableColumn fx:id="phoneNumberColumn" text="Phone Number" />
-                <TableColumn fx:id="billingAddressColumn" text="Billing Address" />
-                <TableColumn fx:id="shippingAddressColumn" text="Shipping Address" />
-                <TableColumn fx:id="statusColumn" text="Status" />
-            </columns>
-        </TableView>
-    </VBox>
-</AnchorPane>
+                <Region/>
+                <VBox>
+                    <Text text="Customer Name"/>
+                    <TextField promptText="🔎 Customer Name" minWidth="300" styleClass="search-field"/>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button fx:id="addCustomerButton" text="Add Customer" styleClass="create-product-button-refresh-button" onAction="#addCustomerPopup"/>
+            </HBox>
+
+            <TableView fx:id="customersTableView" styleClass="products-table">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+
+                <columns>
+                    <TableColumn fx:id="customerIdColumn" text="ID" />
+                    <TableColumn fx:id="firstNameColumn" text="First Name" />
+                    <TableColumn fx:id="lastNameColumn" text="Last Name" />
+                    <TableColumn fx:id="emailColumn" text="Email" />
+                    <TableColumn fx:id="phoneNumberColumn" text="Phone Number" />
+                    <TableColumn fx:id="billingAddressColumn" text="Billing Address" />
+                    <TableColumn fx:id="shippingAddressColumn" text="Shipping Address" />
+                    <TableColumn fx:id="statusColumn" text="Status"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </top>
+</BorderPane>

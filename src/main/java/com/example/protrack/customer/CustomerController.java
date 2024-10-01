@@ -1,15 +1,28 @@
 package com.example.protrack.customer;
 
+import com.example.protrack.Main;
+import com.example.protrack.workorder.WorkOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class CustomerController {
 
+    @FXML
+    private Button addCustomerButton;
     @FXML
     private TableView<Customer> customersTableView;
     @FXML
@@ -41,6 +54,17 @@ public class CustomerController {
     public void initialize() {
         setupTableColumns();
         loadCustomers();
+
+        customersTableView.setRowFactory(tv -> {
+            TableRow<Customer> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (!row.isEmpty())) {
+                    Customer selectedCustomer = row.getItem();
+                    editCustomerPopup(selectedCustomer);
+                }
+            });
+            return row;
+        });
     }
 
     private void setupTableColumns() {
@@ -59,5 +83,74 @@ public class CustomerController {
         tableCustomers.clear();
         tableCustomers.addAll(customers);
         customersTableView.setItems(tableCustomers);
+    }
+
+    /**
+     * Opens a popup window to create a new work order.
+     */
+    public void addCustomerPopup() {
+        try {
+            // Load the FXML file for the create work order dialog
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/customer/add_customer.fxml"));
+            Parent createWorkOrderRoot = fxmlLoader.load();
+
+            // Set up the popup stage
+            Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Edit Customer");
+
+            // Create the scene and apply styles
+            Scene scene = new Scene(createWorkOrderRoot, 350, 380);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+            popupStage.setScene(scene);
+
+            // Center the popup window on the screen
+            Bounds rootBounds = addCustomerButton.getScene().getRoot().getLayoutBounds();
+            popupStage.setY(rootBounds.getCenterY() - 100);
+            popupStage.setX(rootBounds.getCenterX());
+
+            // Show the popup window
+            popupStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editCustomerPopup(Customer customer) {
+        try {
+            // Load the FXML file for the edit customer dialog
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/customer/edit_customer.fxml"));
+            Parent editCustomerRoot = fxmlLoader.load();
+
+            // Get the controller of the edit customer FXML
+            EditCustomerController editCustomerController = fxmlLoader.getController();
+            editCustomerController.setCustomer(customer); // Pass the customer object
+
+            // Set up the popup stage
+            Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Edit Customer");
+
+            // Create the scene and apply styles
+            Scene scene = new Scene(editCustomerRoot, 350, 400);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+            popupStage.setScene(scene);
+
+            // Center the popup window on the screen
+            Bounds rootBounds = addCustomerButton.getScene().getRoot().getLayoutBounds();
+            popupStage.setY(rootBounds.getCenterY() - 100);
+            popupStage.setX(rootBounds.getCenterX());
+
+            // Show the popup window
+            popupStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
