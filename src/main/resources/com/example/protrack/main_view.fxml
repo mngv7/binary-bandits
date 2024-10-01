@@ -12,7 +12,7 @@
         <HBox prefHeight="100" style="-fx-background-color: #390B91;">
             <Region minWidth="20"/>
             <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
-                <Image fx:id="logo" url="@application_logo.png"/>
+                <Image fx:id="logo" url="@Images/application_logo.png"/>
             </ImageView>
             <Label text="ProTrack" prefHeight="100" minWidth="200" textFill="white" styleClass="logo-label"/>
             <VBox HBox.hgrow="ALWAYS">
@@ -22,6 +22,9 @@
                 <TextField promptText="🔎 Search..." maxWidth="300" styleClass="search-field"/>
             </VBox>
             <HBox spacing="10" minWidth="220" alignment="CENTER_RIGHT">
+                <VBox alignment="CENTER_LEFT" spacing="2">
+                    <Label fx:id="timesheet" text="Timesheets" styleClass="timesheet-title" onMouseClicked="#myTimesheets"/>
+                </VBox>
                 <VBox alignment="CENTER_RIGHT" spacing="1">
                     <Label fx:id="employeeName" text="employeeName" styleClass="employee-name"/>
                     <Label fx:id="employeeTitle" text="employeeTitle" styleClass="employee-title"/>
@@ -43,14 +46,14 @@
             <Button text="Dashboard" onAction="#dashboard" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                        <Image url="@dashboard_icon.png"/>
+                        <Image url="@Images/dashboard_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Button text="Inventory ▾" onAction="#inventory" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                        <Image url="@inventory_icon.png"/>
+                        <Image url="@Images/inventory_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
@@ -58,14 +61,14 @@
                 <Button text="Products" onAction="#products" styleClass="menu-button">
                     <graphic>
                         <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                            <Image url="@product_icon.png"/>
+                            <Image url="@Images/product_icon.png"/>
                         </ImageView>
                     </graphic>
                 </Button>
                 <Button text="Parts" onAction="#parts" styleClass="menu-button">
                     <graphic>
                         <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                            <Image url="@parts_icon.png"/>
+                            <Image url="@Images/parts_icon.png"/>
                         </ImageView>
                     </graphic>
                 </Button>
@@ -73,28 +76,28 @@
             <Button text="Work Orders" onAction="#purchaseOrders" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                        <Image url="@purchase_orders_icon.png"/>
+                        <Image url="@Images/purchase_orders_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Button text="Customers" onAction="#customers" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                        <Image url="@customers_icon.png"/>
+                        <Image url="@Images/customers_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Button text="Suppliers" onAction="#suppliers" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                        <Image url="@supplier_icon.png"/>
+                        <Image url="@Images/supplier_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Button text="Employees" onAction="#employees" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                        <Image url="@employee_icon.png"/>
+                        <Image url="@Images/employee_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
@@ -103,7 +106,7 @@
                     <Button text="Warehouse" prefHeight="100" onAction="#warehouse" styleClass="menu-button">
                         <graphic>
                             <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
-                                <Image url="@warehouse_icon.png"/>
+                                <Image url="@Images/warehouse_icon.png"/>
                             </ImageView>
                         </graphic>
                     </Button>

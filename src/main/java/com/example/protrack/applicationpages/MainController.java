@@ -1,5 +1,8 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
+import com.example.protrack.users.UsersDAO;
+import com.example.protrack.utility.LoggedInUserSingleton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -7,8 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class MainController {
 
@@ -17,6 +25,9 @@ public class MainController {
 
     @FXML
     private Label employeeTitle;
+
+    @FXML
+    private Label timesheet;
 
     @FXML
     private VBox dynamicVBox;
@@ -48,7 +59,7 @@ public class MainController {
 
     @FXML
     private void parts() {
-        loadContent("/com/example/protrack/parts.fxml");
+        loadContent("/com/example/protrack/Parts/parts.fxml");
     }
 
     @FXML
@@ -95,6 +106,38 @@ public class MainController {
 
             dynamicVBox.getChildren().clear();
             dynamicVBox.getChildren().add(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final String TimesheetTITLE = "Add Timesheets";
+    private static final int TimesheetWIDTH = 500;
+    private static final int TimesheetHEIGHT = 500;
+
+    @FXML
+    private void myTimesheets() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/timesheets.fxml"));
+            Parent addPartsRoot = fxmlLoader.load();
+            TimesheetsController timesheetsController = fxmlLoader.getController();
+
+            Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle(TimesheetTITLE);
+
+            // Set employee details in the main controller
+            UsersDAO usersDAO = new UsersDAO();
+            Integer employeeId = LoggedInUserSingleton.getInstance().getEmployeeId();
+            timesheetsController.setEmployeeId(usersDAO.getUserById(employeeId).getEmployeeId().toString());
+
+            // Set the scene for the pop-up
+            Scene scene = new Scene(addPartsRoot, TimesheetWIDTH, TimesheetHEIGHT);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+            popupStage.setScene(scene);
+            popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

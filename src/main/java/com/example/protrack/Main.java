@@ -9,6 +9,8 @@ import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
+import com.example.protrack.timesheets.Timesheets;
+import com.example.protrack.timesheets.TimesheetsDAO;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
@@ -28,7 +30,9 @@ import java.sql.Date;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +50,7 @@ public class Main extends Application {
         String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setTitle(TITLE);
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("application_logo.png")));
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Images/application_logo.png")));
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.setMaximized(false);
@@ -127,6 +131,13 @@ public class Main extends Application {
             testRecordDAO.newTestRecordStep(new TestRecord(2, 67890, 2, "Check the power cable for any signs of wear.", "CheckBox", "NULL"));
             testRecordDAO.newTestRecordStep(new TestRecord(3, 67890, 3, "Test the main function of the device to ensure it operates correctly.", "CheckBox", "NULL"));
             testRecordDAO.newTestRecordStep(new TestRecord(4, 67890, 4, "Ensure all accessory components are included in the packaging.", "CheckBox", "NULL"));
+        }
+
+        TimesheetsDAO timesheetsDAO = new TimesheetsDAO();
+        timesheetsDAO.createTable();
+        if (timesheetsDAO.isTableEmpty()) {
+            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 10, 1, 10, 00, 00, 00), LocalDateTime.of(2024, 10, 1, 14, 30, 00, 00), 100, 1));
+            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 9, 1, 10,00, 00, 00), LocalDateTime.of(2024, 9, 1, 14, 30, 0, 0), 100, 2));
         }
 
         UsersDAO usersDAO = new UsersDAO();
