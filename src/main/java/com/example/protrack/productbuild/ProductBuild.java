@@ -28,4 +28,7 @@ public class ProductBuild {
     public Integer getProductId() {
         return productId;
     }
+
+    @Override
+    public String toString() { return this.productOrderId.toString(); }
 }

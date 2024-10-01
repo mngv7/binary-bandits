@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 public class Timesheets {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private ProductionUser employeeID;
-    private ProductBuild productOrderID;
+    private Integer employeeID;
+    private Integer productOrderID;
 
-    public Timesheets (LocalDateTime startTime, LocalDateTime endTime, ProductionUser employeeID, ProductBuild productOrderID) {
+    public Timesheets (LocalDateTime startTime, LocalDateTime endTime, Integer employeeID, Integer productOrderID) {
 
         if (endTime.isAfter(LocalDateTime.now())) {
             throw new IllegalArgumentException("End Time must be past/current time");
@@ -28,11 +28,11 @@ public class Timesheets {
 
     public LocalDateTime getEndTime() { return endTime; }
 
-    public ProductionUser getEmployeeID() { return employeeID; }
+    public Integer getEmployeeID() { return employeeID; }
 
-    public void setEmployeeID(ProductionUser employeeID) {this.employeeID = employeeID; }
+    public void setEmployeeID(Integer employeeID) {this.employeeID = employeeID; }
 
-    public ProductBuild getProductOrderID() { return productOrderID; }
+    public Integer getProductOrderID() { return productOrderID; }
 
-    public void setProductOrderID(ProductBuild productOrderID) {this.productOrderID = productOrderID; }
+    public void setProductOrderID(Integer productOrderID) {this.productOrderID = productOrderID; }
 }
