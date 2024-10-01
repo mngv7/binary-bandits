@@ -27,10 +27,10 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
     public void createTable() {
         String sqlCreateTable = """
             CREATE TABLE IF NOT EXISTS work_order_products (
+                work_order_product_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 work_order_id INTEGER, 
                 product_id INTEGER, 
                 quantity INTEGER NOT NULL, 
-                PRIMARY KEY (work_order_id, product_id), 
                 FOREIGN KEY (work_order_id) REFERENCES WorkOrder(work_order_id), 
                 FOREIGN KEY (product_id) REFERENCES Product(product_id)
             );
@@ -47,11 +47,21 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
      */
     public boolean addWorkOrderProduct(WorkOrderProduct workOrderProduct) {
         String sqlAddWorkOrderProduct = "INSERT INTO work_order_products (work_order_id, product_id, quantity) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAddWorkOrderProduct)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAddWorkOrderProduct, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, workOrderProduct.getWorkOrderId());
             preparedStatement.setInt(2, workOrderProduct.getProductId());
             preparedStatement.setInt(3, workOrderProduct.getQuantity());
-            return preparedStatement.executeUpdate() > 0;
+
+            // Execute update and get the generated primary key
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        workOrderProduct.setWorkOrderProductId(generatedKeys.getInt(1));
+                    }
+                }
+            }
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,35 +73,33 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
      */
     public List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId) {
         String sqlGetWorkOrderProducts =
-            """ 
-            SELECT p.productId AS product_id, 
-                   p.productName AS product_name, 
-                   wop.quantity, 
-                   SUM(part.cost * bom.requiredAmount) AS totalPrice
-            FROM products p
-            JOIN work_order_products wop ON p.productId = wop.product_id
-            LEFT JOIN requiredParts bom ON p.productId = bom.productId
-            LEFT JOIN parts part ON bom.partsId = part.partsId
-            WHERE wop.work_order_id = ?
-            GROUP BY p.productId, p.productName, wop.quantity;
-            """;
+                """ 
+                SELECT wop.work_order_product_id, 
+                       p.productId AS product_id, 
+                       p.productName AS product_name, 
+                       wop.quantity, 
+                       SUM(part.cost * bom.requiredAmount) AS totalPrice
+                FROM products p
+                JOIN work_order_products wop ON p.productId = wop.product_id
+                LEFT JOIN requiredParts bom ON p.productId = bom.productId
+                LEFT JOIN parts part ON bom.partsId = part.partsId
+                WHERE wop.work_order_id = ?
+                GROUP BY wop.work_order_product_id, p.productId, p.productName, wop.quantity;
+                """;
 
-        // Initializes list that will store WorkOrderProduct instances
         List<WorkOrderProduct> productsInWorkOrder = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlGetWorkOrderProducts)) {
-            // Sets the SQL value to the desired work order ID
             preparedStatement.setInt(1, workOrderId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            // Iterates over the ResultSet returned from the executed SQL query,
-            // creating new WorkOrderProduct instances with information stored in the database
             while (resultSet.next()) {
                 WorkOrderProduct workOrderProduct = new WorkOrderProduct(
-                        workOrderId,                              // Work Order ID
-                        resultSet.getInt("product_id"),          // Product ID
-                        resultSet.getString("product_name"),      // Product name
-                        resultSet.getInt("quantity"),             // Quantity
-                        resultSet.getDouble("totalPrice")         // Total Price (corrected from "price" to "totalPrice")
+                        resultSet.getInt("work_order_product_id"),   // Work Order Product ID
+                        workOrderId,                                            // Work Order ID
+                        resultSet.getInt("product_id"),              // Product ID
+                        resultSet.getString("product_name"),         // Product name
+                        resultSet.getInt("quantity"),                // Quantity
+                        resultSet.getDouble("totalPrice")            // Total Price
                 );
                 productsInWorkOrder.add(workOrderProduct);
             }
@@ -102,13 +110,12 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
     }
 
     /**
-     * Deletes a product from a work order
+     * Deletes a product from a work order using the work_order_product_id as the primary key
      */
-    public boolean deleteWorkOrderProduct(int workOrderId, int productId) {
-        String sqlDeleteWorkOrderProduct = "DELETE FROM work_order_products WHERE work_order_id = ? AND product_id = ?";
+    public boolean deleteWorkOrderProduct(int workOrderProductId) {
+        String sqlDeleteWorkOrderProduct = "DELETE FROM work_order_products WHERE work_order_product_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteWorkOrderProduct)) {
-            preparedStatement.setInt(1, workOrderId);
-            preparedStatement.setInt(2, productId);
+            preparedStatement.setInt(1, workOrderProductId);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

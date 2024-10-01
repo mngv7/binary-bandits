@@ -1,6 +1,7 @@
 package com.example.protrack.workorderproducts;
 
 public class WorkOrderProduct {
+    private int workOrderProductId;
     private int workOrderId;
     private int productId;
     private String productName;
@@ -9,7 +10,10 @@ public class WorkOrderProduct {
     private double total;
 
     // Constructor for WorkOrderProduct class
-    public WorkOrderProduct(int workOrderId, int productId, String productName, int quantity, double price) {
+    public WorkOrderProduct(int workOrderProductId, int workOrderId, int productId, String productName, int quantity, double price) {
+        if (workOrderProductId < 0) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
         if (productName == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
@@ -26,6 +30,7 @@ public class WorkOrderProduct {
             throw new IllegalArgumentException("Price cannot be negative");
         }
 
+        this.workOrderProductId = workOrderProductId;
         this.workOrderId = workOrderId;
         this.productId = productId;
         this.productName = productName;
@@ -35,6 +40,14 @@ public class WorkOrderProduct {
     }
 
     // Getters and Setters
+    public void setWorkOrderProductId(Integer workOrderProductId) {
+        this.workOrderProductId = workOrderProductId;
+    }
+
+    public int getWorkOrderProductId() {
+        return this.workOrderProductId;
+    }
+
     public int getWorkOrderId() {
         return workOrderId;
     }

@@ -10,7 +10,14 @@ public class WorkOrderProductTest {
 
     @BeforeEach
     public void setup() {
-        workOrderProduct = new WorkOrderProduct(1, 1, "Product Name", 5, 20.0);
+        // Updated to include workOrderProductId as the first parameter (assuming ID 1 for this test)
+        workOrderProduct = new WorkOrderProduct(1, 1, 1, "Product Name", 5, 20.0);
+    }
+
+    @Test
+    public void testGetWorkOrderProductId() {
+        // New test to check the work_order_product_id
+        assertEquals(1, workOrderProduct.getWorkOrderProductId());
     }
 
     @Test
@@ -54,13 +61,13 @@ public class WorkOrderProductTest {
     public void testSetPrice() {
         workOrderProduct.setPrice(25.0);
         assertEquals(25.0, workOrderProduct.getPrice());
-        assertEquals(125.0, workOrderProduct.getTotal());
+        assertEquals(125.0, workOrderProduct.getTotal()); // Updated expected total based on new price
     }
 
     @Test
     public void testNullProductName() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new WorkOrderProduct(1, 1, null, 10, 100.0);
+            new WorkOrderProduct(1, 1, 1, null, 10, 100.0);
         });
         assertEquals("No fields can be null", exception.getMessage());
     }
@@ -68,7 +75,7 @@ public class WorkOrderProductTest {
     @Test
     public void testNegativeWorkOrderIdInConstructor() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new WorkOrderProduct(-1, 1, "Product", 10, 100.0);
+            new WorkOrderProduct(1, -1, 1, "Product", 10, 100.0);
         });
         assertEquals("Work order ID cannot be negative", exception.getMessage());
     }
@@ -76,7 +83,7 @@ public class WorkOrderProductTest {
     @Test
     public void testNegativeProductIdInConstructor() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new WorkOrderProduct(1, -1, "Product", 10, 100.0);
+            new WorkOrderProduct(1, 1, -1, "Product", 10, 100.0);
         });
         assertEquals("Product ID cannot be negative", exception.getMessage());
     }
@@ -84,7 +91,7 @@ public class WorkOrderProductTest {
     @Test
     public void testNegativeQuantityInConstructor() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new WorkOrderProduct(1, 1, "Product", -5, 100.0);
+            new WorkOrderProduct(1, 1, 1, "Product", -5, 100.0);
         });
         assertEquals("Quantity cannot be negative", exception.getMessage());
     }
@@ -92,14 +99,14 @@ public class WorkOrderProductTest {
     @Test
     public void testNegativePriceInConstructor() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new WorkOrderProduct(1, 1, "Product", 10, -100.0);
+            new WorkOrderProduct(1, 1, 1, "Product", 10, -100.0);
         });
         assertEquals("Price cannot be negative", exception.getMessage());
     }
 
     @Test
     public void testNegativeQuantitySet() {
-        WorkOrderProduct product = new WorkOrderProduct(1, 1, "Product", 10, 100.0);
+        WorkOrderProduct product = new WorkOrderProduct(1, 1, 1, "Product", 10, 100.0);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             product.setQuantity(-5);
         });
@@ -108,7 +115,7 @@ public class WorkOrderProductTest {
 
     @Test
     public void testNegativePriceSet() {
-        WorkOrderProduct product = new WorkOrderProduct(1, 1, "Product", 10, 100.0);
+        WorkOrderProduct product = new WorkOrderProduct(1, 1, 1, "Product", 10, 100.0);
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             product.setPrice(-100.0);
         });
@@ -117,7 +124,7 @@ public class WorkOrderProductTest {
 
     @Test
     public void testTotalCalculation() {
-        WorkOrderProduct product = new WorkOrderProduct(1, 1, "Product", 5, 20.0);
+        WorkOrderProduct product = new WorkOrderProduct(1, 1, 1, "Product", 5, 20.0);
         assertEquals(100.0, product.getTotal());
         product.setQuantity(10);
         assertEquals(200.0, product.getTotal());

@@ -148,7 +148,7 @@ public class EditWorkOrderController {
         // Fetch work order products from the database
         WorkOrderProductsDAOImplementation workOrderProductsDAO = new WorkOrderProductsDAOImplementation();
         List<WorkOrderProduct> products = workOrderProductsDAO.getWorkOrderProductsByWorkOrderId(workOrderId);
-
+        System.out.println(products.toString());
         // Populate the ObservableList
         workOrderProducts.clear(); // Clear existing products in case of reloading
         workOrderProducts.addAll(products);
@@ -225,10 +225,19 @@ public class EditWorkOrderController {
         shippingAddressField.setText(originalShippingAddress);
         statusField.setText(originalStatus);
 
-        orderOwnerLabel.setText(originalOrderOwner.toString());
+
+        if (originalOrderOwner != null) {
+            orderOwnerLabel.setText(originalOrderOwner.toString());
+        } else {
+            orderOwnerLabel.setText("No order owner");
+        }
         customerLabel.setText(originalCustomer.getFirstName() + " " + originalCustomer.getLastName());
         orderDateLabel.setText(originalOrderDate.toString().substring(0,10));
-        deliveryDateLabel.setText(originalDeliveryDate.toString().substring(0,10));
+        if (originalDeliveryDate != null) {
+            deliveryDateLabel.setText(originalDeliveryDate.toString());
+        } else {
+            deliveryDateLabel.setText("No delivery date set");
+        }
         shippingAddressLabel.setText(originalShippingAddress);
         orderStatusLabel.setText(originalStatus);
     }
