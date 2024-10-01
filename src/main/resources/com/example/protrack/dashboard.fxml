@@ -36,8 +36,13 @@
                 <VBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
                     <VBox>
                         <Label text="Inventory Usage" styleClass="subheading"/>
-                        <VBox fx:id="partsAndQuantity"/>
                     </VBox>
+                    <GridPane fx:id="inventoryUsageGrid" hgap="15" vgap="5" alignment="CENTER_LEFT">
+                        <VBox fx:id="partAndAmountGroup">
+                            <VBox fx:id="partName"/>
+                            <VBox fx:id="partUsage" />
+                        </VBox>
+                    </GridPane>
                 </VBox>
 
                 <VBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
