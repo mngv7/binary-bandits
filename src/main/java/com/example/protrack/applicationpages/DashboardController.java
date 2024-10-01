@@ -11,11 +11,18 @@ import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import java.util.Map;
 
+import java.io.IOException;
 import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +53,14 @@ public class DashboardController {
         if (monthComboBox.getValue() != null) {
             populateHashMap((Month.valueOf(monthComboBox.getValue().toUpperCase())).getValue());
             displayParts();
+        }
+    }
+
+    public void downloadPDF() {
+        if (monthComboBox.getValue() != null) {
+            populateHashMap((Month.valueOf(monthComboBox.getValue().toUpperCase())).getValue());
+            displayParts();
+            createPDF(sumOfParts); // Pass the sumOfParts HashMap to createPDF
         }
     }
 
@@ -97,5 +112,58 @@ public class DashboardController {
             }
         }
         initializeHashMap();
+    }
+
+    public static void createPDF(HashMap<Integer, Integer> sumOfParts) {
+        String userHome = System.getProperty("user.home");
+        String downloadsPath = userHome + "/Downloads/InvoiceFromProTrack.pdf";
+
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(100, 750);
+                contentStream.showText("Invoice from ProTrack");
+                contentStream.endText();
+
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(100, 700);
+                contentStream.showText("Part Name          Quantity");
+                contentStream.endText();
+
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                float yPosition = 680; // Starting position for the parts list
+
+                PartsDAO partsDAO = new PartsDAO();
+
+                for (Map.Entry<Integer, Integer> entry : sumOfParts.entrySet()) {
+                    int partsId = entry.getKey();
+                    int totalRequiredAmount = entry.getValue();
+
+                    if (totalRequiredAmount > 0) {
+                        String partName = partsDAO.getPartById(partsId).getName();
+
+                        // Debugging: Print part info
+                        System.out.println("Part: " + partName + ", Quantity: " + totalRequiredAmount);
+
+                        String line = String.format("%-20s %d", partName, totalRequiredAmount);
+                        contentStream.beginText();
+                        contentStream.newLineAtOffset(100, yPosition);
+                        contentStream.showText(line);
+                        contentStream.endText();
+                        yPosition -= 20; // Move down for the next line
+                    }
+                }
+            }
+
+            document.save(downloadsPath);
+            System.out.println("Invoice PDF created: " + downloadsPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -30,6 +30,7 @@
                     </items>
                 </ComboBox>
                 <Button text="Load" onAction="#loadMonthlyReport"/>
+                <Button text="Download Parts Invoice" onAction="#downloadPDF"/>
             </HBox>
             <HBox>
                 <VBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
@@ -40,7 +41,7 @@
                 </VBox>
 
                 <VBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
-                    <!-- Content can be added here -->
+                    <Label text="Active Orders" styleClass="subheading"/>
                 </VBox>
             </HBox>
 
