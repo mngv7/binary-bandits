@@ -303,4 +303,31 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         }
         return workOrder;
     }
+
+    public List<WorkOrder> getWorkOrderByMonth(Integer month) {
+
+        List<WorkOrder> workOrders = new ArrayList<>();
+
+        // SQL query retrieves Work Orders based on the month from order_date
+        String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE strftime('%m', order_date) = ?";
+
+        // Executes the PreparedStatement with the month
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
+            preparedStatement.setString(1, String.format("%02d", month));  // Format month as two digits (e.g., '01' for January)
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Loop through the result set and map each row to a WorkOrder
+            while (resultSet.next()) {
+                WorkOrder workOrder = mapToWorkOrder(resultSet);  // Assuming mapToWorkOrder maps a single result row to WorkOrder
+                workOrders.add(workOrder);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return workOrders;
+    }
+
 }
