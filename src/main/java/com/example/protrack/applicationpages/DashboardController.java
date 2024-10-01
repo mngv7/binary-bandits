@@ -11,6 +11,7 @@ import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -23,10 +24,14 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import java.io.IOException;
 import java.time.Month;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Locale;
 
 public class DashboardController {
     @FXML
@@ -50,9 +55,33 @@ public class DashboardController {
     HashMap<Integer, Integer> sumOfParts = new HashMap<>();
 
     public void initialize() {
+        setLastThreeMonths();
         initializeHashMap();
-        monthComboBox.setValue("October");
         loadMonthlyReport();
+    }
+
+    private void setLastThreeMonths() {
+        // Get the current month
+        YearMonth currentMonth = YearMonth.now();
+
+        // List to store the last 3 months
+        List<String> lastThreeMonths = new ArrayList<>();
+
+        // Add current month and the previous 2 months
+        for (int i = 0; i < 6; i++) {
+            YearMonth month = currentMonth.minusMonths(i);
+            String monthName = month.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+            lastThreeMonths.add(monthName); // Add the month name
+        }
+
+        monthComboBox.getItems().clear();
+
+        // Add the last 3 months to the ComboBox
+        monthComboBox.setItems(FXCollections.observableArrayList(lastThreeMonths));
+
+        // Set the default selected item to the current month
+        String currentMonthName = currentMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        monthComboBox.setValue(currentMonthName);  // Set the current month as default
     }
 
     private void initializeHashMap() {

@@ -25,13 +25,6 @@
             <HBox spacing="10" style="-fx-padding: 0 0 10 0;">
                 <Label text="Select Month:" styleClass="subheading"/>
                 <ComboBox fx:id="monthComboBox" styleClass="part-text-field">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="October"/>
-                            <String fx:value="September"/>
-                            <String fx:value="August"/>
-                        </FXCollections>
-                    </items>
                 </ComboBox>
 
                 <!-- Add a Region to push buttons to the right -->
