@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ViewWorkstation2 {
+    private MainController parentMainController;
+
     @FXML
     private TableView wsPartTable;
 
@@ -97,6 +99,14 @@ public class ViewWorkstation2 {
         refreshTable();
     }
 
+    public MainController getMainController () {
+        return this.parentMainController;
+    }
+
+    public void setMainController (MainController controller) {
+        this.parentMainController = controller;
+    }
+
     public void refreshTable() {
         wsPartDBTable.clear();
         wsPartDBTable.addAll(workstationPartDBTableList());
@@ -152,7 +162,7 @@ public class ViewWorkstation2 {
         alert.showAndWait();
         if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
             alert.close();
-            stage.close();
+            parentMainController.loadWarehouseFromOtherPage(); /* Reload the original warehouse page, we're exiting. */
         } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
             alert.close();
         }

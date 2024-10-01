@@ -24,6 +24,7 @@ import java.util.Objects;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
+    private MainController mainController;
     public LocationsAndContentsDAO locationsAndContents;
 
     @FXML
@@ -45,6 +46,14 @@ public class WarehouseController {
     private ObservableList<WorkstationPartDBTable> whPartDBTable;
 
     private int warehouseId = 0;
+
+    public void setMainControllerInstance (MainController controller) {
+        this.mainController = controller;
+    }
+
+    public MainController getMainControllerInstance() {
+        return this.mainController;
+    }
 
     @FXML
     public void initialize() {
@@ -223,7 +232,7 @@ public class WarehouseController {
         RequestsDAO currentRequestsDao = new RequestsDAO(); /* TODO: Cache this somewhere? */
         List<Requests> requestsToPassToPage = currentRequestsDao.getAllRequests();
         for (int i = 0; i < requestsToPassToPage.size(); ++i) {
-            System.out.println(requestsToPassToPage.get(i));
+            System.out.println("Request ID " + requestsToPassToPage.get(i).getRequestId() + " is in list.");
         }
         /* TODO: Spawn new FXML page and set items on init with the list above. */
     }

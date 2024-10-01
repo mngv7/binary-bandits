@@ -1,5 +1,7 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -9,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainController {
 
@@ -107,7 +110,52 @@ public class MainController {
 
     @FXML
     private void warehouse() {
-        loadContent("/com/example/protrack/warehouse.fxml");
+        try {
+            Scene scene = dynamicVBox.getScene();
+            dynamicVBox.getChildren().clear(); // Clears existing content
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/warehouse.fxml"));
+            Parent content = loader.load();
+
+            WarehouseController controller = loader.getController();
+            if (controller != null) {
+                controller.setMainControllerInstance(this);
+            } else {
+                System.out.println("WARN: No main controller assigned to warehouse page.");
+            }
+
+            dynamicVBox.getChildren().add(content);
+            //scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception (e.g., show an error message)
+        }
+    }
+
+    public void loadWarehouseFromOtherPage () {
+        warehouse();
+    }
+
+    public void loadWorkstationContent(String workstationAlias) {
+        Scene scene = dynamicVBox.getScene();
+        dynamicVBox.getChildren().clear();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/view-workstation2.fxml"));
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+        Parent createAllocateWSRoot = null;
+        try {
+            createAllocateWSRoot = fxmlLoader.load();
+        } catch (IOException e) {
+            System.out.println("Failed to load Workstation content: " + e.getMessage());
+            return; /* Don't continue loading. */
+        }
+
+        ViewWorkstation2 workStationController = fxmlLoader.getController();
+        workStationController.setMainController(this);
+        LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
+        int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationAlias);
+        workStationController.setWorkStationIdV3(workstationId);
+
+        dynamicVBox.getChildren().add(createAllocateWSRoot);
     }
 
     private void loadContent(String fxmlFile) {
