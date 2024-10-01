@@ -6,6 +6,7 @@ module com.example.protrack {
     requires jbcrypt;
     requires javafx.base;
     requires java.desktop;
+    requires org.apache.pdfbox;
 
     opens com.example.protrack to javafx.fxml;
     opens com.example.protrack.products to javafx.base;
