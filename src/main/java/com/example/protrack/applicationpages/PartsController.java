@@ -90,7 +90,7 @@ public class PartsController {
      */
     public void openAddPartsPopup() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/add-parts-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/Parts/add-parts-view.fxml"));
             Parent addPartsRoot = fxmlLoader.load();
 
             Stage popupStage = new Stage();

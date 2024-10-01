@@ -46,7 +46,7 @@ public class Main extends Application {
         String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setTitle(TITLE);
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("application_logo.png")));
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Images/application_logo.png")));
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.setMaximized(false);
