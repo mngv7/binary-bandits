@@ -13,6 +13,8 @@ import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 import java.time.Month;
 import java.util.HashMap;
@@ -23,7 +25,10 @@ public class DashboardController {
     @FXML
     public ComboBox<String> monthComboBox;
 
-    HashMap<Integer, Integer> sumOfParts = new HashMap<Integer, Integer>();
+    @FXML
+    public VBox partsAndQuantity;
+
+    HashMap<Integer, Integer> sumOfParts = new HashMap<>();
 
     public void initialize() {
         initializeHashMap();
@@ -76,6 +81,9 @@ public class DashboardController {
     }
 
     public void displayParts() {
+        PartsDAO partsDAO = new PartsDAO();
+        partsAndQuantity.getChildren().clear();
+
         // Loop through the sumOfParts HashMap
         for (HashMap.Entry<Integer, Integer> entry : sumOfParts.entrySet()) {
             int partsId = entry.getKey();
@@ -83,9 +91,11 @@ public class DashboardController {
 
             // Only print if the value is not zero
             if (totalRequiredAmount > 0) {
-                System.out.println("Parts ID: " + partsId + ", Total Required Amount: " + totalRequiredAmount);
+                Label label = new Label();
+                label.setText(partsDAO.getPartById(partsId).getName() + " " + totalRequiredAmount);
+                partsAndQuantity.getChildren().add(label);
             }
         }
+        initializeHashMap();
     }
-
 }
