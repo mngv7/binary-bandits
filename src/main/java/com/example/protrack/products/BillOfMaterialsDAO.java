@@ -4,6 +4,7 @@ import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class BillOfMaterialsDAO {
@@ -75,6 +76,27 @@ public class BillOfMaterialsDAO {
         }
 
         return billOfMaterialsList;
+    }
+
+    public HashMap<Integer, Integer> getPartsAndAmountsForProduct(int productId) {
+        HashMap<Integer, Integer> partsMap = new HashMap<>(); // Create a HashMap to hold parts and their amounts
+        String query = "SELECT partsId, requiredAmount FROM requiredParts WHERE productId = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, productId); // Set the product ID in the query
+            ResultSet rs = stmt.executeQuery();
+
+            // Loop through the result set and populate the HashMap
+            while (rs.next()) {
+                int partsId = rs.getInt("partsId");
+                int requiredAmount = rs.getInt("requiredAmount");
+                partsMap.put(partsId, requiredAmount); // Add to the map
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error retrieving parts and amounts for product ID " + productId + ": " + ex.getMessage());
+        }
+
+        return partsMap; // Return the populated HashMap
     }
 
     /**
