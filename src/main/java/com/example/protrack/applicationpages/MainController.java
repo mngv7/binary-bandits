@@ -47,10 +47,6 @@ public class MainController {
         }
     }
 
-    public void initialize() {
-        dashboard();
-    }
-
     @FXML
     private void dashboard() {
         loadContent("/com/example/protrack/dashboard.fxml");
