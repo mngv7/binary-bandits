@@ -9,17 +9,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Region?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.DashboardController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <Label text="Dashboard" styleClass="title-label"/>
+        <VBox style="-fx-padding: 0 0 10 0;">
+            <Label text="Dashboard" styleClass="title-label"/>
+        </VBox>
     </top>
 
     <center>
         <VBox>
-            <HBox spacing="10">
+            <HBox spacing="10" style="-fx-padding: 0 0 10 0;">
+                <Label text="Select Month:" styleClass="subheading"/>
                 <ComboBox fx:id="monthComboBox" styleClass="part-text-field">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
@@ -29,8 +33,12 @@
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <Button text="Load" onAction="#loadMonthlyReport"/>
-                <Button text="Download Parts Invoice" onAction="#downloadPDF"/>
+
+                <!-- Add a Region to push buttons to the right -->
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Load Month" onAction="#loadMonthlyReport" styleClass="add-parts-button" />
+                <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
             </HBox>
             <HBox>
                 <VBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
@@ -54,6 +62,5 @@
                 <Label text="Performance" styleClass="subheading"/>
             </HBox>
         </VBox>
-
     </center>
 </BorderPane>
