@@ -19,6 +19,9 @@ public class MainController {
     private Label employeeTitle;
 
     @FXML
+    private Label timesheet;
+
+    @FXML
     private VBox dynamicVBox;
 
     @FXML
@@ -99,6 +102,9 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void myTimesheets() { loadContent("/timesheets.fxml");}
 
     @FXML
     private void myProfile() {
