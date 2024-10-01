@@ -186,6 +186,9 @@ public class ViewWorkstation2 {
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(TITLE);
 
+            CreatePartsRequestController createPartsRequestController = fxmlLoader.getController();
+            createPartsRequestController.setWorkStationId(workStationId);
+
             // Set the scene for the pop-up
             Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
