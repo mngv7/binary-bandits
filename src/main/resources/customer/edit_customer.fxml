@@ -9,7 +9,7 @@
 <?import javafx.collections.FXCollections?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="customer.EditCustomerController"
+            fx:controller="com.example.protrack.customer.EditCustomerController"
             prefHeight="400.0" prefWidth="600.0">
 
     <HBox spacing="10" alignment="CENTER">
@@ -19,7 +19,7 @@
         <TextField fx:id="phoneNumberField" promptText="Phone Number" />
         <TextField fx:id="billingAddressField" promptText="Billing Address" />
         <TextField fx:id="shippingAddressField" promptText="Shipping Address" />
-        <ComboBox fx:id="statusComboBox">
+        <ComboBox fx:id="statusCombo">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Active" />

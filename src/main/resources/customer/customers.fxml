@@ -11,7 +11,7 @@
 
         <HBox spacing="10" alignment="CENTER">
             <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Add Customer" onAction="#handleAddCustomer" />
+            <Button text="Add Customer"/>
             <Region minWidth="10"/>
         </HBox>
 
