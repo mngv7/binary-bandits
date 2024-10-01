@@ -39,7 +39,8 @@ public class CreateWorkstationController {
     @FXML
     private void handleCreate() {
         /* TODO: Auto-increment ID number based on number of workstations already in the database. */
-        Workstation station = new RealWorkstation(11, nameField.getText(), Integer.parseInt(capacityField.getText()));
+        int length = parentWarehouse.getAllWorkstationsInRAM().size() + 1;
+        Workstation station = new RealWorkstation(length, nameField.getText(), Integer.parseInt(capacityField.getText()));
         dao.newWorkstation(station);
         parentWarehouse.addWorkstation(station);
         closeDialog();
