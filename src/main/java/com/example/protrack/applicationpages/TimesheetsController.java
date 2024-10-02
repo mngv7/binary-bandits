@@ -25,10 +25,6 @@ public class TimesheetsController {
     @FXML
     private Label employeeId;
     @FXML
-    private DatePicker startDatePicker;
-    @FXML
-    private DatePicker endDatePicker;
-    @FXML
     private TextField startTimeField;
     @FXML
     private TextField endTimeField;
@@ -51,8 +47,6 @@ public class TimesheetsController {
         BooleanBinding emptyFields = Bindings.createBooleanBinding(() ->
             startTimeField.getText().trim().isEmpty() ||
                 endTimeField.getText().trim().isEmpty() ||
-                startDatePicker.getEditor().getText() == null ||
-                endDatePicker.getEditor().getText() == null ||
                 productBuildComboBox.getSelectionModel().isEmpty(),
                 startTimeField.textProperty(),
                 endTimeField.textProperty()
@@ -64,8 +58,6 @@ public class TimesheetsController {
     // Method to clear input fields
     private void clearPartInputFields() {
         productBuildComboBox.getSelectionModel().clearSelection();
-        startDatePicker.getEditor().clear();
-        endDatePicker.getEditor().clear();
         startTimeField.clear();
         endTimeField.clear();
     }
@@ -76,46 +68,9 @@ public class TimesheetsController {
      */
     @FXML
     protected void onClosePopupButton() {
-        // Create a confirmation alert
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.initStyle(StageStyle.UNDECORATED);
-        alert.setHeaderText("Cancel Part Creation");
-        alert.setContentText("Are you sure you want to cancel?");
-        alert.setGraphic(null);
-
-        // Apply custom stylesheet to the alert dialog
-        DialogPane dialogPane = alert.getDialogPane();
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("cancelAlert.css")).toExternalForm();
-        dialogPane.getStyleClass().add("cancelDialog");
-        dialogPane.getStylesheets().add(stylesheet);
-
-        // Define the confirm and back buttons
-        ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
-        ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
-        alert.getButtonTypes().setAll(confirmBtn, backBtn);
-
-        // Get the current stage (popup window)
+        // Get the current stage (popup window) and close it
         Stage stage = (Stage) closePopupButton.getScene().getWindow();
-
-        // Set button data for confirm and back buttons
-        Node confirmButton = dialogPane.lookupButton(confirmBtn);
-        ButtonBar.setButtonData(confirmButton, ButtonBar.ButtonData.LEFT);
-        confirmButton.setId("confirmBtn");
-        Node backButton = dialogPane.lookupButton(backBtn);
-        ButtonBar.setButtonData(backButton, ButtonBar.ButtonData.RIGHT);
-        backButton.setId("backBtn");
-
-        // Show the alert and handle the user's response
-        alert.showAndWait();
-        if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
-            // Close the stage if user confirms cancellation
-            alert.close();
-            stage.close();
-        } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
-            // Close the alert if user decides to go back
-            alert.close();
-        }
+        stage.close();
     }
 
     /**
@@ -133,15 +88,16 @@ public class TimesheetsController {
 
             Integer employee = Integer.parseInt(employeeId.getText());
 
-            // Get the selected dates from the DatePicker
-            String startDate = startDatePicker.getValue().toString();
-            String endDate = endDatePicker.getValue().toString();
-
             String startTime = startTimeField.getText();
             String endTime = endTimeField.getText();
 
-            String startDateTimeString = startDate + "T" + startTime + ":00.00";
-            String endDateTimeString = endDate + "T" + endTime + ":00.00";
+            // Checks if startTime needs a starting 0 (if hour is single digit)
+            if (startTime.length() != 5){
+                startTime = "0" + startTime;
+            }
+
+            String startDateTimeString = LocalDateTime.now().toLocalDate().toString() + "T" + startTime + ":00.00";
+            String endDateTimeString = LocalDateTime.now().toLocalDate().toString() + "T" + endTime + ":00.00";
 
             // Combine date and time strings to get DateTime
             LocalDateTime startDateTime = LocalDateTime.parse(startDateTimeString);
