@@ -88,15 +88,11 @@ public class TimesheetsController {
 
             Integer employee = Integer.parseInt(employeeId.getText());
 
-            // Get the selected dates from the DatePicker
-            String startDate = startDatePicker.getValue().toString();
-            String endDate = endDatePicker.getValue().toString();
-
             String startTime = startTimeField.getText();
             String endTime = endTimeField.getText();
 
-            String startDateTimeString = startDate + "T" + startTime + ":00.00";
-            String endDateTimeString = endDate + "T" + endTime + ":00.00";
+            String startDateTimeString = LocalDateTime.now().toLocalDate().toString() + "T" + startTime + ":00.00";
+            String endDateTimeString = LocalDateTime.now().toLocalDate().toString() + "T" + endTime + ":00.00";
 
             // Combine date and time strings to get DateTime
             LocalDateTime startDateTime = LocalDateTime.parse(startDateTimeString);
