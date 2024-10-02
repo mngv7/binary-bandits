@@ -5,7 +5,7 @@ import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
@@ -14,15 +14,12 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -134,7 +131,7 @@ public class CreateWorkOrderController {
 
         // Populate the ComboBoxes with data from the database
         workOrderOwnerComboBox.getItems().setAll(new UsersDAO().getProductionUsers());
-        customerComboBox.getItems().setAll(new CustomerDAO().getAllCustomers());
+        customerComboBox.getItems().setAll(new CustomerDAOImplementation().getAllCustomers());
         productComboBox.getItems().setAll(new ProductDAO().getAllProducts());
 
         // Create a binding to check if any essential field is empty
@@ -253,7 +250,7 @@ public class CreateWorkOrderController {
             WorkOrder workOrder = new WorkOrder(0, orderOwner, customer, orderDate, deliveryDate, shippingAddress, "Pending", 0.0);
 
             List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
-            List<Customer> customers = new CustomerDAO().getAllCustomers();
+            List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
 
             WorkOrdersDAOImplementation workOrdersDAOImplementation = new WorkOrdersDAOImplementation(productionUsers, customers);
 

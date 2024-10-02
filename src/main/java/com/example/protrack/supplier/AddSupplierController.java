@@ -58,8 +58,8 @@ public class AddSupplierController {
 
         // Calls DAO to save the supplier
         Supplier supplier = new Supplier(0, name, email, phone, billingAddress, shippingAddress, leadTime);
-        SupplierDAO supplierDAO = new SupplierDAO();
-        supplierDAO.addSupplier(supplier);
+        SupplierDAOImplementation supplierDAOImplementation = new SupplierDAOImplementation();
+        supplierDAOImplementation.addSupplier(supplier);
 
         // Closes popup after saving
         closePopup();

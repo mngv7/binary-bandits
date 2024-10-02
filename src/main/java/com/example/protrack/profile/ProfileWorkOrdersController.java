@@ -1,7 +1,7 @@
 package com.example.protrack.profile;
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
@@ -11,8 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,11 +29,11 @@ public class ProfileWorkOrdersController {
 
         // Initialises a new UsersDAO and CustomerDAO interface (and connections)
         UsersDAO usersDAO = new UsersDAO();
-        CustomerDAO customerDAO = new CustomerDAO();
+        CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
 
         // Creates HashMaps that retrieve HashMaps containing all users and customers
         List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
-        List<Customer> customers = customerDAO.getAllCustomers();
+        List<Customer> customers = customerDAOImplementation.getAllCustomers();
 
         // Initialises WorkOrdersDAOImplementation using the recently initialised UsersDAO and CustomersDAO objects
         this.workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);

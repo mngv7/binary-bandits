@@ -1,7 +1,6 @@
 package com.example.protrack.customer;
 
 import com.example.protrack.Main;
-import com.example.protrack.workorder.WorkOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,11 +41,11 @@ public class CustomerController {
     @FXML
     private TableColumn<Customer, String> statusColumn;
 
-    private CustomerDAO customerDAO;
+    private CustomerDAOImplementation customerDAOImplementation;
     private ObservableList<Customer> tableCustomers;
 
     public CustomerController() {
-        customerDAO = new CustomerDAO();
+        customerDAOImplementation = new CustomerDAOImplementation();
         tableCustomers = FXCollections.observableArrayList();
     }
 
@@ -79,7 +78,7 @@ public class CustomerController {
     }
 
     private void loadCustomers() {
-        List<Customer> customers = customerDAO.getAllCustomers();
+        List<Customer> customers = customerDAOImplementation.getAllCustomers();
         tableCustomers.clear();
         tableCustomers.addAll(customers);
         customersTableView.setItems(tableCustomers);
