@@ -91,6 +91,11 @@ public class TimesheetsController {
             String startTime = startTimeField.getText();
             String endTime = endTimeField.getText();
 
+            // Checks if startTime needs a starting 0 (if hour is single digit)
+            if (startTime.length() != 5){
+                startTime = "0" + startTime;
+            }
+
             String startDateTimeString = LocalDateTime.now().toLocalDate().toString() + "T" + startTime + ":00.00";
             String endDateTimeString = LocalDateTime.now().toLocalDate().toString() + "T" + endTime + ":00.00";
 
