@@ -14,13 +14,33 @@ public class SupplierDAO {
         connection = DatabaseConnection.getInstance();
     }
 
+    // Method to create the suppliers table if it does not exist
+    public void createTable() {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS suppliers (" +
+                "supplier_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name VARCHAR(255), " +
+                "email VARCHAR(255), " +
+                "phone_number VARCHAR(20), " +
+                "billing_address VARCHAR(255), " +
+                "shipping_address VARCHAR(255), " +
+                "lead_time DOUBLE)";
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(createTableSQL);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addSupplier(Supplier supplier) {
-        String sql = "INSERT INTO suppliers (name, email, phone_number, billing_address) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO suppliers (name, email, phone_number, billing_address, shipping_address, lead_time) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, supplier.getName());
             statement.setString(2, supplier.getEmail());
             statement.setString(3, supplier.getPhoneNumber());
             statement.setString(4, supplier.getBillingAddress());
+            statement.setString(5, supplier.getShippingAddress());
+            statement.setDouble(6, supplier.getLeadTime());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,7 +59,9 @@ public class SupplierDAO {
                         resultSet.getString("name"),
                         resultSet.getString("email"),
                         resultSet.getString("phone_number"),
-                        resultSet.getString("billing_address")
+                        resultSet.getString("billing_address"),
+                        resultSet.getString("shipping_address"),
+                        resultSet.getDouble("lead_time")
                 );
             }
         } catch (SQLException e) {
@@ -59,7 +81,9 @@ public class SupplierDAO {
                         resultSet.getString("name"),
                         resultSet.getString("email"),
                         resultSet.getString("phone_number"),
-                        resultSet.getString("billing_address")
+                        resultSet.getString("billing_address"),
+                        resultSet.getString("shipping_address"),
+                        resultSet.getDouble("lead_time")
                 );
                 suppliers.add(supplier);
             }
@@ -70,13 +94,15 @@ public class SupplierDAO {
     }
 
     public void updateSupplier(Supplier supplier) {
-        String sql = "UPDATE suppliers SET name = ?, email = ?, phone_number = ?, billing_address = ? WHERE supplier_id = ?";
+        String sql = "UPDATE suppliers SET name = ?, email = ?, phone_number = ?, billing_address = ?, shipping_address = ?, lead_time = ? WHERE supplier_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, supplier.getName());
             statement.setString(2, supplier.getEmail());
             statement.setString(3, supplier.getPhoneNumber());
             statement.setString(4, supplier.getBillingAddress());
-            statement.setInt(5, supplier.getSupplierId());
+            statement.setString(5, supplier.getShippingAddress());
+            statement.setDouble(6, supplier.getLeadTime());
+            statement.setInt(7, supplier.getSupplierId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

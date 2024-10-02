@@ -33,6 +33,14 @@ public class SupplierController {
     private TableColumn<Supplier, String> billingAddressColumn;
 
     @FXML
+    private TableColumn<Supplier, String> shippingAddressColumn;
+
+    @FXML
+    private TableColumn<Supplier, Double> leadTimeColumn;
+
+
+
+    @FXML
     private Button addSupplierButton;
 
     @FXML
@@ -54,6 +62,8 @@ public class SupplierController {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         billingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("billingAddress"));
+        shippingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
+        leadTimeColumn.setCellValueFactory(new PropertyValueFactory<>("leadTime"));
 
         // Initialize the ObservableList and set it to the TableView
         supplierList = FXCollections.observableArrayList();
@@ -65,6 +75,7 @@ public class SupplierController {
 
     // Refresh the suppliers table with data from the database
     public void refreshTable() {
+        supplierDAO = new SupplierDAO();
         List<Supplier> suppliers = supplierDAO.getAllSuppliers();
         supplierList.setAll(suppliers);
     }
@@ -73,10 +84,5 @@ public class SupplierController {
     @FXML
     private void addSupplierPopup() {
         // Implementation for opening add supplier popup
-    }
-
-    // Method to initialize the SupplierDAO (to be called from another part of the application)
-    public void setSupplierDAO(SupplierDAO supplierDAO) {
-        this.supplierDAO = supplierDAO;
     }
 }

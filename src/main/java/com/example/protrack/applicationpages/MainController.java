@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class MainController {
@@ -74,7 +73,7 @@ public class MainController {
 
     @FXML
     private void suppliers() {
-        loadContent("/com/example/protrack/suppliers.fxml");
+        loadContent("/supplier/suppliers.fxml");
     }
 
     @FXML

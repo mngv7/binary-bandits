@@ -39,12 +39,12 @@
 
                 <columns>
                     <TableColumn fx:id="supplierIdColumn" text="ID" />
-                    <TableColumn fx:id="supplierNameColumn" text="Supplier Name" />
+                    <TableColumn fx:id="nameColumn" text="Supplier Name" />
                     <TableColumn fx:id="emailColumn" text="Email" />
                     <TableColumn fx:id="phoneNumberColumn" text="Phone Number" />
                     <TableColumn fx:id="billingAddressColumn" text="Billing Address" />
                     <TableColumn fx:id="shippingAddressColumn" text="Shipping Address" />
-                    <TableColumn fx:id="statusColumn" text="Status"/>
+                    <TableColumn fx:id="leadTimeColumn" text="Status"/>
                 </columns>
             </TableView>
         </VBox>
