@@ -43,15 +43,8 @@
                 <Label text="Shipping Address:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
                 <TextField fx:id="shippingAddressField" promptText="Shipping Address" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-                <Label text="Status:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                <ComboBox fx:id="statusCombo" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Active" />
-                            <String fx:value="Inactive" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
+                <Label text="Lead Time:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                <TextField fx:id="leadTimeField" promptText="Lead Time" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
             </GridPane>
 
             <Region minHeight="10"/>

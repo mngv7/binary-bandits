@@ -1,9 +1,9 @@
 package com.example.protrack.supplier;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class AddSupplierController {
 
@@ -25,20 +25,43 @@ public class AddSupplierController {
 
     @FXML
     private void saveSupplier() {
-        // Implement the logic to save the supplier to the database
         String name = supplierNameField.getText();
         String email = emailField.getText();
         String phone = phoneNumberField.getText();
         String billingAddress = billingAddressField.getText();
-        //String shippingAddress = shippingAddressField.getText();
-        //Double leadTime = leadTimeField.getText();
+        String shippingAddress = shippingAddressField.getText();
+        Double leadTime;
+        String leadTimeText = leadTimeField.getText();
 
-        // Call the DAO to save the supplier (implement DAO logic accordingly)
-        //Supplier supplier = new Supplier(0, name, email, phone, billingAddress, shippingAddress, leadTime);
-        //SupplierDAO supplierDAO = new SupplierDAO();
-        //supplierDAO.addSupplier(supplier);
+        // Validate leadTimeField input to ensure it's a double
+        try {
+            leadTime = Double.parseDouble(leadTimeText);
+        } catch (NumberFormatException e) {
+            // Display an alert if input is not a valid double
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.setHeaderText("Invalid Input");
+            alert.setContentText("Please check all fields are valid.");
+            alert.setGraphic(null);
 
-        // Close the popup after saving
+            ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
+            alert.getButtonTypes().setAll(confirmBtn);
+
+            Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+            confirmButton.setStyle("-fx-background-color: #390b91; -fx-text-fill: white; -fx-style: bold;");
+
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+
+            alert.showAndWait();
+            return; // Exit the method if validation fails
+        }
+
+        // Calls DAO to save the supplier
+        Supplier supplier = new Supplier(0, name, email, phone, billingAddress, shippingAddress, leadTime);
+        SupplierDAO supplierDAO = new SupplierDAO();
+        supplierDAO.addSupplier(supplier);
+
+        // Closes popup after saving
         closePopup();
     }
 
