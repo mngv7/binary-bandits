@@ -6,6 +6,7 @@
 <?import javafx.scene.*?>
 
 <?import java.lang.String?>
+<?import com.sun.javafx.scene.control.IntegerField?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.supplier.EditSupplierController"
@@ -19,8 +20,7 @@
             </columnConstraints>
             <Label text="View Supplier" styleClass="parts-title-label" GridPane.rowIndex="0"/>
             <Button fx:id="closePopupButton" text="❌" GridPane.halignment="RIGHT"
-                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="1" styleClass="close-button"/>
-            <!-- onaction=closepupup -->
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="1" styleClass="close-button" onAction="#closePopup"/>
         </GridPane>
     </top>
 
@@ -40,8 +40,8 @@
                 <Label fx:id="supplierIdLabel" styleClass="parts-table-label" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
 
                 <Label text="Supplier Name:" styleClass="parts-table-label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <Label fx:id="supplierNameLabel" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                <TextField fx:id="supplierNameField" promptText="Supplier Name" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <Label fx:id="nameLabel" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <TextField fx:id="nameField" promptText="Supplier Name" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
 
                 <Label text="Email:" styleClass="parts-table-label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 <Label fx:id="emailLabel" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
@@ -59,16 +59,10 @@
                 <Label fx:id="shippingAddressLabel" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
                 <TextField fx:id="shippingAddressField" promptText="Shipping Address" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
 
-                <Label text="Status:" styleClass="parts-table-label" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-                <Label fx:id="statusLabel" GridPane.columnIndex="2" GridPane.rowIndex="6"/>
-                <ComboBox fx:id="statusCombo" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Active" />
-                            <String fx:value="Inactive" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
+                <Label text="Lead Time:" styleClass="parts-table-label" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                <Label fx:id="leadTimeLabel" GridPane.columnIndex="2" GridPane.rowIndex="6"/>
+                <TextField fx:id="leadTimeField" GridPane.columnIndex="2" GridPane.rowIndex="6" visible="false"/>
+
             </GridPane>
 
             <Region minHeight="5"/>
