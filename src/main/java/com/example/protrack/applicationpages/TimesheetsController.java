@@ -76,46 +76,9 @@ public class TimesheetsController {
      */
     @FXML
     protected void onClosePopupButton() {
-        // Create a confirmation alert
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.initStyle(StageStyle.UNDECORATED);
-        alert.setHeaderText("Cancel Part Creation");
-        alert.setContentText("Are you sure you want to cancel?");
-        alert.setGraphic(null);
-
-        // Apply custom stylesheet to the alert dialog
-        DialogPane dialogPane = alert.getDialogPane();
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("cancelAlert.css")).toExternalForm();
-        dialogPane.getStyleClass().add("cancelDialog");
-        dialogPane.getStylesheets().add(stylesheet);
-
-        // Define the confirm and back buttons
-        ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
-        ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
-        alert.getButtonTypes().setAll(confirmBtn, backBtn);
-
-        // Get the current stage (popup window)
+        // Get the current stage (popup window) and close it
         Stage stage = (Stage) closePopupButton.getScene().getWindow();
-
-        // Set button data for confirm and back buttons
-        Node confirmButton = dialogPane.lookupButton(confirmBtn);
-        ButtonBar.setButtonData(confirmButton, ButtonBar.ButtonData.LEFT);
-        confirmButton.setId("confirmBtn");
-        Node backButton = dialogPane.lookupButton(backBtn);
-        ButtonBar.setButtonData(backButton, ButtonBar.ButtonData.RIGHT);
-        backButton.setId("backBtn");
-
-        // Show the alert and handle the user's response
-        alert.showAndWait();
-        if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
-            // Close the stage if user confirms cancellation
-            alert.close();
-            stage.close();
-        } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
-            // Close the alert if user decides to go back
-            alert.close();
-        }
+        stage.close();
     }
 
     /**
