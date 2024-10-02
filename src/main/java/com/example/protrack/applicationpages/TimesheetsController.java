@@ -25,10 +25,6 @@ public class TimesheetsController {
     @FXML
     private Label employeeId;
     @FXML
-    private DatePicker startDatePicker;
-    @FXML
-    private DatePicker endDatePicker;
-    @FXML
     private TextField startTimeField;
     @FXML
     private TextField endTimeField;
@@ -51,8 +47,6 @@ public class TimesheetsController {
         BooleanBinding emptyFields = Bindings.createBooleanBinding(() ->
             startTimeField.getText().trim().isEmpty() ||
                 endTimeField.getText().trim().isEmpty() ||
-                startDatePicker.getEditor().getText() == null ||
-                endDatePicker.getEditor().getText() == null ||
                 productBuildComboBox.getSelectionModel().isEmpty(),
                 startTimeField.textProperty(),
                 endTimeField.textProperty()
@@ -64,8 +58,6 @@ public class TimesheetsController {
     // Method to clear input fields
     private void clearPartInputFields() {
         productBuildComboBox.getSelectionModel().clearSelection();
-        startDatePicker.getEditor().clear();
-        endDatePicker.getEditor().clear();
         startTimeField.clear();
         endTimeField.clear();
     }
