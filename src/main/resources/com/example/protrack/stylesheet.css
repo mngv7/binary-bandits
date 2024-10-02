@@ -429,5 +429,14 @@
     -fx-padding: 15px; /* Adjusted padding */
 }
 
+.subheading {
+    -fx-font-size: 18px; /* Adjust font size as needed */
+    -fx-font-weight: bold; /* Make the text bold */
+    -fx-padding: 5px; /* Add some padding */
+}
+
+.subheading2 {
+    -fx-font-weight: bold; /* Make the text bold */
+}
 
 <img src="application_logo.png">
