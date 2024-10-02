@@ -18,14 +18,10 @@ public class AddSupplierController {
     @FXML
     private TextField shippingAddressField;
     @FXML
-    private ComboBox<String> statusCombo;
+    private TextField leadTimeField;
 
     @FXML
-    private void initialize() {
-        // Initialize the status combo box with options
-        statusCombo.getItems().addAll("Active", "Inactive");
-        statusCombo.setValue("Active"); // Set default value
-    }
+    private void initialize() { }
 
     @FXML
     private void saveSupplier() {
@@ -34,13 +30,13 @@ public class AddSupplierController {
         String email = emailField.getText();
         String phone = phoneNumberField.getText();
         String billingAddress = billingAddressField.getText();
-        String shippingAddress = shippingAddressField.getText();
-        String status = statusCombo.getValue();
+        //String shippingAddress = shippingAddressField.getText();
+        //Double leadTime = leadTimeField.getText();
 
         // Call the DAO to save the supplier (implement DAO logic accordingly)
-        Supplier supplier = new Supplier(0, name, email, phone, billingAddress);
-        SupplierDAO supplierDAO = new SupplierDAO();
-        supplierDAO.addSupplier(supplier);
+        //Supplier supplier = new Supplier(0, name, email, phone, billingAddress, shippingAddress, leadTime);
+        //SupplierDAO supplierDAO = new SupplierDAO();
+        //supplierDAO.addSupplier(supplier);
 
         // Close the popup after saving
         closePopup();

@@ -9,6 +9,8 @@ import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
+import com.example.protrack.supplier.Supplier;
+import com.example.protrack.supplier.SupplierDAO;
 import com.example.protrack.timesheets.Timesheets;
 import com.example.protrack.timesheets.TimesheetsDAO;
 import com.example.protrack.users.ManagerialUser;
@@ -246,6 +248,14 @@ public class Main extends Application {
             productBuildDAO.newProductBuild(new ProductBuild(503, 2, 0.00F, 36014));
             productBuildDAO.newProductBuild(new ProductBuild(504, 2, 0.00F, 45021));
             productBuildDAO.newProductBuild(new ProductBuild(505, 3, 0.00F, 67890));
+
+        }
+
+        SupplierDAO supplierDAO = new SupplierDAO();
+        supplierDAO.createTable();
+
+        if (supplierDAO.getAllSuppliers().isEmpty()) {
+            supplierDAO.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
 
         }
 
