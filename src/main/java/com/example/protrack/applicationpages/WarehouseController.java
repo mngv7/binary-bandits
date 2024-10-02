@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -46,6 +47,9 @@ public class WarehouseController {
     private ObservableList<WorkstationPartDBTable> whPartDBTable;
 
     private int warehouseId = 0;
+
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
 
     public void setMainControllerInstance (MainController controller) {
         this.mainController = controller;
@@ -234,6 +238,29 @@ public class WarehouseController {
         for (int i = 0; i < requestsToPassToPage.size(); ++i) {
             System.out.println("Request ID " + requestsToPassToPage.get(i).getRequestId() + " is in list.");
         }
+
+
         /* TODO: Spawn new FXML page and set items on init with the list above. */
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/ViewPartRequests.fxml"));
+            Parent ViewPartsRoot = fxmlLoader.load();
+
+            Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Part Requests");
+
+
+            // Set the scene for the pop-up
+            Scene scene = new Scene(ViewPartsRoot, WIDTH, HEIGHT);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+            popupStage.setScene(scene);
+            popupStage.setY(150);
+            popupStage.setX(390);
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

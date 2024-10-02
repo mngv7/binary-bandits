@@ -60,13 +60,13 @@
                 </TableView>
 
                 <!-- Pagination -->
-                <HBox>
-                    <children>
-                        <Button text="Previous"/>
-                        <Label text="1"/>
-                        <Button text="Next"/>
-                    </children>
-                </HBox>
+<!--                <HBox>-->
+<!--                    <children>-->
+<!--                        <Button text="Previous"/>-->
+<!--                        <Label text="1"/>-->
+<!--                        <Button text="Next"/>-->
+<!--                    </children>-->
+<!--                </HBox>-->
 
                 <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER">
                     <VBox spacing="20" styleClass="create-product-scrollpane" VBox.vgrow="ALWAYS">
