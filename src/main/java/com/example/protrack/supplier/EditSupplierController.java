@@ -97,8 +97,8 @@ public class EditSupplierController {
         currentSupplier.setShippingAddress(shippingAddressField.getText());
         currentSupplier.setLeadTime(Double.parseDouble(leadTimeField.getText()));
 
-        SupplierDAO supplierDAO = new SupplierDAO();
-        supplierDAO.updateSupplier(currentSupplier);
+        SupplierDAOImplementation supplierDAOImplementation = new SupplierDAOImplementation();
+        supplierDAOImplementation.updateSupplier(currentSupplier);
 
         // Update the labels to display the new values
         nameLabel.setText(currentSupplier.getName());
@@ -135,8 +135,8 @@ public class EditSupplierController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == confirmBtn) {
-                SupplierDAO supplierDAO = new SupplierDAO();  // Use SupplierDAO instead of CustomerDAO
-                supplierDAO.deleteSupplier(currentSupplier.getSupplierId());  // Use supplier.getSupplierId() instead of customer.getCustomerId()
+                SupplierDAOImplementation supplierDAOImplementation = new SupplierDAOImplementation();  // Use SupplierDAO instead of CustomerDAO
+                supplierDAOImplementation.deleteSupplier(currentSupplier.getSupplierId());  // Use supplier.getSupplierId() instead of customer.getCustomerId()
                 closePopup(); // Close the popup after deletion
             }
         });

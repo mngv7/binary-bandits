@@ -48,7 +48,7 @@ public class SupplierController {
     private Button addSupplierButton;
 
     private ObservableList<Supplier> supplierList;
-    private SupplierDAO supplierDAO;
+    private SupplierDAOImplementation supplierDAOImplementation;
 
     // Initialize the controller
     @FXML
@@ -84,8 +84,8 @@ public class SupplierController {
 
     // Refresh the suppliers table with data from the database
     public void refreshTable() {
-        supplierDAO = new SupplierDAO();
-        List<Supplier> suppliers = supplierDAO.getAllSuppliers();
+        supplierDAOImplementation = new SupplierDAOImplementation();
+        List<Supplier> suppliers = supplierDAOImplementation.getAllSuppliers();
         supplierList.setAll(suppliers);
     }
 

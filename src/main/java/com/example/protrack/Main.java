@@ -1,7 +1,7 @@
 package com.example.protrack;
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.productbuild.ProductBuild;
@@ -10,7 +10,7 @@ import com.example.protrack.products.*;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
 import com.example.protrack.supplier.Supplier;
-import com.example.protrack.supplier.SupplierDAO;
+import com.example.protrack.supplier.SupplierDAOImplementation;
 import com.example.protrack.timesheets.Timesheets;
 import com.example.protrack.timesheets.TimesheetsDAO;
 import com.example.protrack.users.ManagerialUser;
@@ -27,15 +27,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.xml.stream.Location;
 import java.sql.Date;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -160,12 +155,12 @@ public class Main extends Application {
 
         List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
 
-        CustomerDAO customerDAO = new CustomerDAO();
-        customerDAO.createTable();
-        if (customerDAO.isTableEmpty()) {
-            customerDAO.addCustomer(new Customer(1, "Jane", "Doe", "jane.doe@example.com", "0400187362", "billingAddress", "shippingAddress", "Active"));
+        CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
+        customerDAOImplementation.createTable();
+        if (customerDAOImplementation.isTableEmpty()) {
+            customerDAOImplementation.addCustomer(new Customer(1, "Jane", "Doe", "jane.doe@example.com", "0400187362", "billingAddress", "shippingAddress", "Active"));
         }
-        List<Customer> customers = customerDAO.getAllCustomers();
+        List<Customer> customers = customerDAOImplementation.getAllCustomers();
 
         WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
@@ -251,11 +246,11 @@ public class Main extends Application {
 
         }
 
-        SupplierDAO supplierDAO = new SupplierDAO();
-        supplierDAO.createTable();
+        SupplierDAOImplementation supplierDAOImplementation = new SupplierDAOImplementation();
+        supplierDAOImplementation.createTable();
 
-        if (supplierDAO.getAllSuppliers().isEmpty()) {
-            supplierDAO.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
+        if (supplierDAOImplementation.getAllSuppliers().isEmpty()) {
+            supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
 
         }
 

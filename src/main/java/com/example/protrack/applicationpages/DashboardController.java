@@ -1,7 +1,7 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.products.BillOfMaterialsDAO;
@@ -109,7 +109,7 @@ public class DashboardController {
 
     private void populateHashMap(Integer month) {
         List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
-        List<Customer> customers = new CustomerDAO().getAllCustomers();
+        List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
 
         // Initialize DAOs
         WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);

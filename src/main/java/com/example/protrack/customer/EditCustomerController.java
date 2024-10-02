@@ -1,7 +1,5 @@
 package com.example.protrack.customer;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -61,7 +59,7 @@ public class EditCustomerController {
     private boolean edit = false;
 
     private Customer customer;
-    private CustomerDAO customerDAO;
+    private CustomerDAOImplementation customerDAOImplementation;
 
     public void initialize() {
         // Hide editable fields initially
@@ -171,8 +169,8 @@ public class EditCustomerController {
         customer.setShippingAddress(shippingAddress);
         customer.setStatus(status);
 
-        customerDAO = new CustomerDAO();
-        customerDAO.updateCustomer(customer);
+        customerDAOImplementation = new CustomerDAOImplementation();
+        customerDAOImplementation.updateCustomer(customer);
 
         resetFieldsToOriginal();
     }
@@ -200,8 +198,8 @@ public class EditCustomerController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == confirmBtn) {
-                customerDAO = new CustomerDAO();
-                customerDAO.deleteCustomer(customer.getCustomerId());
+                customerDAOImplementation = new CustomerDAOImplementation();
+                customerDAOImplementation.deleteCustomer(customer.getCustomerId());
                 closePopup(); // Close the popup after deletion
             }
         });

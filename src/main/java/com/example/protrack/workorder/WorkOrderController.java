@@ -2,7 +2,7 @@ package com.example.protrack.workorder;
 
 import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import javafx.collections.FXCollections;
@@ -103,10 +103,10 @@ public class WorkOrderController {
     public void refreshTable() {
         // Create DAOs for fetching data
         UsersDAO usersDAO = new UsersDAO();
-        CustomerDAO customerDAO = new CustomerDAO();
+        CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
         WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(
                 usersDAO.getProductionUsers(),
-                customerDAO.getAllCustomers()
+                customerDAOImplementation.getAllCustomers()
         );
 
         // Clear the current list and load the updated work orders
@@ -197,10 +197,10 @@ public class WorkOrderController {
     public void addWorkOrder(ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, Integer productId) {
         // Create DAOs for fetching data
         UsersDAO usersDAO = new UsersDAO();
-        CustomerDAO customerDAO = new CustomerDAO();
+        CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
         WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(
                 usersDAO.getProductionUsers(),
-                customerDAO.getAllCustomers()
+                customerDAOImplementation.getAllCustomers()
         );
 
         // Create a new work order and add it to the database
