@@ -1,8 +1,7 @@
 package com.example.protrack.workorder;
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
-import com.example.protrack.products.Product;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
@@ -109,7 +108,7 @@ public class EditWorkOrderController {
 
     public void initialize() {
         usersList = FXCollections.observableArrayList(new UsersDAO().getProductionUsers());
-        customerList = FXCollections.observableArrayList(new CustomerDAO().getAllCustomers());
+        customerList = FXCollections.observableArrayList(new CustomerDAOImplementation().getAllCustomers());
 
         orderOwnerComboBox.setItems(usersList);
         customerComboBox.setItems(customerList);

@@ -33,7 +33,7 @@ public class AddCustomerController {
     @FXML
     private Button cancelButton;
 
-    private CustomerDAO customerDAO;
+    private CustomerDAOImplementation customerDAOImplementation;
 
     public void initialize() {
         // Set default values or clear fields
@@ -79,8 +79,8 @@ public class AddCustomerController {
         );
 
         // Save customer using DAO
-        customerDAO = new CustomerDAO();
-        customerDAO.addCustomer(newCustomer);
+        customerDAOImplementation = new CustomerDAOImplementation();
+        customerDAOImplementation.addCustomer(newCustomer);
 
         // Close the window
         closePopup();
