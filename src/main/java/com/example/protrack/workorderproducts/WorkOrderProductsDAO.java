@@ -39,5 +39,7 @@ public interface WorkOrderProductsDAO {
      */
     List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId);
 
+    List<WorkOrderProduct> getAllWorkOrderProducts();
+
     boolean isTableEmpty();
 }
