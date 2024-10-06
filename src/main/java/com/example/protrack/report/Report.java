@@ -2,28 +2,25 @@ package com.example.protrack.report;
 
 import com.example.protrack.workorder.WorkOrder;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public interface Report {
 
     // Maps each workOrder to its forecasted completion time and actual completion time
     // production & expected production             line chart
-    Map<Long, Double> forecastWorkOrderChartValues();
+    Map<Double, Double> forecastWorkOrderChartValues();
 
     // to be used for cumulative area chart or burndown, expected cycle time
-    Map<Long, Double> calculateOrdersExpectedCycleTimeChartValues();
+    Map<Double, Double> calculateOrdersExpectedCycleTimeChartValues();
 
-    Map<Long, Double> calculateOrdersActualCycleTimeChartValues();
+    Map<Double, Double> calculateOrdersActualCycleTimeChartValues();
 
     // Throughput line chart, completed production over time
-    Map<Long, Double> calculateThroughputChartValues();
+    Map<Double, Double> calculateThroughputChartValues();
 
-    // All below can be a bar chart
-    Double calculateDefectRate();
-
-    Double calculatePerfectRate();
+    // Calculate on-schedule rate instead of perfect rate
+    Double calculateOnScheduleRate();
 
     Map<String, Integer> calculateTotalOrdersByStatus();
 
@@ -32,8 +29,6 @@ public interface Report {
     Integer calculateTotalProductsProduced();
 
     Integer calculateTotalPartsUsed();
-
-    Double calculateTotalProductionTime();
 
     Double calculateTotalProductionCost();
 }

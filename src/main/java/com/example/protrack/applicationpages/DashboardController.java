@@ -5,6 +5,7 @@ import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.products.BillOfMaterialsDAO;
+import com.example.protrack.report.OrgReport;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
@@ -13,25 +14,26 @@ import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Locale;
+import java.util.*;
 
 public class DashboardController {
     @FXML
@@ -52,12 +54,27 @@ public class DashboardController {
     @FXML
     public VBox partUsage;
 
+    @FXML
+    public HBox graphContainer; // HBox to hold the graphs
+
     HashMap<Integer, Integer> sumOfParts = new HashMap<>();
 
+    OrgReport orgReport;
+
+    List<Customer> customers;
+    List<ProductionUser> productionUsers;
+
     public void initialize() {
+        CustomerDAOImplementation customerDAO = new CustomerDAOImplementation();
+        customers = customerDAO.getAllCustomers();
+
+        UsersDAO usersDAO = new UsersDAO();
+        productionUsers = usersDAO.getProductionUsers();
+
         setLastThreeMonths();
         initializeHashMap();
         loadMonthlyReport();
+        displayGraphs();
     }
 
     private void setLastThreeMonths() {
@@ -139,7 +156,6 @@ public class DashboardController {
     }
 
     public void displayParts() {
-
         inventoryUsageGrid.getChildren().clear();
 
         Label partNameLabel = new Label("Part Name");
@@ -205,4 +221,148 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+
+    public void displayGraphs() {
+        WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
+        WorkOrderProductsDAOImplementation workOrderProductsDAO = new WorkOrderProductsDAOImplementation();
+
+        orgReport = new OrgReport(workOrdersDAO, workOrderProductsDAO);
+
+        graphContainer.getChildren().clear(); // Clear previous graphs
+
+        // Create Work Order Forecasting Line Chart
+        ScatterChart<Number, Number> forecastingChart = createWorkOrderForecastingChart();
+
+        // Create Pie Chart for On Schedule vs Behind Schedule
+        PieChart schedulePieChart = createSchedulePieChart();
+
+        // Create Bar Chart for Total Parts Used, Total Products Produced, Total Cost
+        BarChart<String, Number> metricsBarChart = createMetricsBarChart();
+
+        // Add charts to the graph container
+        graphContainer.getChildren().addAll(forecastingChart, schedulePieChart, metricsBarChart);
+    }
+
+    private ScatterChart<Number, Number> createWorkOrderForecastingChart() {
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLowerBound(0);
+        xAxis.setTickUnit(1);
+        xAxis.setLabel("Expected Completion (days)");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLowerBound(0);
+        yAxis.setTickUnit(5);
+        yAxis.setLabel("Expected Production Time (hours)");
+
+        ScatterChart<Number, Number> scatterChart = new ScatterChart<>(xAxis, yAxis);
+        scatterChart.setTitle("Work Order Forecasting");
+
+        Map<Double, Double> forecastData = orgReport.forecastWorkOrderChartValues();
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName("Work Orders: (Colour changes according to no. of products and estimated completion time)");
+
+        for (Map.Entry<Double, Double> entry : forecastData.entrySet()) {
+            if (entry.getKey() >= 0 && entry.getKey() <= 30) {
+                // Debugging output
+                System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+
+                // Create a Circle with size based on the value
+                Circle circle = new Circle(entry.getValue() / 2); // Minimum size to avoid very small circles
+                circle.setFill(getColorBasedOnCircleSizeAndX(entry.getKey(), entry.getValue()));
+
+                // Create a data point with the custom Circle node
+                XYChart.Data<Number, Number> dataPoint = new XYChart.Data<>(entry.getKey(), entry.getValue());
+                dataPoint.setNode(circle); // Use the custom node
+
+                series.getData().add(dataPoint);
+            }
+        }
+
+        scatterChart.getData().add(series);
+        return scatterChart;
+    }
+
+    private Color getColorBasedOnCircleSizeAndX(double xValue, double circleSize) {
+        // Clamp both values to the range [0, 30]
+        xValue = Math.max(0, Math.min(xValue, 30));
+        circleSize = Math.max(0, Math.min(circleSize, 30));
+
+        // Normalize both values to the range [0, 1]
+        double normalizedX = 1 - (xValue / 30.0); // Closer to 0 means more intense color
+        double normalizedSize = 1 - (circleSize / 30.0); // Larger size means more intense color
+
+        // Combine the normalized values (weighted if necessary)
+        double combinedValue = (normalizedX + normalizedSize) / 2; // Average for a balanced effect
+
+        // Calculate the RGB components based on the combined normalized value
+        int red = (int) (255 * (1 - combinedValue)); // Increase red as the combined value decreases
+        int green = (int) (255 * combinedValue); // Increase green as the combined value increases
+        int blue = 0; // Keep blue at 0
+
+        return Color.rgb(red, green, blue); // Create the color
+    }
+
+
+
+
+    private PieChart createSchedulePieChart() {
+        // Implementation of pie chart creation
+        PieChart pieChart = new PieChart();
+
+        Map<String, Integer> orderStatusCounts = orgReport.calculateTotalOrdersByStatus();
+        for (Map.Entry<String, Integer> entry : orderStatusCounts.entrySet()) {
+            pieChart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue()));
+        }
+
+        return pieChart;
+    }
+
+    private BarChart<String, Number> createMetricsBarChart() {
+        // Implementation of metrics bar chart creation
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        barChart.setTitle("Production Metrics");
+
+        // Prepare bar chart data
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Metrics");
+
+        // Add data for Total Parts Used, Total Products Produced, and Total Orders
+        series.getData().add(new XYChart.Data<>("Total Parts Used", orgReport.calculateTotalPartsUsed()));
+        series.getData().add(new XYChart.Data<>("Total Products Produced", orgReport.calculateTotalProductsProduced()));
+        series.getData().add(new XYChart.Data<>("Total Orders", orgReport.calculateTotalOrders()));
+
+        // Add the series to the bar chart
+        barChart.getData().add(series);
+
+        // Color customization for the bars
+        for (XYChart.Data<String, Number> data : series.getData()) {
+            if (data.getYValue().doubleValue() > 0) {
+                // Customize colors based on the metric's name
+                if (data.getXValue().equals("Total Parts Used")) {
+                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
+                        if (newNode != null) {
+                            newNode.setStyle("-fx-bar-fill: blue;"); // Set color for Total Parts Used
+                        }
+                    });
+                } else if (data.getXValue().equals("Total Products Produced")) {
+                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
+                        if (newNode != null) {
+                            newNode.setStyle("-fx-bar-fill: green;"); // Set color for Total Products Produced
+                        }
+                    });
+                } else if (data.getXValue().equals("Total Orders")) {
+                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
+                        if (newNode != null) {
+                            newNode.setStyle("-fx-bar-fill: red;"); // Set color for Total Orders
+                        }
+                    });
+                }
+            }
+        }
+
+        return barChart;
+    }
+
 }
