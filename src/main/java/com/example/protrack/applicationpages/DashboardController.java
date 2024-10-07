@@ -75,7 +75,42 @@ public class DashboardController {
         initializeHashMap();
         loadMonthlyReport();
         displayGraphs();
+        loadPartUsageStatistics();
     }
+
+    private void loadPartUsageStatistics() {
+        // Get the current month
+        YearMonth currentMonth = YearMonth.now();
+
+        // Create a map to store total part usage for each month
+        HashMap<String, Integer> monthlyTotalUsage = new HashMap<>();
+
+        // Loop through the last 6 months
+        for (int i = 0; i < 6; i++) {
+            YearMonth month = currentMonth.minusMonths(i);
+            String monthName = month.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+            int monthValue = month.getMonthValue();
+
+            // Reset the sumOfParts for each month
+            initializeHashMap();
+
+            // Populate the sumOfParts for the current month
+            populateHashMap(monthValue);
+
+            // Calculate the total usage for the current month
+            int totalUsageForMonth = sumOfParts.values().stream().mapToInt(Integer::intValue).sum();
+
+            // Store the total usage for the current month
+            monthlyTotalUsage.put(monthName, totalUsageForMonth);
+        }
+
+        for (Map.Entry<String, Integer> entry : monthlyTotalUsage.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
+    }
+
+
+
 
     private void setLastThreeMonths() {
         // Get the current month
