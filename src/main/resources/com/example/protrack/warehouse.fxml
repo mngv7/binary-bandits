@@ -35,13 +35,13 @@
                         <!--set warehouse id column-->
                         <TableColumn text="Workstation Id">
                             <cellValueFactory>
-                                <PropertyValueFactory property="WorkstationId"/>
+                                <PropertyValueFactory property="workstationLocationId"/>
                             </cellValueFactory>
                         </TableColumn>
                         <!--set Workstation Name column-->
                         <TableColumn text="Workstation Name">
                             <cellValueFactory>
-                                <PropertyValueFactory property="WorkstationName"/>
+                                <PropertyValueFactory property="workstationLocationAlias"/>
                             </cellValueFactory>
                         </TableColumn>
                         <!--set Workstation Location column-->
