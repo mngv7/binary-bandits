@@ -1,9 +1,5 @@
 package com.example.protrack.timesheets;
 
-import com.example.protrack.productbuild.ProductBuild;
-import com.example.protrack.productbuild.ProductBuildDAO;
-import com.example.protrack.users.ProductionUser;
-
 import java.time.LocalDateTime;
 
 public class Timesheets {
@@ -12,8 +8,11 @@ public class Timesheets {
     private Integer employeeID;
     private Integer productOrderID;
 
+    // Constructor initializes the timesheets with specific attributes
     public Timesheets (LocalDateTime startTime, LocalDateTime endTime, Integer employeeID, Integer productOrderID) {
-
+        if (startTime == null || endTime == null || employeeID == null || productOrderID == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
         if (endTime.isAfter(LocalDateTime.now())) {
             throw new IllegalArgumentException("End Time must be past/current time");
         }
@@ -24,15 +23,16 @@ public class Timesheets {
         this.productOrderID = productOrderID;
     }
 
+    // Getter for the Timesheets start time
     public LocalDateTime getStartTime() { return startTime; }
 
+    // Getter for the Timesheets start time
     public LocalDateTime getEndTime() { return endTime; }
 
+    // Getter for the Timesheets employee ID
     public Integer getEmployeeID() { return employeeID; }
 
-    public void setEmployeeID(Integer employeeID) {this.employeeID = employeeID; }
-
+    // Getter for the Timesheets Product order ID
     public Integer getProductOrderID() { return productOrderID; }
 
-    public void setProductOrderID(Integer productOrderID) {this.productOrderID = productOrderID; }
 }
