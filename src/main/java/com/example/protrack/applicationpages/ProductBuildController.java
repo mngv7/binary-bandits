@@ -111,6 +111,7 @@ public class ProductBuildController {
     private void loadBuildsFromDB() {
 
         try {
+            productBuildVBox.getChildren().clear();
             ProductBuildDAO productBuildDAO = new ProductBuildDAO();
             List<ProductBuild> buildList = productBuildDAO.getAllProductBuildsWithPOID(currentProductOrderId);
 
@@ -134,7 +135,7 @@ public class ProductBuildController {
                 newRow.getChildren().addAll(idLabel, idLabel2, idLabel3, idLabel4);
                 newRow.getStyleClass().add("dynamic-vbox");
 
-                newRow.setOnMouseClicked(event -> selectProductBuild(newRow, productId, buildId));
+                newRow.setOnMouseClicked(event -> selectProductBuild(newRow, productId, buildId, buildCompletion));
 
                 productBuildVBox.getChildren().add(newRow);
             }
@@ -148,7 +149,7 @@ public class ProductBuildController {
         PBWSRequirementTableView.getItems().addAll(currentBuildsList);
     }
 
-    private void selectProductBuild(VBox vBox, int productId, int buildId) {
+    private void selectProductBuild(VBox vBox, int productId, int buildId, float buildCompletion) {
         //System.out.println("This is productID in pb " + productId);
 
         currentProductBuild = buildId;
@@ -167,6 +168,8 @@ public class ProductBuildController {
 
         PBWSRequirementTableView.getItems().clear();
         PBWSRequirementTableView.getItems().addAll(productBuildWSAmtList);
+
+
         //Now using the productBoM generate the table.
 
     }
@@ -313,9 +316,22 @@ public class ProductBuildController {
     public void onCommitButton(ActionEvent actionEvent) {
         int canCommit = 1;
 
+        ProductBuildDAO productBuildDAO = new ProductBuildDAO();
+        List<ProductBuild> currentPBList = productBuildDAO.getAllProductBuildsWithPBID(currentProductBuild);
+
+
+
         for (ProductBuildWSAmt build : currentBuildsList) {
             if (build.getQuantity() < build.getReqAmount()) {
+                System.out.println("THis is build" + build.getPartId() + " " + build.getQuantity() + "/" + build.getReqAmount());
                 canCommit = 0;
+                break;
+            }
+        }
+
+        for (ProductBuild build : currentPBList) {
+            if (build.getBuildCompletion() == 100.00f) {
+                canCommit = 2;
                 break;
             }
         }
@@ -325,7 +341,9 @@ public class ProductBuildController {
         shade out commit button
          */
         if (canCommit == 0) {
-            System.out.println("Cannot commit");
+            System.out.println("Cannot commit, not enough resources");
+        } else if (canCommit == 2) {
+            System.out.println("Cannot commit as completed");
         } else {
             LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
 
@@ -346,11 +364,12 @@ public class ProductBuildController {
 
             }
 
-            ProductBuildDAO productBuildDAO = new ProductBuildDAO();
+            //ProductBuildDAO productBuildDAO = new ProductBuildDAO();
             productBuildDAO.updateBuildCompletion(currentProductBuild, 100.00f);
             System.out.println("Got pb to 100%");
 
             refreshReqTable();
+            loadBuildsFromDB();
 
         }
     }

@@ -113,6 +113,38 @@ public class ProductBuildDAO {
         return productBuilds;
     }
 
+    public List<ProductBuild> getAllProductBuildsWithPBID(int currentProductBuildId) {
+        // empty list of products
+        List<ProductBuild> productBuilds = new ArrayList<>();
+
+        // query being run, get all from products
+        String query = "SELECT * FROM productBuild WHERE buildId = ?";
+
+        // try running query
+        try {
+            PreparedStatement getProductBuild = connection.prepareStatement(query);
+            getProductBuild.setInt(1, currentProductBuildId);
+            ResultSet rs = getProductBuild.executeQuery();
+            // while there is a row, get those values and add it to the list
+            while (rs.next()) {
+                int buildId = rs.getInt("buildId");
+                int productOrderId = rs.getInt("productOrderId");
+                float buildCompletion = rs.getFloat("buildCompletion");
+                int productId = rs.getInt("productId");
+
+                //System.out.println("GOT buildID " + buildId);
+
+                ProductBuild productBuild = new ProductBuild(buildId, productOrderId, buildCompletion, productId);
+                productBuilds.add(productBuild);
+            }
+        } catch (SQLException ex) {
+            // Catch and print any SQL exceptions that may occur during table creation
+            System.err.println(ex);
+        }
+        // return list of products in table
+        return productBuilds;
+    }
+
     public List<ProductBuild> getAllProductBuildsWithPOID(int currentProductOrderId) {
         // empty list of products
         List<ProductBuild> productBuilds = new ArrayList<>();
