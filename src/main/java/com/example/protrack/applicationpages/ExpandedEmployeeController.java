@@ -99,7 +99,7 @@ public class ExpandedEmployeeController {
         }
     }
 
-    public void onRemoveEmployeePress() throws SQLException {
+    public void onRemoveEmployeeButtonPress() throws SQLException {
 
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
 

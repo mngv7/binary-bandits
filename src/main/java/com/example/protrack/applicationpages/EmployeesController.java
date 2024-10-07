@@ -76,7 +76,7 @@ public class EmployeesController {
             Button employeeNameButton = new Button();
             employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
             employeeNameButton.getStyleClass().add("text-button");
-            employeeNameButton.setOnAction(event -> handleButtonPress(user.getFirstName(), user.getLastName()));
+            employeeNameButton.setOnAction(event -> handleSelectEmployeePress(user.getFirstName(), user.getLastName()));
 
             Label employeeTitleLabel = new Label(employeeTitle);
             Label spacing = new Label(" "); // Spacer to separate labels
@@ -93,15 +93,16 @@ public class EmployeesController {
             employeesGridPane.add(columns, columnIndex, rowIndex);
             employeesGridPane.add(rows, columnIndex + 1, rowIndex);
 
+            int maxRowsPerColumn = 4;
+
             // Update the row and column indexes
             rowIndex++;
-            if (rowIndex > 4) { // Number of rows before changing columns.
+            if (rowIndex > maxRowsPerColumn) { // Number of rows before changing columns.
                 rowIndex = 0;
                 columnIndex += 2; // Skip to the next set of columns for icons and labels
             }
         }
     }
-
 
     private MainController mainController;  // Store the MainController instance
 
@@ -117,7 +118,7 @@ public class EmployeesController {
         }
     }
 
-    private void handleButtonPress(String firstName, String lastName) {
+    private void handleSelectEmployeePress(String firstName, String lastName) {
         SelectedEmployeeSingleton.getInstance().setEmployeeFirstName(firstName);
         SelectedEmployeeSingleton.getInstance().setEmployeeLastName(lastName);
         loadEmployeeProfile();
