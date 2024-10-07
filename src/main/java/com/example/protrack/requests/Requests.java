@@ -2,34 +2,43 @@ package com.example.protrack.requests;
 
 public class Requests {
 
-    private int locationId;
+    private Integer locationId;
 
-    private int partId;
+    private Integer partId;
 
-    private int requestId;
+    private Integer requestId;
 
-    private int quantity;
+    private Integer quantity;
 
-    public Requests(int locationId, int partId, int requestId, int quantity) {
+    public Requests(Integer locationId, Integer partId, Integer requestId, Integer quantity) {
+        if (locationId == null || partId == null || requestId == null || quantity == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        if (partId < 0) {
+            throw new IllegalArgumentException("ID cannot be negative");
+        } if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity requested must be more than 0");
+        }
+
         this.locationId = locationId;
         this.partId = partId;
         this.requestId = requestId;
         this.quantity = quantity;
     }
 
-    public int getLocationId() {
+    public Integer getLocationId() {
         return locationId;
     }
 
-    public int getPartId() {
+    public Integer getPartId() {
         return partId;
     }
 
-    public int getRequestId() {
+    public Integer getRequestId() {
         return requestId;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 }
