@@ -7,6 +7,7 @@ import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.productbuild.ProductBuild;
 import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.products.*;
+import com.example.protrack.report.OrgReport;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
 import com.example.protrack.supplier.Supplier;
@@ -20,6 +21,7 @@ import com.example.protrack.users.WarehouseUser;
 import com.example.protrack.warehouseutil.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
+import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -165,7 +167,7 @@ public class Main extends Application {
         WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
         if (wdao.isTableEmpty()) {
-            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", "Pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), LocalDateTime.now(), "shipAdd", "Pending", 40.87));
         }
 
         LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
@@ -233,6 +235,8 @@ public class Main extends Application {
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
         workOrderProductsDAOImplementation.createTable();
 
+
+
         ProductBuildDAO productBuildDAO = new ProductBuildDAO();
         productBuildDAO.createTable();
 
@@ -251,7 +255,6 @@ public class Main extends Application {
 
         if (supplierDAOImplementation.getAllSuppliers().isEmpty()) {
             supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
-
         }
 
         launch();

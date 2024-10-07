@@ -15,20 +15,14 @@ public interface WorkOrdersDAO {
     List<WorkOrder> getAllWorkOrders();
 
     /**
-     * Retrieves a specific work order based on its ID.
-     *
-     * @param id The ID of the work order to retrieve.
-     * @return The work order with the specified ID, or null if not found.
-     */
-    WorkOrder getWorkOrder(Integer id);
-
-    /**
      * Retrieves work orders that match the specified status.
      *
      * @param status The status of the work orders to retrieve.
      * @return A list of work orders with the specified status.
      */
     List<WorkOrder> getWorkOrderByStatus(String status);
+
+    List<WorkOrder> getWorkOrdersByEmployeeId(int employeeId);
 
     /**
      * Creates a new work order in the database.

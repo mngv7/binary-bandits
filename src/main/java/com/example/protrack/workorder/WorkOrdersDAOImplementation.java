@@ -120,8 +120,26 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return false;
     }
 
-    public WorkOrder getWorkOrder(Integer workOrderId) {
-        return null;
+    public List<WorkOrder> getWorkOrdersByEmployeeId(int employeeId){
+        String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE work_order_owner_id = ?";
+        List<WorkOrder> workOrders = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
+            preparedStatement.setInt(1, employeeId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Iterates through each returned row (ResultSet) from the SQL query execution
+            while (resultSet.next()) {
+                // Calls mapToWorkOrder(resultSet) to return a new WorkOrder instance, instantiated with the returned ResultSet information
+                WorkOrder workOrder = mapToWorkOrder(resultSet);
+                workOrders.add(workOrder);   // Adds the new WorkOrder instance to the ArrayList
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return workOrders;
     }
 
     public List<WorkOrder> getAllWorkOrders() {

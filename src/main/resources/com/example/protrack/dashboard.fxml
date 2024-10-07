@@ -34,7 +34,7 @@
                 <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
             </HBox>
             <HBox>
-                <VBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+                <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
                     <VBox>
                         <Label text="Inventory Usage" styleClass="subheading"/>
                     </VBox>
@@ -46,12 +46,12 @@
                     </GridPane>
                 </VBox>
 
-                <VBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+                <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
                     <Label text="Active Orders" styleClass="subheading"/>
                 </VBox>
             </HBox>
 
-            <HBox minHeight="360" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+            <HBox fx:id="graphContainer" minHeight="300" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
                 <Label text="Performance" styleClass="subheading"/>
             </HBox>
         </VBox>
