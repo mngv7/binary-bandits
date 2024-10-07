@@ -13,7 +13,9 @@ public class Timesheets {
     private Integer productOrderID;
 
     public Timesheets (LocalDateTime startTime, LocalDateTime endTime, Integer employeeID, Integer productOrderID) {
-
+        if (startTime == null || endTime == null || employeeID == null || productOrderID == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
         if (endTime.isAfter(LocalDateTime.now())) {
             throw new IllegalArgumentException("End Time must be past/current time");
         }
