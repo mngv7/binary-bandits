@@ -10,6 +10,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.CategoryAxis?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.DashboardController"
@@ -34,7 +37,7 @@
                 <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
             </HBox>
             <HBox>
-                <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+                <VBox minHeight="300" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
                     <VBox>
                         <Label text="Inventory Usage" styleClass="subheading"/>
                     </VBox>
@@ -44,6 +47,17 @@
                             <VBox fx:id="partUsage" />
                         </VBox>
                     </GridPane>
+
+                    <VBox minWidth="300" VBox.vgrow="ALWAYS">
+                        <LineChart fx:id="lineChart" prefHeight="200" prefWidth="400">
+                            <xAxis>
+                                <CategoryAxis label="Months" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label="Total Usage" />
+                            </yAxis>
+                        </LineChart>
+                    </VBox>
                 </VBox>
 
                 <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">

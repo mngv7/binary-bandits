@@ -57,6 +57,9 @@ public class DashboardController {
     @FXML
     public HBox graphContainer; // HBox to hold the graphs
 
+    @FXML
+    private LineChart<String, Number> lineChart;
+
     HashMap<Integer, Integer> sumOfParts = new HashMap<>();
 
     OrgReport orgReport;
@@ -75,6 +78,79 @@ public class DashboardController {
         initializeHashMap();
         loadMonthlyReport();
         displayGraphs();
+        updatePartUsageLineChart(sortMonthlyUsage(loadPartUsageStatistics()));
+    }
+
+    private HashMap<String, Integer> sortMonthlyUsage(HashMap<String, Integer> monthlyTotalUsage) {
+        // Create a list from the entry set of the HashMap
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(monthlyTotalUsage.entrySet());
+
+        Map<String, Integer> monthOrder = new HashMap<>();
+        monthOrder.put("January", 1);
+        monthOrder.put("February", 2);
+        monthOrder.put("March", 3);
+        monthOrder.put("April", 4);
+        monthOrder.put("May", 5);
+        monthOrder.put("June", 6);
+        monthOrder.put("July", 7);
+        monthOrder.put("August", 8);
+        monthOrder.put("September", 9);
+        monthOrder.put("October", 10);
+        monthOrder.put("November", 11);
+        monthOrder.put("December", 12);
+
+        // Sort the entry list by month order
+        entryList.sort(Comparator.comparingInt(entry -> monthOrder.get(entry.getKey())));
+
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
+
+    private HashMap<String, Integer> loadPartUsageStatistics() {
+        // Get the current month
+        YearMonth currentMonth = YearMonth.now();
+
+        // Create a map to store total part usage for each month
+        HashMap<String, Integer> monthlyTotalUsage = new HashMap<>();
+
+        // Loop through the last 6 months
+        for (int i = 0; i < 6; i++) {
+            YearMonth month = currentMonth.minusMonths(i);
+            String monthName = month.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+            int monthValue = month.getMonthValue();
+
+            // Reset the sumOfParts for each month
+            initializeHashMap();
+
+            populateHashMap(monthValue);
+
+            // Calculate the total usage for the current month
+            int totalUsageForMonth = sumOfParts.values().stream().mapToInt(Integer::intValue).sum();
+
+            // Store the total usage for the current month
+            monthlyTotalUsage.put(monthName, totalUsageForMonth);
+        }
+
+        return monthlyTotalUsage;
+    }
+
+    private void updatePartUsageLineChart(HashMap<String, Integer> monthlyTotalUsage) {
+        lineChart.getData().clear();
+
+        // Create a new series for the line chart
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        // Populate the series with the monthly data
+        for (Map.Entry<String, Integer> entry : monthlyTotalUsage.entrySet()) {
+            series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+
+        // Add the series to the line chart
+        lineChart.getData().add(series);
     }
 
     private void setLastThreeMonths() {
