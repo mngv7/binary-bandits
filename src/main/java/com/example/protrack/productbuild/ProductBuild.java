@@ -28,4 +28,8 @@ public class ProductBuild {
     public Integer getProductId() {
         return productId;
     }
+
+    public void setBuildCompletion(Float buildCompletion) {
+        this.buildCompletion = buildCompletion;
+    }
 }

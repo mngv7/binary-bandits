@@ -278,24 +278,27 @@ public class LocationsAndContentsDAO {
                     }
 
                     int quantity = rs.getInt(3);
-                    if (quantity <= partToRemove.quantity) {
+                    if (quantity < partToRemove.quantity) {
                         /*
                          * Delete locationContents record as the partsID for that location is now empty.
                          * TODO: An exception handler in an exception handler... pray it doesn't explode.
                          */
-                        try {
-                            String deleteQuery = "DELETE FROM locationContents WHERE locationID = ? AND partID = ?";
-                            PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery);
-
-                            deleteStmt.setInt(1, quantity);
-                            deleteStmt.setInt(2, locationID);
-
-                            deleteStmt.execute();
-                        } catch (SQLException e) {
-                            System.out.println(e);
-                        }
+//                        try {
+//                            String deleteQuery = "DELETE FROM locationContents WHERE locationID = ? AND partID = ?";
+//                            PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery);
+//
+//                            deleteStmt.setInt(1, quantity);
+//                            deleteStmt.setInt(2, locationID);
+//
+//                            deleteStmt.execute();
+//                        } catch (SQLException e) {
+//                            System.out.println(e);
+//                        }
+                        System.out.println("Tried to subtract more than what is available");
                     } else {
                         quantity -= partToRemove.quantity;
+
+                        System.out.println("Quantity is " + quantity + " For " + partToRemove.partsId + " In " + locationID);
                         /*
                          * Update new locationContents record.
                          * TODO: An exception handler in an exception handler... pray it doesn't explode.

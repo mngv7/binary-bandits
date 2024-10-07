@@ -76,7 +76,9 @@ public class ProductBuildController {
 
     private ObservableList<ProductBuild> builds = FXCollections.observableArrayList();
 
-    private List<ProductBuildWSAmt> currentBuilds;
+    private List<ProductBuildWSAmt> currentBuildsList;
+
+    //private ProductBuild currentProductBuild;
 
     @FXML
     public Button closePopupButton;
@@ -120,7 +122,7 @@ public class ProductBuildController {
                 newRow.getChildren().addAll(idLabel, idLabel2, idLabel3, idLabel4);
                 newRow.getStyleClass().add("dynamic-vbox");
 
-                newRow.setOnMouseClicked(event -> selectProductBuild(newRow, productId));
+                newRow.setOnMouseClicked(event -> selectProductBuild(newRow, productId, buildId));
 
                 productBuildVBox.getChildren().add(newRow);
             }
@@ -131,23 +133,25 @@ public class ProductBuildController {
 
     private  void refreshReqTable() {
         PBWSRequirementTableView.getItems().clear();
-        PBWSRequirementTableView.getItems().addAll(currentBuilds);
+        PBWSRequirementTableView.getItems().addAll(currentBuildsList);
     }
 
-    private void selectProductBuild(VBox vBox, int productId) {
-        System.out.println("This is productID in pb " + productId);
+    private void selectProductBuild(VBox vBox, int productId, int buildId) {
+        //System.out.println("This is productID in pb " + productId);
+
+        currentProductBuild = buildId;
 
         productBuildTRVBox.getChildren().clear();
         List<TestRecord> testRecordsList = loadTestRecord(productId);
         generateTestRecord(testRecordsList);
 
-        if (!(currentBuilds == null)) {
-            currentBuilds.clear();
+        if (!(currentBuildsList == null)) {
+            currentBuildsList.clear();
         }
 
         List<BillOfMaterials> productBoM = loadRequiredParts(productId);
         List<ProductBuildWSAmt> productBuildWSAmtList = loadWorkstationPartsUsingReqParts(productBoM);
-        currentBuilds = productBuildWSAmtList;
+        currentBuildsList = productBuildWSAmtList;
 
         PBWSRequirementTableView.getItems().clear();
         PBWSRequirementTableView.getItems().addAll(productBuildWSAmtList);
@@ -155,6 +159,11 @@ public class ProductBuildController {
 
     }
 
+    /**
+     * Loads
+     * @param productId
+     * @return
+     */
     private List<TestRecord> loadTestRecord(int productId) {
         List<TestRecord> testRecordsList = new ArrayList<>();
         try {
@@ -292,7 +301,7 @@ public class ProductBuildController {
     public void onCommitButton(ActionEvent actionEvent) {
         int canCommit = 1;
 
-        for (ProductBuildWSAmt build : currentBuilds) {
+        for (ProductBuildWSAmt build : currentBuildsList) {
             if (build.getQuantity() < build.getReqAmount()) {
                 canCommit = 0;
                 break;
@@ -309,7 +318,7 @@ public class ProductBuildController {
             LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
 
             //Remove parts from WS
-            for (ProductBuildWSAmt build : currentBuilds) {
+            for (ProductBuildWSAmt build : currentBuildsList) {
 
                 partIdWithQuantity partToRemove = new partIdWithQuantity();
                 partToRemove.partsId = build.getPartId();
@@ -318,12 +327,19 @@ public class ProductBuildController {
                 int currentPartVal = build.getQuantity() - build.getReqAmount();
                 build.setQuantity(currentPartVal);
 
-                refreshReqTable();
+
 
                 locationsAndContentsDAO.removePartsIdWithQuantityFromLocation(currentWorkstationId, partToRemove);
                 //locationsAndContentsDAO.removePartsIdWithQuantityFromLocation();
 
             }
+
+            ProductBuildDAO productBuildDAO = new ProductBuildDAO();
+            productBuildDAO.updateBuildCompletion(currentProductBuild, 100.00f);
+            System.out.println("Got pb to 100%");
+
+            refreshReqTable();
+
         }
     }
 

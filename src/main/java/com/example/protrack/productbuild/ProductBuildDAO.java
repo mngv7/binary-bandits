@@ -45,19 +45,19 @@ public class ProductBuildDAO {
      */
     public void newProductBuild(ProductBuild productBuild) {
         try {
-            PreparedStatement insertStep = connection.prepareStatement(
+            PreparedStatement newPB = connection.prepareStatement(
                     "INSERT INTO productBuild (buildId, productOrderId, buildCompletion, productId) "
                             + "VALUES (?, ?, ?, ?)"
             );
 
             // sets test record value into statement
-            insertStep.setInt(1, productBuild.getBuildId());
-            insertStep.setInt(2, productBuild.getProductOrderId());
-            insertStep.setFloat(3, productBuild.getBuildCompletion());
-            insertStep.setInt(4, productBuild.getProductId());
+            newPB.setInt(1, productBuild.getBuildId());
+            newPB.setInt(2, productBuild.getProductOrderId());
+            newPB.setFloat(3, productBuild.getBuildCompletion());
+            newPB.setInt(4, productBuild.getProductId());
 
             // executes statement and enters test record values into test record table
-            insertStep.execute();
+            newPB.execute();
         } catch (SQLException ex) {
             // print error if error occurs
             System.err.println(ex);
@@ -111,6 +111,24 @@ public class ProductBuildDAO {
         }
         // return list of products in table
         return productBuilds;
+    }
+
+    public void updateBuildCompletion(int buildId, float percentage) {
+        try {
+            PreparedStatement updateBuild = connection.prepareStatement(
+                    "UPDATE productBuild " +
+                            "SET buildCompletion = ? " +
+                            "WHERE buildId = ? "
+            );
+            updateBuild.setFloat(1, percentage);
+            updateBuild.setInt(2, buildId);
+
+            // executes statement and enters test record values into test record table
+            updateBuild.execute();
+        } catch (SQLException ex) {
+            // print error if error occurs
+            System.err.println(ex);
+        }
     }
 
     /**
