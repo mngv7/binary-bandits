@@ -24,6 +24,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class ViewWorkstation2 {
+    
+    @FXML
+    private Button toProductOrder;
+    
+    private MainController parentMainController;
+
     @FXML
     private TableView wsPartTable;
 
@@ -97,6 +103,14 @@ public class ViewWorkstation2 {
         refreshTable();
     }
 
+    public MainController getMainController () {
+        return this.parentMainController;
+    }
+
+    public void setMainController (MainController controller) {
+        this.parentMainController = controller;
+    }
+
     public void refreshTable() {
         wsPartDBTable.clear();
         wsPartDBTable.addAll(workstationPartDBTableList());
@@ -152,7 +166,7 @@ public class ViewWorkstation2 {
         alert.showAndWait();
         if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
             alert.close();
-            stage.close();
+            parentMainController.loadWarehouseFromOtherPage(); /* Reload the original warehouse page, we're exiting. */
         } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
             alert.close();
         }
@@ -175,6 +189,9 @@ public class ViewWorkstation2 {
             popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(TITLE);
+
+            CreatePartsRequestController createPartsRequestController = fxmlLoader.getController();
+            createPartsRequestController.setWorkStationId(workStationId);
 
             // Set the scene for the pop-up
             Scene scene = new Scene(addPartsRoot, WIDTH, HEIGHT);
@@ -206,6 +223,30 @@ public class ViewWorkstation2 {
             //LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
             //int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
             productBuildController.setWorkStation(workStationId);
+
+            Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
+            scene.getStylesheets().add(stylesheet);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void goToProductOrder(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-order.fxml"));
+
+        try {
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+
+            Parent createAllocateWSRoot = fxmlLoader.load();
+
+            //ProductBuildController productBuildController = fxmlLoader.getController();
+            //productBuildController.setWorkStation(workStationId);
+            ProductOrderController productOrderController = fxmlLoader.getController();
+            productOrderController.setWorkStation(workStationId);
 
             Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
             scene.getStylesheets().add(stylesheet);

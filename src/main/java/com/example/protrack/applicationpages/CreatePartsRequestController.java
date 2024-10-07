@@ -18,8 +18,8 @@ import java.util.Objects;
 
 public class CreatePartsRequestController {
 
-    @FXML
-    private ComboBox<Workstation> workstationComboBox;
+    //@FXML
+    //private ComboBox<Workstation> workstationComboBox;
 
     @FXML
     private ComboBox<Parts> partComboBox;
@@ -33,27 +33,34 @@ public class CreatePartsRequestController {
     @FXML
     public Button closePopupButton;
 
+    private int workStationId = -1;
+
     public void initialize() {
 
         // Populate the ComboBoxes with data from the database
         partComboBox.getItems().setAll(new PartsDAO().getAllParts());
-        workstationComboBox.getItems().setAll(new LocationsAndContentsDAO().getAllWorkstations());
+        //workstationComboBox.getItems().setAll(new LocationsAndContentsDAO().getAllWorkstations());
 
         // Create a binding to check if any essential field is empty
         BooleanBinding emptyFields = Bindings.createBooleanBinding(() ->
                 partQuantityField.getText().trim().isEmpty() ||
-                        partComboBox.getSelectionModel().isEmpty() ||
-                        workstationComboBox.getSelectionModel().isEmpty(),
+                        partComboBox.getSelectionModel().isEmpty(),
                 partQuantityField.textProperty()
         );
 
         sendRequestButton.disableProperty().bind(emptyFields);
     }
 
+    public void setWorkStationId(Integer value) {
+        workStationId = value;
+        //System.out.println("WS ID HERE IN REQUEST" + workStationId);
+        //refreshTable();
+    }
+
     // Method to clear product input fields
     private void clearPartInputFields() {
         partComboBox.getSelectionModel().clearSelection();
-        workstationComboBox.getSelectionModel().clearSelection();
+        //workstationComboBox.getSelectionModel().clearSelection();
         partQuantityField.clear();
     }
 
@@ -69,7 +76,7 @@ public class CreatePartsRequestController {
         try {
             // Get the selected items from the ComboBoxes
             Parts selectedPart = partComboBox.getSelectionModel().getSelectedItem();
-            Workstation selectedWorkstation = workstationComboBox.getSelectionModel().getSelectedItem();
+            //Workstation selectedWorkstation = workstationComboBox.getSelectionModel().getSelectedItem();
 
             int quantity = Integer.parseInt(partQuantityField.getText());
 
@@ -78,7 +85,7 @@ public class CreatePartsRequestController {
                 throw new RuntimeException("Quantity cannot be less than 0");
             } else {
                 // Create a new request and add it to the database
-                requestsDAO.newRequest(new Requests(selectedWorkstation.getWorkstationId(), selectedPart.getPartsId(), (requestsDAO.getAllRequests().toArray()).length + 1, quantity));
+                requestsDAO.newRequest(new Requests(workStationId, selectedPart.getPartsId(), (requestsDAO.getAllRequests().toArray()).length + 1, quantity));
             }
 
             // Reset the part selection and quantity fields

@@ -13,38 +13,38 @@ public class RealWarehouse implements Warehouse {
     public RealWarehouse() {
         this.warehouseId = 0;
         this.warehouseName = "Default Warehouse";
-        this.warehouseLocation = "Default location"; /* TODO: Unused by DAO */
+        this.warehouseLocation = "420 Blazeit ave. Brisbane QLD"; /* TODO: Unused by DAO */
         this.partsId = new ArrayList<>();
         this.maxParts = 5000;
     }
 
-    public RealWarehouse(int locationID, String locationAlias, int locationCapacity) {
+    public RealWarehouse(int locationId, String locationAlias, int locationCapacity) {
         if (locationAlias == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
-        this.warehouseId = locationID;
+        this.warehouseId = locationId;
         this.warehouseName = locationAlias;
-        this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
+        this.warehouseLocation = "420 Blazeit ave. Brisbane QLD"; /* TODO: Unused by DAO */
         this.partsId = new ArrayList<>();
         this.maxParts = locationCapacity;
     }
 
-    public RealWarehouse(int locationID, String locationAlias, int locationCapacity, List<partIdWithQuantity> partsLinked) {
+    public RealWarehouse(int locationId, String locationAlias, int locationCapacity, List<partIdWithQuantity> partsLinked) {
         if (locationAlias == null || partsLinked == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
-        this.warehouseId = locationID;
+        this.warehouseId = locationId;
         this.warehouseName = locationAlias;
-        this.warehouseLocation = "Lotus"; /* TODO: Unused by DAO */
+        this.warehouseLocation = "420 Blazeit ave. Brisbane QLD"; /* TODO: Unused by DAO */
         this.partsId = partsLinked;
         this.maxParts = locationCapacity;
     }
 
-    public String getWarehouseName() {
+    public String getWarehouseLocationAlias() {
         return this.warehouseName;
     }
 
-    public void setWarehouseName(String warehouseName) {
+    public void setWarehouseLocationAlias(String warehouseName) {
         if (warehouseName == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
@@ -62,19 +62,19 @@ public class RealWarehouse implements Warehouse {
         this.warehouseLocation = warehouseLocation;
     }
 
-    public int getWarehouseId() {
+    public int getWarehouseLocationId() {
         return this.warehouseId;
     }
 
-    public void setWarehouseId(int warehouseId) {
+    public void setWarehouseLocationId(int warehouseId) {
         this.warehouseId = warehouseId;
     }
 
-    public int getMaxParts() {
+    public int getWarehouseMaxParts() {
         return this.maxParts;
     }
 
-    public void setMaxParts(int maxParts) {
+    public void setWarehouseMaxParts(int maxParts) {
         this.maxParts = maxParts;
     }
 

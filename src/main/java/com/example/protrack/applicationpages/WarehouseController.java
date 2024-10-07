@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -24,6 +25,7 @@ import java.util.Objects;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
+    private MainController mainController;
     public LocationsAndContentsDAO locationsAndContents;
 
     @FXML
@@ -45,6 +47,17 @@ public class WarehouseController {
     private ObservableList<WorkstationPartDBTable> whPartDBTable;
 
     private int warehouseId = 0;
+
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
+
+    public void setMainControllerInstance (MainController controller) {
+        this.mainController = controller;
+    }
+
+    public MainController getMainControllerInstance() {
+        return this.mainController;
+    }
 
     @FXML
     public void initialize() {
@@ -80,10 +93,10 @@ public class WarehouseController {
             workstations = new ArrayList<>();
 
             /* TODO: load from mock/real DB later. For now, make dummy data. */
-            workstations.add(new MockWorkstation(0, "Workstation 1", "Warehouse room A"));
-            workstations.add(new MockWorkstation(1, "Workstation 2", "Warehouse room A"));
-            workstations.add(new MockWorkstation(2, "Workstation 3", "Warehouse room A"));
-            workstations.add(new MockWorkstation(3, "Workstation 4", "Warehouse room A"));
+            workstations.add(new MockWorkstation(0, "Workstation 1", 100));
+            workstations.add(new MockWorkstation(1, "Workstation 2", 125));
+            workstations.add(new MockWorkstation(2, "Workstation 3", 256));
+            workstations.add(new MockWorkstation(3, "Workstation 4", 64));
         }
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }
@@ -223,8 +236,31 @@ public class WarehouseController {
         RequestsDAO currentRequestsDao = new RequestsDAO(); /* TODO: Cache this somewhere? */
         List<Requests> requestsToPassToPage = currentRequestsDao.getAllRequests();
         for (int i = 0; i < requestsToPassToPage.size(); ++i) {
-            System.out.println(requestsToPassToPage.get(i));
+            System.out.println("Request ID " + requestsToPassToPage.get(i).getRequestId() + " is in list.");
         }
+
+
         /* TODO: Spawn new FXML page and set items on init with the list above. */
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/ViewPartRequests.fxml"));
+            Parent ViewPartsRoot = fxmlLoader.load();
+
+            Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Part Requests");
+
+
+            // Set the scene for the pop-up
+            Scene scene = new Scene(ViewPartsRoot, WIDTH, HEIGHT);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+            popupStage.setScene(scene);
+            popupStage.setY(150);
+            popupStage.setX(390);
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,14 +15,13 @@ import java.io.IOException;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class AllocateWorkstationController {
     /*
      * Handling Workstation allocations means we have to read the Workstation data loaded by
      * WarehouseController, therefore an instance of it is put here by code in WarehouseController.
      */
-    private WarehouseController parentWarehouse;
+    public WarehouseController parentWarehouse;
 
     @FXML
     private ComboBox<String> workstationComboBox;
@@ -45,14 +43,10 @@ public class AllocateWorkstationController {
     private void handleAllocate() {
         Workstation selectedWorkstation = parentWarehouse.getAllWorkstationsInRAM().get(workstationComboBox.getSelectionModel().getSelectedIndex());
         if (selectedWorkstation != null) {
-
-            // Handle allocation logic here
-            System.out.println("Allocated: " + selectedWorkstation.getWorkstationName());
-            goToWorkstationPage();
-
-            // try to connect WorkStation page
-            //this.parentWarehouse.openWorkstation(selectedWorkstation);
-            //handleClose();
+            // Allocate and open our workstation here.
+            System.out.println("Allocated: " + selectedWorkstation.getWorkstationLocationAlias());
+            parentWarehouse.getMainControllerInstance().loadWorkstationContent(workstationComboBox.getValue());
+            handleClose();
         }
     }
 
@@ -63,7 +57,7 @@ public class AllocateWorkstationController {
         if (this.parentWarehouse != null) {
             List<String> workstationNames = new ArrayList<>();
             for (int i = 0; i < parentWarehouse.getAllWorkstationsInRAM().size(); ++i) {
-                workstationNames.add(parentWarehouse.getAllWorkstationsInRAM().get(i).getWorkstationName());
+                workstationNames.add(parentWarehouse.getAllWorkstationsInRAM().get(i).getWorkstationLocationAlias());
             }
             workstationComboBox.setItems(FXCollections.observableArrayList(workstationNames));
         }
@@ -97,32 +91,6 @@ public class AllocateWorkstationController {
         } catch (IOException e) {
             e.printStackTrace(); // Log the error if FXML loading fails
             System.out.println("Failed to load FXML file: " + fxmlFilePath);
-        }
-    }
-
-    public void goToWorkstationPage() {
-        Stage stage = (Stage) allocateButton.getScene().getWindow();
-        stage.hide();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/view-workstation2.fxml"));
-
-        try {
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-
-            Parent createAllocateWSRoot = fxmlLoader.load();
-
-            ViewWorkstation2 workStationController = fxmlLoader.getController();
-            LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
-            int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
-            workStationController.setWorkStationIdV3(workstationId);
-
-            Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
-            scene.getStylesheets().add(stylesheet);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

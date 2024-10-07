@@ -6,6 +6,8 @@ import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.productbuild.ProductBuild;
 import com.example.protrack.productbuild.ProductBuildDAO;
+import com.example.protrack.productorders.ProductOrder;
+import com.example.protrack.productorders.ProductOrderDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.report.OrgReport;
 import com.example.protrack.requests.Requests;
@@ -39,8 +41,10 @@ import java.util.Objects;
 public class Main extends Application {
 
     private static final String TITLE = "ProTrack";
-    private static final int WIDTH = 1920;
-    private static final int HEIGHT = 1080;
+    //private static final int WIDTH = 1920;
+    //private static final int HEIGHT = 1080;
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 720;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -186,17 +190,23 @@ public class Main extends Application {
         partIdWithQuantity testPart3 = new partIdWithQuantity();
         partIdWithQuantity testPart4 = new partIdWithQuantity();
         partIdWithQuantity testPart5 = new partIdWithQuantity();
+        partIdWithQuantity testPart6 = new partIdWithQuantity();
+        partIdWithQuantity testPart7 = new partIdWithQuantity();
 
         testPart1.partsId = 1;
         testPart1.quantity = 7;
         testPart2.partsId = 3;
-        testPart2.quantity = 10;
+        testPart2.quantity = 22;
         testPart3.partsId = 2;
         testPart3.quantity = 12;
         testPart4.partsId = 4;
         testPart4.quantity = 4;
         testPart5.partsId = 5;
         testPart5.quantity = 8;
+        testPart6.partsId = 3;
+        testPart6.quantity = 30;
+        testPart7.partsId = 2;
+        testPart7.quantity = 20;
 
         if (locationsAndContentsDAO.isLocationContentsTableEmpty()) {
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(0, testPart1);
@@ -208,6 +218,10 @@ public class Main extends Application {
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart1);
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart3);
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart5);
+            locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart6);
+            //TODO isn't insertparts suppose to just update the parts in said location?
+            // org.sqlite.SQLiteException: [SQLITE_CONSTRAINT_PRIMARYKEY] A PRIMARY KEY constraint failed (UNIQUE constraint failed: locationContents.locationID, locationContents.partID)
+            //locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(1, testPart7);
 
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(2, testPart2);
             locationsAndContentsDAO.insertPartsIdWithQuantityIntoLocation(2, testPart4);
@@ -235,18 +249,26 @@ public class Main extends Application {
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
         workOrderProductsDAOImplementation.createTable();
 
-
-
         ProductBuildDAO productBuildDAO = new ProductBuildDAO();
         productBuildDAO.createTable();
 
         if (productBuildDAO.isTableEmpty()) {
             productBuildDAO.newProductBuild(new ProductBuild(500, 1, 0.00F, 36014));
-            productBuildDAO.newProductBuild(new ProductBuild(501, 1, 0.00F, 45021));
-            productBuildDAO.newProductBuild(new ProductBuild(502, 1, 0.00F, 67890));
-            productBuildDAO.newProductBuild(new ProductBuild(503, 2, 0.00F, 36014));
+            productBuildDAO.newProductBuild(new ProductBuild(501, 1, 0.00F, 36014));
+            productBuildDAO.newProductBuild(new ProductBuild(502, 1, 0.00F, 36014));
+            productBuildDAO.newProductBuild(new ProductBuild(503, 2, 0.00F, 45021));
             productBuildDAO.newProductBuild(new ProductBuild(504, 2, 0.00F, 45021));
             productBuildDAO.newProductBuild(new ProductBuild(505, 3, 0.00F, 67890));
+
+        }
+
+        ProductOrderDAO productOrderDAO = new ProductOrderDAO();
+        productOrderDAO.createTable();
+
+        if (productOrderDAO.isTableEmpty()) {
+            productOrderDAO.newProductOrder(new ProductOrder(1,36014, 3, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(2,45021, 2, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(3,67890, 1, 1));
 
         }
 

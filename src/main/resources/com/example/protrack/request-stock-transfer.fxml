@@ -19,8 +19,9 @@
             <Label text="Select stock to be transferred to this workstation" GridPane.columnIndex="0"
                    GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.halignment="CENTER"
                    GridPane.valignment="CENTER" styleClass="parts-table-title"/>
-            <Label text="Location" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <!--<Label text="Location" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
             <ComboBox fx:id="workstationComboBox" promptText="Select Workstation" maxWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            -->
             <Label text="Part ID" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
             <ComboBox fx:id="partComboBox" promptText="Select Part" maxWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             <Label text="Quantity Required" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>

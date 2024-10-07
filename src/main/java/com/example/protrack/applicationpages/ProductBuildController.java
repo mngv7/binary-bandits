@@ -11,6 +11,8 @@ import com.example.protrack.products.BillOfMaterialsDAO;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.products.TestRecordDAO;
 import com.example.protrack.utility.DatabaseConnection;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.partIdWithQuantity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +34,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProductBuildController {
+
+    @FXML
+    private Button commitButton;
 
     @FXML
     private TableView<ProductBuildWSAmt> PBWSRequirementTableView;
@@ -67,49 +72,58 @@ public class ProductBuildController {
 
     private Integer currentWorkstationId = -1;
 
+    private Integer currentProductOrderId = -1;
+
     private Integer currentProductBuild = -1;
 
     private ObservableList<ProductBuild> builds = FXCollections.observableArrayList();
+
+    private List<ProductBuildWSAmt> currentBuildsList;
+
+    //private ProductBuild currentProductBuild;
 
     @FXML
     public Button closePopupButton;
 
     public void setWorkStation(int value) {
-
-        //currentWorkstation = value;
-        //System.out.println("This is ws of pb " + currentWorkstation.getWorkstationName());
         currentWorkstationId = value;
-        System.out.println("WS ID HERE of pb " + currentWorkstationId);
-        //refreshTable();
+        //System.out.println("WS ID HERE of pb " + currentWorkstationId);
+        loadBuildsFromDB();
+    }
+
+    public void setProductOrder(int value) {
+        currentProductOrderId = value;
+        //System.out.println("PO ID HERE of pb " + currentProductOrderId);
+        loadBuildsFromDB();
     }
 
 
     public void initialize() {
-        //amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-
         colPBWSpartId.setCellValueFactory(new PropertyValueFactory<>("partId"));
         colPBWSpartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
         colPBWSreqAmt.setCellValueFactory(new PropertyValueFactory<>("reqAmount"));
         colWorkstationAmt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
+        //System.out.println("HERE IN PB BABY");
         loadBuildsFromDB();
-        //setupListCellFactory();
     }
-
 
     private void loadBuildsFromDB() {
 
         try {
+            productBuildVBox.getChildren().clear();
             ProductBuildDAO productBuildDAO = new ProductBuildDAO();
-            List<ProductBuild> buildList = productBuildDAO.getAllProductBuilds();
+            List<ProductBuild> buildList = productBuildDAO.getAllProductBuildsWithPOID(currentProductOrderId);
 
+            //System.out.println("Does buildlist have stuff? " + buildList.size());
+            //System.out.println("Does buildlist have stuff? " + buildList.isEmpty());
             for (ProductBuild build : buildList) {
                 int buildId = build.getBuildId();
                 int productOrderId = build.getProductOrderId();
                 float buildCompletion = build.getBuildCompletion();
                 int productId = build.getProductId();
                 builds.add(new ProductBuild(buildId, productOrderId, buildCompletion, productId));
-                System.out.println("Got this build Id" + buildId);
+                //System.out.println("Got this build Id" + buildId);
 
                 VBox newRow = new VBox();
 
@@ -119,69 +133,52 @@ public class ProductBuildController {
                 Label idLabel4 = new Label("ProductID: " + productId);
 
                 newRow.getChildren().addAll(idLabel, idLabel2, idLabel3, idLabel4);
+                newRow.getStyleClass().add("dynamic-vbox");
 
-                newRow.setOnMouseClicked(event -> selectProductBuild(newRow, productId));
+                newRow.setOnMouseClicked(event -> selectProductBuild(newRow, productId, buildId, buildCompletion));
 
                 productBuildVBox.getChildren().add(newRow);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        /*productBuildListView.setItems(FXCollections.observableArrayList(builds.stream()
-                .map(ProductBuild::toString)
-                .toArray(String[]::new)));
-
-         */
     }
 
-    /*
-    private void setupListCellFactory() {
-        productBuildListView.setCellFactory(lv -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                    setStyle("");
-                } else {
-                    setText(item);
-                    setStyle("-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-border-color: #d0d0d0; -fx-border-radius: 5; -fx-background-radius: 5; -fx-font-size: 14px;");
-                    setOnMouseEntered(e -> setStyle("-fx-background-color: #e0e0e0;"));
-                    setOnMouseExited(e -> setStyle("-fx-background-color: #f0f0f0;"));
+    private  void refreshReqTable() {
+        PBWSRequirementTableView.getItems().clear();
+        PBWSRequirementTableView.getItems().addAll(currentBuildsList);
+    }
 
-                    // Handle item click
-                    setOnMouseClicked(event -> {
-                        if (event.getClickCount() == 1) {
-                            int selectedIndex = getIndex();
-                            if (selectedIndex >= 0) {
-                                ProductBuild selectedItem = builds.get(selectedIndex);
-                                selectProductBuild(selectedItem);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }*/
+    private void selectProductBuild(VBox vBox, int productId, int buildId, float buildCompletion) {
+        //System.out.println("This is productID in pb " + productId);
 
-    private void selectProductBuild(VBox vBox, int productId) {
-        System.out.println("This is productID in pb " + productId);
+        currentProductBuild = buildId;
 
         productBuildTRVBox.getChildren().clear();
         List<TestRecord> testRecordsList = loadTestRecord(productId);
         generateTestRecord(testRecordsList);
 
+        if (!(currentBuildsList == null)) {
+            currentBuildsList.clear();
+        }
+
         List<BillOfMaterials> productBoM = loadRequiredParts(productId);
         List<ProductBuildWSAmt> productBuildWSAmtList = loadWorkstationPartsUsingReqParts(productBoM);
+        currentBuildsList = productBuildWSAmtList;
 
         PBWSRequirementTableView.getItems().clear();
         PBWSRequirementTableView.getItems().addAll(productBuildWSAmtList);
+
+
         //Now using the productBoM generate the table.
 
     }
 
+    /**
+     * Loads
+     * @param productId
+     * @return
+     */
     private List<TestRecord> loadTestRecord(int productId) {
         List<TestRecord> testRecordsList = new ArrayList<>();
         try {
@@ -247,12 +244,15 @@ public class ProductBuildController {
 
             int requiredAmount = boM.getRequiredAmount();
 
+            //
             try {
                 PreparedStatement getWSParts = connection.prepareStatement(
                         "SELECT quantity " +
                                 "FROM locationContents a " +
-                                "WHERE a.partID = ?");
+                                "WHERE a.partID = ? " +
+                                "AND a.locationID = ? ");
                 getWSParts.setInt(1, partsId);
+                getWSParts.setInt(2, currentWorkstationId);
                 ResultSet rs = getWSParts.executeQuery();
 
                 PartsDAO partsDAO = new PartsDAO();
@@ -311,6 +311,67 @@ public class ProductBuildController {
 
 
     public void onAddPartButton(ActionEvent actionEvent) {
+    }
+
+    public void onCommitButton(ActionEvent actionEvent) {
+        int canCommit = 1;
+
+        ProductBuildDAO productBuildDAO = new ProductBuildDAO();
+        List<ProductBuild> currentPBList = productBuildDAO.getAllProductBuildsWithPBID(currentProductBuild);
+
+
+
+        for (ProductBuildWSAmt build : currentBuildsList) {
+            if (build.getQuantity() < build.getReqAmount()) {
+                System.out.println("THis is build" + build.getPartId() + " " + build.getQuantity() + "/" + build.getReqAmount());
+                canCommit = 0;
+                break;
+            }
+        }
+
+        for (ProductBuild build : currentPBList) {
+            if (build.getBuildCompletion() == 100.00f) {
+                canCommit = 2;
+                break;
+            }
+        }
+
+        /*
+        If there is a lack parts for a build and records are not filled
+        shade out commit button
+         */
+        if (canCommit == 0) {
+            System.out.println("Cannot commit, not enough resources");
+        } else if (canCommit == 2) {
+            System.out.println("Cannot commit as completed");
+        } else {
+            LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
+
+            //Remove parts from WS
+            for (ProductBuildWSAmt build : currentBuildsList) {
+
+                partIdWithQuantity partToRemove = new partIdWithQuantity();
+                partToRemove.partsId = build.getPartId();
+                partToRemove.quantity = build.getReqAmount();
+
+                int currentPartVal = build.getQuantity() - build.getReqAmount();
+                build.setQuantity(currentPartVal);
+
+
+
+                locationsAndContentsDAO.removePartsIdWithQuantityFromLocation(currentWorkstationId, partToRemove);
+                //locationsAndContentsDAO.removePartsIdWithQuantityFromLocation();
+
+            }
+
+            //ProductBuildDAO productBuildDAO = new ProductBuildDAO();
+            productBuildDAO.updateBuildCompletion(currentProductBuild, 100.00f);
+            System.out.println("Got pb to 100%");
+
+            refreshReqTable();
+            loadBuildsFromDB();
+
+        }
     }
 
 

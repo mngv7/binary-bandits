@@ -1,9 +1,7 @@
 package com.example.protrack.warehouseutil;
 
-import com.example.protrack.database.ProductDBTable;
 import com.example.protrack.database.WorkstationPartDBTable;
 import com.example.protrack.utility.DatabaseConnection;
-import com.example.protrack.parts.Parts;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -55,10 +53,10 @@ public class LocationsAndContentsDAO {
                     "INSERT INTO locations (locationID, locationAlias, locationType, locationCapacity) VALUES (?, ?, ?, ?)"
             );
 
-            insertWarehouse.setInt(1, warehouse.getWarehouseId());
-            insertWarehouse.setString(2, warehouse.getWarehouseName());
+            insertWarehouse.setInt(1, warehouse.getWarehouseLocationId());
+            insertWarehouse.setString(2, warehouse.getWarehouseLocationAlias());
             insertWarehouse.setString(3, "WAREHOUSE");
-            insertWarehouse.setInt(4, warehouse.getMaxParts());
+            insertWarehouse.setInt(4, warehouse.getWarehouseMaxParts());
 
             insertWarehouse.execute();
         } catch (SQLException ex) {
@@ -79,8 +77,8 @@ public class LocationsAndContentsDAO {
                     "INSERT INTO locations (locationID, locationAlias, locationType, locationCapacity) VALUES (?, ?, ?, ?)"
             );
 
-            insertWorkstation.setInt(1, workstation.getWorkstationId());
-            insertWorkstation.setString(2, workstation.getWorkstationName());
+            insertWorkstation.setInt(1, workstation.getWorkstationLocationId());
+            insertWorkstation.setString(2, workstation.getWorkstationLocationAlias());
             insertWorkstation.setString(3, "WORKSTATION");
             insertWorkstation.setInt(4, workstation.getWorkstationMaxParts());
 
@@ -252,9 +250,19 @@ public class LocationsAndContentsDAO {
      */
     public void removePartsIdWithQuantityFromLocation (Integer locationID, partIdWithQuantity partToRemove) {
         try {
-            String query = "SELECT * FROM locationContents WHERE locationID = ? AND partID = ?";
+            String query = "SELECT * FROM locationContents WHERE locationID = " + locationID +" AND partID = " + partToRemove.partsId;
+
+            //PreparedStatement removeWSPart = connection.prepareStatement(query);
+            //removeWSPart.setInt(locationID, partToRemove.partsId);
+            System.out.println("Location ID " + locationID);
+            System.out.println("Part ID " + partToRemove.partsId);
+            //TODO You forgot to set the ints for the above statement originally.
+            // As a stopgap I've manually added them into the string.
             Statement stmt = connection.createStatement();
+
             ResultSet rs = stmt.executeQuery(query);
+
+            //ResultSet rs = removeWSPart.executeQuery(query);
 
             int i = 0;
             if (!rs.next()) {
@@ -268,24 +276,27 @@ public class LocationsAndContentsDAO {
                     }
 
                     int quantity = rs.getInt(3);
-                    if (quantity <= partToRemove.quantity) {
+                    if (quantity < partToRemove.quantity) {
                         /*
                          * Delete locationContents record as the partsID for that location is now empty.
                          * TODO: An exception handler in an exception handler... pray it doesn't explode.
                          */
-                        try {
-                            String deleteQuery = "DELETE FROM locationContents WHERE locationID = ? AND partID = ?";
-                            PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery);
-
-                            deleteStmt.setInt(1, quantity);
-                            deleteStmt.setInt(2, locationID);
-
-                            deleteStmt.execute();
-                        } catch (SQLException e) {
-                            System.out.println(e);
-                        }
+//                        try {
+//                            String deleteQuery = "DELETE FROM locationContents WHERE locationID = ? AND partID = ?";
+//                            PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery);
+//
+//                            deleteStmt.setInt(1, quantity);
+//                            deleteStmt.setInt(2, locationID);
+//
+//                            deleteStmt.execute();
+//                        } catch (SQLException e) {
+//                            System.out.println(e);
+//                        }
+                        System.out.println("Tried to subtract more than what is available");
                     } else {
                         quantity -= partToRemove.quantity;
+
+                        System.out.println("Quantity is " + quantity + " For " + partToRemove.partsId + " In " + locationID);
                         /*
                          * Update new locationContents record.
                          * TODO: An exception handler in an exception handler... pray it doesn't explode.

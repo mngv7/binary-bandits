@@ -11,70 +11,58 @@ public class MockWorkstation implements Workstation {
     private int maxParts;
 
     public MockWorkstation() {
-        this.workstationId = 0; /* lol */
+        this.workstationId = 0;
         this.workstationName = "Default workstation";
         this.workstationLocation = "Default location";
         this.partsId = new ArrayList<>();
         this.maxParts = 100;
     }
 
-    public MockWorkstation(int workstationId) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = "Default workstation";
-        this.workstationLocation = "Default location";
-        this.partsId = new ArrayList<>();
-        this.maxParts = 100;
-    }
-
-    public MockWorkstation(int workstationId, String workstationName) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = workstationName;
-        this.workstationLocation = "Default Location";
-        this.partsId = new ArrayList<>();
-        this.maxParts = 100;
-    }
-
-    public MockWorkstation(int workstationId, String workstationName, String workstationLocation) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = workstationName;
-        this.workstationLocation = workstationLocation;
-        this.partsId = new ArrayList<>();
-        this.maxParts = 100;
-    }
-
-    public MockWorkstation(int workstationId, String workstationName, String workstationLocation, int maxParts) {
-        this.workstationId = workstationId; /* lmao even */
-        this.workstationName = workstationName;
-        this.workstationLocation = workstationLocation;
+    public MockWorkstation(int locationID, String locationAlias, int maxParts) {
+        if (locationAlias == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        this.workstationId = locationID;
+        this.workstationName = locationAlias;
+        this.workstationLocation = "Spike Site A";
         this.partsId = new ArrayList<>();
         this.maxParts = maxParts;
     }
 
-    public String getWorkstationName() {
-        return this.workstationName;
+    public MockWorkstation(int locationID, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
+        if (locationAlias == null || parts == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        this.workstationId = locationID; /* lmao even */
+        this.workstationName = locationAlias;
+        this.workstationLocation = "Spike Site A";
+        this.partsId = parts;
+        this.maxParts = maxParts;
     }
 
-    public void setWorkstationName (String workstationName) {
-        this.workstationName = workstationName;
-    }
-
-    public String getWorkstationLocation() {
-        return this.workstationLocation;
-    }
-
-    public void setWorkstationLocation(String workstationLocation) {
-        this.workstationLocation = workstationLocation;
-    }
-
-    public int getWorkstationId() {
+    public int getWorkstationLocationId() {
         return workstationId;
     }
-    public void setWorkstationId(int workstationId) {
+    public void setWorkstationLocationId(int workstationId) {
         this.workstationId = workstationId;
+    }
+
+    public String getWorkstationLocationAlias() {
+        return this.workstationName;
+    }
+    public void setWorkstationLocationAlias(String workstationName) {
+        this.workstationName = workstationName;
     }
 
     public int getWorkstationMaxParts() { return this.maxParts; }
     public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
+
+    public String getWorkstationLocation() {
+        return this.workstationLocation;
+    }
+    public void setWorkstationLocation(String workstationLocation) {
+        this.workstationLocation = workstationLocation;
+    }
 
     /*
      * Imports a specific quantity of the given partsID from the target warehouse into this workstation.
