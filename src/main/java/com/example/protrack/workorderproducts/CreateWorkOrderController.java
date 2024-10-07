@@ -5,7 +5,7 @@ import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.products.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
@@ -14,10 +14,8 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -100,7 +98,7 @@ public class CreateWorkOrderController {
             @Override
             public TableCell<WorkOrderProduct, String> call(TableColumn<WorkOrderProduct, String> param) {
                 return new TableCell<>() {
-                    private final Button deleteButton = new Button("  \uD83D\uDDD1"  ); // Trash icon as button
+                    private final Button deleteButton = new Button("  \uD83D\uDDD1  "  ); // Trash icon as button
 
                     {
                         deleteButton.getStyleClass().add("trash-button");
@@ -133,7 +131,7 @@ public class CreateWorkOrderController {
 
         // Populate the ComboBoxes with data from the database
         workOrderOwnerComboBox.getItems().setAll(new UsersDAO().getProductionUsers());
-        customerComboBox.getItems().setAll(new CustomerDAO().getAllCustomers());
+        customerComboBox.getItems().setAll(new CustomerDAOImplementation().getAllCustomers());
         productComboBox.getItems().setAll(new ProductDAO().getAllProducts());
 
         // Create a binding to check if any essential field is empty
@@ -175,10 +173,11 @@ public class CreateWorkOrderController {
                 }
             }
 
-            // If the product is not in the list, create a new WorkOrderProduct
+            // If the product is not in the list, create a new WorkOrderProduct with workOrderId as a placeholder (0)
             double totalPrice = calculateTotalPrice(selectedProduct.getProductId());
             WorkOrderProduct workOrderProduct = new WorkOrderProduct(
-                    0, // no Work Order has an ID of 0, this is a placeholder to be overwritten by SQL PKEY autoincrement
+                    0, // Placeholder workOrderProductId, will be set when the work order is saved
+                    0, // Placeholder value for workOrderId, this will be updated when saving
                     selectedProduct.getProductId(),
                     selectedProduct.getProductName(),
                     quantity,
@@ -193,8 +192,9 @@ public class CreateWorkOrderController {
 
             // Reset the product selection and quantity fields
             clearProductInputFields();
+
         } catch (NumberFormatException e) {
-            // Alert handles invalid number formats for quantity
+            // Handle invalid number formats for quantity
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Input");
             alert.setHeaderText("Invalid Quantity");
@@ -237,7 +237,6 @@ public class CreateWorkOrderController {
 
     @FXML
     protected void createWorkOrder() {
-        // Create WorkOrder and associate products
         try {
             // Fetch data from form fields
             ProductionUser orderOwner = workOrderOwnerComboBox.getSelectionModel().getSelectedItem();
@@ -251,21 +250,37 @@ public class CreateWorkOrderController {
             WorkOrder workOrder = new WorkOrder(0, orderOwner, customer, orderDate, deliveryDate, shippingAddress, "Pending", 0.0);
 
             List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
-            List<Customer> customers = new CustomerDAO().getAllCustomers();
+            List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
 
             WorkOrdersDAOImplementation workOrdersDAOImplementation = new WorkOrdersDAOImplementation(productionUsers, customers);
 
+            // Calculate total order price from the products in the TableView
+            double totalOrderPrice = workOrderProducts.stream()
+                    .mapToDouble(WorkOrderProduct::getTotal)
+                    .sum();
+
+            // Set the subtotal of the work order
+            workOrder.setSubtotal(Double.parseDouble(String.format("%.2f", totalOrderPrice)));
+
+            // Save the WorkOrder to the database and retrieve the generated ID
             workOrdersDAOImplementation.createWorkOrder(workOrder);
-
             WorkOrder newWorkOrder = workOrdersDAOImplementation.getWorkOrderByCustomerAndDate(customer, orderDate);
+            int workOrderId = newWorkOrder.getWorkOrderId();  // Get the new WorkOrder ID
 
-            // Fetch product details and quantity
+            // Now create and save WorkOrderProduct instances with the correct WorkOrder ID
             for (WorkOrderProduct product : workOrderProducts) {
-                product.setWorkOrderId(newWorkOrder.getWorkOrderId());
-                new WorkOrderProductsDAOImplementation().addWorkOrderProduct(product);
+                WorkOrderProduct newWorkOrderProduct = new WorkOrderProduct(
+                        0,  // workOrderProductId will be auto-generated by the database
+                        workOrderId,  // Assign the newly created WorkOrder ID
+                        product.getProductId(),
+                        product.getProductName(),
+                        product.getQuantity(),
+                        product.getPrice()
+                );
+                new WorkOrderProductsDAOImplementation().addWorkOrderProduct(newWorkOrderProduct);
             }
 
-            // Add the product to the work order
+            // Clear the form after saving the work order and products
             clearFormFields();
 
         } catch (NumberFormatException e) {

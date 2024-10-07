@@ -1,14 +1,19 @@
 package com.example.protrack;
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.productbuild.ProductBuild;
 import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.products.*;
+import com.example.protrack.report.OrgReport;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
+import com.example.protrack.supplier.Supplier;
+import com.example.protrack.supplier.SupplierDAOImplementation;
+import com.example.protrack.timesheets.Timesheets;
+import com.example.protrack.timesheets.TimesheetsDAO;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
@@ -16,6 +21,7 @@ import com.example.protrack.users.WarehouseUser;
 import com.example.protrack.warehouseutil.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
+import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,21 +29,18 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.xml.stream.Location;
 import java.sql.Date;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class Main extends Application {
 
     private static final String TITLE = "ProTrack";
-    private static final int WIDTH = 1280;
-    private static final int HEIGHT = 720;
+    private static final int WIDTH = 1920;
+    private static final int HEIGHT = 1080;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -46,7 +49,7 @@ public class Main extends Application {
         String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setTitle(TITLE);
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("application_logo.png")));
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Images/application_logo.png")));
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.setMaximized(false);
@@ -129,6 +132,13 @@ public class Main extends Application {
             testRecordDAO.newTestRecordStep(new TestRecord(4, 67890, 4, "Ensure all accessory components are included in the packaging.", "CheckBox", "NULL"));
         }
 
+        TimesheetsDAO timesheetsDAO = new TimesheetsDAO();
+        timesheetsDAO.createTable();
+        if (timesheetsDAO.isTableEmpty()) {
+            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 10, 1, 10, 00, 00, 00), LocalDateTime.of(2024, 10, 1, 14, 30, 00, 00), 100, 1));
+            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 9, 1, 10,00, 00, 00), LocalDateTime.of(2024, 9, 1, 14, 30, 0, 0), 100, 2));
+        }
+
         UsersDAO usersDAO = new UsersDAO();
         usersDAO.createTable();
         if (usersDAO.isTableEmpty()) {
@@ -147,17 +157,17 @@ public class Main extends Application {
 
         List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
 
-        CustomerDAO customerDAO = new CustomerDAO();
-        customerDAO.createTable();
-        if (customerDAO.isTableEmpty()) {
-            customerDAO.addCustomer(new Customer(1, "Jane", "Doe", "jane.doe@example.com", "0400187362", "billingAddress", "shippingAddress", "Active"));
+        CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
+        customerDAOImplementation.createTable();
+        if (customerDAOImplementation.isTableEmpty()) {
+            customerDAOImplementation.addCustomer(new Customer(1, "Jane", "Doe", "jane.doe@example.com", "0400187362", "billingAddress", "shippingAddress", "Active"));
         }
-        List<Customer> customers = customerDAO.getAllCustomers();
+        List<Customer> customers = customerDAOImplementation.getAllCustomers();
 
         WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
         if (wdao.isTableEmpty()) {
-            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), null, "shipAdd", "Pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), LocalDateTime.now(), "shipAdd", "Pending", 40.87));
         }
 
         LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
@@ -235,6 +245,8 @@ public class Main extends Application {
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
         workOrderProductsDAOImplementation.createTable();
 
+
+
         ProductBuildDAO productBuildDAO = new ProductBuildDAO();
         productBuildDAO.createTable();
 
@@ -246,6 +258,13 @@ public class Main extends Application {
             productBuildDAO.newProductBuild(new ProductBuild(504, 2, 0.00F, 45021));
             productBuildDAO.newProductBuild(new ProductBuild(505, 3, 0.00F, 67890));
 
+        }
+
+        SupplierDAOImplementation supplierDAOImplementation = new SupplierDAOImplementation();
+        supplierDAOImplementation.createTable();
+
+        if (supplierDAOImplementation.getAllSuppliers().isEmpty()) {
+            supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
         }
 
         launch();

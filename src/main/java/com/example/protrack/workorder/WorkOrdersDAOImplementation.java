@@ -120,8 +120,26 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return false;
     }
 
-    public WorkOrder getWorkOrder(Integer workOrderId) {
-        return null;
+    public List<WorkOrder> getWorkOrdersByEmployeeId(int employeeId){
+        String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE work_order_owner_id = ?";
+        List<WorkOrder> workOrders = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
+            preparedStatement.setInt(1, employeeId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Iterates through each returned row (ResultSet) from the SQL query execution
+            while (resultSet.next()) {
+                // Calls mapToWorkOrder(resultSet) to return a new WorkOrder instance, instantiated with the returned ResultSet information
+                WorkOrder workOrder = mapToWorkOrder(resultSet);
+                workOrders.add(workOrder);   // Adds the new WorkOrder instance to the ArrayList
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return workOrders;
     }
 
     public List<WorkOrder> getAllWorkOrders() {
@@ -230,11 +248,53 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
     }
 
     public boolean updateWorkOrder(WorkOrder workOrder) {
-        return true; // Yet to be implemented
+        String query = "UPDATE work_orders SET work_order_owner_id = ?, customer_id = ?, order_date = ?, delivery_date = ?, " +
+                "shipping_address = ?, status = ?, subtotal = ? WHERE work_order_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Order owner ID is nullable
+            if (workOrder.getOrderOwner() != null) {
+                statement.setObject(1, workOrder.getOrderOwner().getEmployeeId());
+            } else {
+                statement.setNull(1, Types.INTEGER);
+            }
+
+            statement.setInt(2, workOrder.getCustomer().getCustomerId());
+            statement.setObject(3, workOrder.getOrderDate());
+
+            // Delivery date is nullable
+            if (workOrder.getDeliveryDate() != null) {
+                statement.setObject(4, workOrder.getDeliveryDate());
+            } else {
+                statement.setNull(4, Types.DATE);
+            }
+
+            statement.setString(5, workOrder.getShippingAddress());
+            statement.setString(6, workOrder.getStatus());
+            statement.setDouble(7, workOrder.getSubtotal());
+
+            statement.setInt(8, workOrder.getWorkOrderId());
+
+            int rowsUpdated = statement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean deleteWorkOrder(Integer workOrderId) {
-        return true; // Yet to be implemented
+        String query = "DELETE FROM work_orders WHERE work_order_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, workOrderId);
+
+            int rowsDeleted = statement.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Since DB auto-increments primary key (workOrderId) it is hard to associate a WorkOrderProduct with a WorkOrder
@@ -261,4 +321,31 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         }
         return workOrder;
     }
+
+    public List<WorkOrder> getWorkOrderByMonth(Integer month) {
+
+        List<WorkOrder> workOrders = new ArrayList<>();
+
+        // SQL query retrieves Work Orders based on the month from order_date
+        String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE strftime('%m', order_date) = ?";
+
+        // Executes the PreparedStatement with the month
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
+            preparedStatement.setString(1, String.format("%02d", month));  // Format month as two digits (e.g., '01' for January)
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Loop through the result set and map each row to a WorkOrder
+            while (resultSet.next()) {
+                WorkOrder workOrder = mapToWorkOrder(resultSet);  // Assuming mapToWorkOrder maps a single result row to WorkOrder
+                workOrders.add(workOrder);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return workOrders;
+    }
+
 }

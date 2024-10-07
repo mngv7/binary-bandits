@@ -24,21 +24,22 @@ public interface WorkOrderProductsDAO {
     boolean addWorkOrderProduct(WorkOrderProduct workOrderProduct);
 
     /**
+     * Deletes a product from a work order.
+     *
+     * @param workOrderProductId The ID of the work order product
+     * @return true if the operation was successful, false otherwise.
+     */
+    boolean deleteWorkOrderProduct(int workOrderProductId);
+
+    /**
      * Retrieves all products associated with the specified work order.
      *
      * @param workOrderId The ID of the work order.
      * @return A list of products associated with the work order.
      */
-    List<Product> getWorkOrderProductsByWorkOrderId(int workOrderId);
+    List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId);
 
-    /**
-     * Deletes a product from a work order.
-     *
-     * @param workOrderId The ID of the work order.
-     * @param productId   The ID of the product to be deleted.
-     * @return true if the operation was successful, false otherwise.
-     */
-    boolean deleteWorkOrderProduct(int workOrderId, int productId);
+    List<WorkOrderProduct> getAllWorkOrderProducts();
 
     boolean isTableEmpty();
 }

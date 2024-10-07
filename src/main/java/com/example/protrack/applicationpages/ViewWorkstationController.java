@@ -1,13 +1,9 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.database.ProductDBTable;
 import com.example.protrack.database.WorkstationPartDBTable;
 import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
-import com.example.protrack.warehouseutil.Workstation;
-import com.example.protrack.workorderproducts.WorkOrderProduct;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -129,7 +123,7 @@ public class ViewWorkstationController {
      */
      public void createPartRequest() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/add-parts-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/Parts/add-parts-view.fxml"));
             Parent addPartsRoot = fxmlLoader.load();
 
             Stage popupStage = new Stage();

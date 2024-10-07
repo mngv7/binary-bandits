@@ -55,6 +55,14 @@
     -fx-font-style: normal;
 }
 
+.timesheet-title {
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-style: normal;
+    -fx-padding: 20px;
+}
+
 .profile-text {
     -fx-font-size: 32px;
     -fx-background-color: white;
@@ -112,6 +120,23 @@
 
 .create-product-button-refresh-button:pressed {
     -fx-background-color: #310B91;
+}
+
+.delete-button {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.delete-button:hover {
+    -fx-background-color: #e60000;
+}
+
+.delete-button:pressed {
+    -fx-background-color: red;
 }
 
 .parts-table .column-header {
@@ -404,5 +429,14 @@
     -fx-padding: 15px; /* Adjusted padding */
 }
 
+.subheading {
+    -fx-font-size: 18px; /* Adjust font size as needed */
+    -fx-font-weight: bold; /* Make the text bold */
+    -fx-padding: 5px; /* Add some padding */
+}
+
+.subheading2 {
+    -fx-font-weight: bold; /* Make the text bold */
+}
 
 <img src="application_logo.png">

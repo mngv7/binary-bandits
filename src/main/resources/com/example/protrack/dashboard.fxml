@@ -2,11 +2,58 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Region?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.protrack.applicationpages.MainController"
+            fx:controller="com.example.protrack.applicationpages.DashboardController"
             prefHeight="400.0" prefWidth="600.0">
     <top>
-        <Label text="Dashboard" styleClass="title-label"/>
+        <VBox style="-fx-padding: 0 0 10 0;">
+            <Label text="Dashboard" styleClass="title-label"/>
+        </VBox>
     </top>
+
+    <center>
+        <VBox>
+            <HBox spacing="10" style="-fx-padding: 0 0 10 0;">
+                <Label text="Select Month:" styleClass="subheading"/>
+                <ComboBox fx:id="monthComboBox" styleClass="part-text-field">
+                </ComboBox>
+
+                <!-- Add a Region to push buttons to the right -->
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Load Month" onAction="#loadMonthlyReport" styleClass="add-parts-button" />
+                <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
+            </HBox>
+            <HBox>
+                <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+                    <VBox>
+                        <Label text="Inventory Usage" styleClass="subheading"/>
+                    </VBox>
+                    <GridPane fx:id="inventoryUsageGrid" hgap="15" vgap="5" alignment="CENTER_LEFT">
+                        <VBox fx:id="partAndAmountGroup">
+                            <VBox fx:id="partName"/>
+                            <VBox fx:id="partUsage" />
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+                    <Label text="Active Orders" styleClass="subheading"/>
+                </VBox>
+            </HBox>
+
+            <HBox fx:id="graphContainer" minHeight="300" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+                <Label text="Performance" styleClass="subheading"/>
+            </HBox>
+        </VBox>
+    </center>
 </BorderPane>

@@ -6,6 +6,7 @@ module com.example.protrack {
     requires jbcrypt;
     requires javafx.base;
     requires java.desktop;
+    requires org.apache.pdfbox;
 
     opens com.example.protrack to javafx.fxml;
     opens com.example.protrack.products to javafx.base;
@@ -34,6 +35,8 @@ module com.example.protrack {
     opens com.example.protrack.workorder to javafx.fxml;
     exports com.example.protrack.customer;
     opens com.example.protrack.customer to javafx.fxml;
+    exports com.example.protrack.supplier;
+    opens com.example.protrack.supplier to javafx.fxml;
 
     exports com.example.protrack.warehouseutil;
     opens com.example.protrack.warehouseutil to javafx.fxml;

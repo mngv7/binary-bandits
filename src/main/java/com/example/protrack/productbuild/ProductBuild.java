@@ -32,4 +32,7 @@ public class ProductBuild {
     public void setBuildCompletion(Float buildCompletion) {
         this.buildCompletion = buildCompletion;
     }
+  
+    @Override
+    public String toString() { return this.productOrderId.toString(); }
 }

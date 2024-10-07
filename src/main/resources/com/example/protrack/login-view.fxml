@@ -10,7 +10,7 @@
     <!-- Hbox.hgrow will allow each VBox to take up half the screen -->
     <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
         <ImageView fitHeight="150" fitWidth="150" preserveRatio="true">
-            <Image url="@application_logo.png"/>
+            <Image url="@Images/application_logo.png"/>
         </ImageView>
 
         <Label text="ProTrack" styleClass="logo"/>
@@ -25,16 +25,5 @@
             <Label fx:id="loginErrorMessage" styleClass="login-error-message"/>
         </HBox>
         <Button fx:id="loginButton" text="Log In" onAction="#onLoginButtonClick" styleClass="login-button"/>
-
-        <VBox>
-            <Label text="For the purpose of submission and tutor use:"/>
-            <Label text="Username: John Doe"/>
-            <Label text="Password: password"/>
-            <Label text="------------------"/>
-            <Label text="Username: Frank Miller"/>
-            <Label text="Password: frankpass"/>
-            <Label text="-------------------"/>
-            <Label text="Default New User Password: default"/>
-        </VBox>
     </VBox>
 </HBox>
