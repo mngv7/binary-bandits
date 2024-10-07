@@ -5,6 +5,7 @@ import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.workorderobserver.Observer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +23,12 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class WorkOrderController {
+public class WorkOrderController implements Observer {
+
+    @Override
+    public void update() {
+        refreshTable();
+    }
 
     @FXML
     private TableView<WorkOrder> workOrderTable;
@@ -94,7 +100,7 @@ public class WorkOrderController {
         });
 
         // Load and display the initial list of work orders
-        refreshTable();
+        update();
     }
 
     /**
