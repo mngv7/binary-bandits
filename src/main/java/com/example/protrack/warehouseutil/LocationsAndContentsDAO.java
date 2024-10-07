@@ -1,9 +1,7 @@
 package com.example.protrack.warehouseutil;
 
-import com.example.protrack.database.ProductDBTable;
 import com.example.protrack.database.WorkstationPartDBTable;
 import com.example.protrack.utility.DatabaseConnection;
-import com.example.protrack.parts.Parts;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -55,10 +53,10 @@ public class LocationsAndContentsDAO {
                     "INSERT INTO locations (locationID, locationAlias, locationType, locationCapacity) VALUES (?, ?, ?, ?)"
             );
 
-            insertWarehouse.setInt(1, warehouse.getWarehouseId());
-            insertWarehouse.setString(2, warehouse.getWarehouseName());
+            insertWarehouse.setInt(1, warehouse.getWarehouseLocationId());
+            insertWarehouse.setString(2, warehouse.getWarehouseLocationAlias());
             insertWarehouse.setString(3, "WAREHOUSE");
-            insertWarehouse.setInt(4, warehouse.getMaxParts());
+            insertWarehouse.setInt(4, warehouse.getWarehouseMaxParts());
 
             insertWarehouse.execute();
         } catch (SQLException ex) {
@@ -79,8 +77,8 @@ public class LocationsAndContentsDAO {
                     "INSERT INTO locations (locationID, locationAlias, locationType, locationCapacity) VALUES (?, ?, ?, ?)"
             );
 
-            insertWorkstation.setInt(1, workstation.getWorkstationId());
-            insertWorkstation.setString(2, workstation.getWorkstationName());
+            insertWorkstation.setInt(1, workstation.getWorkstationLocationId());
+            insertWorkstation.setString(2, workstation.getWorkstationLocationAlias());
             insertWorkstation.setString(3, "WORKSTATION");
             insertWorkstation.setInt(4, workstation.getWorkstationMaxParts());
 

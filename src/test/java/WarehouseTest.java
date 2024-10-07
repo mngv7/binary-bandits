@@ -16,9 +16,9 @@ public class WarehouseTest {
 
     @Test
     public void testValidInitialization() {
-        assertEquals(1, realWarehouse.getWarehouseId());
-        assertEquals("Main Warehouse", realWarehouse.getWarehouseName());
-        assertEquals(10000, realWarehouse.getMaxParts());
+        assertEquals(1, realWarehouse.getWarehouseLocationId());
+        assertEquals("Main Warehouse", realWarehouse.getWarehouseLocationAlias());
+        assertEquals(10000, realWarehouse.getWarehouseMaxParts());
     }
 
     @Test
@@ -40,7 +40,7 @@ public class WarehouseTest {
     @Test
     public void testNullWarehouseName() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            realWarehouse.setWarehouseName(null);
+            realWarehouse.setWarehouseLocationAlias(null);
         });
         assertEquals("No fields can be null", exception.getMessage());
     }

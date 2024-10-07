@@ -1,14 +1,16 @@
 package com.example.protrack.warehouseutil;
 
 public interface Workstation {
-    String getWorkstationName();
-    void setWorkstationName(String workstationName);
-    String getWorkstationLocation();
-    void setWorkstationLocation(String workstationLocation);
-    int getWorkstationId();
-    void setWorkstationId(int workstationID);
+    int getWorkstationLocationId();
+    void setWorkstationLocationId(int workstationID);
+    String getWorkstationLocationAlias();
+    void setWorkstationLocationAlias(String workstationName);
     int getWorkstationMaxParts();
     void setWorkstationMaxParts(int maxParts);
+
+    /* TODO: See if these are actually needed anymore. */
+    String getWorkstationLocation();
+    void setWorkstationLocation(String workstationLocation);
 
     /*
      * These functions import and return quantities of the given partsID between

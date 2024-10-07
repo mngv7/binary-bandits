@@ -2,14 +2,16 @@ package com.example.protrack.warehouseutil;
 
 public interface Warehouse {
     /* Getters and setters. Self-explanatory. */
-    String getWarehouseName();
-    void setWarehouseName(String warehouseName);
+    int getWarehouseLocationId();
+    void setWarehouseLocationId(int warehouseId);
+    String getWarehouseLocationAlias();
+    void setWarehouseLocationAlias(String warehouseName);
+    int getWarehouseMaxParts();
+    void setWarehouseMaxParts(int maxParts);
+
+    /* TODO: See if these are needed anymore. */
     String getWarehouseLocation();
     void setWarehouseLocation(String warehouseLocation);
-    int getWarehouseId();
-    void setWarehouseId(int warehouseId);
-    int getMaxParts();
-    void setMaxParts(int maxParts);
 
     /*
      * These functions add and remove quantities of the given partsID to

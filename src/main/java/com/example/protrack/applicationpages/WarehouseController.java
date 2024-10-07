@@ -93,10 +93,10 @@ public class WarehouseController {
             workstations = new ArrayList<>();
 
             /* TODO: load from mock/real DB later. For now, make dummy data. */
-            workstations.add(new MockWorkstation(0, "Workstation 1", "Warehouse room A"));
-            workstations.add(new MockWorkstation(1, "Workstation 2", "Warehouse room A"));
-            workstations.add(new MockWorkstation(2, "Workstation 3", "Warehouse room A"));
-            workstations.add(new MockWorkstation(3, "Workstation 4", "Warehouse room A"));
+            workstations.add(new MockWorkstation(0, "Workstation 1", 100));
+            workstations.add(new MockWorkstation(1, "Workstation 2", 125));
+            workstations.add(new MockWorkstation(2, "Workstation 3", 256));
+            workstations.add(new MockWorkstation(3, "Workstation 4", 64));
         }
         workstationTable.setItems(FXCollections.observableArrayList(workstations));
     }

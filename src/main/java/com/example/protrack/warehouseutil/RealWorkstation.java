@@ -18,47 +18,49 @@ public class RealWorkstation implements Workstation {
         this.partsId = new ArrayList<>();
     }
 
-    public RealWorkstation (int locationID, String locationAlias, int maxParts) {
-        this.workstationId = locationID;
+    public RealWorkstation (int locationId, String locationAlias, int maxParts) {
+        if (locationAlias == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        this.workstationId = locationId;
         this.workstationName = locationAlias;
         this.workstationLocation = "Spike Site A";
         this.maxParts = maxParts;
         this.partsId = new ArrayList<>();
     }
 
-    public RealWorkstation (int locationID, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
-        this.workstationId = locationID;
+    public RealWorkstation (int locationId, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
+        if (locationAlias == null || parts == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        this.workstationId = locationId;
         this.workstationName = locationAlias;
         this.workstationLocation = "Spike Site A";
         this.maxParts = maxParts;
         this.partsId = parts;
     }
 
-    public String getWorkstationName() {
+    public int getWorkstationLocationId() {
+        return workstationId;
+    }
+    public void setWorkstationLocationId(int workstationId) {
+        this.workstationId = workstationId;
+    }
+    public String getWorkstationLocationAlias() {
         return this.workstationName;
     }
-
-    public void setWorkstationName (String workstationName) {
+    public void setWorkstationLocationAlias(String workstationName) {
         this.workstationName = workstationName;
     }
+    public int getWorkstationMaxParts() { return this.maxParts; }
+    public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
 
     public String getWorkstationLocation() {
         return this.workstationLocation;
     }
-
     public void setWorkstationLocation(String workstationLocation) {
         this.workstationLocation = workstationLocation;
     }
-
-    public int getWorkstationId() {
-        return workstationId;
-    }
-    public void setWorkstationId(int workstationId) {
-        this.workstationId = workstationId;
-    }
-
-    public int getWorkstationMaxParts() { return this.maxParts; }
-    public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
 
     /*
      * Imports a specific quantity of the given partsID from the target warehouse into this workstation.

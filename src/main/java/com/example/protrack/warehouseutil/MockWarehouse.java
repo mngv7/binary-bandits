@@ -3,7 +3,7 @@ package com.example.protrack.warehouseutil;
 import java.util.List;
 import java.util.ArrayList;
 
-public class MockWarehouse {
+public class MockWarehouse implements Warehouse {
     private int warehouseId;
     private String warehouseName;
     private String warehouseLocation;
@@ -13,51 +13,53 @@ public class MockWarehouse {
     public MockWarehouse() {
         this.warehouseId = 0;
         this.warehouseName = "Default Warehouse";
-        this.warehouseLocation = "Spike Site A";
+        this.warehouseLocation = "420 Blazeit ave. Brisbane QLD";
         this.partsId = new ArrayList<>();
     }
 
-    public MockWarehouse(int warehouseId) {
+    public MockWarehouse(int locationId, String locationAlias, int maxParts) {
+        if (locationAlias == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        this.warehouseId = locationId;
+        this.warehouseName = locationAlias;
+        this.warehouseLocation = "420 Blazeit ave. Brisbane QLD";
+        this.partsId = new ArrayList<>();
+        this.maxParts = maxParts;
+    }
+
+    public MockWarehouse(int locationId, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
+        if (locationAlias == null || parts == null) {
+            throw new IllegalArgumentException("No fields can be null");
+        }
+        this.warehouseId = locationId;
+        this.warehouseName = locationAlias;
+        this.warehouseLocation = "420 Blazeit ave. Brisbane QLD";
+        this.partsId = parts;
+        this.maxParts = maxParts;
+    }
+
+    public int getWarehouseLocationId() {
+        return this.warehouseId;
+    }
+    public void setWarehouseLocationId(int warehouseId) {
         this.warehouseId = warehouseId;
-        this.warehouseName = "Default Warehouse";
-        this.warehouseLocation = "Spike Site A";
-        this.partsId = new ArrayList<>();
     }
-
-    public MockWarehouse(int warehouseId, String warehouseName) {
-        this.warehouseId = warehouseId;
-        this.warehouseName = warehouseName;
-        this.warehouseLocation = "Spike Site A";
-        this.partsId = new ArrayList<>();
-    }
-
-    public MockWarehouse(int warehouseId, String warehouseName, String warehouseLocation) {
-        this.warehouseId = warehouseId;
-        this.warehouseName = warehouseName;
-        this.warehouseLocation = warehouseLocation;
-        this.partsId = new ArrayList<>();
-    }
-
-    public String getWarehouseName() {
+    public String getWarehouseLocationAlias() {
         return this.warehouseName;
     }
-    public void setWarehouseName(String warehouseName) {
+    public void setWarehouseLocationAlias(String warehouseName) {
         this.warehouseName = warehouseName;
     }
+    public int getWarehouseMaxParts() { return this.maxParts; }
+    public void setWarehouseMaxParts(int maxParts) { this.maxParts = maxParts; }
+
     public String getWarehouseLocation() {
         return this.warehouseLocation;
     }
     public void setWarehouseLocation(String warehouseLocation) {
         this.warehouseLocation = warehouseLocation;
     }
-    public int getWarehouseId() {
-        return this.warehouseId;
-    }
-    public void setWarehouseId(int warehouseId) {
-        this.warehouseId = warehouseId;
-    }
-    public int getMaxParts() { return this.maxParts; }
-    public void setMaxParts(int maxParts) { this.maxParts = maxParts; }
 
     /*
      * Adds a specific quantity of the given partsID to the warehouse.

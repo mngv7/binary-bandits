@@ -1,6 +1,5 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +15,6 @@ import java.io.IOException;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class AllocateWorkstationController {
     /*
@@ -46,7 +44,7 @@ public class AllocateWorkstationController {
         Workstation selectedWorkstation = parentWarehouse.getAllWorkstationsInRAM().get(workstationComboBox.getSelectionModel().getSelectedIndex());
         if (selectedWorkstation != null) {
             // Allocate and open our workstation here.
-            System.out.println("Allocated: " + selectedWorkstation.getWorkstationName());
+            System.out.println("Allocated: " + selectedWorkstation.getWorkstationLocationAlias());
             parentWarehouse.getMainControllerInstance().loadWorkstationContent(workstationComboBox.getValue());
             handleClose();
         }
@@ -59,7 +57,7 @@ public class AllocateWorkstationController {
         if (this.parentWarehouse != null) {
             List<String> workstationNames = new ArrayList<>();
             for (int i = 0; i < parentWarehouse.getAllWorkstationsInRAM().size(); ++i) {
-                workstationNames.add(parentWarehouse.getAllWorkstationsInRAM().get(i).getWorkstationName());
+                workstationNames.add(parentWarehouse.getAllWorkstationsInRAM().get(i).getWorkstationLocationAlias());
             }
             workstationComboBox.setItems(FXCollections.observableArrayList(workstationNames));
         }
