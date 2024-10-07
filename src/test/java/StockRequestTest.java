@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StockRequestTest {
-
     private Requests request;
 
     @BeforeEach
@@ -53,7 +52,7 @@ public class StockRequestTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             new Requests(1, 5, 11, null);
         });
-        assertEquals("No fields cna be null", exception.getMessage());
+        assertEquals("No fields can be null", exception.getMessage());
     }
 
     @Test
