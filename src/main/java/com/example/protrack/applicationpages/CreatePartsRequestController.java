@@ -53,7 +53,7 @@ public class CreatePartsRequestController {
 
     public void setWorkStationId(Integer value) {
         workStationId = value;
-        System.out.println("WS ID HERE IN REQUEST" + workStationId);
+        //System.out.println("WS ID HERE IN REQUEST" + workStationId);
         //refreshTable();
     }
 

@@ -72,6 +72,8 @@ public class ProductBuildController {
 
     private Integer currentWorkstationId = -1;
 
+    private Integer currentProductOrderId = -1;
+
     private Integer currentProductBuild = -1;
 
     private ObservableList<ProductBuild> builds = FXCollections.observableArrayList();
@@ -85,7 +87,14 @@ public class ProductBuildController {
 
     public void setWorkStation(int value) {
         currentWorkstationId = value;
-        System.out.println("WS ID HERE of pb " + currentWorkstationId);
+        //System.out.println("WS ID HERE of pb " + currentWorkstationId);
+        loadBuildsFromDB();
+    }
+
+    public void setProductOrder(int value) {
+        currentProductOrderId = value;
+        //System.out.println("PO ID HERE of pb " + currentProductOrderId);
+        loadBuildsFromDB();
     }
 
 
@@ -95,6 +104,7 @@ public class ProductBuildController {
         colPBWSreqAmt.setCellValueFactory(new PropertyValueFactory<>("reqAmount"));
         colWorkstationAmt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
+        //System.out.println("HERE IN PB BABY");
         loadBuildsFromDB();
     }
 
@@ -102,15 +112,17 @@ public class ProductBuildController {
 
         try {
             ProductBuildDAO productBuildDAO = new ProductBuildDAO();
-            List<ProductBuild> buildList = productBuildDAO.getAllProductBuilds();
+            List<ProductBuild> buildList = productBuildDAO.getAllProductBuildsWithPOID(currentProductOrderId);
 
+            //System.out.println("Does buildlist have stuff? " + buildList.size());
+            //System.out.println("Does buildlist have stuff? " + buildList.isEmpty());
             for (ProductBuild build : buildList) {
                 int buildId = build.getBuildId();
                 int productOrderId = build.getProductOrderId();
                 float buildCompletion = build.getBuildCompletion();
                 int productId = build.getProductId();
                 builds.add(new ProductBuild(buildId, productOrderId, buildCompletion, productId));
-                System.out.println("Got this build Id" + buildId);
+                //System.out.println("Got this build Id" + buildId);
 
                 VBox newRow = new VBox();
 

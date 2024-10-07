@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class ViewWorkstation2 {
+    
+    @FXML
+    private Button toProductOrder;
+    
     private MainController parentMainController;
 
     @FXML
@@ -219,6 +223,30 @@ public class ViewWorkstation2 {
             //LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
             //int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
             productBuildController.setWorkStation(workStationId);
+
+            Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
+            scene.getStylesheets().add(stylesheet);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void goToProductOrder(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-order.fxml"));
+
+        try {
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+
+            Parent createAllocateWSRoot = fxmlLoader.load();
+
+            //ProductBuildController productBuildController = fxmlLoader.getController();
+            //productBuildController.setWorkStation(workStationId);
+            ProductOrderController productOrderController = fxmlLoader.getController();
+            productOrderController.setWorkStation(workStationId);
 
             Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
             scene.getStylesheets().add(stylesheet);
