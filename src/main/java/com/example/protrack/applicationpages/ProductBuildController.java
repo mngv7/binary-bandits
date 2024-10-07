@@ -11,6 +11,8 @@ import com.example.protrack.products.BillOfMaterialsDAO;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.products.TestRecordDAO;
 import com.example.protrack.utility.DatabaseConnection;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.partIdWithQuantity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +34,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProductBuildController {
+
+    @FXML
+    private Button commitButton;
 
     @FXML
     private TableView<ProductBuildWSAmt> PBWSRequirementTableView;
@@ -71,31 +76,25 @@ public class ProductBuildController {
 
     private ObservableList<ProductBuild> builds = FXCollections.observableArrayList();
 
+    private List<ProductBuildWSAmt> currentBuilds;
+
     @FXML
     public Button closePopupButton;
 
     public void setWorkStation(int value) {
-
-        //currentWorkstation = value;
-        //System.out.println("This is ws of pb " + currentWorkstation.getWorkstationName());
         currentWorkstationId = value;
         System.out.println("WS ID HERE of pb " + currentWorkstationId);
-        //refreshTable();
     }
 
 
     public void initialize() {
-        //amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-
         colPBWSpartId.setCellValueFactory(new PropertyValueFactory<>("partId"));
         colPBWSpartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
         colPBWSreqAmt.setCellValueFactory(new PropertyValueFactory<>("reqAmount"));
         colWorkstationAmt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         loadBuildsFromDB();
-        //setupListCellFactory();
     }
-
 
     private void loadBuildsFromDB() {
 
@@ -119,6 +118,7 @@ public class ProductBuildController {
                 Label idLabel4 = new Label("ProductID: " + productId);
 
                 newRow.getChildren().addAll(idLabel, idLabel2, idLabel3, idLabel4);
+                newRow.getStyleClass().add("dynamic-vbox");
 
                 newRow.setOnMouseClicked(event -> selectProductBuild(newRow, productId));
 
@@ -127,44 +127,12 @@ public class ProductBuildController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        /*productBuildListView.setItems(FXCollections.observableArrayList(builds.stream()
-                .map(ProductBuild::toString)
-                .toArray(String[]::new)));
-
-         */
     }
 
-    /*
-    private void setupListCellFactory() {
-        productBuildListView.setCellFactory(lv -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                    setStyle("");
-                } else {
-                    setText(item);
-                    setStyle("-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-border-color: #d0d0d0; -fx-border-radius: 5; -fx-background-radius: 5; -fx-font-size: 14px;");
-                    setOnMouseEntered(e -> setStyle("-fx-background-color: #e0e0e0;"));
-                    setOnMouseExited(e -> setStyle("-fx-background-color: #f0f0f0;"));
-
-                    // Handle item click
-                    setOnMouseClicked(event -> {
-                        if (event.getClickCount() == 1) {
-                            int selectedIndex = getIndex();
-                            if (selectedIndex >= 0) {
-                                ProductBuild selectedItem = builds.get(selectedIndex);
-                                selectProductBuild(selectedItem);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }*/
+    private  void refreshReqTable() {
+        PBWSRequirementTableView.getItems().clear();
+        PBWSRequirementTableView.getItems().addAll(currentBuilds);
+    }
 
     private void selectProductBuild(VBox vBox, int productId) {
         System.out.println("This is productID in pb " + productId);
@@ -173,8 +141,13 @@ public class ProductBuildController {
         List<TestRecord> testRecordsList = loadTestRecord(productId);
         generateTestRecord(testRecordsList);
 
+        if (!(currentBuilds == null)) {
+            currentBuilds.clear();
+        }
+
         List<BillOfMaterials> productBoM = loadRequiredParts(productId);
         List<ProductBuildWSAmt> productBuildWSAmtList = loadWorkstationPartsUsingReqParts(productBoM);
+        currentBuilds = productBuildWSAmtList;
 
         PBWSRequirementTableView.getItems().clear();
         PBWSRequirementTableView.getItems().addAll(productBuildWSAmtList);
@@ -247,12 +220,15 @@ public class ProductBuildController {
 
             int requiredAmount = boM.getRequiredAmount();
 
+            //
             try {
                 PreparedStatement getWSParts = connection.prepareStatement(
                         "SELECT quantity " +
                                 "FROM locationContents a " +
-                                "WHERE a.partID = ?");
+                                "WHERE a.partID = ? " +
+                                "AND a.locationID = ? ");
                 getWSParts.setInt(1, partsId);
+                getWSParts.setInt(2, currentWorkstationId);
                 ResultSet rs = getWSParts.executeQuery();
 
                 PartsDAO partsDAO = new PartsDAO();
@@ -311,6 +287,44 @@ public class ProductBuildController {
 
 
     public void onAddPartButton(ActionEvent actionEvent) {
+    }
+
+    public void onCommitButton(ActionEvent actionEvent) {
+        int canCommit = 1;
+
+        for (ProductBuildWSAmt build : currentBuilds) {
+            if (build.getQuantity() < build.getReqAmount()) {
+                canCommit = 0;
+                break;
+            }
+        }
+
+        /*
+        If there is a lack parts for a build and records are not filled
+        shade out commit button
+         */
+        if (canCommit == 0) {
+            System.out.println("Cannot commit");
+        } else {
+            LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
+
+            //Remove parts from WS
+            for (ProductBuildWSAmt build : currentBuilds) {
+
+                partIdWithQuantity partToRemove = new partIdWithQuantity();
+                partToRemove.partsId = build.getPartId();
+                partToRemove.quantity = build.getReqAmount();
+
+                int currentPartVal = build.getQuantity() - build.getReqAmount();
+                build.setQuantity(currentPartVal);
+
+                refreshReqTable();
+
+                locationsAndContentsDAO.removePartsIdWithQuantityFromLocation(currentWorkstationId, partToRemove);
+                //locationsAndContentsDAO.removePartsIdWithQuantityFromLocation();
+
+            }
+        }
     }
 
 

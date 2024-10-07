@@ -252,9 +252,19 @@ public class LocationsAndContentsDAO {
      */
     public void removePartsIdWithQuantityFromLocation (Integer locationID, partIdWithQuantity partToRemove) {
         try {
-            String query = "SELECT * FROM locationContents WHERE locationID = ? AND partID = ?";
+            String query = "SELECT * FROM locationContents WHERE locationID = " + locationID +" AND partID = " + partToRemove.partsId;
+
+            //PreparedStatement removeWSPart = connection.prepareStatement(query);
+            //removeWSPart.setInt(locationID, partToRemove.partsId);
+            System.out.println("Location ID " + locationID);
+            System.out.println("Part ID " + partToRemove.partsId);
+            //TODO You forgot to set the ints for the above statement originally.
+            // As a stopgap I've manually added them into the string.
             Statement stmt = connection.createStatement();
+
             ResultSet rs = stmt.executeQuery(query);
+
+            //ResultSet rs = removeWSPart.executeQuery(query);
 
             int i = 0;
             if (!rs.next()) {

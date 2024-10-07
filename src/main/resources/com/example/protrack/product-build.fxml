@@ -14,7 +14,7 @@
         <GridPane styleClass="parts-title-container" hgap="165">
             <Label text="Product Build" styleClass="parts-title-label" GridPane.rowIndex="0"/>
             <Button fx:id="closePopupButton" text="❌" onAction="#onClosePopupButton" GridPane.halignment="RIGHT"
-                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="1" styleClass="close-button"/>
         </GridPane>
     </top>
     <center>
@@ -35,7 +35,7 @@
                         <!--TODO Need a scroll bar -->
                     </VBox>
                     <!--WS quantity -->
-                    <VBox fx:id="PBWSRequirementBox">
+                    <VBox fx:id="PBWSRequirementBox" >
                         <!--TODO Need a scroll bar -->
 
                         <TableView fx:id="PBWSRequirementTableView" styleClass="parts-table" maxHeight="175">
@@ -55,5 +55,10 @@
             </HBox>
         </ScrollPane>
     </center>
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 20;">
+            <Button fx:id="commitButton" text="Commit" onAction="#onCommitButton" styleClass="create-product-button-refresh-button" />
+        </HBox>
+    </bottom>
 </BorderPane>
 
