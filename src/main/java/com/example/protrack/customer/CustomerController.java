@@ -1,8 +1,8 @@
 package com.example.protrack.customer;
 
 import com.example.protrack.Main;
-import com.example.protrack.workorderobserver.CustomersTableSubject;
-import com.example.protrack.workorderobserver.Observer;
+import com.example.protrack.observers.CustomersTableSubject;
+import com.example.protrack.observers.Observer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +19,6 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class CustomerController implements Observer {
@@ -44,7 +43,7 @@ public class CustomerController implements Observer {
     private TableColumn<Customer, String> shippingAddressColumn;
     @FXML
     private TableColumn<Customer, String> statusColumn;
-    
+
     private ObservableList<Customer> customers = FXCollections.observableArrayList();;
 
     private CustomersTableSubject subject;

@@ -1,7 +1,5 @@
-package com.example.protrack.workorderobserver;
+package com.example.protrack.observers;
 
-import com.example.protrack.products.Product;
-import com.example.protrack.products.ProductDAO;
 import com.example.protrack.supplier.Supplier;
 import com.example.protrack.supplier.SupplierDAOImplementation;
 import javafx.collections.FXCollections;
@@ -11,9 +9,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class ProductsTableSubject implements Subject<Product> {
+public class SuppliersTableSubject implements Subject<Supplier> {
     private List<Observer> observers = new ArrayList<>(); // To hold multiple observers
-    private ObservableList<Product> products = FXCollections.observableArrayList();
+    private ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
 
     @Override
     public void registerObserver(Observer observer) {
@@ -32,16 +30,16 @@ public class ProductsTableSubject implements Subject<Product> {
         }
     }
 
-    public ObservableList<Product> getData() {
-        return products; // Return the current list of suppliers
+    public ObservableList<Supplier> getData() {
+        return suppliers; // Return the current list of suppliers
     }
 
     public void syncDataFromDB() {
-        List<Product> dbProducts = new ProductDAO().getAllProducts();
+        List<Supplier> dbSuppliers = new SupplierDAOImplementation().getAllSuppliers();
 
         // Check if there are changes
-        if (!new HashSet<>(products).containsAll(dbProducts) || !new HashSet<>(dbProducts).containsAll(products)) { // Check for content changes
-            products.setAll(dbProducts); // Update the ObservableList
+        if (!new HashSet<>(suppliers).containsAll(dbSuppliers) || !new HashSet<>(dbSuppliers).containsAll(suppliers)) { // Check for content changes
+            suppliers.setAll(dbSuppliers); // Update the ObservableList
             notifyObservers(); // Notify observers of the update
         }
     }

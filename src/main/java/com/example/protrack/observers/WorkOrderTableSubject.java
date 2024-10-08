@@ -1,4 +1,4 @@
-package com.example.protrack.workorderobserver;
+package com.example.protrack.observers;
 
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;

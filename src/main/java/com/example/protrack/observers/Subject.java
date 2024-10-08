@@ -1,8 +1,6 @@
-package com.example.protrack.workorderobserver;
+package com.example.protrack.observers;
 
-import com.example.protrack.workorder.WorkOrder;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 
 public interface Subject<T> {
     void registerObserver(Observer observer);

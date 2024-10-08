@@ -1,8 +1,8 @@
 package com.example.protrack.supplier;
 
 import com.example.protrack.Main;
-import com.example.protrack.workorderobserver.Observer;
-import com.example.protrack.workorderobserver.SuppliersTableSubject;
+import com.example.protrack.observers.Observer;
+import com.example.protrack.observers.SuppliersTableSubject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

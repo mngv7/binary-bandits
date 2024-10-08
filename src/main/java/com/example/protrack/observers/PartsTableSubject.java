@@ -1,9 +1,7 @@
-package com.example.protrack.workorderobserver;
+package com.example.protrack.observers;
 
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
-import com.example.protrack.products.Product;
-import com.example.protrack.products.ProductDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

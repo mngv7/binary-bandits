@@ -1,7 +1,6 @@
 package com.example.protrack;
 
 
-import com.example.protrack.applicationpages.ProductsController;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.parts.Parts;
@@ -11,7 +10,6 @@ import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.productorders.ProductOrder;
 import com.example.protrack.productorders.ProductOrderDAO;
 import com.example.protrack.products.*;
-import com.example.protrack.report.OrgReport;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
 import com.example.protrack.supplier.Supplier;
@@ -25,15 +23,12 @@ import com.example.protrack.users.WarehouseUser;
 import com.example.protrack.warehouseutil.*;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
-import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import com.example.protrack.workorderobserver.*;
-import com.example.protrack.workorder.WorkOrderController;
 
 import java.sql.Date;
 import java.io.IOException;

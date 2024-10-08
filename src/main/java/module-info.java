@@ -44,6 +44,6 @@ module com.example.protrack {
     exports com.example.protrack.workorderproducts;
     opens com.example.protrack.workorderproducts to javafx.fxml;
 
-    exports com.example.protrack.workorderobserver;
-    opens com.example.protrack.workorderobserver to javafx.fxml;
+    exports com.example.protrack.observers;
+    opens com.example.protrack.observers to javafx.fxml;
 }
