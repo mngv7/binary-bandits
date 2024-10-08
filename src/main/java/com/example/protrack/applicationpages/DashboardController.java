@@ -14,6 +14,7 @@ import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -320,70 +321,78 @@ public class DashboardController {
     }
 
     private ScatterChart<Number, Number> createWorkOrderForecastingChart() {
+
+        Map<Double, Double> forecastData = orgReport.forecastWorkOrderChartValues();
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName("Work Orders");
+
         NumberAxis xAxis = new NumberAxis();
+        xAxis.setAutoRanging(false);
         xAxis.setLowerBound(0);
-        xAxis.setTickUnit(1);
+        xAxis.setUpperBound(30);
         xAxis.setLabel("Expected Completion (days)");
 
         NumberAxis yAxis = new NumberAxis();
+        yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setTickUnit(5);
+
+        double maxValue = forecastData.values().stream()
+                .max(Double::compareTo)
+                .orElse(30.0); // Defaults to 30.0 if forecastData is empty
+
+        double roundedMaxValue = Math.ceil((maxValue + 1) / 5) * 5;
+        yAxis.setUpperBound(roundedMaxValue);
+
+        yAxis.setTickUnit(10);
         yAxis.setLabel("Expected Production Time (hours)");
 
         ScatterChart<Number, Number> scatterChart = new ScatterChart<>(xAxis, yAxis);
         scatterChart.setTitle("Work Order Forecasting");
-
-        Map<Double, Double> forecastData = orgReport.forecastWorkOrderChartValues();
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        series.setName("Work Orders: (Colour changes according to no. of products and estimated completion time)");
+        scatterChart.setPrefWidth(600);
 
         for (Map.Entry<Double, Double> entry : forecastData.entrySet()) {
             if (entry.getKey() >= 0 && entry.getKey() <= 30) {
-                // Debugging output
-                System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
 
                 // Create a Circle with size based on the value
-                Circle circle = new Circle(entry.getValue() / 2); // Minimum size to avoid very small circles
+                Circle circle = new Circle(Math.max(Math.min(entry.getValue(), 50) / 2, 5));
                 circle.setFill(getColorBasedOnCircleSizeAndX(entry.getKey(), entry.getValue()));
 
                 // Create a data point with the custom Circle node
                 XYChart.Data<Number, Number> dataPoint = new XYChart.Data<>(entry.getKey(), entry.getValue());
-                dataPoint.setNode(circle); // Use the custom node
-
                 series.getData().add(dataPoint);
+                dataPoint.setNode(circle); // Use the custom node
             }
         }
 
         scatterChart.getData().add(series);
+
         return scatterChart;
     }
 
     private Color getColorBasedOnCircleSizeAndX(double xValue, double circleSize) {
-        // Clamp both values to the range [0, 30]
+        // Clamp both values to the range [0, 30], size
         xValue = Math.max(0, Math.min(xValue, 30));
-        circleSize = Math.max(0, Math.min(circleSize, 30));
+        circleSize = Math.max(0, Math.min(circleSize, 25));
 
         // Normalize both values to the range [0, 1]
         double normalizedX = 1 - (xValue / 30.0); // Closer to 0 means more intense color
-        double normalizedSize = 1 - (circleSize / 30.0); // Larger size means more intense color
+        double normalizedSize = 1 - (1 - (circleSize / 25.0)); // Larger size means more intense color
 
-        // Combine the normalized values (weighted if necessary)
-        double combinedValue = (normalizedX + normalizedSize) / 2; // Average for a balanced effect
+        double combinedValue = ((normalizedX * 1.4) + (normalizedSize / 1.4)) / 2; // Weighted in favour of expected completion date as is more critical
 
         // Calculate the RGB components based on the combined normalized value
-        int red = (int) (255 * (1 - combinedValue)); // Increase red as the combined value decreases
-        int green = (int) (255 * combinedValue); // Increase green as the combined value increases
+        int red = (int) (255 * combinedValue); // Increase red as the combined value increases
+        int green = (int) (255 * (1 - combinedValue)); // Increase green as the combined value decreases
         int blue = 0; // Keep blue at 0
 
         return Color.rgb(red, green, blue); // Create the color
     }
 
-
-
-
     private PieChart createSchedulePieChart() {
         // Implementation of pie chart creation
         PieChart pieChart = new PieChart();
+        pieChart.setTitle("Order Status Distribution");
+        pieChart.minWidth(300);
 
         Map<String, Integer> orderStatusCounts = orgReport.calculateTotalOrdersByStatus();
         for (Map.Entry<String, Integer> entry : orderStatusCounts.entrySet()) {
@@ -398,7 +407,7 @@ public class DashboardController {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-        barChart.setTitle("Production Metrics");
+        barChart.setTitle("Inventory Usage");
 
         // Prepare bar chart data
         XYChart.Series<String, Number> series = new XYChart.Series<>();
@@ -407,36 +416,9 @@ public class DashboardController {
         // Add data for Total Parts Used, Total Products Produced, and Total Orders
         series.getData().add(new XYChart.Data<>("Total Parts Used", orgReport.calculateTotalPartsUsed()));
         series.getData().add(new XYChart.Data<>("Total Products Produced", orgReport.calculateTotalProductsProduced()));
-        series.getData().add(new XYChart.Data<>("Total Orders", orgReport.calculateTotalOrders()));
 
         // Add the series to the bar chart
         barChart.getData().add(series);
-
-        // Color customization for the bars
-        for (XYChart.Data<String, Number> data : series.getData()) {
-            if (data.getYValue().doubleValue() > 0) {
-                // Customize colors based on the metric's name
-                if (data.getXValue().equals("Total Parts Used")) {
-                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
-                        if (newNode != null) {
-                            newNode.setStyle("-fx-bar-fill: blue;"); // Set color for Total Parts Used
-                        }
-                    });
-                } else if (data.getXValue().equals("Total Products Produced")) {
-                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
-                        if (newNode != null) {
-                            newNode.setStyle("-fx-bar-fill: green;"); // Set color for Total Products Produced
-                        }
-                    });
-                } else if (data.getXValue().equals("Total Orders")) {
-                    data.nodeProperty().addListener((obs, oldNode, newNode) -> {
-                        if (newNode != null) {
-                            newNode.setStyle("-fx-bar-fill: red;"); // Set color for Total Orders
-                        }
-                    });
-                }
-            }
-        }
 
         return barChart;
     }

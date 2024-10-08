@@ -22,25 +22,27 @@ public class OrgReport implements Report {
         this.workOrderProductsDAO = workOrderProductsDAO;
     }
 
-    private double normalizeToDays(LocalDateTime date, LocalDateTime maxDeliveryDate) {
-        return (double) Duration.between(date, maxDeliveryDate).toDays();
+    private double normalizeToDays(LocalDateTime orderDate, LocalDateTime deliveryDate) {
+        return (double) Duration.between(orderDate, deliveryDate).toDays();
     }
 
     @Override
     public Map<Double, Double> forecastWorkOrderChartValues() {
         Map<Double, Double> forecastData = new HashMap<>();
         List<WorkOrder> workOrders = workOrdersDAO.getAllWorkOrders();
-
-        LocalDateTime maxDeliveryDate = workOrders.stream()
-                .map(WorkOrder::getDeliveryDate)
-                .max(LocalDateTime::compareTo)
-                .orElse(LocalDateTime.now()); // Fallback if no delivery date is present
+        System.out.println(workOrders);
 
         // Populate forecastData with normalized values
         for (WorkOrder order : workOrders) {
-            double forecastRate = estimateProduction(order);
-            double normalizedOrderDate = normalizeToDays(order.getOrderDate(), maxDeliveryDate);
-            forecastData.put(normalizedOrderDate, forecastRate);
+            double forecastedDate = estimateProduction(order);
+            double normalizedOrderDate = normalizeToDays(order.getOrderDate(), order.getDeliveryDate());
+            if (forecastData.containsKey(normalizedOrderDate)) {
+                forecastData.compute(normalizedOrderDate, (k, value) -> forecastedDate + value);
+            } else {
+                forecastData.put(normalizedOrderDate, forecastedDate);
+            }
+
+            System.out.println(forecastData);
         }
         return forecastData;
     }
@@ -50,15 +52,10 @@ public class OrgReport implements Report {
         Map<Double, Double> expectedCycleTimes = new HashMap<>();
         List<WorkOrder> workOrders = workOrdersDAO.getAllWorkOrders();
 
-        LocalDateTime maxDeliveryDate = workOrders.stream()
-                .map(WorkOrder::getDeliveryDate)
-                .max(LocalDateTime::compareTo)
-                .orElse(LocalDateTime.now());
-
         // Populate expectedCycleTimes with normalized values
         for (WorkOrder order : workOrders) {
             double expectedTime = calculateExpectedCycleTime(order);
-            double normalizedOrderDate = normalizeToDays(order.getOrderDate(), maxDeliveryDate);
+            double normalizedOrderDate = normalizeToDays(order.getOrderDate(), order.getDeliveryDate());
             expectedCycleTimes.put(normalizedOrderDate, expectedTime);
         }
         return expectedCycleTimes;
@@ -69,16 +66,11 @@ public class OrgReport implements Report {
         Map<Double, Double> actualCycleTimes = new HashMap<>();
         List<WorkOrder> workOrders = workOrdersDAO.getAllWorkOrders();
 
-        LocalDateTime maxDeliveryDate = workOrders.stream()
-                .map(WorkOrder::getDeliveryDate)
-                .max(LocalDateTime::compareTo)
-                .orElse(LocalDateTime.now());
-
         // Populate actualCycleTimes with normalized values
         for (WorkOrder order : workOrders) {
             double actualTime = calculateActualCycleTime(order);
             if (order.getStatus().equals("Completed")) {
-                double normalizedDeliveryDate = normalizeToDays(order.getDeliveryDate(), maxDeliveryDate);
+                double normalizedDeliveryDate = normalizeToDays(order.getDeliveryDate(), order.getOrderDate());
                 actualCycleTimes.put(normalizedDeliveryDate, actualTime);
             }
         }
@@ -90,15 +82,10 @@ public class OrgReport implements Report {
         Map<Double, Double> throughputData = new HashMap<>();
         List<WorkOrder> workOrders = workOrdersDAO.getAllWorkOrders();
 
-        LocalDateTime maxDeliveryDate = workOrders.stream()
-                .map(WorkOrder::getDeliveryDate)
-                .max(LocalDateTime::compareTo)
-                .orElse(LocalDateTime.now());
-
         // Populate throughputData with normalized values
         for (WorkOrder order : workOrders) {
             double throughput = calculateThroughput(order);
-            double normalizedOrderDate = normalizeToDays(order.getOrderDate(), maxDeliveryDate);
+            double normalizedOrderDate = normalizeToDays(order.getOrderDate(), order.getDeliveryDate());
             throughputData.put(normalizedOrderDate, throughput);
         }
         return throughputData;

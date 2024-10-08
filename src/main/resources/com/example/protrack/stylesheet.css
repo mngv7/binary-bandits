@@ -440,3 +440,19 @@
 }
 
 <img src="application_logo.png">
+
+.chart-pie .data0.chart-pie {
+    -fx-pie-fill: #390b91;
+}
+
+.chart-pie .data1.chart-pie {
+    -fx-pie-fill: #1d064a;
+}
+
+.chart-pie .data2.chart-pie {
+    -fx-pie-fill: #5c18e0;
+}
+
+.chart-pie .data3.chart-pie {
+    -fx-pie-fill: #8c62de;
+}
