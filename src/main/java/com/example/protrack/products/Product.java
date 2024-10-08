@@ -9,7 +9,7 @@ public class Product {
     private final Double price;
 
     public Product(Integer productId, String productName, Date dateCreated, Double price) {
-        if (productId == null || productId <= 0 || productName == null || productName.length() > 255 || dateCreated == null) {
+        if (productId == null || productId <= 0 || productName == null || productName.length() > 255 || dateCreated == null || price == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
         if (productName.isEmpty()) {
@@ -18,8 +18,8 @@ public class Product {
         if (dateCreated.after(new Date(System.currentTimeMillis()))) {
             throw new IllegalArgumentException("Date created cannot be in the future");
         }
-        if (price.isNaN()) {
-            throw new IllegalArgumentException("Price must be a number");
+        if (price.isNaN() || price < 0) {
+            throw new IllegalArgumentException("Price must be a non-negative number");
         }
         this.productId = productId;
         this.productName = productName;
