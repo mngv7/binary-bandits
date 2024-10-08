@@ -1,6 +1,5 @@
 package com.example.protrack.products;
 
-import com.example.protrack.database.ProductDBTable;
 import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
@@ -21,11 +20,12 @@ public class ProductDAO {
 
             // Execute the SQL query to create a table named 'products' if it does not already exist
             createTable.execute(
-                    "CREATE TABLE IF NOT EXISTS products ("
-                            + "productId INTEGER PRIMARY KEY, "
-                            + "productName VARCHAR NOT NULL, "
-                            + "dateCreated DATE NOT NULL"
-                            + ")"
+                    "CREATE TABLE IF NOT EXISTS products (" +
+                            "productId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            "productName VARCHAR NOT NULL, " +
+                            "dateCreated DATE NOT NULL, " +
+                            "price DOUBLE NOT NULL" +
+                            ")"
             );
         } catch (SQLException ex) {
             // Catch and print any SQL exceptions that may occur during table creation
@@ -37,7 +37,7 @@ public class ProductDAO {
      * Deletes product table
      */
     public void dropTable() {
-        String query = "DROP TABLE IF EXISTS products";  // SQL statement to drop the work_orders table
+        String query = "DROP TABLE IF EXISTS products";  // SQL statement to drop the products table
 
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(query);    // executes SQL deletion statement
@@ -55,54 +55,22 @@ public class ProductDAO {
     public void newProduct(Product product) {
         try {
             PreparedStatement insertProduct = connection.prepareStatement(
-                    "INSERT INTO products (productId, productName, dateCreated) VALUES (?, ?, ?)"
+                    "INSERT INTO products (productId, productName, dateCreated, price) VALUES (?, ?, ?, ?)"
             );
 
             // sets product values into statement
             insertProduct.setInt(1, product.getProductId());
             insertProduct.setString(2, product.getProductName());
             insertProduct.setDate(3, product.getDateCreated());
+            insertProduct.setDouble(4, product.getPrice()); // Set price
 
             // executes and inserts product into product table
             insertProduct.execute();
         } catch (SQLException ex) {
-            // Catch and print any SQL exceptions that may occur during table creation
+            // Catch and print any SQL exceptions that may occur during product insertion
             System.err.println(ex);
         }
     }
-
-    /**
-     * Getter that gets all products of table
-     * @return all products in product table
-     */
-    public List<Product> getAllProducts() {
-        // empty list of products
-        List<Product> products = new ArrayList<>();
-
-        // query being run, get all from products
-        String query = "SELECT * FROM products";
-
-        // try running query
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            // while there is a row, get those values and add it to the list
-            while (rs.next()) {
-                int productId = rs.getInt("productId");
-                String productName = rs.getString("productName");
-                Date dateCreated = rs.getDate("dateCreated");
-
-                Product product = new Product(productId, productName, dateCreated);
-                products.add(product);
-            }
-        } catch (SQLException ex) {
-            // Catch and print any SQL exceptions that may occur during table creation
-            System.err.println(ex);
-        }
-        // return list of products in table
-        return products;
-    }
-
 
     /**
      * Checks if table is empty.
@@ -122,12 +90,15 @@ public class ProductDAO {
         return false;
     }
 
-    public List<ProductDBTable> getAllCost() {
-        List<ProductDBTable> products = new ArrayList<>();
+    /**
+     * Getter that gets all products of table
+     * @return all products in product table
+     */
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
 
         String query = "SELECT * FROM products";
 
-        // get all products in database
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -135,29 +106,10 @@ public class ProductDAO {
                 int productId = rs.getInt("productId");
                 String productName = rs.getString("productName");
                 Date dateCreated = rs.getDate("dateCreated");
-                double price = 0.0;
+                double price = rs.getDouble("price"); // Retrieve price directly from the product table
 
-                // add price of total parts to products
-                try {
-                    PreparedStatement getPrice = connection.prepareStatement(
-                            "SELECT SUM (a.requiredAmount * b.cost) AS TotalValue " +
-                                    "FROM requiredParts a " +
-                                    "JOIN parts b ON a.PartsId = b.PartsId " +
-                                    "WHERE a.productId = ?");
-                    getPrice.setInt(1, productId);
-                    ResultSet rs2 = getPrice.executeQuery();
-
-                    if (rs2.next()) {
-                        price += rs2.getDouble("TotalValue");
-                    }
-
-                } catch (SQLException ex) {
-                    System.err.println(ex);
-                }
-
-                ProductDBTable product = new ProductDBTable(productId, productName, dateCreated, price);
-
-                // add product to list
+                // Create Product object with price
+                Product product = new Product(productId, productName, dateCreated, price);
                 products.add(product);
             }
         } catch (SQLException ex) {
@@ -167,5 +119,47 @@ public class ProductDAO {
         return products;
     }
 
+    public double calculateProductPrice(int productId) {
+        double totalPrice = 0.0;
 
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT p.cost, bm.requiredAmount " +
+                            "FROM requiredParts bm " +
+                            "JOIN parts p ON bm.partsId = p.partsId " +
+                            "WHERE bm.productId = ?"
+            );
+            statement.setInt(1, productId);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                double partPrice = rs.getDouble("cost");
+                int requiredAmount = rs.getInt("requiredAmount");
+                totalPrice += partPrice * requiredAmount;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error calculating total price: " + e.getMessage());
+        }
+
+        return totalPrice;
+    }
+
+    /**
+     * Updates the price of a product in the database.
+     *
+     * @param productId The ID of the product to update.
+     * @param newPrice The new price to set for the product.
+     * @throws SQLException if there is an error during the update operation.
+     */
+    public void updateProductPrice(int productId, double newPrice) {
+        String updatePriceSQL = "UPDATE products SET price = ? WHERE productId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updatePriceSQL)) {
+            preparedStatement.setDouble(1, newPrice);
+            preparedStatement.setInt(2, productId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error updating product price: " + e.getMessage());
+        }
+    }
 }

@@ -25,6 +25,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import static java.lang.Integer.parseInt;
+
 public class CreateProductController {
     private static final String TITLE = "Create Product";
     private static final int WIDTH = 900;
@@ -103,7 +105,7 @@ public class CreateProductController {
         if (partIdStr != null && !partIdStr.trim().isEmpty()) {
 
             // convert string into integer (PartId is always an integer)
-            int partIdInt = Integer.parseInt(partIdStr);
+            int partIdInt = parseInt(partIdStr);
             try {
 
                 // Create statement
@@ -178,18 +180,23 @@ public class CreateProductController {
 
         try {
 
-            int productId = Integer.parseInt(productIdField.getText());
+            int productId = parseInt(productIdField.getText());
 
             String productName = productNameField.getText();
 
             long millis = System.currentTimeMillis();
             java.sql.Date date = new java.sql.Date(millis);
 
+            double price = 0.0;
+
             // Create new product in product table with previous values
-            productDAO.newProduct(new Product(productId, productName, date));
+            productDAO.newProduct(new Product(productId, productName, date, price));
 
             // Creates new BoM using values
             insertReqPartsFromVbox(productId);
+
+            price = productDAO.calculateProductPrice(productId);
+            productDAO.updateProductPrice(productId, price);
 
             // Pop-up of create test records
             openCreateTestRecordPopup();
@@ -223,7 +230,7 @@ public class CreateProductController {
 
                     // Create new BoM using previous values
                     BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
-                    billOfMaterial.newRequiredParts(new BillOfMaterials(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
+                    billOfMaterial.newRequiredParts(new BillOfMaterials(parseInt(partsId), productId, parseInt(requiredAmount)));
                 }
             }
             connection.commit();

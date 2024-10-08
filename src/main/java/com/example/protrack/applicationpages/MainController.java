@@ -59,7 +59,7 @@ public class MainController {
 
     @FXML
     private void parts() {
-        loadContent("/com/example/protrack/Parts/parts.fxml");
+        loadContent("/com/example/protrack/parts/parts.fxml");
     }
 
     @FXML
@@ -205,13 +205,6 @@ public class MainController {
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
-
-            if (fxmlFile.equals("/com/example/protrack/products.fxml")) {
-                ProductsController productsController = loader.getController();
-                ProductControllerObserver productControllerObserver = new ProductControllerObserver("Test");
-                productsController.registerObserver(productControllerObserver);
-                System.out.println("In here");
-            }
 
             dynamicVBox.getChildren().add(content);
             //scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());

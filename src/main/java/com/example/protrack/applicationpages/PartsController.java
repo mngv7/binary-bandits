@@ -5,6 +5,9 @@ import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import com.example.protrack.workorderobserver.Observer;
+import com.example.protrack.workorderobserver.PartsTableSubject;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,11 +21,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class PartsController {
+public class PartsController implements Observer {
 
     @FXML
     public Button addPartsButton;
@@ -47,10 +51,15 @@ public class PartsController {
 
     private ObservableList<Parts> partsList;
 
+    private PartsTableSubject subject;
+
     /**
      * Initialize parts page with values
      */
     public void initialize() {
+        subject = new PartsTableSubject();
+        subject.registerObserver(this);
+
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
 
@@ -69,16 +78,25 @@ public class PartsController {
         partsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Refresh parts table
-        refreshTable();
+        subject.syncDataFromDB();
+        update();
+
+        Platform.runLater(() -> {
+            Window window = addPartsButton.getScene().getWindow();
+            if (window instanceof Stage stage) {
+                stage.setOnCloseRequest(event -> {
+                    subject.deregisterObserver(this);
+                });
+            }
+        });
     }
 
     /**
      * Refreshes the table with parts data
      */
-    public void refreshTable() {
-        PartsDAO partsDAO = new PartsDAO();
+    public void update() {
         partsList.clear();
-        partsList.addAll(partsDAO.getAllParts());
+        partsList.setAll(subject.getData());
     }
 
     private static final String TITLE = "Add Parts";
@@ -106,6 +124,7 @@ public class PartsController {
             popupStage.setY(150);
             popupStage.setX(390);
             popupStage.showAndWait();
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }

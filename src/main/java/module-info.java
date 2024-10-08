@@ -30,7 +30,6 @@ module com.example.protrack {
     exports com.example.protrack.utility;
     opens com.example.protrack.utility to javafx.fxml;
 
-    
     exports com.example.protrack.profile;
     opens com.example.protrack.profile to javafx.fxml;
     exports com.example.protrack.workorder;

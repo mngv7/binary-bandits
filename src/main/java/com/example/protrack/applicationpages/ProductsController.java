@@ -1,11 +1,12 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.database.ProductDBTable;
-import com.example.protrack.products.ProductDAO;
+import com.example.protrack.products.Product;
 import com.example.protrack.users.UsersDAO;
-import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import com.example.protrack.workorderobserver.Observer;
+import com.example.protrack.workorderobserver.ProductsTableSubject;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,48 +20,46 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
-interface Subject {
-    void registerObserver(Observer observer);
-    void removeObserver(Observer observer);
-    void notifyObservers();
-}
-
-public class ProductsController implements Subject {
+public class ProductsController implements Observer {
 
     @FXML
     public Button addProductButton;
 
     @FXML
-    private TableView<ProductDBTable> productTable;
+    private TableView<Product> productTable;
 
     @FXML
-    private TableColumn<ProductDBTable, Integer> colProductId;
+    private TableColumn<Product, Integer> colProductId;
 
     @FXML
-    private TableColumn<ProductDBTable, String> colProductName;
+    private TableColumn<Product, String> colProductName;
 
     @FXML
-    private TableColumn<ProductDBTable, java.sql.Date> colDateCreated;
+    private TableColumn<Product, java.sql.Date> colDateCreated;
 
     @FXML
-    private TableColumn<ProductDBTable, Double> colPrice;
+    private TableColumn<Product, Double> colPrice;
 
-    private ObservableList<ProductDBTable> productList;
+    private ObservableList<Product> productList;
 
-    private List <Observer> observers;
+    private List<Observer> observers;
+
+    private ProductsTableSubject subject;
 
     /**
      * Initialise product page with values
      */
     public void initialize() {
+        subject = new ProductsTableSubject();
+        subject.registerObserver(this);
+
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
 
@@ -74,29 +73,36 @@ public class ProductsController implements Subject {
 
         productList = FXCollections.observableArrayList();
         productTable.setItems(productList);
-        notifyObservers();
-
+        subject.notifyObservers();
 
         productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // refresh product table
-        refreshTable();
+        subject.syncDataFromDB();
+        update();
+
+        Platform.runLater(() -> {
+            Window window = addProductButton.getScene().getWindow();
+            if (window instanceof Stage stage) {
+                stage.setOnCloseRequest(event -> {
+                    subject.deregisterObserver(this);
+                });
+            }
+        });
     }
 
     /**
-     * Refreshes the table
+     * Refreshes the table with parts data
      */
-    public void refreshTable() {
-
+    public void update() {
         productList.clear();
-        productList.addAll(productDBtoTable());
-        notifyObservers();
+        productList.setAll(subject.getData());
     }
 
     /**
      * Generates list of products from product database with price
      * @return list of products with price
-     */
+
     public List<ProductDBTable> productDBtoTable() {
         //Connection connection;
         //connection = DatabaseConnection.getInstance();
@@ -109,6 +115,7 @@ public class ProductsController implements Subject {
         // return list
         return products;
     }
+    */
 
     private static final String TITLE = "Create Product";
     private static final int WIDTH = 900;
@@ -134,29 +141,9 @@ public class ProductsController implements Subject {
             popupStage.setY(150);
             popupStage.setX(390);
             popupStage.showAndWait();
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public ProductsController() {
-        observers = new ArrayList<>();
-    }
-
-    @Override
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer observer : observers) {
-            observer.update(productList);
         }
     }
 }
