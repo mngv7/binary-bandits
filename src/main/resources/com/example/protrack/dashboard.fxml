@@ -61,7 +61,7 @@
                 </VBox>
 
                 <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
-                    <Label text="Active Orders" styleClass="subheading"/>
+                    <Label text="Inventory Forecasting" styleClass="subheading"/>
                 </VBox>
             </HBox>
 

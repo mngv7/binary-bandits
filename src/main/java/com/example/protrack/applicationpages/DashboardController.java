@@ -289,9 +289,6 @@ public class DashboardController {
         return Color.rgb(red, green, blue); // Create the color
     }
 
-
-
-
     private PieChart createSchedulePieChart() {
         // Implementation of pie chart creation
         PieChart pieChart = new PieChart();
@@ -351,5 +348,4 @@ public class DashboardController {
 
         return barChart;
     }
-
 }
