@@ -4,8 +4,10 @@ import com.example.protrack.workorder.WorkOrder;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
-public interface Subject {
+public interface Subject<T> {
     void registerObserver(Observer observer);
     void deregisterObserver(Observer observer);
     void notifyObservers();
+    ObservableList<T> getData();
+    void syncDataFromDB();
 }

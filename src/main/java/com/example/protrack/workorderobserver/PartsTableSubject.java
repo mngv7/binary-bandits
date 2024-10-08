@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class PartsTableSubject implements Subject {
+public class PartsTableSubject implements Subject<Parts> {
     private List<Observer> observers = new ArrayList<>(); // To hold multiple observers
     private ObservableList<Parts> parts = FXCollections.observableArrayList();
 
@@ -32,7 +32,11 @@ public class PartsTableSubject implements Subject {
         }
     }
 
-    public void getPartsFromDB() {
+    public ObservableList<Parts> getData() {
+        return parts;
+    }
+
+    public void syncDataFromDB() {
         List<Parts> dbParts = new PartsDAO().getAllParts();
 
         // Check if there are changes

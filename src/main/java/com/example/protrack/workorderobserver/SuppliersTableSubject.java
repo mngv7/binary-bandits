@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class SuppliersTableSubject implements Subject {
+public class SuppliersTableSubject implements Subject<Supplier> {
     private List<Observer> observers = new ArrayList<>(); // To hold multiple observers
     private ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
 
@@ -36,11 +36,11 @@ public class SuppliersTableSubject implements Subject {
         }
     }
 
-    public ObservableList<Supplier> getSuppliers() {
+    public ObservableList<Supplier> getData() {
         return suppliers; // Return the current list of suppliers
     }
 
-    public void getSuppliersFromDB() {
+    public void syncDataFromDB() {
         List<Supplier> dbSuppliers = new SupplierDAOImplementation().getAllSuppliers();
 
         // Check if there are changes

@@ -7,6 +7,7 @@ import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorderobserver.Observer;
 import com.example.protrack.workorderobserver.WorkOrderTableSubject;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -105,27 +106,27 @@ public class WorkOrderController implements Observer {
         });
 
         // Load and display the initial list of work orders
-        subject.getWorkOrdersFromDB(); // Fetch data from the database directly
+        subject.syncDataFromDB(); // Fetch data from the database directly
         update();
 
-        Window window = createWorkOrderButton.getScene().getWindow();
-        if (window instanceof Stage stage) {
-            stage.setOnCloseRequest(event -> {
-                subject.deregisterObserver(this);
-            });
-        }
-
-    }
-
-    @Override
-    public void update() {
-        workOrderList.clear();
-        workOrderList.setAll(subject.getWorkOrders());
+        Platform.runLater(() -> {
+            Window window = createWorkOrderButton.getScene().getWindow();
+            if (window instanceof Stage stage) {
+                stage.setOnCloseRequest(event -> {
+                    subject.deregisterObserver(this);
+                });
+            }
+        });
     }
 
     /**
      * Refreshes the TableView with the latest work orders from the database.
      */
+    @Override
+    public void update() {
+        workOrderList.clear();
+        workOrderList.setAll(subject.getData());
+    }
 
     private static final String TITLE = "Create Work Order";
     private static final int WIDTH = 900;
@@ -159,7 +160,7 @@ public class WorkOrderController implements Observer {
 
             // Show the popup window
             popupStage.showAndWait();
-            subject.getWorkOrdersFromDB();
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -193,7 +194,7 @@ public class WorkOrderController implements Observer {
             popupStage.setX(rootBounds.getCenterX() - 310);
 
             popupStage.showAndWait();
-            subject.getWorkOrdersFromDB();
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -228,6 +229,6 @@ public class WorkOrderController implements Observer {
                 21.00
         );
         workOrdersDAO.createWorkOrder(newWorkOrder);
-        subject.getWorkOrdersFromDB();
+        subject.syncDataFromDB();
     }
 }

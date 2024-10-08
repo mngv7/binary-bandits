@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class WorkOrderTableSubject implements Subject {
+public class WorkOrderTableSubject implements Subject<WorkOrder> {
 
     private List<Observer> observers = new ArrayList<>(); // To hold multiple observers
     private ObservableList<WorkOrder> workOrders = FXCollections.observableArrayList();
@@ -35,11 +35,11 @@ public class WorkOrderTableSubject implements Subject {
         }
     }
 
-    public ObservableList<WorkOrder> getWorkOrders() {
+    public ObservableList<WorkOrder> getData() {
         return workOrders; // Return the current list of work orders
     }
 
-    public void getWorkOrdersFromDB() {
+    public void syncDataFromDB() {
         List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
         List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
         List<WorkOrder> dbWorkOrders = new WorkOrdersDAOImplementation(productionUsers, customers).getAllWorkOrders();
