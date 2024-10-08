@@ -26,7 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ProductsController {
+
+interface Subject {
+    void registerObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers();
+}
+
+public class ProductsController implements Subject {
 
     @FXML
     public Button addProductButton;
@@ -48,6 +55,8 @@ public class ProductsController {
 
     private ObservableList<ProductDBTable> productList;
 
+    private List <Observer> observers;
+
     /**
      * Initialise product page with values
      */
@@ -65,6 +74,9 @@ public class ProductsController {
 
         productList = FXCollections.observableArrayList();
         productTable.setItems(productList);
+        notifyObservers();
+
+
         productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // refresh product table
@@ -75,8 +87,10 @@ public class ProductsController {
      * Refreshes the table
      */
     public void refreshTable() {
+
         productList.clear();
         productList.addAll(productDBtoTable());
+        notifyObservers();
     }
 
     /**
@@ -122,6 +136,27 @@ public class ProductsController {
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public ProductsController() {
+        observers = new ArrayList<>();
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(productList);
         }
     }
 }

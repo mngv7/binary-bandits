@@ -1,5 +1,7 @@
 package com.example.protrack;
 
+import com.example.protrack.applicationpages.ProductControllerObserver;
+import com.example.protrack.applicationpages.ProductsController;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.parts.Parts;
@@ -278,6 +280,12 @@ public class Main extends Application {
         if (supplierDAOImplementation.getAllSuppliers().isEmpty()) {
             supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
         }
+
+
+
+        //productsController.initialize();
+        //productsController.refreshTable();
+
 
         launch();
     }
