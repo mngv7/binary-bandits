@@ -22,4 +22,5 @@ public interface Workstation {
      */
     void importPartsIdWithQuantityFromWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao, int componentId, int quantity);
     void returnPartsIdWithQuantityToWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao, int componentId, int quantity);
+    void returnAllPartsToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao);
 }

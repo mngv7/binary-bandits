@@ -113,6 +113,15 @@ public class RealWorkstation implements Workstation {
         }
     }
 
+    public void returnAllPartsToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao) {
+        for (int i = 0; i < this.partsId.size(); ++i) {
+            if (targetWarehouse != null)
+                targetWarehouse.addPartsIdWithQuantity(dao, this.partsId.get(i).partsId, this.partsId.get(i).quantity);
+            dao.removePartsIdWithQuantityFromLocation(this.workstationId, this.partsId.get(i));
+            this.partsId.remove(this.partsId.get(i));
+        }
+    }
+
     @Override
     public String toString() {return this.workstationName;}
 }
