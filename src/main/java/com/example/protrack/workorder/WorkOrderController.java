@@ -5,6 +5,8 @@ import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.workorderobserver.Observer;
+import com.example.protrack.workorderobserver.WorkOrderTableSubject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,7 +24,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class WorkOrderController {
+public class WorkOrderController implements Observer {
+
 
     @FXML
     private TableView<WorkOrder> workOrderTable;
@@ -62,11 +65,18 @@ public class WorkOrderController {
 
     private ObservableList<WorkOrder> workOrderList;
 
+    // Reference to the subject
+    private WorkOrderTableSubject subject;
+
     /**
      * Initializes the controller class. This method is automatically called
      * after the FXML file has been loaded.
      */
     public void initialize() {
+        subject = new WorkOrderTableSubject();
+        // Register this controller as an observer to the subject
+        subject.registerObserver(this);
+
         // Set up the TableView columns with the corresponding property values
         colWorkOrderId.setCellValueFactory(new PropertyValueFactory<>("workOrderId"));
         colOrderOwner.setCellValueFactory(new PropertyValueFactory<>("orderOwner"));
@@ -94,25 +104,19 @@ public class WorkOrderController {
         });
 
         // Load and display the initial list of work orders
-        refreshTable();
+        subject.getWorkOrdersFromDB(); // Fetch data from the database directly
+        update();
+    }
+
+    @Override
+    public void update() {
+        workOrderList.clear();
+        workOrderList.setAll(subject.getWorkOrders());
     }
 
     /**
      * Refreshes the TableView with the latest work orders from the database.
      */
-    public void refreshTable() {
-        // Create DAOs for fetching data
-        UsersDAO usersDAO = new UsersDAO();
-        CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
-        WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(
-                usersDAO.getProductionUsers(),
-                customerDAOImplementation.getAllCustomers()
-        );
-
-        // Clear the current list and load the updated work orders
-        workOrderList.clear();
-        workOrderList.addAll(workOrdersDAO.getAllWorkOrders());
-    }
 
     private static final String TITLE = "Create Work Order";
     private static final int WIDTH = 900;
@@ -146,7 +150,7 @@ public class WorkOrderController {
 
             // Show the popup window
             popupStage.showAndWait();
-
+            subject.getWorkOrdersFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,7 +184,7 @@ public class WorkOrderController {
             popupStage.setX(rootBounds.getCenterX() - 310);
 
             popupStage.showAndWait();
-
+            subject.getWorkOrdersFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -215,5 +219,6 @@ public class WorkOrderController {
                 21.00
         );
         workOrdersDAO.createWorkOrder(newWorkOrder);
+        subject.getWorkOrdersFromDB();
     }
 }

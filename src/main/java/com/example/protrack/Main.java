@@ -30,6 +30,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import com.example.protrack.workorderobserver.*;
+import com.example.protrack.workorder.WorkOrderController;
 
 import java.sql.Date;
 import java.io.IOException;
