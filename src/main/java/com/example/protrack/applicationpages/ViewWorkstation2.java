@@ -23,7 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ViewWorkstation2 {
+
+interface Subject2 {
+    void registerObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers();
+}
+
+public class ViewWorkstation2 implements Subject2 {
     
     @FXML
     private Button toProductOrder;
@@ -256,5 +263,20 @@ public class ViewWorkstation2 {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
     }
 }

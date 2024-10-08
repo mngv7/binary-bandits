@@ -145,12 +145,12 @@ public class ProductsController implements Subject {
 
     @Override
     public void registerObserver(Observer observer) {
-
+        observers.add(observer);
     }
 
     @Override
     public void removeObserver(Observer observer) {
-
+        observers.remove(observer);
     }
 
     @Override
