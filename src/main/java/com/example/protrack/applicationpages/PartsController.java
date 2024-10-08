@@ -2,7 +2,6 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.parts.Parts;
-import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
 import com.example.protrack.workorderobserver.Observer;
@@ -49,7 +48,7 @@ public class PartsController implements Observer {
     @FXML
     private TableColumn<Parts, Double> colCost;
 
-    private ObservableList<Parts> partsList;
+    private ObservableList<Parts> parts;
 
     private PartsTableSubject subject;
 
@@ -73,8 +72,8 @@ public class PartsController implements Observer {
         colSupplierId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         colCost.setCellValueFactory(new PropertyValueFactory<>("cost"));
 
-        partsList = FXCollections.observableArrayList();
-        partsTable.setItems(partsList);
+        parts = FXCollections.observableArrayList();
+        partsTable.setItems(parts);
         partsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Refresh parts table
@@ -95,8 +94,8 @@ public class PartsController implements Observer {
      * Refreshes the table with parts data
      */
     public void update() {
-        partsList.clear();
-        partsList.setAll(subject.getData());
+        parts.clear();
+        parts.setAll(subject.getData());
     }
 
     private static final String TITLE = "Add Parts";

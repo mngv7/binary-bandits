@@ -62,10 +62,7 @@ public class WorkOrderController implements Observer {
     @FXML
     private Button createWorkOrderButton;
 
-    @FXML
-    private Button refreshButton;
-
-    private ObservableList<WorkOrder> workOrderList;
+    private ObservableList<WorkOrder> workOrders;
 
     // Reference to the subject
     private WorkOrderTableSubject subject;
@@ -90,8 +87,8 @@ public class WorkOrderController implements Observer {
         colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 
         // Initialize the ObservableList and set it to the TableView
-        workOrderList = FXCollections.observableArrayList();
-        workOrderTable.setItems(workOrderList);
+        workOrders = FXCollections.observableArrayList();
+        workOrderTable.setItems(workOrders);
 
         // Handles row clicks to display relevant information
         workOrderTable.setRowFactory(tv -> {
@@ -124,8 +121,8 @@ public class WorkOrderController implements Observer {
      */
     @Override
     public void update() {
-        workOrderList.clear();
-        workOrderList.setAll(subject.getData());
+        workOrders.clear();
+        workOrders.setAll(subject.getData());
     }
 
     private static final String TITLE = "Create Work Order";

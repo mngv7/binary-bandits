@@ -1,10 +1,8 @@
 package com.example.protrack.supplier;
 
 import com.example.protrack.Main;
-import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorderobserver.Observer;
 import com.example.protrack.workorderobserver.SuppliersTableSubject;
-import com.example.protrack.workorderobserver.WorkOrderTableSubject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +19,6 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class SupplierController implements Observer {
@@ -53,12 +50,10 @@ public class SupplierController implements Observer {
     @FXML
     private Button addSupplierButton;
 
-    private ObservableList<Supplier> supplierList;
+    private ObservableList<Supplier> suppliers;
 
     // Reference to the subject
     private SuppliersTableSubject subject;
-
-    private SupplierDAOImplementation supplierDAOImplementation;
 
     // Initialize the controller
     @FXML
@@ -77,8 +72,8 @@ public class SupplierController implements Observer {
         leadTimeColumn.setCellValueFactory(new PropertyValueFactory<>("leadTime"));
 
         // Initialize the ObservableList and set it to the TableView
-        supplierList = FXCollections.observableArrayList();
-        suppliersTableView.setItems(supplierList);
+        suppliers = FXCollections.observableArrayList();
+        suppliersTableView.setItems(suppliers);
 
         // Load and display the initial list of suppliers
         subject.syncDataFromDB();
@@ -110,8 +105,8 @@ public class SupplierController implements Observer {
 
     // Refresh the suppliers table with data from the database
     public void update() {
-        supplierList.clear();
-        supplierList.setAll(subject.getData());
+        suppliers.clear();
+        suppliers.setAll(subject.getData());
     }
 
     // Opens add supplier popup

@@ -47,7 +47,7 @@ public class ProductsController implements Observer {
     @FXML
     private TableColumn<Product, Double> colPrice;
 
-    private ObservableList<Product> productList;
+    private ObservableList<Product> products;
 
     private List<Observer> observers;
 
@@ -71,8 +71,8 @@ public class ProductsController implements Observer {
         colDateCreated.setCellValueFactory(new PropertyValueFactory<>("dateCreated"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        productList = FXCollections.observableArrayList();
-        productTable.setItems(productList);
+        products = FXCollections.observableArrayList();
+        productTable.setItems(products);
         subject.notifyObservers();
 
         productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -95,8 +95,8 @@ public class ProductsController implements Observer {
      * Refreshes the table with parts data
      */
     public void update() {
-        productList.clear();
-        productList.setAll(subject.getData());
+        products.clear();
+        products.setAll(subject.getData());
     }
 
     /**

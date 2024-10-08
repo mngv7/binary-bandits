@@ -1,6 +1,9 @@
 package com.example.protrack.customer;
 
 import com.example.protrack.Main;
+import com.example.protrack.workorderobserver.CustomersTableSubject;
+import com.example.protrack.workorderobserver.Observer;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,12 +16,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class CustomerController {
+public class CustomerController implements Observer {
 
     @FXML
     private Button addCustomerButton;
@@ -40,19 +44,20 @@ public class CustomerController {
     private TableColumn<Customer, String> shippingAddressColumn;
     @FXML
     private TableColumn<Customer, String> statusColumn;
+    
+    private ObservableList<Customer> customers = FXCollections.observableArrayList();;
 
-    private CustomerDAOImplementation customerDAOImplementation;
-    private ObservableList<Customer> tableCustomers;
-
-    public CustomerController() {
-        customerDAOImplementation = new CustomerDAOImplementation();
-        tableCustomers = FXCollections.observableArrayList();
-    }
+    private CustomersTableSubject subject;
 
     @FXML
     public void initialize() {
+        subject = new CustomersTableSubject();
+        subject.registerObserver(this);
+
         setupTableColumns();
-        loadCustomers();
+
+        subject.syncDataFromDB();
+        update();
 
         customersTableView.setRowFactory(tv -> {
             TableRow<Customer> row = new TableRow<>();
@@ -63,6 +68,15 @@ public class CustomerController {
                 }
             });
             return row;
+        });
+
+        Platform.runLater(() -> {
+            Window window = addCustomerButton.getScene().getWindow();
+            if (window instanceof Stage stage) {
+                stage.setOnCloseRequest(event -> {
+                    subject.deregisterObserver(this);
+                });
+            }
         });
     }
 
@@ -77,11 +91,9 @@ public class CustomerController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
 
-    private void loadCustomers() {
-        List<Customer> customers = customerDAOImplementation.getAllCustomers();
-        tableCustomers.clear();
-        tableCustomers.addAll(customers);
-        customersTableView.setItems(tableCustomers);
+    public void update() {
+        customers.clear();
+        customers.setAll(subject.getData());
     }
 
     /**
@@ -112,7 +124,7 @@ public class CustomerController {
 
             // Show the popup window
             popupStage.showAndWait();
-
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -147,7 +159,7 @@ public class CustomerController {
 
             // Show the popup window
             popupStage.showAndWait();
-
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
