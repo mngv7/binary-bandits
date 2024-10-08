@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -106,6 +107,14 @@ public class WorkOrderController implements Observer {
         // Load and display the initial list of work orders
         subject.getWorkOrdersFromDB(); // Fetch data from the database directly
         update();
+
+        Window window = createWorkOrderButton.getScene().getWindow();
+        if (window instanceof Stage stage) {
+            stage.setOnCloseRequest(event -> {
+                subject.deregisterObserver(this);
+            });
+        }
+
     }
 
     @Override
