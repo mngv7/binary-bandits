@@ -4,13 +4,21 @@ import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
 
+/**
+ * Data Access Object (DAO) for managing timesheets in the database.
+ * Provides methods to create a timesheets table and insert new timesheets.
+ */
 public class TimesheetsDAO {
     private final Connection connection;
 
+    /**
+     * Constructs a TimesheetsDAO and establishes a connection to the database.
+     */
     public TimesheetsDAO() { connection = DatabaseConnection.getInstance(); }
 
     /**
-     * Creates timesheets table
+     * Creates the timesheets table in the database if it does not already exist.
+     * The table stores start time, end time, employee ID, and product order ID for each timesheet entry.
      */
     public void createTable() {
         try {
@@ -35,7 +43,8 @@ public class TimesheetsDAO {
     }
 
     /**
-     * Inserts inputted timesheet into timesheet table
+     * Inserts a new timesheet entry into the timesheets table.
+     * @param timesheets the Timesheets object containing the timesheet data to insert
      */
     public void newTimesheet(Timesheets timesheets) {
         try {
@@ -56,6 +65,10 @@ public class TimesheetsDAO {
         }
     }
 
+    /**
+     * Checks whether the timesheets table is empty
+     * @return true if the table contains no rows, false otherwise
+     */
     public boolean isTableEmpty() {
         try {
             Statement stmt = connection.createStatement();

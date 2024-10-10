@@ -21,6 +21,10 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * Controller class for managing timesheets in the ProTrack application.
+ * This class handles the user interface for adding timesheets and interacting with the timesheet database.
+ */
 public class TimesheetsController {
 
     // Regular expression fo valid time input (HH:mm or H:mm)
@@ -41,8 +45,17 @@ public class TimesheetsController {
     @FXML
     public Button closePopupButton;
 
+    /**
+     * Sets the employee ID to the specified value
+     * @param employeeId the ID of the employee
+     */
     public void setEmployeeId(String employeeId) {this.employeeId.setText(employeeId);}
 
+    /**
+     * Initialises the TimesheetsController.
+     * Populates the product build ComboBox with available product builds and binds the "Add Timesheet" button
+     * to be disabled if any required fields are empty.
+     */
     public void initialize() {
         // Populate the ComboBoxes with data from the database
         productBuildComboBox.getItems().setAll(new ProductBuildDAO().getAllProductBuilds());
@@ -59,7 +72,9 @@ public class TimesheetsController {
         addTimesheet.disableProperty().bind(emptyFields);
     }
 
-    // Method to clear input fields
+    /**
+     * Clears the input fields for the timesheet form.
+     */
     private void clearPartInputFields() {
         productBuildComboBox.getSelectionModel().clearSelection();
         startTimeField.clear();
@@ -90,7 +105,7 @@ public class TimesheetsController {
 
     /**
      * Event handler for the "Close Popup" button.
-     * Displays a confirmation dialog asking the user if they want to cancel part creation.
+     * Closes the current popup window when the user clicks the button.
      */
     @FXML
     protected void onClosePopupButton() {
@@ -101,7 +116,8 @@ public class TimesheetsController {
 
     /**
      * Event handler for the "Add Timesheet" button.
-     * Parses the input fields to create a new Timesheet object and adds it to the database.
+     * Retrieves data from the input fields and creates a new timesheet entry in the database.
+     * If any input is invalid, an error alert is shown.
      */
     @FXML
     protected void onAddTimesheetButton() {
@@ -125,7 +141,6 @@ public class TimesheetsController {
         try {
             // Get the selected items from the ComboBox
             Integer selectedPO = Integer.parseInt(productBuildComboBox.getSelectionModel().getSelectedItem().toString());
-
             Integer employee = Integer.parseInt(employeeId.getText());
 
             // Ensure time format is consistent (HH:mm) for database insertion
@@ -147,5 +162,4 @@ public class TimesheetsController {
             showErrorAlert("Invalid Input", "Please enter a valid number for employee ID or product order.");
         }
     }
-
 }
