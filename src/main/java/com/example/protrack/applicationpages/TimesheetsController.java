@@ -19,8 +19,16 @@ import java.lang.invoke.StringConcatFactory;
 import java.text.Format;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
+/**
+ * Controller class for managing timesheets in the ProTrack application.
+ * This class handles the user interface for adding timesheets and interacting with the timesheet database.
+ */
 public class TimesheetsController {
+
+    // Regular expression fo valid time input (HH:mm or H:mm)
+    private static final Pattern TIME_PATTERN = Pattern.compile("^([0-1]?\\d|2[0-3]):[0-5]\\d$");
 
     @FXML
     private Label employeeId;
@@ -37,8 +45,17 @@ public class TimesheetsController {
     @FXML
     public Button closePopupButton;
 
+    /**
+     * Sets the employee ID to the specified value
+     * @param employeeId the ID of the employee
+     */
     public void setEmployeeId(String employeeId) {this.employeeId.setText(employeeId);}
 
+    /**
+     * Initialises the TimesheetsController.
+     * Populates the product build ComboBox with available product builds and binds the "Add Timesheet" button
+     * to be disabled if any required fields are empty.
+     */
     public void initialize() {
         // Populate the ComboBoxes with data from the database
         productBuildComboBox.getItems().setAll(new ProductBuildDAO().getAllProductBuilds());
@@ -55,7 +72,9 @@ public class TimesheetsController {
         addTimesheet.disableProperty().bind(emptyFields);
     }
 
-    // Method to clear input fields
+    /**
+     * Clears the input fields for the timesheet form.
+     */
     private void clearPartInputFields() {
         productBuildComboBox.getSelectionModel().clearSelection();
         startTimeField.clear();
@@ -63,8 +82,30 @@ public class TimesheetsController {
     }
 
     /**
+     * Validated that the time input matches the HH:mm or H:mm format.
+     * @param time the time string to validate
+     * @return true if the time is valid, false otherwise
+     */
+    private boolean isValidTime(String time){
+        return TIME_PATTERN.matcher(time).matches();
+    }
+
+    /**
+     * Displays an error alert with the specified title and content text.
+     * @param title the title of the alert
+     * @param content the content of the alert
+     */
+    private void showErrorAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    /**
      * Event handler for the "Close Popup" button.
-     * Displays a confirmation dialog asking the user if they want to cancel part creation.
+     * Closes the current popup window when the user clicks the button.
      */
     @FXML
     protected void onClosePopupButton() {
@@ -75,23 +116,34 @@ public class TimesheetsController {
 
     /**
      * Event handler for the "Add Timesheet" button.
-     * Parses the input fields to create a new Timesheet object and adds it to the database.
+     * Retrieves data from the input fields and creates a new timesheet entry in the database.
+     * If any input is invalid, an error alert is shown.
      */
     @FXML
     protected void onAddTimesheetButton() {
-        // Create a TimesheetDAO to handle database connection
+        // Validate start time and end time format
+        String startTime = startTimeField.getText();
+        String endTime = endTimeField.getText();
+
+        if (!isValidTime(startTime)) {
+            showErrorAlert("Invalid Time Format", "Please enter a valid start time (H:mm or HH:mm).");
+            return;
+        }
+
+        if (!isValidTime(endTime)) {
+            showErrorAlert("Invalid Time Format", "Please enter a valid ent time (H:mm or HH:mm).");
+            return;
+        }
+
+        // Proceed with creating the timesheet if validation passes
         TimesheetsDAO timesheetsDAO = new TimesheetsDAO();
 
         try {
             // Get the selected items from the ComboBox
             Integer selectedPO = Integer.parseInt(productBuildComboBox.getSelectionModel().getSelectedItem().toString());
-
             Integer employee = Integer.parseInt(employeeId.getText());
 
-            String startTime = startTimeField.getText();
-            String endTime = endTimeField.getText();
-
-            // Checks if startTime needs a starting 0 (if hour is single digit)
+            // Ensure time format is consistent (HH:mm) for database insertion
             if (startTime.length() != 5){
                 startTime = "0" + startTime;
             }
@@ -107,13 +159,7 @@ public class TimesheetsController {
 
             clearPartInputFields();
         } catch (NumberFormatException e) {
-            // Alert handles invalid number formats for quantity
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Quantity");
-            alert.setContentText("Please enter a valid number for quantity.");
-            alert.showAndWait();
+            showErrorAlert("Invalid Input", "Please enter a valid number for employee ID or product order.");
         }
     }
-
 }

@@ -16,10 +16,11 @@ import javafx.stage.StageStyle;
 
 import java.util.Objects;
 
+/**
+ * Controller for handling the stock request creation UI.
+ * Allows users to select parts and quantities, and submit stock requests.
+ */
 public class CreatePartsRequestController {
-
-    //@FXML
-    //private ComboBox<Workstation> workstationComboBox;
 
     @FXML
     private ComboBox<Parts> partComboBox;
@@ -35,13 +36,16 @@ public class CreatePartsRequestController {
 
     private int workStationId = -1;
 
+    /**
+     * Initialises the controller by populating the part selection ComboBox
+     * and binding the "Request Stock" button to ensure no empty fields.
+     */
     public void initialize() {
 
-        // Populate the ComboBoxes with data from the database
+        // Populate the ComboBoxes with parts from the database
         partComboBox.getItems().setAll(new PartsDAO().getAllParts());
-        //workstationComboBox.getItems().setAll(new LocationsAndContentsDAO().getAllWorkstations());
 
-        // Create a binding to check if any essential field is empty
+        // Disable the send button if any required field is empty
         BooleanBinding emptyFields = Bindings.createBooleanBinding(() ->
                 partQuantityField.getText().trim().isEmpty() ||
                         partComboBox.getSelectionModel().isEmpty(),
@@ -51,13 +55,17 @@ public class CreatePartsRequestController {
         sendRequestButton.disableProperty().bind(emptyFields);
     }
 
+    /**
+     * Sets the ID of the workstation making the stock request.
+     * @param value ID of the workstation
+     */
     public void setWorkStationId(Integer value) {
         workStationId = value;
-        //System.out.println("WS ID HERE IN REQUEST" + workStationId);
-        //refreshTable();
     }
 
-    // Method to clear product input fields
+    /**
+     * Clears all part selection input fields after a request is made.
+     */
     private void clearPartInputFields() {
         partComboBox.getSelectionModel().clearSelection();
         //workstationComboBox.getSelectionModel().clearSelection();
@@ -65,8 +73,8 @@ public class CreatePartsRequestController {
     }
 
     /**
-     * Event handler for the "Request Stock Transfer" button.
-     * Parses the input fields to create a new Requests object and adds it to the database.
+     * Handles the submission of a stock request. Validates the input
+     * and adds a new request to the database if the input is valid.
      */
     @FXML
     protected void onSendRequestButton() {
@@ -102,8 +110,8 @@ public class CreatePartsRequestController {
     }
 
     /**
-     * Event handler for the "Close Popup" button.
-     * Displays a confirmation dialog asking the user if they want to cancel part creation.
+     * Handles the close action for the popup window, displaying
+     * a confirmation dialog before closing the window.
      */
     @FXML
     protected void onClosePopupButton() {

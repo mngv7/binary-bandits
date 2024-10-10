@@ -13,6 +13,10 @@ import javafx.stage.StageStyle;
 
 import java.util.Objects;
 
+/**
+ * Controller for handling the new part creation UI.
+ * Allows managerial users to create new parts
+ */
 public class AddPartsController {
 
     // FXML fields for part details
@@ -90,8 +94,8 @@ public class AddPartsController {
     }
 
     /**
-     * Event handler for the "Close Popup" button.
-     * Displays a confirmation dialog asking the user if they want to cancel part creation.
+     * Handles the close action for the popup window, displaying
+     * a confirmation dialog before closing the window.
      */
     @FXML
     protected void onClosePopupButton() {

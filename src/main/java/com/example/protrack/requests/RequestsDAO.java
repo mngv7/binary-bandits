@@ -8,13 +8,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for managing requests in the database.
+ * Handles CRUD operations for requests.
+ */
 public class RequestsDAO {
     private final Connection connection;
 
+    /**
+     * Constructs a RequestsDAO and establishes a database connection.
+     */
     public RequestsDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
+    /**
+     * Creates the "requests" table in the database if it does not exist.
+     */
     public void createTable() {
         try {
             // Create a statement object for sending SQL queries to the database
@@ -36,8 +46,8 @@ public class RequestsDAO {
     }
 
     /**
-     * Inserts inputted request into request table
-     * @param requests a request for parts
+     * Inserts a new request into database.
+     * @param requests the request to be added
      */
     public void newRequest(Requests requests) {
         try {
@@ -61,7 +71,7 @@ public class RequestsDAO {
     }
 
     /**
-     * Deletes requests table
+     * Drops the "requests" table from the database.
      */
     public void dropTable() {
         String query = "DROP TABLE IF EXISTS requests";  // SQL statement to drop the requests table
@@ -76,8 +86,8 @@ public class RequestsDAO {
     }
 
     /**
-     * Getter that gets all requests of table
-     * @return all products in requests table
+     * Retrieves all requests from the database
+     * @return a list of all requests
      */
     public List<Requests> getAllRequests() {
         // empty list of Requests
@@ -109,7 +119,7 @@ public class RequestsDAO {
     }
 
     /**
-     * Checks if table is empty.
+     * Checks if the "requests" table is empty.
      * @return true if empty, else returns false.
      */
     public boolean isTableEmpty() {

@@ -6,10 +6,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for create new parts in the database.
+ * handles CRUD operations for parts.
+ */
 public class PartsDAO {
     private final Connection connection;
 
-    // Constructor initializes the database connection
+    /**
+     * Constructs a PartsDAO and establishes a database connection.
+     */
     public PartsDAO() {
         connection = DatabaseConnection.getInstance();
     }
@@ -95,6 +101,10 @@ public class PartsDAO {
         return parts;
     }
 
+    /**
+     * Retrieves parts with a specific ID from the 'parts' table
+     * @return a list of all parts with specified ID in the table
+     */
     public Parts getPartById(Integer partId) {
         String query = "SELECT * FROM parts WHERE partsId = ?";
 

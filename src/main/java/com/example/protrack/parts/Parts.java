@@ -1,5 +1,9 @@
 package com.example.protrack.parts;
 
+/**
+ * Represents the creation of a new part.
+ * Each part has a part ID, name, description, supplier ID, and cost.
+ */
 public class Parts {
 
     // Unique identifier for the part
@@ -17,7 +21,15 @@ public class Parts {
     // Cost of the part
     private final Double cost;
 
-    // Constructor initializes the parts with specific attributes
+    /**
+     * Constructs a new part with the specified part ID, name, description, supplier ID, and cost.
+     * @param partsId the ID of the part being created
+     * @param name the name of the part being created
+     * @param description the description of the part being created
+     * @param supplierId the supplier of the part being created
+     * @param cost the cost of the part being created
+     * @throws IllegalArgumentException if any field is null or invalid
+     */
     public Parts(Integer partsId, String name, String description, Integer supplierId, Double cost) {
         if (partsId == null || name == null || description == null || supplierId == null || cost == null) {
             throw new IllegalArgumentException("No fields can be null");
@@ -38,27 +50,37 @@ public class Parts {
         this.cost = cost;
     }
 
-    // Getter for the part's unique identifier
+    /**
+     * @return the ID of the part being created
+     */
     public Integer getPartsId() {
         return partsId;
     }
 
-    // Getter for the part's name
+    /**
+     * @return the name of the part being created
+     */
     public String getName() {
         return name;
     }
 
-    // Getter for the part's description
+    /**
+     * @return the description of the part being created
+     */
     public String getDescription() {
         return description;
     }
 
-    // Getter for the supplier's ID
+    /**
+     * @return the supplier ID of the part being created
+     */
     public Integer getSupplierId() {
         return supplierId;
     }
 
-    // Getter for the part's cost
+    /**
+     * @return the cost of the part being created
+     */
     public Double getCost() {
         return cost;
     }
