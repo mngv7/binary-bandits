@@ -19,8 +19,12 @@ import java.lang.invoke.StringConcatFactory;
 import java.text.Format;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class TimesheetsController {
+
+    // Regular expression fo valid time input (HH:mm or H:mm)
+    private static final Pattern TIME_PATTERN = Pattern.compile("^([0-1]?\\d|2[0-3]):[0-5]\\d$");
 
     @FXML
     private Label employeeId;
@@ -63,6 +67,28 @@ public class TimesheetsController {
     }
 
     /**
+     * Validated that the time input matches the HH:mm or H:mm format.
+     * @param time the time string to validate
+     * @return true if the time is valid, false otherwise
+     */
+    private boolean isValidTime(String time){
+        return TIME_PATTERN.matcher(time).matches();
+    }
+
+    /**
+     * Displays an error alert with the specified title and content text.
+     * @param title the title of the alert
+     * @param content the content of the alert
+     */
+    private void showErrorAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    /**
      * Event handler for the "Close Popup" button.
      * Displays a confirmation dialog asking the user if they want to cancel part creation.
      */
@@ -79,7 +105,21 @@ public class TimesheetsController {
      */
     @FXML
     protected void onAddTimesheetButton() {
-        // Create a TimesheetDAO to handle database connection
+        // Validate start time and end time format
+        String startTime = startTimeField.getText();
+        String endTime = endTimeField.getText();
+
+        if (!isValidTime(startTime)) {
+            showErrorAlert("Invalid Time Format", "Please enter a valid start time (H:mm or HH:mm).");
+            return;
+        }
+
+        if (!isValidTime(endTime)) {
+            showErrorAlert("Invalid Time Format", "Please enter a valid ent time (H:mm or HH:mm).");
+            return;
+        }
+
+        // Proceed with creating the timesheet if validation passes
         TimesheetsDAO timesheetsDAO = new TimesheetsDAO();
 
         try {
@@ -88,10 +128,7 @@ public class TimesheetsController {
 
             Integer employee = Integer.parseInt(employeeId.getText());
 
-            String startTime = startTimeField.getText();
-            String endTime = endTimeField.getText();
-
-            // Checks if startTime needs a starting 0 (if hour is single digit)
+            // Ensure time format is consistent (HH:mm) for database insertion
             if (startTime.length() != 5){
                 startTime = "0" + startTime;
             }
@@ -107,12 +144,7 @@ public class TimesheetsController {
 
             clearPartInputFields();
         } catch (NumberFormatException e) {
-            // Alert handles invalid number formats for quantity
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Quantity");
-            alert.setContentText("Please enter a valid number for quantity.");
-            alert.showAndWait();
+            showErrorAlert("Invalid Input", "Please enter a valid number for employee ID or product order.");
         }
     }
 
