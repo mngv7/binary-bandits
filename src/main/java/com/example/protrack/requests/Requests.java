@@ -6,13 +6,13 @@ package com.example.protrack.requests;
  */
 public class Requests {
 
-    private Integer locationId;
+    private final Integer locationId;
 
-    private Integer partId;
+    private final Integer partId;
 
-    private Integer requestId;
+    private final Integer requestId;
 
-    private Integer quantity;
+    private final Integer quantity;
 
     /**
      * Constructs a new request with the specified location, part, request ID, and quantity.
@@ -28,7 +28,8 @@ public class Requests {
         }
         if (partId < 0) {
             throw new IllegalArgumentException("ID cannot be negative");
-        } if (quantity <= 0) {
+        }
+        if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity requested must be more than 0");
         }
 

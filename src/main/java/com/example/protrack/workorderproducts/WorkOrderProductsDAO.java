@@ -1,8 +1,5 @@
 package com.example.protrack.workorderproducts;
 
-import com.example.protrack.products.Product;
-import com.example.protrack.workorder.WorkOrder;
-
 import java.util.List;
 
 /**

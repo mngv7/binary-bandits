@@ -1,8 +1,6 @@
 package com.example.protrack.workorderproducts;
 
-import com.example.protrack.products.Product;
 import com.example.protrack.utility.DatabaseConnection;
-import com.example.protrack.workorder.WorkOrder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,15 +24,15 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
      */
     public void createTable() {
         String sqlCreateTable = """
-            CREATE TABLE IF NOT EXISTS work_order_products (
-                work_order_product_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                work_order_id INTEGER, 
-                product_id INTEGER, 
-                quantity INTEGER NOT NULL, 
-                FOREIGN KEY (work_order_id) REFERENCES WorkOrder(work_order_id), 
-                FOREIGN KEY (product_id) REFERENCES Product(product_id)
-            );
-        """;
+                    CREATE TABLE IF NOT EXISTS work_order_products (
+                        work_order_product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        work_order_id INTEGER, 
+                        product_id INTEGER, 
+                        quantity INTEGER NOT NULL, 
+                        FOREIGN KEY (work_order_id) REFERENCES WorkOrder(work_order_id), 
+                        FOREIGN KEY (product_id) REFERENCES Product(product_id)
+                    );
+                """;
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(sqlCreateTable);
         } catch (SQLException e) {
@@ -74,18 +72,18 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
     public List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId) {
         String sqlGetWorkOrderProducts =
                 """ 
-                SELECT wop.work_order_product_id, 
-                       p.productId AS product_id, 
-                       p.productName AS product_name, 
-                       wop.quantity, 
-                       SUM(part.cost * bom.requiredAmount) AS totalPrice
-                FROM products p
-                JOIN work_order_products wop ON p.productId = wop.product_id
-                LEFT JOIN requiredParts bom ON p.productId = bom.productId
-                LEFT JOIN parts part ON bom.partsId = part.partsId
-                WHERE wop.work_order_id = ?
-                GROUP BY wop.work_order_product_id, p.productId, p.productName, wop.quantity;
-                """;
+                        SELECT wop.work_order_product_id, 
+                               p.productId AS product_id, 
+                               p.productName AS product_name, 
+                               wop.quantity, 
+                               SUM(part.cost * bom.requiredAmount) AS totalPrice
+                        FROM products p
+                        JOIN work_order_products wop ON p.productId = wop.product_id
+                        LEFT JOIN requiredParts bom ON p.productId = bom.productId
+                        LEFT JOIN parts part ON bom.partsId = part.partsId
+                        WHERE wop.work_order_id = ?
+                        GROUP BY wop.work_order_product_id, p.productId, p.productName, wop.quantity;
+                        """;
 
         List<WorkOrderProduct> productsInWorkOrder = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlGetWorkOrderProducts)) {
@@ -112,18 +110,18 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
     public List<WorkOrderProduct> getAllWorkOrderProducts() {
         String sqlGetAllWorkOrderProducts =
                 """ 
-                SELECT wop.work_order_product_id, 
-                       wop.work_order_id, 
-                       p.productId AS product_id, 
-                       p.productName AS product_name, 
-                       wop.quantity, 
-                       SUM(part.cost * bom.requiredAmount) AS totalPrice
-                FROM work_order_products wop
-                JOIN products p ON wop.product_id = p.productId
-                LEFT JOIN requiredParts bom ON p.productId = bom.productId
-                LEFT JOIN parts part ON bom.partsId = part.partsId
-                GROUP BY wop.work_order_product_id, wop.work_order_id, p.productId, p.productName, wop.quantity;
-                """;
+                        SELECT wop.work_order_product_id, 
+                               wop.work_order_id, 
+                               p.productId AS product_id, 
+                               p.productName AS product_name, 
+                               wop.quantity, 
+                               SUM(part.cost * bom.requiredAmount) AS totalPrice
+                        FROM work_order_products wop
+                        JOIN products p ON wop.product_id = p.productId
+                        LEFT JOIN requiredParts bom ON p.productId = bom.productId
+                        LEFT JOIN parts part ON bom.partsId = part.partsId
+                        GROUP BY wop.work_order_product_id, wop.work_order_id, p.productId, p.productName, wop.quantity;
+                        """;
 
         List<WorkOrderProduct> allWorkOrderProducts = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlGetAllWorkOrderProducts)) {

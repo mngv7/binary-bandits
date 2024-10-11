@@ -16,7 +16,7 @@ module com.example.protrack {
     exports com.example.protrack.requests;
     opens com.example.protrack.timesheets to javafx.base;
     exports com.example.protrack.timesheets;
-    opens  com.example.protrack.productbuild to javafx.base;
+    opens com.example.protrack.productbuild to javafx.base;
     exports com.example.protrack.productbuild;
 
 
@@ -30,7 +30,6 @@ module com.example.protrack {
     exports com.example.protrack.utility;
     opens com.example.protrack.utility to javafx.fxml;
 
-    
     exports com.example.protrack.profile;
     opens com.example.protrack.profile to javafx.fxml;
     exports com.example.protrack.workorder;
@@ -45,6 +44,6 @@ module com.example.protrack {
     exports com.example.protrack.workorderproducts;
     opens com.example.protrack.workorderproducts to javafx.fxml;
 
-    exports com.example.protrack.workorderobserver;
-    opens com.example.protrack.workorderobserver to javafx.fxml;
+    exports com.example.protrack.observers;
+    opens com.example.protrack.observers to javafx.fxml;
 }

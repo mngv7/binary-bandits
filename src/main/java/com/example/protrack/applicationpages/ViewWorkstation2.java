@@ -23,43 +23,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+public class ViewWorkstation2 {
 
-interface Subject2 {
-    void registerObserver(Observer observer);
-    void removeObserver(Observer observer);
-    void notifyObservers();
-}
-
-public class ViewWorkstation2 implements Subject2 {
-    
-    @FXML
-    private Button toProductOrder;
-    
-    private MainController parentMainController;
-
-    @FXML
-    private TableView wsPartTable;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, Integer> colWSPartId;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, String> colWSPartName;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, Integer> colWSPartQuantity;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, String> colAddPart;
-
+    private static final String TITLE = "Parts Request Form";
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
     @FXML
     public Button closePopupButton;
-
+    @FXML
+    private Button toProductOrder;
+    private MainController parentMainController;
+    @FXML
+    private TableView wsPartTable;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, Integer> colWSPartId;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, String> colWSPartName;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, Integer> colWSPartQuantity;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, String> colAddPart;
     @FXML
     private Button toProductBuild;
-
     private ObservableList<WorkstationPartDBTable> wsPartDBTable;
-
     private int workStationId = -1;
 
     public void initialize() {
@@ -110,11 +96,11 @@ public class ViewWorkstation2 implements Subject2 {
         refreshTable();
     }
 
-    public MainController getMainController () {
+    public MainController getMainController() {
         return this.parentMainController;
     }
 
-    public void setMainController (MainController controller) {
+    public void setMainController(MainController controller) {
         this.parentMainController = controller;
     }
 
@@ -138,6 +124,7 @@ public class ViewWorkstation2 implements Subject2 {
 
     /**
      * Grabs WS ID from Allocate WS
+     *
      * @param value WS ID
      */
     public void setWorkStationIdV3(Integer value) {
@@ -179,15 +166,10 @@ public class ViewWorkstation2 implements Subject2 {
         }
     }
 
-
-    private static final String TITLE = "Parts Request Form";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
-
     /**
      * Create pop-up when "Create Part Request" is pressed
      */
-    public  void createPartRequest() {
+    public void createPartRequest() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/request-stock-transfer.fxml"));
             Parent addPartsRoot = fxmlLoader.load();
@@ -263,20 +245,5 @@ public class ViewWorkstation2 implements Subject2 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void registerObserver(Observer observer) {
-
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-
-    }
-
-    @Override
-    public void notifyObservers() {
-
     }
 }

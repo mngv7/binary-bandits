@@ -1,13 +1,16 @@
 package com.example.protrack.workorderproducts;
 
-import com.example.protrack.parts.Parts;
-import com.example.protrack.parts.PartsDAO;
-import com.example.protrack.products.*;
-import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
+import com.example.protrack.parts.Parts;
+import com.example.protrack.parts.PartsDAO;
+import com.example.protrack.products.BillOfMaterials;
+import com.example.protrack.products.BillOfMaterialsDAO;
+import com.example.protrack.products.Product;
+import com.example.protrack.products.ProductDAO;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;

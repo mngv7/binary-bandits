@@ -20,10 +20,9 @@ import java.util.List;
  */
 public class ProfileWorkOrdersController {
 
+    private final WorkOrdersDAOImplementation workOrdersDAO;
     @FXML
     private ListView<WorkOrder> pendingWorkOrdersListView; //ListView containing pending work orders
-
-    private final WorkOrdersDAOImplementation workOrdersDAO;
 
     public ProfileWorkOrdersController() throws SQLException {
 
@@ -57,7 +56,7 @@ public class ProfileWorkOrdersController {
     private void displayPendingWorkOrders() {
         List<WorkOrder> pendingWorkOrders;
 
-            // Retrieves pending work orders
+        // Retrieves pending work orders
         pendingWorkOrders = workOrdersDAO.getWorkOrderByStatus("pending");
         System.out.println("Fetched Work Orders: " + pendingWorkOrders);
 
@@ -73,7 +72,7 @@ public class ProfileWorkOrdersController {
                     setGraphic(null);
                 } else {
                     setText("Work Order ID: " + item.getWorkOrderId() +
-                            "\nOrder Date: " + item.getOrderDate().toString().substring(0,10));
+                            "\nOrder Date: " + item.getOrderDate().toString().substring(0, 10));
                 }
             }
         });

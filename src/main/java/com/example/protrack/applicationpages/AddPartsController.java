@@ -19,6 +19,11 @@ import java.util.Objects;
  */
 public class AddPartsController {
 
+    // Buttons for adding part and closing the popup
+    @FXML
+    public Button addPartButton;
+    @FXML
+    public Button closePopupButton;
     // FXML fields for part details
     @FXML
     private TextField partIdField;
@@ -30,12 +35,6 @@ public class AddPartsController {
     private TextField partSupplierIdField;
     @FXML
     private TextField partCostField;
-
-    // Buttons for adding part and closing the popup
-    @FXML
-    public Button addPartButton;
-    @FXML
-    public Button closePopupButton;
 
     /**
      * Initializes the controller class. This method is automatically called after the FXML file

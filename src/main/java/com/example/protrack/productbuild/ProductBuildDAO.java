@@ -1,7 +1,5 @@
 package com.example.protrack.productbuild;
 
-import com.example.protrack.products.Product;
-import com.example.protrack.products.TestRecord;
 import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
@@ -41,6 +39,7 @@ public class ProductBuildDAO {
 
     /**
      * Inserts inputted product build into product build table
+     *
      * @param productBuild a productBuild
      */
     public void newProductBuild(ProductBuild productBuild) {
@@ -81,6 +80,7 @@ public class ProductBuildDAO {
 
     /**
      * Getter that gets all product builds of table
+     *
      * @return all product builds in product build table
      */
     public List<ProductBuild> getAllProductBuilds() {
@@ -199,6 +199,7 @@ public class ProductBuildDAO {
 
     /**
      * Checks if table is empty.
+     *
      * @return true if empty, else returns false.
      */
     public boolean isTableEmpty() {

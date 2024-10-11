@@ -1,7 +1,5 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.parts.Parts;
-
 public class WarehousePastRequests {
 
     private final Integer partsId;
@@ -10,7 +8,6 @@ public class WarehousePastRequests {
     private final String name;
 
     private final Integer quantity;
-
 
 
     public WarehousePastRequests(Integer partsId, String name, Integer quantity) {
@@ -35,9 +32,11 @@ public class WarehousePastRequests {
     public Integer getPartsId() {
         return partsId;
     }
+
     public String getName() {
         return name;
     }
+
     public Integer getQuantity() {
         return quantity;
     }

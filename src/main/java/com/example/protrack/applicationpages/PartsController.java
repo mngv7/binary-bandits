@@ -1,10 +1,12 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.observers.Observer;
+import com.example.protrack.observers.PartsTableSubject;
 import com.example.protrack.parts.Parts;
-import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,39 +20,40 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.Objects;
 
-public class PartsController {
+public class PartsController implements Observer {
 
+    private static final String TITLE = "Add Parts";
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
     @FXML
     public Button addPartsButton;
-
     @FXML
     private TableView<Parts> partsTable;
-
     @FXML
     private TableColumn<Parts, Integer> colPartsId;
-
     @FXML
     private TableColumn<Parts, String> colName;
-
     @FXML
     private TableColumn<Parts, String> colDescription;
-
     @FXML
     private TableColumn<Parts, Integer> colSupplierId;
-
     @FXML
     private TableColumn<Parts, Double> colCost;
-
-    private ObservableList<Parts> partsList;
+    private ObservableList<Parts> parts;
+    private PartsTableSubject subject;
 
     /**
      * Initialize parts page with values
      */
     public void initialize() {
+        subject = new PartsTableSubject();
+        subject.registerObserver(this);
+
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
 
@@ -64,26 +67,31 @@ public class PartsController {
         colSupplierId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         colCost.setCellValueFactory(new PropertyValueFactory<>("cost"));
 
-        partsList = FXCollections.observableArrayList();
-        partsTable.setItems(partsList);
+        parts = FXCollections.observableArrayList();
+        partsTable.setItems(parts);
         partsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Refresh parts table
-        refreshTable();
+        subject.syncDataFromDB();
+        update();
+
+        Platform.runLater(() -> {
+            Window window = addPartsButton.getScene().getWindow();
+            if (window instanceof Stage stage) {
+                stage.setOnCloseRequest(event -> {
+                    subject.deregisterObserver(this);
+                });
+            }
+        });
     }
 
     /**
      * Refreshes the table with parts data
      */
-    public void refreshTable() {
-        PartsDAO partsDAO = new PartsDAO();
-        partsList.clear();
-        partsList.addAll(partsDAO.getAllParts());
+    public void update() {
+        parts.clear();
+        parts.setAll(subject.getData());
     }
-
-    private static final String TITLE = "Add Parts";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
 
     /**
      * Create pop-up when "Add Parts" is pressed
@@ -106,6 +114,7 @@ public class PartsController {
             popupStage.setY(150);
             popupStage.setX(390);
             popupStage.showAndWait();
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }

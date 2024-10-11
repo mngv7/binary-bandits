@@ -11,7 +11,9 @@ public interface IProductsDAO {
 
     // Method to insert a new record into the respective table
     void newProduct(Product product);
+
     void newTestRecordStep(TestRecord testRecordStep);
+
     void newRequiredParts(BillOfMaterials billOfMaterials);
 
     // Method to check if the table is empty

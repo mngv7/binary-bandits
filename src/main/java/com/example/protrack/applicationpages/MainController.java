@@ -1,9 +1,9 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -20,18 +20,17 @@ import java.util.Objects;
 
 public class MainController {
 
+    private static final String TimesheetTITLE = "Add Timesheets";
+    private static final int TimesheetWIDTH = 500;
+    private static final int TimesheetHEIGHT = 500;
     @FXML
     private Label employeeName;
-
     @FXML
     private Label employeeTitle;
-
     @FXML
     private Label timesheet;
-
     @FXML
     private VBox dynamicVBox;
-
     @FXML
     private VBox inventoryVBox;
 
@@ -59,7 +58,7 @@ public class MainController {
 
     @FXML
     private void parts() {
-        loadContent("/com/example/protrack/Parts/parts.fxml");
+        loadContent("/com/example/protrack/parts/parts.fxml");
     }
 
     @FXML
@@ -110,10 +109,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
-    private static final String TimesheetTITLE = "Add Timesheets";
-    private static final int TimesheetWIDTH = 500;
-    private static final int TimesheetHEIGHT = 500;
 
     @FXML
     private void myTimesheets() {
@@ -171,7 +166,7 @@ public class MainController {
         }
     }
 
-    public void loadWarehouseFromOtherPage () {
+    public void loadWarehouseFromOtherPage() {
         warehouse();
     }
 
@@ -205,13 +200,6 @@ public class MainController {
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
-
-            if (fxmlFile.equals("/com/example/protrack/products.fxml")) {
-                ProductsController productsController = loader.getController();
-                ProductControllerObserver productControllerObserver = new ProductControllerObserver("Test");
-                productsController.registerObserver(productControllerObserver);
-                System.out.println("In here");
-            }
 
             dynamicVBox.getChildren().add(content);
             //scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());

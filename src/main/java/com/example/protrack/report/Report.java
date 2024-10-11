@@ -1,8 +1,5 @@
 package com.example.protrack.report;
 
-import com.example.protrack.workorder.WorkOrder;
-
-import java.time.LocalDateTime;
 import java.util.Map;
 
 public interface Report {

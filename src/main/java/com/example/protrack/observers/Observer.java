@@ -1,4 +1,4 @@
-package com.example.protrack.workorderobserver;
+package com.example.protrack.observers;
 
 public interface Observer {
     void update();

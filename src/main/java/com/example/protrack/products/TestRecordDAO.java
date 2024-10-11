@@ -41,6 +41,7 @@ public class TestRecordDAO {
 
     /**
      * Inserts inputted test record step into test record table
+     *
      * @param testRecordStep a step in a step record
      */
     public void newTestRecordStep(TestRecord testRecordStep) {
@@ -68,6 +69,7 @@ public class TestRecordDAO {
 
     /**
      * Checks if table is empty.
+     *
      * @return true if empty, else returns false.
      */
     public boolean isTableEmpty() {
@@ -92,8 +94,8 @@ public class TestRecordDAO {
 
             PreparedStatement getTestRecord = connection.prepareStatement(
                     "SELECT * " +
-                        "FROM testRecord a " +
-                        "WHERE a.productId = ?");
+                            "FROM testRecord a " +
+                            "WHERE a.productId = ?");
             getTestRecord.setInt(1, productIdInput);
             ResultSet rs = getTestRecord.executeQuery();
 

@@ -18,9 +18,9 @@
                 <HBox>
                     <TextField promptText="🔎 Search..." minWidth="300" styleClass="search-field"/>
                 </HBox>
-                <HBox maxWidth="Infinity" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
-                    <Button text="Refresh Table" onAction="#refreshTable" styleClass="create-product-button-refresh-button"/>
-                </HBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
                 <HBox maxWidth="Infinity" alignment="CENTER_RIGHT">
                     <Button fx:id="addProductButton" text="Create Product" onAction="#openCreateProductPopup" styleClass="create-product-button-refresh-button"/>
                 </HBox>

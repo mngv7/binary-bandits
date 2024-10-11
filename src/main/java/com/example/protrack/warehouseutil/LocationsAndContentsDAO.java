@@ -8,15 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationsAndContentsDAO {
-    private Connection connection; /* This database connection instance. */
+    private final Connection connection; /* This database connection instance. */
 
-    public LocationsAndContentsDAO() { connection = DatabaseConnection.getInstance(); }
+    public LocationsAndContentsDAO() {
+        connection = DatabaseConnection.getInstance();
+    }
 
     /*
      * Unlike other DAOs in ProTrack, this one manipulates two database tables.
      * Incidentally we create them both here.
      */
-    public void createTables () {
+    public void createTables() {
         try {
             /* NOTE: locationCapacity has been made an integer as a percentage makes zero sense here.
              *       This deviates from the design by quite a bit.
@@ -47,7 +49,7 @@ public class LocationsAndContentsDAO {
      * Warehouse interface design in mind before the database ERD changed.
      * Incidentally, it is now possible to support multiple warehouses in future!
      */
-    public void newWarehouse (Warehouse warehouse) {
+    public void newWarehouse(Warehouse warehouse) {
         try {
             PreparedStatement insertWarehouse = connection.prepareStatement(
                     "INSERT INTO locations (locationID, locationAlias, locationType, locationCapacity) VALUES (?, ?, ?, ?)"
@@ -71,7 +73,7 @@ public class LocationsAndContentsDAO {
      *       addWorkstation instead.
      *       The same can be said for Warehouse but typically in ProTrack we only use one.
      */
-    public void newWorkstation (Workstation workstation) {
+    public void newWorkstation(Workstation workstation) {
         try {
             PreparedStatement insertWorkstation = connection.prepareStatement(
                     "INSERT INTO locations (locationID, locationAlias, locationType, locationCapacity) VALUES (?, ?, ?, ?)"
@@ -182,7 +184,7 @@ public class LocationsAndContentsDAO {
      * This is more or less generic but intended to be utilised by Warehouse and Workstation in specific ways.
      * If a locationID and partsID pair already exists, the quantity is added to the existing quantity instead.
      */
-    public void insertPartsIdWithQuantityIntoLocation (Integer locationID, partIdWithQuantity newPart) {
+    public void insertPartsIdWithQuantityIntoLocation(Integer locationID, partIdWithQuantity newPart) {
         try {
             String query = "SELECT * FROM locationContents WHERE locationID = ? AND partID = ?";
             Statement stmt = connection.createStatement();
@@ -248,9 +250,9 @@ public class LocationsAndContentsDAO {
      * If the quantity to be removed exceeds the remaining quantity in the database, the database entry is removed
      * entirely.
      */
-    public void removePartsIdWithQuantityFromLocation (Integer locationID, partIdWithQuantity partToRemove) {
+    public void removePartsIdWithQuantityFromLocation(Integer locationID, partIdWithQuantity partToRemove) {
         try {
-            String query = "SELECT * FROM locationContents WHERE locationID = " + locationID +" AND partID = " + partToRemove.partsId;
+            String query = "SELECT * FROM locationContents WHERE locationID = " + locationID + " AND partID = " + partToRemove.partsId;
 
             //PreparedStatement removeWSPart = connection.prepareStatement(query);
             //removeWSPart.setInt(locationID, partToRemove.partsId);
@@ -324,11 +326,11 @@ public class LocationsAndContentsDAO {
         }
     }
 
-    public void removeWorkstation (Warehouse warehouse, Workstation workstation) {
+    public void removeWorkstation(Warehouse warehouse, Workstation workstation) {
         String query = "DELETE FROM locations WHERE locationID = " +
-                        workstation.getWorkstationLocationId();
+                workstation.getWorkstationLocationId();
         String query2 = "DELETE FROM locationContents WHERE locationID = " +
-                        workstation.getWorkstationLocationId();
+                workstation.getWorkstationLocationId();
 
         workstation.returnAllPartsToWarehouse(warehouse, new LocationsAndContentsDAO());
         try {
@@ -344,7 +346,7 @@ public class LocationsAndContentsDAO {
      * Retrieves all warehouses from the locations database and returns them as an ArrayList of type Warehouse.
      * This will likely only ever return 1 element due to the changes to the database ERD.
      */
-    public List<Warehouse> getAllWarehouses () {
+    public List<Warehouse> getAllWarehouses() {
         List<Warehouse> warehouses = new ArrayList<>();
 
         String query = "SELECT * FROM locations WHERE locationType = \"WAREHOUSE\"";
@@ -370,7 +372,7 @@ public class LocationsAndContentsDAO {
     /*
      * Retrieve all workstations in the locations database and return them as an ArrayList of type Workstation.
      */
-    public List<Workstation> getAllWorkstations () {
+    public List<Workstation> getAllWorkstations() {
         List<Workstation> workstations = new ArrayList<>();
 
         String query = "SELECT * FROM locations WHERE locationType = \"WORKSTATION\"";
@@ -397,7 +399,7 @@ public class LocationsAndContentsDAO {
      * Retrieves all the parts in a warehouse.
      * Currently unimplemented.
      */
-    public void getAllPartsInWarehouse () {
+    public void getAllPartsInWarehouse() {
         System.out.println("FIXME: getAllPartsInWarehouse not implemented.");
     }
 
@@ -405,12 +407,12 @@ public class LocationsAndContentsDAO {
      * Retrieves all the parts allocated to a Workstation.
      * Currently unimplemented.
      */
-    public void getAllPartsForWorkstation () {
+    public void getAllPartsForWorkstation() {
         System.out.println("FIXME: getAllPartsForWorkstation not implemented.");
     }
 
     /* Self-explanatory. */
-    public boolean isLocationsTableEmpty () {
+    public boolean isLocationsTableEmpty() {
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM locations");
@@ -425,7 +427,7 @@ public class LocationsAndContentsDAO {
     }
 
     /* Self-explanatory. */
-    public boolean isLocationContentsTableEmpty () {
+    public boolean isLocationContentsTableEmpty() {
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rowcount FROM locationContents");

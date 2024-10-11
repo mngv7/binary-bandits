@@ -1,11 +1,11 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.products.BillOfMaterials;
 import com.example.protrack.products.BillOfMaterialsDAO;
 import com.example.protrack.products.Product;
 import com.example.protrack.products.ProductDAO;
+import com.example.protrack.utility.DatabaseConnection;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +18,13 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+
+import static java.lang.Integer.parseInt;
 
 public class CreateProductController {
     private static final String TITLE = "Create Product";
@@ -35,19 +36,14 @@ public class CreateProductController {
 
     @FXML
     public Button partSearchButton;
-
-    @FXML
-    private TextField partIdSearchField;
-
-    @FXML
-    private VBox partResultVBox;
-
-    @FXML
-    private VBox removeAllPartsButtonContainer;
-
     @FXML
     public Button createProductButton;
-
+    @FXML
+    private TextField partIdSearchField;
+    @FXML
+    private VBox partResultVBox;
+    @FXML
+    private VBox removeAllPartsButtonContainer;
     @FXML
     private TextField productNameField;
 
@@ -103,7 +99,7 @@ public class CreateProductController {
         if (partIdStr != null && !partIdStr.trim().isEmpty()) {
 
             // convert string into integer (PartId is always an integer)
-            int partIdInt = Integer.parseInt(partIdStr);
+            int partIdInt = parseInt(partIdStr);
             try {
 
                 // Create statement
@@ -132,7 +128,7 @@ public class CreateProductController {
                     // Add the new row to the result VBox
                     partResultVBox.getChildren().add(newRow);
                 }
-            } catch(SQLException ex) {
+            } catch (SQLException ex) {
                 // Catch and print any SQL exceptions that may occur during table creation
                 System.err.println(ex);
             }
@@ -178,18 +174,23 @@ public class CreateProductController {
 
         try {
 
-            int productId = Integer.parseInt(productIdField.getText());
+            int productId = parseInt(productIdField.getText());
 
             String productName = productNameField.getText();
 
             long millis = System.currentTimeMillis();
             java.sql.Date date = new java.sql.Date(millis);
 
+            double price = 0.0;
+
             // Create new product in product table with previous values
-            productDAO.newProduct(new Product(productId, productName, date));
+            productDAO.newProduct(new Product(productId, productName, date, price));
 
             // Creates new BoM using values
             insertReqPartsFromVbox(productId);
+
+            price = productDAO.calculateProductPrice(productId);
+            productDAO.updateProductPrice(productId, price);
 
             // Pop-up of create test records
             openCreateTestRecordPopup();
@@ -201,6 +202,7 @@ public class CreateProductController {
 
     /**
      * Creates new BoM using values
+     *
      * @param productId product id of product
      */
     private void insertReqPartsFromVbox(int productId) {
@@ -223,7 +225,7 @@ public class CreateProductController {
 
                     // Create new BoM using previous values
                     BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
-                    billOfMaterial.newRequiredParts(new BillOfMaterials(Integer.parseInt(partsId), productId, Integer.parseInt(requiredAmount)));
+                    billOfMaterial.newRequiredParts(new BillOfMaterials(parseInt(partsId), productId, parseInt(requiredAmount)));
                 }
             }
             connection.commit();

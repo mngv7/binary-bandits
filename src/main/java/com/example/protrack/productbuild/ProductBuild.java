@@ -1,10 +1,10 @@
 package com.example.protrack.productbuild;
 
 public class ProductBuild {
-    private Integer buildId;
-    private Integer productOrderId;
+    private final Integer buildId;
+    private final Integer productOrderId;
     private float buildCompletion;
-    private Integer productId;
+    private final Integer productId;
 
     public ProductBuild(Integer buildId, Integer productOrderId, float buildCompletion, Integer productId) {
         this.buildId = buildId;
@@ -25,14 +25,16 @@ public class ProductBuild {
         return buildCompletion;
     }
 
+    public void setBuildCompletion(Float buildCompletion) {
+        this.buildCompletion = buildCompletion;
+    }
+
     public Integer getProductId() {
         return productId;
     }
 
-    public void setBuildCompletion(Float buildCompletion) {
-        this.buildCompletion = buildCompletion;
-    }
-  
     @Override
-    public String toString() { return this.productOrderId.toString(); }
+    public String toString() {
+        return this.productOrderId.toString();
+    }
 }

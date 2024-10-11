@@ -69,7 +69,7 @@ public class CustomerDAOImplementation implements CustomerDAO {
         String query = "INSERT INTO customer (first_name, last_name, email, phone_number, billing_address, shipping_address, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getInstance();
-            PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Set parameters for the prepared statement
             stmt.setString(1, customer.getFirstName());
@@ -124,8 +124,8 @@ public class CustomerDAOImplementation implements CustomerDAO {
         String query = "SELECT * FROM customer";
 
         try (Connection conn = DatabaseConnection.getInstance();
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Customer customer = mapResultSetToCustomer(rs);
@@ -195,7 +195,7 @@ public class CustomerDAOImplementation implements CustomerDAO {
         String sql = "DELETE FROM customer WHERE customer_id = ?";
 
         try (Connection conn = DatabaseConnection.getInstance();
-            PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, customerId);
             int affectedRows = ps.executeUpdate();

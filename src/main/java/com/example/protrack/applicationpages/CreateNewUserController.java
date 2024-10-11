@@ -1,12 +1,11 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import com.example.protrack.Main;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;

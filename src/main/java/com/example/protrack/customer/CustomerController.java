@@ -1,6 +1,9 @@
 package com.example.protrack.customer;
 
 import com.example.protrack.Main;
+import com.example.protrack.observers.CustomersTableSubject;
+import com.example.protrack.observers.Observer;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,17 +11,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
-public class CustomerController {
+public class CustomerController implements Observer {
 
     @FXML
     private Button addCustomerButton;
@@ -41,18 +47,25 @@ public class CustomerController {
     @FXML
     private TableColumn<Customer, String> statusColumn;
 
-    private CustomerDAOImplementation customerDAOImplementation;
-    private ObservableList<Customer> tableCustomers;
+    private ObservableList<Customer> customers;
 
-    public CustomerController() {
-        customerDAOImplementation = new CustomerDAOImplementation();
-        tableCustomers = FXCollections.observableArrayList();
-    }
+    private CustomersTableSubject subject;
 
     @FXML
     public void initialize() {
-        setupTableColumns();
-        loadCustomers();
+        subject = new CustomersTableSubject();
+        subject.registerObserver(this);
+
+        customers = FXCollections.observableArrayList();
+
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        billingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("billingAddress"));
+        shippingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         customersTableView.setRowFactory(tv -> {
             TableRow<Customer> row = new TableRow<>();
@@ -64,24 +77,24 @@ public class CustomerController {
             });
             return row;
         });
+
+        subject.syncDataFromDB();
+        subject.notifyObservers();
+
+        Platform.runLater(() -> {
+            Window window = addCustomerButton.getScene().getWindow();
+            if (window instanceof Stage stage) {
+                stage.setOnCloseRequest(event -> {
+                    subject.deregisterObserver(this);
+                });
+            }
+        });
     }
 
-    private void setupTableColumns() {
-        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        billingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("billingAddress"));
-        shippingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-    }
-
-    private void loadCustomers() {
-        List<Customer> customers = customerDAOImplementation.getAllCustomers();
-        tableCustomers.clear();
-        tableCustomers.addAll(customers);
-        customersTableView.setItems(tableCustomers);
+    public void update() {
+        customers.clear();
+        customers.setAll(subject.getData());
+        customersTableView.setItems(customers);
     }
 
     /**
@@ -112,7 +125,7 @@ public class CustomerController {
 
             // Show the popup window
             popupStage.showAndWait();
-
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -147,7 +160,7 @@ public class CustomerController {
 
             // Show the popup window
             popupStage.showAndWait();
-
+            subject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }

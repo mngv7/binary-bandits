@@ -21,7 +21,8 @@ public class AddSupplierController {
     private TextField leadTimeField;
 
     @FXML
-    private void initialize() { }
+    private void initialize() {
+    }
 
     @FXML
     private void saveSupplier() {

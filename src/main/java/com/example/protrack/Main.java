@@ -1,7 +1,6 @@
 package com.example.protrack;
 
-import com.example.protrack.applicationpages.ProductControllerObserver;
-import com.example.protrack.applicationpages.ProductsController;
+
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.parts.Parts;
@@ -11,7 +10,6 @@ import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.productorders.ProductOrder;
 import com.example.protrack.productorders.ProductOrderDAO;
 import com.example.protrack.products.*;
-import com.example.protrack.report.OrgReport;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
 import com.example.protrack.supplier.Supplier;
@@ -22,21 +20,21 @@ import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
-import com.example.protrack.warehouseutil.*;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.RealWarehouse;
+import com.example.protrack.warehouseutil.RealWorkstation;
+import com.example.protrack.warehouseutil.partIdWithQuantity;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
-import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import com.example.protrack.workorderobserver.*;
-import com.example.protrack.workorder.WorkOrderController;
 
-import java.sql.Date;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,20 +48,6 @@ public class Main extends Application {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
 
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-        scene.getStylesheets().add(stylesheet);
-        stage.setTitle(TITLE);
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Images/application_logo.png")));
-        stage.getIcons().add(icon);
-        stage.setScene(scene);
-        stage.setMaximized(false);
-        stage.show();
-    }
-
     public static int getWidth() {
         return WIDTH;
     }
@@ -76,13 +60,6 @@ public class Main extends Application {
 
         ProductDAO productDAO = new ProductDAO();
         productDAO.createTable();
-        if (productDAO.isTableEmpty()) {
-            long millis = System.currentTimeMillis();
-            java.sql.Date date = new java.sql.Date(millis);
-            productDAO.newProduct(new Product(36014, "Mining Collision Detector", date));
-            productDAO.newProduct(new Product(45021, "Displacement Monitoring Device", date));
-            productDAO.newProduct(new Product(67890, "Power Supply", date));
-        }
 
         PartsDAO partsDAO = new PartsDAO();
         partsDAO.createTable();
@@ -99,52 +76,67 @@ public class Main extends Application {
         BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
         billOfMaterial.createTable();
         if (billOfMaterial.isTableEmpty()) {
-            if (billOfMaterial.isTableEmpty()) {
-                // Product 36014: Mining Collision Detector
-                billOfMaterial.newRequiredParts(new BillOfMaterials(1, 36014, 10)); // 10 units of part ID 1
-                billOfMaterial.newRequiredParts(new BillOfMaterials(2, 36014, 5));  // 5 units of part ID 2
+            // Product 1: Mining Collision Detector
+            billOfMaterial.newRequiredParts(new BillOfMaterials(1, 1, 10)); // 10 units of part ID 1
+            billOfMaterial.newRequiredParts(new BillOfMaterials(2, 1, 5));  // 5 units of part ID 2
 
-                // Product 45021: Displacement Monitoring Device
-                billOfMaterial.newRequiredParts(new BillOfMaterials(1, 45021, 8));  // 8 units of part ID 1
-                billOfMaterial.newRequiredParts(new BillOfMaterials(3, 45021, 12)); // 12 units of part ID 3
+            // Product 2: Displacement Monitoring Device
+            billOfMaterial.newRequiredParts(new BillOfMaterials(1, 2, 8));  // 8 units of part ID 1
+            billOfMaterial.newRequiredParts(new BillOfMaterials(3, 2, 12)); // 12 units of part ID 3
 
-                // Product 67890: Power Supply
-                billOfMaterial.newRequiredParts(new BillOfMaterials(2, 67890, 6));  // 6 units of part ID 2
-                billOfMaterial.newRequiredParts(new BillOfMaterials(3, 67890, 4));  // 4 units of part ID 3
-            }
+            // Product 3: Power Supply
+            billOfMaterial.newRequiredParts(new BillOfMaterials(2, 3, 6));  // 6 units of part ID 2
+            billOfMaterial.newRequiredParts(new BillOfMaterials(3, 3, 4));  // 4 units of part ID 3
+        }
+
+        if (productDAO.isTableEmpty()) {
+            long millis = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+
+            productDAO.newProduct(new Product(1, "Mining Collision Detector", date, 1.0));
+            double price = productDAO.calculateProductPrice(1);
+            productDAO.updateProductPrice(1, price);
+
+            productDAO.newProduct(new Product(2, "Displacement Monitoring Device", date, 1.0));
+            price = productDAO.calculateProductPrice(2);
+            productDAO.updateProductPrice(2, price);
+
+            productDAO.newProduct(new Product(3, "Power Supply", date, 1.0));
+            price = productDAO.calculateProductPrice(3);
+            productDAO.updateProductPrice(3, price);
         }
 
         TestRecordDAO testRecordDAO = new TestRecordDAO();
         testRecordDAO.createTable();
         if (testRecordDAO.isTableEmpty()) {
-            // Product 36014: Mining Collision Detector
-            testRecordDAO.newTestRecordStep(new TestRecord(1, 36014, 1, "Torque the T10 screw to 5Nm.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(2, 36014, 2, "Measure the thickness of the metal plate (mm).", "TextEntry", ">5"));
-            testRecordDAO.newTestRecordStep(new TestRecord(3, 36014, 3, "Power on the device and check the operating voltage (V).", "TextEntry", ">10"));
-            testRecordDAO.newTestRecordStep(new TestRecord(4, 36014, 4, "Power off the device and put into sleep mode for shipping.", "CheckBox", "NULL"));
+            // Product 1: Mining Collision Detector
+            testRecordDAO.newTestRecordStep(new TestRecord(1, 1, 1, "Torque the T10 screw to 5Nm.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(2, 1, 2, "Measure the thickness of the metal plate (mm).", "TextEntry", ">5"));
+            testRecordDAO.newTestRecordStep(new TestRecord(3, 1, 3, "Power on the device and check the operating voltage (V).", "TextEntry", ">10"));
+            testRecordDAO.newTestRecordStep(new TestRecord(4, 1, 4, "Power off the device and put into sleep mode for shipping.", "CheckBox", "NULL"));
 
-            // Product 45021: Displacement Monitoring Device
-            testRecordDAO.newTestRecordStep(new TestRecord(1, 45021, 1, "Inspect the exterior for any visible damage or scratches.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(2, 45021, 2, "Check that the battery is fully charged.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(3, 45021, 3, "Test the wireless connection strength (dBm).", "TextEntry", ">60"));
-            testRecordDAO.newTestRecordStep(new TestRecord(4, 45021, 4, "Verify that the display is working without any dead pixels.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(5, 45021, 5, "Measure the device temperature after 10 minutes of operation (°C).", "TextEntry", "<40"));
-            testRecordDAO.newTestRecordStep(new TestRecord(6, 45021, 6, "Ensure all screws are torqued to the specified value (Nm).", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(7, 45021, 7, "Check that the firmware version is up to date.", "TextEntry", "Latest"));
-            testRecordDAO.newTestRecordStep(new TestRecord(8, 45021, 8, "Power off the device and package it in the protective casing.", "CheckBox", "NULL"));
+            // Product 2: Displacement Monitoring Device
+            testRecordDAO.newTestRecordStep(new TestRecord(1, 2, 1, "Inspect the exterior for any visible damage or scratches.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(2, 2, 2, "Check that the battery is fully charged.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(3, 2, 3, "Test the wireless connection strength (dBm).", "TextEntry", ">60"));
+            testRecordDAO.newTestRecordStep(new TestRecord(4, 2, 4, "Verify that the display is working without any dead pixels.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(5, 2, 5, "Measure the device temperature after 10 minutes of operation (°C).", "TextEntry", "<40"));
+            testRecordDAO.newTestRecordStep(new TestRecord(6, 2, 6, "Ensure all screws are torqued to the specified value (Nm).", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(7, 2, 7, "Check that the firmware version is up to date.", "TextEntry", "Latest"));
+            testRecordDAO.newTestRecordStep(new TestRecord(8, 2, 8, "Power off the device and package it in the protective casing.", "CheckBox", "NULL"));
 
-            // Product 67890: Power Supply
-            testRecordDAO.newTestRecordStep(new TestRecord(1, 67890, 1, "Verify the serial number matches the product ID label.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(2, 67890, 2, "Check the power cable for any signs of wear.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(3, 67890, 3, "Test the main function of the device to ensure it operates correctly.", "CheckBox", "NULL"));
-            testRecordDAO.newTestRecordStep(new TestRecord(4, 67890, 4, "Ensure all accessory components are included in the packaging.", "CheckBox", "NULL"));
+            // Product 3: Power Supply
+            testRecordDAO.newTestRecordStep(new TestRecord(1, 3, 1, "Verify the serial number matches the product ID label.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(2, 3, 2, "Check the power cable for any signs of wear.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(3, 3, 3, "Test the main function of the device to ensure it operates correctly.", "CheckBox", "NULL"));
+            testRecordDAO.newTestRecordStep(new TestRecord(4, 3, 4, "Ensure all accessory components are included in the packaging.", "CheckBox", "NULL"));
         }
 
         TimesheetsDAO timesheetsDAO = new TimesheetsDAO();
         timesheetsDAO.createTable();
         if (timesheetsDAO.isTableEmpty()) {
             timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 10, 1, 10, 00, 00, 00), LocalDateTime.of(2024, 10, 1, 14, 30, 00, 00), 100, 1));
-            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 9, 1, 10,00, 00, 00), LocalDateTime.of(2024, 9, 1, 14, 30, 0, 0), 100, 2));
+            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 9, 1, 10, 00, 00, 00), LocalDateTime.of(2024, 9, 1, 14, 30, 0, 0), 100, 2));
         }
 
         UsersDAO usersDAO = new UsersDAO();
@@ -172,7 +164,7 @@ public class Main extends Application {
         }
         List<Customer> customers = customerDAOImplementation.getAllCustomers();
 
-        WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
+        WorkOrdersDAOImplementation wdao = new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
         if (wdao.isTableEmpty()) {
             wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), LocalDateTime.now(), "shipAdd", "Pending", 40.87));
@@ -257,12 +249,12 @@ public class Main extends Application {
         productBuildDAO.createTable();
 
         if (productBuildDAO.isTableEmpty()) {
-            productBuildDAO.newProductBuild(new ProductBuild(500, 1, 0.00F, 36014));
-            productBuildDAO.newProductBuild(new ProductBuild(501, 1, 0.00F, 36014));
-            productBuildDAO.newProductBuild(new ProductBuild(502, 1, 0.00F, 36014));
-            productBuildDAO.newProductBuild(new ProductBuild(503, 2, 0.00F, 45021));
-            productBuildDAO.newProductBuild(new ProductBuild(504, 2, 0.00F, 45021));
-            productBuildDAO.newProductBuild(new ProductBuild(505, 3, 0.00F, 67890));
+            productBuildDAO.newProductBuild(new ProductBuild(500, 1, 0.00F, 1));
+            productBuildDAO.newProductBuild(new ProductBuild(501, 1, 0.00F, 1));
+            productBuildDAO.newProductBuild(new ProductBuild(502, 1, 0.00F, 1));
+            productBuildDAO.newProductBuild(new ProductBuild(503, 2, 0.00F, 2));
+            productBuildDAO.newProductBuild(new ProductBuild(504, 2, 0.00F, 2));
+            productBuildDAO.newProductBuild(new ProductBuild(505, 3, 0.00F, 3));
 
         }
 
@@ -270,9 +262,9 @@ public class Main extends Application {
         productOrderDAO.createTable();
 
         if (productOrderDAO.isTableEmpty()) {
-            productOrderDAO.newProductOrder(new ProductOrder(1,36014, 3, 1));
-            productOrderDAO.newProductOrder(new ProductOrder(2,45021, 2, 1));
-            productOrderDAO.newProductOrder(new ProductOrder(3,67890, 1, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(1, 1, 3, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(2, 2, 2, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(3, 3, 1, 1));
 
         }
 
@@ -284,11 +276,24 @@ public class Main extends Application {
         }
 
 
-
         //productsController.initialize();
         //productsController.refreshTable();
 
 
         launch();
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+        stage.setTitle(TITLE);
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Images/application_logo.png")));
+        stage.getIcons().add(icon);
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.show();
     }
 }

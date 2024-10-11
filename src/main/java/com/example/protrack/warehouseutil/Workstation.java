@@ -2,14 +2,20 @@ package com.example.protrack.warehouseutil;
 
 public interface Workstation {
     int getWorkstationLocationId();
+
     void setWorkstationLocationId(int workstationID);
+
     String getWorkstationLocationAlias();
+
     void setWorkstationLocationAlias(String workstationName);
+
     int getWorkstationMaxParts();
+
     void setWorkstationMaxParts(int maxParts);
 
     /* TODO: See if these are actually needed anymore. */
     String getWorkstationLocation();
+
     void setWorkstationLocation(String workstationLocation);
 
     /*
@@ -21,6 +27,8 @@ public interface Workstation {
      * it unused. Such cases are explicitly labeled in their implementation's code comments.
      */
     void importPartsIdWithQuantityFromWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao, int componentId, int quantity);
+
     void returnPartsIdWithQuantityToWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao, int componentId, int quantity);
-    void returnAllPartsToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao);
+
+    void returnAllPartsToWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao);
 }

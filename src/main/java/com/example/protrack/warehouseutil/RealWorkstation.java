@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RealWorkstation implements Workstation {
+    private final List<partIdWithQuantity> partsId;
     private int workstationId;
     private String workstationName;
     private String workstationLocation;
-    private final List<partIdWithQuantity> partsId;
     private int maxParts;
 
-    public RealWorkstation () {
+    public RealWorkstation() {
         this.workstationId = 0;
         this.workstationName = "Workstation 1";
         this.workstationLocation = "Spike Site A";
@@ -18,7 +18,7 @@ public class RealWorkstation implements Workstation {
         this.partsId = new ArrayList<>();
     }
 
-    public RealWorkstation (int locationId, String locationAlias, int maxParts) {
+    public RealWorkstation(int locationId, String locationAlias, int maxParts) {
         if (locationAlias == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
@@ -29,7 +29,7 @@ public class RealWorkstation implements Workstation {
         this.partsId = new ArrayList<>();
     }
 
-    public RealWorkstation (int locationId, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
+    public RealWorkstation(int locationId, String locationAlias, int maxParts, List<partIdWithQuantity> parts) {
         if (locationAlias == null || parts == null) {
             throw new IllegalArgumentException("No fields can be null");
         }
@@ -43,21 +43,31 @@ public class RealWorkstation implements Workstation {
     public int getWorkstationLocationId() {
         return workstationId;
     }
+
     public void setWorkstationLocationId(int workstationId) {
         this.workstationId = workstationId;
     }
+
     public String getWorkstationLocationAlias() {
         return this.workstationName;
     }
+
     public void setWorkstationLocationAlias(String workstationName) {
         this.workstationName = workstationName;
     }
-    public int getWorkstationMaxParts() { return this.maxParts; }
-    public void setWorkstationMaxParts (int maxParts) { this.maxParts = maxParts; }
+
+    public int getWorkstationMaxParts() {
+        return this.maxParts;
+    }
+
+    public void setWorkstationMaxParts(int maxParts) {
+        this.maxParts = maxParts;
+    }
 
     public String getWorkstationLocation() {
         return this.workstationLocation;
     }
+
     public void setWorkstationLocation(String workstationLocation) {
         this.workstationLocation = workstationLocation;
     }
@@ -66,10 +76,10 @@ public class RealWorkstation implements Workstation {
      * Imports a specific quantity of the given partsID from the target warehouse into this workstation.
      * This also removes said quantity of the given partsID from the warehouse.
      */
-    public void importPartsIdWithQuantityFromWarehouse (Warehouse targetWarehouse,
-                                                        LocationsAndContentsDAO dao,
-                                                        int partsId,
-                                                        int quantity) {
+    public void importPartsIdWithQuantityFromWarehouse(Warehouse targetWarehouse,
+                                                       LocationsAndContentsDAO dao,
+                                                       int partsId,
+                                                       int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
@@ -84,19 +94,19 @@ public class RealWorkstation implements Workstation {
         newPart.quantity = quantity;
         this.partsId.add(newPart);
 
-        dao.insertPartsIdWithQuantityIntoLocation (this.workstationId, newPart);
+        dao.insertPartsIdWithQuantityIntoLocation(this.workstationId, newPart);
     }
 
     /*
      * Returns a specific quantity of the given partsID to the target warehouse from this workstation.
      * This also adds back said quantity of the given partsID to the warehouse.
      */
-    public void returnPartsIdWithQuantityToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao, int partsId, int quantity) {
+    public void returnPartsIdWithQuantityToWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
                 if (this.partsId.get(i).quantity < quantity) {
-                    System.out.println("WARNING: Attempting to remove more " + String.valueOf(partsId) + " than is in the workstation, truncating to current quantity.");
+                    System.out.println("WARNING: Attempting to remove more " + partsId + " than is in the workstation, truncating to current quantity.");
                     amountToSubtract = this.partsId.get(i).quantity;
                 }
                 this.partsId.get(i).quantity -= amountToSubtract;
@@ -113,7 +123,7 @@ public class RealWorkstation implements Workstation {
         }
     }
 
-    public void returnAllPartsToWarehouse (Warehouse targetWarehouse, LocationsAndContentsDAO dao) {
+    public void returnAllPartsToWarehouse(Warehouse targetWarehouse, LocationsAndContentsDAO dao) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (targetWarehouse != null)
                 targetWarehouse.addPartsIdWithQuantity(dao, this.partsId.get(i).partsId, this.partsId.get(i).quantity);
@@ -123,5 +133,7 @@ public class RealWorkstation implements Workstation {
     }
 
     @Override
-    public String toString() {return this.workstationName;}
+    public String toString() {
+        return this.workstationName;
+    }
 }

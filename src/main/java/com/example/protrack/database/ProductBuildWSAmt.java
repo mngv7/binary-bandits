@@ -22,7 +22,9 @@ public class ProductBuildWSAmt {
         return partName;
     }
 
-    public Integer getReqAmount() {return reqAmount;}
+    public Integer getReqAmount() {
+        return reqAmount;
+    }
 
     public Integer getQuantity() {
         return quantity;

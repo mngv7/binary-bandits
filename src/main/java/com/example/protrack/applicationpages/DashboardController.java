@@ -14,7 +14,6 @@ import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -25,8 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -57,16 +56,37 @@ public class DashboardController {
 
     @FXML
     public HBox graphContainer; // HBox to hold the graphs
-
+    HashMap<Integer, Integer> sumOfParts = new HashMap<>();
+    OrgReport orgReport;
+    List<Customer> customers;
+    List<ProductionUser> productionUsers;
     @FXML
     private LineChart<String, Number> lineChart;
 
-    HashMap<Integer, Integer> sumOfParts = new HashMap<>();
+    public static void createPDF() {
+        String userHome = System.getProperty("user.home");
+        String downloadsPath = userHome + "/Downloads/PartsForecast.pdf";
 
-    OrgReport orgReport;
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
 
-    List<Customer> customers;
-    List<ProductionUser> productionUsers;
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                // Set the font and size for the heading
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(100, 750); // Position the text
+                contentStream.showText("Parts Forecast"); // Set the text to display
+                contentStream.endText();
+            }
+
+            // Save the document to the specified path
+            document.save(downloadsPath);
+            System.out.println("PDF created: " + downloadsPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void initialize() {
         CustomerDAOImplementation customerDAO = new CustomerDAOImplementation();
@@ -272,31 +292,6 @@ public class DashboardController {
             }
         }
         initializeHashMap();
-    }
-
-    public static void createPDF() {
-        String userHome = System.getProperty("user.home");
-        String downloadsPath = userHome + "/Downloads/PartsForecast.pdf";
-
-        try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage();
-            document.addPage(page);
-
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Set the font and size for the heading
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
-                contentStream.beginText();
-                contentStream.newLineAtOffset(100, 750); // Position the text
-                contentStream.showText("Parts Forecast"); // Set the text to display
-                contentStream.endText();
-            }
-
-            // Save the document to the specified path
-            document.save(downloadsPath);
-            System.out.println("PDF created: " + downloadsPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void displayGraphs() {

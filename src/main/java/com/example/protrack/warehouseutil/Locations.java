@@ -1,10 +1,10 @@
 package com.example.protrack.warehouseutil;
 
 public class Locations {
-    private Integer locationId;
-    private String locationAlias;
-    private String locationType;
-    private Float locationCapacity;
+    private final Integer locationId;
+    private final String locationAlias;
+    private final String locationType;
+    private final Float locationCapacity;
 
     public Locations(int locationId, String locationAlias, String locationType, Float locationCapacity) {
         this.locationId = locationId;

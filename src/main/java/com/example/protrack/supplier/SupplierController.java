@@ -1,6 +1,9 @@
 package com.example.protrack.supplier;
 
 import com.example.protrack.Main;
+import com.example.protrack.observers.Observer;
+import com.example.protrack.observers.SuppliersTableSubject;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,17 +11,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
-public class SupplierController {
+public class SupplierController implements Observer {
 
     @FXML
     private TableView<Supplier> suppliersTableView;
@@ -47,12 +53,18 @@ public class SupplierController {
     @FXML
     private Button addSupplierButton;
 
-    private ObservableList<Supplier> supplierList;
-    private SupplierDAOImplementation supplierDAOImplementation;
+    private ObservableList<Supplier> suppliers;
+
+    // Reference to the subject
+    private SuppliersTableSubject subject;
 
     // Initialize the controller
     @FXML
     private void initialize() {
+        subject = new SuppliersTableSubject();
+        // Register this controller as an observer to the subject
+        subject.registerObserver(this);
+
         // Set up the TableView columns with the corresponding property values
         supplierIdColumn.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -63,11 +75,11 @@ public class SupplierController {
         leadTimeColumn.setCellValueFactory(new PropertyValueFactory<>("leadTime"));
 
         // Initialize the ObservableList and set it to the TableView
-        supplierList = FXCollections.observableArrayList();
-        suppliersTableView.setItems(supplierList);
+        suppliers = FXCollections.observableArrayList();
+        suppliersTableView.setItems(suppliers);
 
         // Load and display the initial list of suppliers
-        refreshTable();
+        subject.syncDataFromDB();
 
         // Add functionality to click on a row to edit supplier
         suppliersTableView.setRowFactory(tv -> {
@@ -80,13 +92,24 @@ public class SupplierController {
             });
             return row;
         });
+
+        subject.syncDataFromDB(); // Fetch data from the database directly
+        update();
+
+        Platform.runLater(() -> {
+            Window window = addSupplierButton.getScene().getWindow();
+            if (window instanceof Stage stage) {
+                stage.setOnCloseRequest(event -> {
+                    subject.deregisterObserver(this);
+                });
+            }
+        });
     }
 
     // Refresh the suppliers table with data from the database
-    public void refreshTable() {
-        supplierDAOImplementation = new SupplierDAOImplementation();
-        List<Supplier> suppliers = supplierDAOImplementation.getAllSuppliers();
-        supplierList.setAll(suppliers);
+    public void update() {
+        suppliers.clear();
+        suppliers.setAll(subject.getData());
     }
 
     // Opens add supplier popup
@@ -118,7 +141,7 @@ public class SupplierController {
             popupStage.showAndWait();
 
             // Refresh the table after adding a supplier
-            refreshTable();
+            subject.syncDataFromDB();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,7 +180,7 @@ public class SupplierController {
             popupStage.showAndWait();
 
             // Refresh the table after editing a supplier
-            refreshTable();
+            subject.syncDataFromDB();
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.example.protrack.workorderobserver;
+package com.example.protrack.observers;
 
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class WorkOrderTableSubject implements Subject {
+public class WorkOrderTableSubject implements Subject<WorkOrder> {
 
-    private List<Observer> observers = new ArrayList<>(); // To hold multiple observers
-    private ObservableList<WorkOrder> workOrders = FXCollections.observableArrayList();
+    private final List<Observer> observers = new ArrayList<>(); // To hold multiple observers
+    private final ObservableList<WorkOrder> workOrders = FXCollections.observableArrayList();
 
     @Override
     public void registerObserver(Observer observer) {
@@ -35,11 +35,11 @@ public class WorkOrderTableSubject implements Subject {
         }
     }
 
-    public ObservableList<WorkOrder> getWorkOrders() {
+    public ObservableList<WorkOrder> getData() {
         return workOrders; // Return the current list of work orders
     }
 
-    public void getWorkOrdersFromDB() {
+    public void syncDataFromDB() {
         List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
         List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
         List<WorkOrder> dbWorkOrders = new WorkOrdersDAOImplementation(productionUsers, customers).getAllWorkOrders();
