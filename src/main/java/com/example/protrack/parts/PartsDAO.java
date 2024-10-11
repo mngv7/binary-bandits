@@ -119,7 +119,7 @@ public class PartsDAO {
 
         return part;
     }
-    //getPartNameById
+    //getPartNameById.
     public String getPartNameById(int partId) {
         String partName = null;
         String query = "SELECT name FROM parts WHERE partsId = ?";

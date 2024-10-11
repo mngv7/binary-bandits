@@ -114,7 +114,7 @@ public class RequestsDAO {
      * Getter that gets PartRequests of table
      * @return PartRequests in requests table
      */
-    //getPartRequests
+    //getPartRequests.
     public List<WarehousePastRequests> getPartRequests() {
         List<WarehousePastRequests> partRequests = new ArrayList<>();
 

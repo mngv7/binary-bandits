@@ -72,7 +72,7 @@ public class ViewPartController {
         loadPartsRequestFormDB();
 
     }
-    // load parts request from db
+    // load parts request from db.
     public void loadPartsRequestFormDB() {
         PartRequestsList.clear();  // Clear the list to avoid duplicates
 
@@ -88,19 +88,6 @@ public class ViewPartController {
         // Refresh the TableView to display updated data
         PartRequestsTable.refresh();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public void onClosePopupButton(ActionEvent actionEvent) {
