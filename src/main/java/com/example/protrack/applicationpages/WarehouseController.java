@@ -131,9 +131,11 @@ public class WarehouseController {
             if (alert.showAndWait().get() == ButtonType.OK) {
                 // Remove the selected item from the table
                 workstationTable.getItems().remove(selectedWorkstation);
-                // Optionally, remove it from the database or data source here
+                // Remove it from the database or data source here
+                // TODO: Warehouse shouldn't be null but for some
+                //       reason the app isn't using a Warehouse interface anywhere.
+                locationsAndContents.removeWorkstation(null, selectedWorkstation);
                 workstations.remove(selectedWorkstation);
-                /* TODO: DAO linking later; ideally we also want to return any parts in the workstation to the warehouse as well. */
             }
         }
     }

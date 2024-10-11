@@ -181,6 +181,7 @@ public class MainController {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/view-workstation2.fxml"));
         String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+
         Parent createAllocateWSRoot = null;
         try {
             createAllocateWSRoot = fxmlLoader.load();
@@ -204,6 +205,14 @@ public class MainController {
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
+
+            if (fxmlFile.equals("/com/example/protrack/products.fxml")) {
+                ProductsController productsController = loader.getController();
+                ProductControllerObserver productControllerObserver = new ProductControllerObserver("Test");
+                productsController.registerObserver(productControllerObserver);
+                System.out.println("In here");
+            }
+
             dynamicVBox.getChildren().add(content);
             //scene.getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
         } catch (IOException e) {

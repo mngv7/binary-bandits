@@ -276,7 +276,7 @@ public class LocationsAndContentsDAO {
                     }
 
                     int quantity = rs.getInt(3);
-                    if (quantity < partToRemove.quantity) {
+                    if (quantity > partToRemove.quantity) {
                         /*
                          * Delete locationContents record as the partsID for that location is now empty.
                          * TODO: An exception handler in an exception handler... pray it doesn't explode.
@@ -321,6 +321,22 @@ public class LocationsAndContentsDAO {
             }
         } catch (SQLException e) {
             System.err.println(e);
+        }
+    }
+
+    public void removeWorkstation (Warehouse warehouse, Workstation workstation) {
+        String query = "DELETE FROM locations WHERE locationID = " +
+                        workstation.getWorkstationLocationId();
+        String query2 = "DELETE FROM locationContents WHERE locationID = " +
+                        workstation.getWorkstationLocationId();
+
+        workstation.returnAllPartsToWarehouse(warehouse, new LocationsAndContentsDAO());
+        try {
+            Statement deleteWorkstation = connection.createStatement();
+            deleteWorkstation.execute(query);
+            deleteWorkstation.execute(query2);
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 
