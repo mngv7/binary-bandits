@@ -1,9 +1,9 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -20,18 +20,17 @@ import java.util.Objects;
 
 public class MainController {
 
+    private static final String TimesheetTITLE = "Add Timesheets";
+    private static final int TimesheetWIDTH = 500;
+    private static final int TimesheetHEIGHT = 500;
     @FXML
     private Label employeeName;
-
     @FXML
     private Label employeeTitle;
-
     @FXML
     private Label timesheet;
-
     @FXML
     private VBox dynamicVBox;
-
     @FXML
     private VBox inventoryVBox;
 
@@ -111,10 +110,6 @@ public class MainController {
         }
     }
 
-    private static final String TimesheetTITLE = "Add Timesheets";
-    private static final int TimesheetWIDTH = 500;
-    private static final int TimesheetHEIGHT = 500;
-
     @FXML
     private void myTimesheets() {
         try {
@@ -171,7 +166,7 @@ public class MainController {
         }
     }
 
-    public void loadWarehouseFromOtherPage () {
+    public void loadWarehouseFromOtherPage() {
         warehouse();
     }
 

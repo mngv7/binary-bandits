@@ -50,6 +50,7 @@ public class ProductDAO {
 
     /**
      * Adds new product to product table
+     *
      * @param product a product being added to the table
      */
     public void newProduct(Product product) {
@@ -74,6 +75,7 @@ public class ProductDAO {
 
     /**
      * Checks if table is empty.
+     *
      * @return true if empty, else returns false.
      */
     public boolean isTableEmpty() {
@@ -92,6 +94,7 @@ public class ProductDAO {
 
     /**
      * Getter that gets all products of table
+     *
      * @return all products in product table
      */
     public List<Product> getAllProducts() {
@@ -148,7 +151,7 @@ public class ProductDAO {
      * Updates the price of a product in the database.
      *
      * @param productId The ID of the product to update.
-     * @param newPrice The new price to set for the product.
+     * @param newPrice  The new price to set for the product.
      * @throws SQLException if there is an error during the update operation.
      */
     public void updateProductPrice(int productId, double newPrice) {

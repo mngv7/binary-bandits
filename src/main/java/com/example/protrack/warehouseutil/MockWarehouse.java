@@ -1,14 +1,14 @@
 package com.example.protrack.warehouseutil;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MockWarehouse implements Warehouse {
+    private final List<partIdWithQuantity> partsId;
+    public int maxParts;
     private int warehouseId;
     private String warehouseName;
     private String warehouseLocation;
-    public int maxParts;
-    private final List<partIdWithQuantity> partsId;
 
     public MockWarehouse() {
         this.warehouseId = 0;
@@ -42,21 +42,31 @@ public class MockWarehouse implements Warehouse {
     public int getWarehouseLocationId() {
         return this.warehouseId;
     }
+
     public void setWarehouseLocationId(int warehouseId) {
         this.warehouseId = warehouseId;
     }
+
     public String getWarehouseLocationAlias() {
         return this.warehouseName;
     }
+
     public void setWarehouseLocationAlias(String warehouseName) {
         this.warehouseName = warehouseName;
     }
-    public int getWarehouseMaxParts() { return this.maxParts; }
-    public void setWarehouseMaxParts(int maxParts) { this.maxParts = maxParts; }
+
+    public int getWarehouseMaxParts() {
+        return this.maxParts;
+    }
+
+    public void setWarehouseMaxParts(int maxParts) {
+        this.maxParts = maxParts;
+    }
 
     public String getWarehouseLocation() {
         return this.warehouseLocation;
     }
+
     public void setWarehouseLocation(String warehouseLocation) {
         this.warehouseLocation = warehouseLocation;
     }
@@ -67,7 +77,7 @@ public class MockWarehouse implements Warehouse {
      * only includes it for interface implementation requirements, it is
      * therefore safe to call this function with a null DAO.
      */
-    public void addPartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
+    public void addPartsIdWithQuantity(LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 this.partsId.get(i).quantity += quantity;
@@ -87,12 +97,12 @@ public class MockWarehouse implements Warehouse {
      * only includes it for interface implementation requirements, it is
      * therefore safe to call this function with a null DAO.
      */
-    public void removePartsIdWithQuantity (LocationsAndContentsDAO dao, int partsId, int quantity) {
+    public void removePartsIdWithQuantity(LocationsAndContentsDAO dao, int partsId, int quantity) {
         for (int i = 0; i < this.partsId.size(); ++i) {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
                 if (this.partsId.get(i).quantity < quantity) {
-                    System.out.println("WARNING: Attempting to remove more " + String.valueOf(partsId) + " than is in the warehouse, truncating to current quantity.");
+                    System.out.println("WARNING: Attempting to remove more " + partsId + " than is in the warehouse, truncating to current quantity.");
                     amountToSubtract = this.partsId.get(i).quantity;
                 }
                 this.partsId.get(i).quantity -= amountToSubtract;

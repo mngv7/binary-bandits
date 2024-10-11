@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierDAOImplementation implements SupplierDAO {
-    private Connection connection;
+    private final Connection connection;
 
     // Constructor that accepts a database connection
     public SupplierDAOImplementation() {

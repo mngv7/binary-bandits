@@ -24,7 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,54 +35,38 @@ import java.util.Objects;
 public class ProductBuildController {
 
     @FXML
+    public Button closePopupButton;
+    @FXML
     private Button commitButton;
-
     @FXML
     private TableView<ProductBuildWSAmt> PBWSRequirementTableView;
-
     @FXML
     private TableColumn<ProductBuildWSAmt, Integer> colPBWSpartId;
-
     @FXML
-    private TableColumn<ProductBuildWSAmt, String > colPBWSpartName;
-
+    private TableColumn<ProductBuildWSAmt, String> colPBWSpartName;
     @FXML
     private TableColumn<ProductBuildWSAmt, Integer> colPBWSreqAmt;
-
     @FXML
     private TableColumn<ProductBuildWSAmt, Integer> colWorkstationAmt;
-
     @FXML
     private Button SearchPBButton;
-
     @FXML
     private ListView<String> productBuildListView;
-
     @FXML
     private VBox productBuildVBox;
-
     @FXML
     private VBox productBuildTRVBox;
 
+    //private Workstation currentWorkstation = null;
     @FXML
     private VBox PBWSRequirementBox;
-
-    //private Workstation currentWorkstation = null;
-
     private Integer currentWorkstationId = -1;
-
     private Integer currentProductOrderId = -1;
-
     private Integer currentProductBuild = -1;
-
-    private ObservableList<ProductBuild> builds = FXCollections.observableArrayList();
-
-    private List<ProductBuildWSAmt> currentBuildsList;
+    private final ObservableList<ProductBuild> builds = FXCollections.observableArrayList();
 
     //private ProductBuild currentProductBuild;
-
-    @FXML
-    public Button closePopupButton;
+    private List<ProductBuildWSAmt> currentBuildsList;
 
     public void setWorkStation(int value) {
         currentWorkstationId = value;
@@ -144,7 +127,7 @@ public class ProductBuildController {
         }
     }
 
-    private  void refreshReqTable() {
+    private void refreshReqTable() {
         PBWSRequirementTableView.getItems().clear();
         PBWSRequirementTableView.getItems().addAll(currentBuildsList);
     }
@@ -176,6 +159,7 @@ public class ProductBuildController {
 
     /**
      * Loads
+     *
      * @param productId
      * @return
      */
@@ -309,7 +293,6 @@ public class ProductBuildController {
     }
 
 
-
     public void onAddPartButton(ActionEvent actionEvent) {
     }
 
@@ -318,7 +301,6 @@ public class ProductBuildController {
 
         ProductBuildDAO productBuildDAO = new ProductBuildDAO();
         List<ProductBuild> currentPBList = productBuildDAO.getAllProductBuildsWithPBID(currentProductBuild);
-
 
 
         for (ProductBuildWSAmt build : currentBuildsList) {
@@ -356,7 +338,6 @@ public class ProductBuildController {
 
                 int currentPartVal = build.getQuantity() - build.getReqAmount();
                 build.setQuantity(currentPartVal);
-
 
 
                 locationsAndContentsDAO.removePartsIdWithQuantityFromLocation(currentWorkstationId, partToRemove);

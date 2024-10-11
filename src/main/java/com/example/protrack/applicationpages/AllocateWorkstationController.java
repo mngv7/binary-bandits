@@ -1,20 +1,19 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.Workstation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
-import com.example.protrack.warehouseutil.*;
-
 import java.io.IOException;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllocateWorkstationController {
     /*

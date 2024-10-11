@@ -1,6 +1,8 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.warehouseutil.*;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.RealWorkstation;
+import com.example.protrack.warehouseutil.Workstation;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -19,10 +21,6 @@ public class CreateWorkstationController {
     @FXML
     private TextField capacityField;
 
-    public void initialize() {
-        dao = new LocationsAndContentsDAO();
-    }
-
     public CreateWorkstationController() {
         this.parentWarehouse = null;
     }
@@ -31,7 +29,11 @@ public class CreateWorkstationController {
         this.parentWarehouse = parentWarehouse;
     }
 
-    public void setParentWarehouseController (WarehouseController parentWarehouse) {
+    public void initialize() {
+        dao = new LocationsAndContentsDAO();
+    }
+
+    public void setParentWarehouseController(WarehouseController parentWarehouse) {
         this.parentWarehouse = parentWarehouse;
     }
 

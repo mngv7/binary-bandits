@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RealWarehouse implements Warehouse {
+    private final List<partIdWithQuantity> partsId;
     private int warehouseId;
     private String warehouseName;
     private String warehouseLocation;
-    private final List<partIdWithQuantity> partsId;
     private int maxParts;
 
     public RealWarehouse() {
@@ -99,7 +99,7 @@ public class RealWarehouse implements Warehouse {
             if (this.partsId.get(i).partsId == partsId) {
                 int amountToSubtract = quantity;
                 if (this.partsId.get(i).quantity < quantity) {
-                    System.out.println("WARNING: Attempting to remove more " + String.valueOf(partsId) + " than is in the warehouse, truncating to current quantity.");
+                    System.out.println("WARNING: Attempting to remove more " + partsId + " than is in the warehouse, truncating to current quantity.");
                     amountToSubtract = this.partsId.get(i).quantity;
                 }
                 this.partsId.get(i).quantity -= amountToSubtract;

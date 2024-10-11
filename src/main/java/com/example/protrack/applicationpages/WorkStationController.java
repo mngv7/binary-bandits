@@ -3,25 +3,21 @@ package com.example.protrack.applicationpages;
 import com.example.protrack.warehouseutil.Workstation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 
 public class WorkStationController {
-    private Workstation selectedWorkstation;
-
     @FXML
     public Label workStationName;
-
     @FXML
     public Label usernameField;
-
+    private Workstation selectedWorkstation;
     @FXML
     private ListView<String> orderList;
 
@@ -33,7 +29,7 @@ public class WorkStationController {
 
     private int workStationId = -1;
 
-    public void setSelectedWorkstation (Workstation selectedWorkstation) {
+    public void setSelectedWorkstation(Workstation selectedWorkstation) {
         this.selectedWorkstation = selectedWorkstation;
     }
 
@@ -70,6 +66,7 @@ public class WorkStationController {
             updateStepsBasedOnSelection(selectedItem);
         }
     }
+
     // update the Steps box
     private void updateStepsBasedOnSelection(String selectedItem) {
         stepsBox.getChildren().clear();
@@ -100,6 +97,7 @@ public class WorkStationController {
                 break;
         }
     }
+
     // setup the orderlist
     private void updateSteps(String step1Text, String step2Text, String step3Text, String textAreaContent) {
         HBox step1 = new HBox();

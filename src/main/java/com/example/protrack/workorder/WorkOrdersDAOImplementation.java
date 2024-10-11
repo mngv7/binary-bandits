@@ -2,9 +2,9 @@ package com.example.protrack.workorder;
 
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
+import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -87,7 +87,6 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
     }
 
     /**
-     *
      * @param workOrder the WorkOrder to be inserted into the database
      * @return true if at least one row is affected from the SQL insertion, otherwise false
      */
@@ -120,7 +119,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return false;
     }
 
-    public List<WorkOrder> getWorkOrdersByEmployeeId(int employeeId){
+    public List<WorkOrder> getWorkOrdersByEmployeeId(int employeeId) {
         String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE work_order_owner_id = ?";
         List<WorkOrder> workOrders = new ArrayList<>();
 
@@ -160,7 +159,6 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
     }
 
     /**
-     *
      * @param status String containing the status of the Work Order
      * @return 'ArrayList<WorkOrder>'  all orders that satisfy the status
      */
@@ -192,7 +190,6 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
     }
 
     /**
-     *
      * @param resultSet value returned from a SQL PreparedStatement execution
      * @return new WorkOrder instance populated with the values from the resultSet
      */
@@ -205,7 +202,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
             Integer customerId = resultSet.getInt("customer_id");
 
             // Retrieves the relevant Production User as specified by the resultSet
-            AbstractUser orderOwner  = null;
+            AbstractUser orderOwner = null;
             for (AbstractUser user : productionUsers) {
                 if (user.getEmployeeId().equals(orderOwnerId)) {
                     orderOwner = user;

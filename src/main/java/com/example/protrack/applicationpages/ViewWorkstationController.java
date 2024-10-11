@@ -24,30 +24,27 @@ import java.util.Objects;
 
 public class ViewWorkstationController {
 
-    @FXML
-    private TableView wsPartTable;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, Integer> colWSPartId;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, String> colWSPartName;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, Integer> colWSPartQuantity;
-
-    @FXML
-    private TableColumn<WorkstationPartDBTable, String> colAddPart;
-
+    private static final String TITLE = "Parts Request Form";
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
     @FXML
     public Button closePopupButton;
-
+    @FXML
+    private TableView wsPartTable;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, Integer> colWSPartId;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, String> colWSPartName;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, Integer> colWSPartQuantity;
+    @FXML
+    private TableColumn<WorkstationPartDBTable, String> colAddPart;
     private ObservableList<WorkstationPartDBTable> wsPartDBTable;
-
     private int workStationId = -1;
 
     /**
      * Grabs WS ID from Allocate WS
+     *
      * @param value WS ID
      */
     public void setWorkStationIdV2(Integer value) {
@@ -99,7 +96,6 @@ public class ViewWorkstationController {
     }
 
     /**
-     *
      * @return table of parts in WS
      */
     public List<WorkstationPartDBTable> workstationPartDBTableList() {
@@ -114,14 +110,10 @@ public class ViewWorkstationController {
         return wsDBParts;
     }
 
-    private static final String TITLE = "Parts Request Form";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
-
     /**
      * Create pop-up when "Create Part Request" is pressed
      */
-     public void createPartRequest() {
+    public void createPartRequest() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/Parts/add-parts-view.fxml"));
             Parent addPartsRoot = fxmlLoader.load();

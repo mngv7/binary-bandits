@@ -20,7 +20,10 @@ import com.example.protrack.users.ManagerialUser;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.users.WarehouseUser;
-import com.example.protrack.warehouseutil.*;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.RealWarehouse;
+import com.example.protrack.warehouseutil.RealWorkstation;
+import com.example.protrack.warehouseutil.partIdWithQuantity;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
@@ -30,8 +33,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.sql.Date;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,20 +47,6 @@ public class Main extends Application {
     //private static final int HEIGHT = 1080;
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
-
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-        scene.getStylesheets().add(stylesheet);
-        stage.setTitle(TITLE);
-        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Images/application_logo.png")));
-        stage.getIcons().add(icon);
-        stage.setScene(scene);
-        stage.setMaximized(false);
-        stage.show();
-    }
 
     public static int getWidth() {
         return WIDTH;
@@ -147,7 +136,7 @@ public class Main extends Application {
         timesheetsDAO.createTable();
         if (timesheetsDAO.isTableEmpty()) {
             timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 10, 1, 10, 00, 00, 00), LocalDateTime.of(2024, 10, 1, 14, 30, 00, 00), 100, 1));
-            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 9, 1, 10,00, 00, 00), LocalDateTime.of(2024, 9, 1, 14, 30, 0, 0), 100, 2));
+            timesheetsDAO.newTimesheet(new Timesheets(LocalDateTime.of(2024, 9, 1, 10, 00, 00, 00), LocalDateTime.of(2024, 9, 1, 14, 30, 0, 0), 100, 2));
         }
 
         UsersDAO usersDAO = new UsersDAO();
@@ -175,7 +164,7 @@ public class Main extends Application {
         }
         List<Customer> customers = customerDAOImplementation.getAllCustomers();
 
-        WorkOrdersDAOImplementation wdao =  new WorkOrdersDAOImplementation(productionUsers, customers);
+        WorkOrdersDAOImplementation wdao = new WorkOrdersDAOImplementation(productionUsers, customers);
         wdao.createTable();
         if (wdao.isTableEmpty()) {
             wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), LocalDateTime.now(), "shipAdd", "Pending", 40.87));
@@ -273,9 +262,9 @@ public class Main extends Application {
         productOrderDAO.createTable();
 
         if (productOrderDAO.isTableEmpty()) {
-            productOrderDAO.newProductOrder(new ProductOrder(1,1, 3, 1));
-            productOrderDAO.newProductOrder(new ProductOrder(2,2, 2, 1));
-            productOrderDAO.newProductOrder(new ProductOrder(3,3, 1, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(1, 1, 3, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(2, 2, 2, 1));
+            productOrderDAO.newProductOrder(new ProductOrder(3, 3, 1, 1));
 
         }
 
@@ -287,11 +276,24 @@ public class Main extends Application {
         }
 
 
-
         //productsController.initialize();
         //productsController.refreshTable();
 
 
         launch();
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+        stage.setTitle(TITLE);
+        Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Images/application_logo.png")));
+        stage.getIcons().add(icon);
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.show();
     }
 }

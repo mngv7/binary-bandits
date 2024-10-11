@@ -1,9 +1,9 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.products.TestRecordDAO;
+import com.example.protrack.utility.DatabaseConnection;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -19,23 +19,17 @@ import java.util.Objects;
 
 public class CreateTestRecordController {
 
-    private int numSteps = 0;
-
     @FXML
     public Button closePopupButton;
-
     @FXML
     public Button addTestRecordButton;
-
-    @FXML
-    private VBox testRecordsVBox;
-
-    @FXML
-    private VBox removeAllTRButtonContainer;
-
     @FXML
     public Button createProductButton;
-
+    private int numSteps = 0;
+    @FXML
+    private VBox testRecordsVBox;
+    @FXML
+    private VBox removeAllTRButtonContainer;
     private String productIdLabel;
 
     public void initialize() {
@@ -129,6 +123,7 @@ public class CreateTestRecordController {
     /**
      * Delete the selected row from test records table,
      * rearrange the table to account for deleted row.
+     *
      * @param newColumn column being deleted
      */
     private void removeRow(HBox newColumn) {
@@ -144,7 +139,7 @@ public class CreateTestRecordController {
         for (int i = 0; i < testRecordsVBox.getChildren().size(); i++) {
             var node = testRecordsVBox.getChildren().getFirst();
 
-            if (node instanceof  HBox column) {
+            if (node instanceof HBox column) {
                 HBox newColumn2 = new HBox();
 
                 numNewSteps++;
@@ -252,7 +247,6 @@ public class CreateTestRecordController {
 
         ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
 
 
         alert.getButtonTypes().setAll(confirmBtn, backBtn);

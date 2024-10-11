@@ -10,8 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public class CustomersTableSubject implements Subject<Customer> {
-    private List<Observer> observers = new ArrayList<>(); // To hold multiple observers
-    private ObservableList<Customer> customers = FXCollections.observableArrayList();
+    private final List<Observer> observers = new ArrayList<>(); // To hold multiple observers
+    private final ObservableList<Customer> customers = FXCollections.observableArrayList();
 
     @Override
     public void registerObserver(Observer observer) {

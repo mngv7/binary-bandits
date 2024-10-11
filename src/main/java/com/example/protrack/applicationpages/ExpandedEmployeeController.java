@@ -45,6 +45,7 @@ public class ExpandedEmployeeController {
     private Label employeeNameTitle;
 
     private Integer employeeId;
+    private MainController mainController;
 
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
@@ -70,7 +71,7 @@ public class ExpandedEmployeeController {
         };
 
 
-        String initials = selectedUser.getFirstName().charAt(0) + selectedUser.getLastName().substring(0,1);
+        String initials = selectedUser.getFirstName().charAt(0) + selectedUser.getLastName().substring(0, 1);
         initialsIcon.setText(initials);
 
         employeeRole.setText(role);
@@ -85,8 +86,6 @@ public class ExpandedEmployeeController {
         gender.setText(selectedUser.getGender());
         employeeIdLabel.setText(String.valueOf(selectedUser.getEmployeeId()));
     }
-
-    private MainController mainController;
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;

@@ -16,7 +16,7 @@ module com.example.protrack {
     exports com.example.protrack.requests;
     opens com.example.protrack.timesheets to javafx.base;
     exports com.example.protrack.timesheets;
-    opens  com.example.protrack.productbuild to javafx.base;
+    opens com.example.protrack.productbuild to javafx.base;
     exports com.example.protrack.productbuild;
 
 

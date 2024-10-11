@@ -3,8 +3,8 @@ package com.example.protrack.workorderproducts;
 public class WorkOrderProduct {
     private int workOrderProductId;
     private int workOrderId;
-    private int productId;
-    private String productName;
+    private final int productId;
+    private final String productName;
     private int quantity;
     private double price;
     private double total;
@@ -39,13 +39,13 @@ public class WorkOrderProduct {
         this.total = getTotal();
     }
 
+    public int getWorkOrderProductId() {
+        return this.workOrderProductId;
+    }
+
     // Getters and Setters
     public void setWorkOrderProductId(Integer workOrderProductId) {
         this.workOrderProductId = workOrderProductId;
-    }
-
-    public int getWorkOrderProductId() {
-        return this.workOrderProductId;
     }
 
     public int getWorkOrderId() {

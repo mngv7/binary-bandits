@@ -35,6 +35,7 @@ public class ProductOrderDAO {
 
     /**
      * Inserts inputted product order into product order table
+     *
      * @param productOrder a product order for products
      */
     public void newProductOrder(ProductOrder productOrder) {
@@ -75,6 +76,7 @@ public class ProductOrderDAO {
 
     /**
      * Getter that gets all productOrder of table
+     *
      * @return all products in productOrder table
      */
     public List<ProductOrder> getAllProductOrder() {
@@ -108,6 +110,7 @@ public class ProductOrderDAO {
 
     /**
      * Checks if table is empty.
+     *
      * @return true if empty, else returns false.
      */
     public boolean isTableEmpty() {

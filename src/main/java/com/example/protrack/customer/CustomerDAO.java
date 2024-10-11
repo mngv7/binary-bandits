@@ -2,7 +2,6 @@ package com.example.protrack.customer;
 
 import com.example.protrack.workorder.WorkOrder;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

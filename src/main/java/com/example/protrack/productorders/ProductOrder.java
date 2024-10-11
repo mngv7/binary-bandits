@@ -1,13 +1,13 @@
 package com.example.protrack.productorders;
 
 public class ProductOrder {
-    private  int productOrderID;
+    private final int productOrderID;
 
-    private int productID;
+    private final int productID;
 
-    private int quantity;
+    private final int quantity;
 
-    private int workOrderID;
+    private final int workOrderID;
 
     public ProductOrder(int productOrderID, int productID, int quantity, int workOrderID) {
         this.productOrderID = productOrderID;

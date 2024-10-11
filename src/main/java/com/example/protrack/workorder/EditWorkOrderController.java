@@ -231,7 +231,7 @@ public class EditWorkOrderController {
             orderOwnerLabel.setText("No order owner");
         }
         customerLabel.setText(originalCustomer.getFirstName() + " " + originalCustomer.getLastName());
-        orderDateLabel.setText(originalOrderDate.toString().substring(0,10));
+        orderDateLabel.setText(originalOrderDate.toString().substring(0, 10));
         if (originalDeliveryDate != null) {
             deliveryDateLabel.setText(originalDeliveryDate.toString());
         } else {
@@ -253,9 +253,9 @@ public class EditWorkOrderController {
         }
         customerLabel.setText(workOrder.getCustomer().toString());
         shippingAddressLabel.setText(workOrder.getShippingAddress());
-        orderDateLabel.setText(workOrder.getOrderDate().toString().substring(0,10));
+        orderDateLabel.setText(workOrder.getOrderDate().toString().substring(0, 10));
         if (workOrder.getDeliveryDate() != null) {
-            deliveryDateLabel.setText(workOrder.getDeliveryDate().toString().substring(0,10));
+            deliveryDateLabel.setText(workOrder.getDeliveryDate().toString().substring(0, 10));
         }
         orderStatusLabel.setText(workOrder.getStatus());
         subtotalLabel.setText(workOrder.getSubtotal().toString());
@@ -317,7 +317,7 @@ public class EditWorkOrderController {
 
     @FXML
     public void closePopup() {
-        if (editButton.getText().equals("Cancel")){
+        if (editButton.getText().equals("Cancel")) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initStyle(StageStyle.UNDECORATED);
             alert.setHeaderText("Close Work Order View");

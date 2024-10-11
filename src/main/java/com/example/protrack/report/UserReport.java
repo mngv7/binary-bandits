@@ -3,8 +3,8 @@ package com.example.protrack.report;
 import com.example.protrack.utility.LoggedInUserSingleton;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAO;
-import com.example.protrack.workorderproducts.WorkOrderProductsDAO;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
+import com.example.protrack.workorderproducts.WorkOrderProductsDAO;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

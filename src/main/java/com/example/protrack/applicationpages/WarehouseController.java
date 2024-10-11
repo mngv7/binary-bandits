@@ -2,61 +2,58 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.database.WorkstationPartDBTable;
-import com.example.protrack.requests.*;
-import com.example.protrack.warehouseutil.*;
+import com.example.protrack.requests.Requests;
+import com.example.protrack.requests.RequestsDAO;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.MockWorkstation;
+import com.example.protrack.warehouseutil.Workstation;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.collections.FXCollections;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /* TODO: Now that the database structure is sort of present, how do we implement this well? */
 public class WarehouseController {
-    private MainController mainController;
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
     public LocationsAndContentsDAO locationsAndContents;
-
+    private MainController mainController;
     @FXML
     private TableView warehousePartTable;
-
     @FXML
     private TableView<Workstation> workstationTable;
     private List<Workstation> workstations; /* Loaded workstations from a database. */
-
     @FXML
     private TableColumn<WorkstationPartDBTable, Integer> colWSPartId;
-
     @FXML
     private TableColumn<WorkstationPartDBTable, String> colWSPartName;
-
     @FXML
     private TableColumn<WorkstationPartDBTable, Integer> colWSPartQuantity;
-
     private ObservableList<WorkstationPartDBTable> whPartDBTable;
-
-    private int warehouseId = 0;
-
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
-
-    public void setMainControllerInstance (MainController controller) {
-        this.mainController = controller;
-    }
+    private final int warehouseId = 0;
+    @FXML
+    private Button allocateWorkstationButton;
 
     public MainController getMainControllerInstance() {
         return this.mainController;
+    }
+
+    public void setMainControllerInstance(MainController controller) {
+        this.mainController = controller;
     }
 
     @FXML
@@ -167,11 +164,11 @@ public class WarehouseController {
         }
     }
 
-    public void addWorkstation (Workstation workstation) {
+    public void addWorkstation(Workstation workstation) {
         workstations.add(workstation);
     }
 
-    public void openWorkstation (Workstation workstation) {
+    public void openWorkstation(Workstation workstation) {
         /* TODO: Connect selected workstation to new page. */
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
@@ -187,9 +184,6 @@ public class WarehouseController {
             System.out.println("Failed to load FXML file: /com/example/protrack/WorkStation.fxml");
         }
     }
-
-    @FXML
-    private Button allocateWorkstationButton;
 
     @FXML
     private void handleAllocateWorkstation() throws IOException {
@@ -232,6 +226,7 @@ public class WarehouseController {
 
     /**
      * TODO ID 20 - Process requests. Requires an FXML pop-up.
+     *
      * @param actionEvent
      */
     public void handlePartRequests(ActionEvent actionEvent) {

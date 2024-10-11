@@ -3,10 +3,10 @@ package com.example.protrack.workorder;
 import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
-import com.example.protrack.users.ProductionUser;
-import com.example.protrack.users.UsersDAO;
 import com.example.protrack.observers.Observer;
 import com.example.protrack.observers.WorkOrderTableSubject;
+import com.example.protrack.users.ProductionUser;
+import com.example.protrack.users.UsersDAO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +15,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -29,41 +32,32 @@ import java.util.Objects;
 public class WorkOrderController implements Observer {
 
 
+    private static final String TITLE = "Create Work Order";
+    private static final int WIDTH = 900;
+    private static final int HEIGHT = 650;
     @FXML
     private TableView<WorkOrder> workOrderTable;
-
     @FXML
     private TableColumn<WorkOrder, Integer> colWorkOrderId;
-
     @FXML
     private TableColumn<WorkOrder, ProductionUser> colOrderOwner;
-
     @FXML
     private TableColumn<WorkOrder, Customer> colCustomer;
-
     @FXML
     private TableColumn<WorkOrder, LocalDateTime> colOrderDate;
-
     @FXML
     private TableColumn<WorkOrder, LocalDateTime> colDeliveryDate;
-
     @FXML
     private TableColumn<WorkOrder, String> colShippingAddress;
-
     @FXML
     private TableColumn<WorkOrder, Integer> colProducts;
-
     @FXML
     private TableColumn<WorkOrder, String> colStatus;
-
     @FXML
     private TableColumn<WorkOrder, Double> colSubtotal;
-
     @FXML
     private Button createWorkOrderButton;
-
     private ObservableList<WorkOrder> workOrders;
-
     // Reference to the subject
     private WorkOrderTableSubject subject;
 
@@ -124,10 +118,6 @@ public class WorkOrderController implements Observer {
         workOrders.clear();
         workOrders.setAll(subject.getData());
     }
-
-    private static final String TITLE = "Create Work Order";
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 650;
 
     /**
      * Opens a popup window to create a new work order.
@@ -201,9 +191,9 @@ public class WorkOrderController implements Observer {
      * Adds a new work order to the database.
      *
      * @param orderOwner the user who owns the order
-     * @param customer the customer for whom the order is created
-     * @param orderDate the date the order was placed
-     * @param productId the ID of the product being ordered
+     * @param customer   the customer for whom the order is created
+     * @param orderDate  the date the order was placed
+     * @param productId  the ID of the product being ordered
      */
     public void addWorkOrder(ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, Integer productId) {
         // Create DAOs for fetching data

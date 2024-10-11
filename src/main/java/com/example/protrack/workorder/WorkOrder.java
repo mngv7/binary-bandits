@@ -1,7 +1,6 @@
 package com.example.protrack.workorder;
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.users.ProductionUser;
 
 import java.time.LocalDateTime;
@@ -59,8 +58,16 @@ public class WorkOrder {
         return customer;
     }
 
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public LocalDateTime getOrderDate() {
         return orderDate;
+    }
+
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
     public LocalDateTime getDeliveryDate() {
@@ -89,14 +96,6 @@ public class WorkOrder {
 
     public Double getSubtotal() {
         return subtotal;
-    }
-
-    public void setCustomer(Customer customer){
-        this.customer = customer;
-    }
-
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
     }
 
     public void setSubtotal(double subtotal) {

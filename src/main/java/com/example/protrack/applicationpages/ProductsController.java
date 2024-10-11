@@ -1,11 +1,11 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.observers.Observer;
+import com.example.protrack.observers.ProductsTableSubject;
 import com.example.protrack.products.Product;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
-import com.example.protrack.observers.Observer;
-import com.example.protrack.observers.ProductsTableSubject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,34 +23,48 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 
 public class ProductsController implements Observer {
 
+    /**
+     * Generates list of products from product database with price
+     *
+     * @return list of products with price
+     */
+
+    /*
+    public List<Product> productDBtoTable() {
+        //Connection connection;
+        //connection = DatabaseConnection.getInstance();
+
+        List<Product> products = new ArrayList<>();
+        ProductDAO productDAO = new ProductDAO();
+
+        products = productDAO.getAllPrice();
+
+        // return list
+        return products;
+    }
+    */
+
+    private static final String TITLE = "Create Product";
+    private static final int WIDTH = 900;
+    private static final int HEIGHT = 360;
     @FXML
     public Button addProductButton;
-
     @FXML
     private TableView<Product> productTable;
-
     @FXML
     private TableColumn<Product, Integer> colProductId;
-
     @FXML
     private TableColumn<Product, String> colProductName;
-
     @FXML
     private TableColumn<Product, java.sql.Date> colDateCreated;
-
     @FXML
     private TableColumn<Product, Double> colPrice;
-
     private ObservableList<Product> products;
-
-    private List<Observer> observers;
-
     private ProductsTableSubject subject;
 
     /**
@@ -98,28 +112,6 @@ public class ProductsController implements Observer {
         products.clear();
         products.setAll(subject.getData());
     }
-
-    /**
-     * Generates list of products from product database with price
-     * @return list of products with price
-
-    public List<ProductDBTable> productDBtoTable() {
-        //Connection connection;
-        //connection = DatabaseConnection.getInstance();
-
-        List<ProductDBTable> products = new ArrayList<>();
-        ProductDAO productDAO = new ProductDAO();
-
-        products = productDAO.getAllCost();
-
-        // return list
-        return products;
-    }
-    */
-
-    private static final String TITLE = "Create Product";
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 360;
 
     /**
      * Create pop-up when "Create Product" is pressed

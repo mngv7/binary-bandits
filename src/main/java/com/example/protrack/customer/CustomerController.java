@@ -11,7 +11,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -44,7 +47,7 @@ public class CustomerController implements Observer {
     @FXML
     private TableColumn<Customer, String> statusColumn;
 
-    private ObservableList<Customer> customers = FXCollections.observableArrayList();;
+    private final ObservableList<Customer> customers = FXCollections.observableArrayList();
 
     private CustomersTableSubject subject;
 

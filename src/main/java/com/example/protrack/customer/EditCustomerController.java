@@ -207,7 +207,7 @@ public class EditCustomerController {
 
     @FXML
     public void closePopup() {
-        if (editButton.getText().equals("Cancel")){
+        if (editButton.getText().equals("Cancel")) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initStyle(StageStyle.UNDECORATED);
             alert.setHeaderText("Close Customer View");

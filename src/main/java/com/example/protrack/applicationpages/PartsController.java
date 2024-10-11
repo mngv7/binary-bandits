@@ -1,11 +1,11 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.observers.Observer;
+import com.example.protrack.observers.PartsTableSubject;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
-import com.example.protrack.observers.Observer;
-import com.example.protrack.observers.PartsTableSubject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,29 +27,24 @@ import java.util.Objects;
 
 public class PartsController implements Observer {
 
+    private static final String TITLE = "Add Parts";
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
     @FXML
     public Button addPartsButton;
-
     @FXML
     private TableView<Parts> partsTable;
-
     @FXML
     private TableColumn<Parts, Integer> colPartsId;
-
     @FXML
     private TableColumn<Parts, String> colName;
-
     @FXML
     private TableColumn<Parts, String> colDescription;
-
     @FXML
     private TableColumn<Parts, Integer> colSupplierId;
-
     @FXML
     private TableColumn<Parts, Double> colCost;
-
     private ObservableList<Parts> parts;
-
     private PartsTableSubject subject;
 
     /**
@@ -97,10 +92,6 @@ public class PartsController implements Observer {
         parts.clear();
         parts.setAll(subject.getData());
     }
-
-    private static final String TITLE = "Add Parts";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
 
     /**
      * Create pop-up when "Add Parts" is pressed

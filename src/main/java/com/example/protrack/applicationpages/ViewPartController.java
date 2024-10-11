@@ -1,7 +1,6 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.warehouseutil.MockWorkstation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,34 +8,25 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.example.protrack.applicationpages.WarehousePastRequests;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-//import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class ViewPartController {
+    public Button closePopupButton;
+//    private List<PartRequests> partRequests;
     @FXML
     private TableView<WarehousePastRequests> PartRequestsTable;
-//    private List<PartRequests> partRequests;
-
     @FXML
     private TableColumn<WarehousePastRequests, Integer> colPartRequestsPartID;
-
     @FXML
     private TableColumn<WarehousePastRequests, String> colPartRequestsPartName;
-
     @FXML
     private TableColumn<WarehousePastRequests, Integer> colPartRequestsPartQuantity;
 
-    private ObservableList<WarehousePastRequests> PartRequestsList;
-
 //    private WarehouseController parentWarehouse;
-
-    public Button closePopupButton;
+    private ObservableList<WarehousePastRequests> PartRequestsList;
 //    private ViewPartController parentViewPart;
 
     //    public void setParentWarehouseController (WarehouseController warehouse){
@@ -46,9 +36,7 @@ public class ViewPartController {
 //        this.parentViewPart = WarehousePastRequests;
 //    }
 
-
     public void initialize() {
-
 
 
         // Set up the TableView columns with the corresponding property values
@@ -65,7 +53,6 @@ public class ViewPartController {
         // Load and display the initial list of work orders
 //        refreshTable();
     }
-
 
 
     public void refreshTable() {

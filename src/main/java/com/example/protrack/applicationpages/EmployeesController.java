@@ -1,11 +1,11 @@
 package com.example.protrack.applicationpages;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-
 import com.example.protrack.Main;
 import com.example.protrack.employees.SelectedEmployeeSingleton;
+import com.example.protrack.users.AbstractUser;
+import com.example.protrack.users.UsersDAO;
+import com.example.protrack.utility.LoggedInUserSingleton;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,30 +13,31 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import com.example.protrack.utility.LoggedInUserSingleton;
-import com.example.protrack.users.AbstractUser;
-import com.example.protrack.users.UsersDAO;
-import javafx.fxml.FXML;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+
 public class EmployeesController {
 
+    // Constants for the popup window
+    private static final String TITLE = "Create User";
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 600;
     @FXML
     public VBox employeeNames; // VBox to display the list of employee names and titles
-
     @FXML
     public Button newUserButton; // Button to create a new user
-
     @FXML
     public VBox employeeIcons;
-
     @FXML
     public GridPane employeesGridPane;
-
     @FXML
     public VBox iconAndNameGroup;
+    private MainController mainController;  // Store the MainController instance
 
     // Initializes the controller and sets up UI components
     public void initialize() {
@@ -82,7 +83,7 @@ public class EmployeesController {
             Label spacing = new Label(" "); // Spacer to separate labels
 
             // Create initials label for the icon
-            String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0,1);
+            String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0, 1);
             Label initialsIcon = new Label(initials);
             initialsIcon.getStyleClass().add("initials-icon");
 
@@ -102,9 +103,6 @@ public class EmployeesController {
         }
     }
 
-
-    private MainController mainController;  // Store the MainController instance
-
     // Setter for MainController
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -122,11 +120,6 @@ public class EmployeesController {
         SelectedEmployeeSingleton.getInstance().setEmployeeLastName(lastName);
         loadEmployeeProfile();
     }
-
-    // Constants for the popup window
-    private static final String TITLE = "Create User";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 600;
 
     // Opens a popup window to create a new user
     public void openCreateNewUserPopup() {

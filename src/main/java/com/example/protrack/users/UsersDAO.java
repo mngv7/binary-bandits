@@ -319,7 +319,6 @@ public class UsersDAO implements IUsersDAO {
     }
 
 
-
     @Override
     public void newUser(AbstractUser user) {
         try {
@@ -350,25 +349,25 @@ public class UsersDAO implements IUsersDAO {
         }
     }
 
-@Override
-public Integer getMaxEmployeeId() throws SQLException {
-    // Query to get the maximum employee ID from the 'users' table
-    String query = "SELECT MAX(employeeID) AS maxId FROM users";
+    @Override
+    public Integer getMaxEmployeeId() throws SQLException {
+        // Query to get the maximum employee ID from the 'users' table
+        String query = "SELECT MAX(employeeID) AS maxId FROM users";
 
-    try (PreparedStatement getMaxId = connection.prepareStatement(query);
-         ResultSet rs = getMaxId.executeQuery()) {
-        // Check if a result is returned and get the maximum employee ID
-        if (rs.next()) {
-            return rs.getInt("maxId");
-        } else {
-            // Return -1 if no results are found
-            return -1;
+        try (PreparedStatement getMaxId = connection.prepareStatement(query);
+             ResultSet rs = getMaxId.executeQuery()) {
+            // Check if a result is returned and get the maximum employee ID
+            if (rs.next()) {
+                return rs.getInt("maxId");
+            } else {
+                // Return -1 if no results are found
+                return -1;
+            }
+        } catch (SQLException e) {
+            // Wrap and rethrow the SQLException as a RuntimeException
+            throw new RuntimeException(e);
         }
-    } catch (SQLException e) {
-        // Wrap and rethrow the SQLException as a RuntimeException
-        throw new RuntimeException(e);
     }
-}
 
     @Override
     public boolean isTableEmpty() {

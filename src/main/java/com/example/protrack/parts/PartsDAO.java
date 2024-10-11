@@ -44,6 +44,7 @@ public class PartsDAO {
 
     /**
      * Adds a new part to the 'parts' table
+     *
      * @param parts the part to be added to the table
      */
     public void newPart(Parts parts) {
@@ -70,6 +71,7 @@ public class PartsDAO {
 
     /**
      * Retrieves all parts from the 'parts' table
+     *
      * @return a list of all parts in the table
      */
     public List<Parts> getAllParts() {
@@ -132,6 +134,7 @@ public class PartsDAO {
 
     /**
      * Checks if the 'parts' table is empty
+     *
      * @return true if the table is empty, false otherwise
      */
     public boolean isTableEmpty() {

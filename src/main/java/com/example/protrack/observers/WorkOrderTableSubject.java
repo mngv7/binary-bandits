@@ -15,8 +15,8 @@ import java.util.List;
 
 public class WorkOrderTableSubject implements Subject<WorkOrder> {
 
-    private List<Observer> observers = new ArrayList<>(); // To hold multiple observers
-    private ObservableList<WorkOrder> workOrders = FXCollections.observableArrayList();
+    private final List<Observer> observers = new ArrayList<>(); // To hold multiple observers
+    private final ObservableList<WorkOrder> workOrders = FXCollections.observableArrayList();
 
     @Override
     public void registerObserver(Observer observer) {

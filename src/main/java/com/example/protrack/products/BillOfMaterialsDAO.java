@@ -101,6 +101,7 @@ public class BillOfMaterialsDAO {
 
     /**
      * Getter that gets all products of table
+     *
      * @return all products in product table
      */
     public boolean isTableEmpty() {

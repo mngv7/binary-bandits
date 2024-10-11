@@ -2,7 +2,6 @@ package com.example.protrack.supplier;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -62,7 +61,8 @@ public class EditSupplierController {
     private Supplier currentSupplier;
 
     @FXML
-    private void initialize() { }
+    private void initialize() {
+    }
 
     @FXML
     private void toggleEdit() {
