@@ -23,7 +23,7 @@
                     GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="1" styleClass="close-button"/>
         </GridPane>
     </top>
-
+<!--    body-->
         <center>
             <VBox spacing="20">
                 <TableView fx:id="PartRequestsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
