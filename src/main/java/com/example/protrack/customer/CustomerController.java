@@ -47,7 +47,7 @@ public class CustomerController implements Observer {
     @FXML
     private TableColumn<Customer, String> statusColumn;
 
-    private final ObservableList<Customer> customers = FXCollections.observableArrayList();
+    private ObservableList<Customer> customers;
 
     private CustomersTableSubject subject;
 
@@ -56,10 +56,16 @@ public class CustomerController implements Observer {
         subject = new CustomersTableSubject();
         subject.registerObserver(this);
 
-        setupTableColumns();
+        customers = FXCollections.observableArrayList();
 
-        subject.syncDataFromDB();
-        update();
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        billingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("billingAddress"));
+        shippingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         customersTableView.setRowFactory(tv -> {
             TableRow<Customer> row = new TableRow<>();
@@ -72,6 +78,9 @@ public class CustomerController implements Observer {
             return row;
         });
 
+        subject.syncDataFromDB();
+        subject.notifyObservers();
+
         Platform.runLater(() -> {
             Window window = addCustomerButton.getScene().getWindow();
             if (window instanceof Stage stage) {
@@ -82,20 +91,10 @@ public class CustomerController implements Observer {
         });
     }
 
-    private void setupTableColumns() {
-        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        billingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("billingAddress"));
-        shippingAddressColumn.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-    }
-
     public void update() {
         customers.clear();
         customers.setAll(subject.getData());
+        customersTableView.setItems(customers);
     }
 
     /**

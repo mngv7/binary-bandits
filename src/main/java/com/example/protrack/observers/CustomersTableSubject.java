@@ -36,6 +36,7 @@ public class CustomersTableSubject implements Subject<Customer> {
 
     public void syncDataFromDB() {
         List<Customer> dbCustomers = new CustomerDAOImplementation().getAllCustomers();
+        System.out.println(dbCustomers);
 
         // Check if there are changes
         if (!new HashSet<>(customers).containsAll(dbCustomers) || !new HashSet<>(dbCustomers).containsAll(customers)) { // Check for content changes

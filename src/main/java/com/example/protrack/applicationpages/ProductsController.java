@@ -64,7 +64,9 @@ public class ProductsController implements Observer {
     private TableColumn<Product, java.sql.Date> colDateCreated;
     @FXML
     private TableColumn<Product, Double> colPrice;
+
     private ObservableList<Product> products;
+
     private ProductsTableSubject subject;
 
     /**
@@ -87,13 +89,12 @@ public class ProductsController implements Observer {
 
         products = FXCollections.observableArrayList();
         productTable.setItems(products);
-        subject.notifyObservers();
 
         productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // refresh product table
         subject.syncDataFromDB();
-        update();
+        subject.notifyObservers();
 
         Platform.runLater(() -> {
             Window window = addProductButton.getScene().getWindow();
