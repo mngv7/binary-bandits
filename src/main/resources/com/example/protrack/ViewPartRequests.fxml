@@ -24,19 +24,20 @@
         </GridPane>
     </top>
 
-    <center>
-        <VBox spacing="20">
-            <TableView fx:id="PartRequestsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                </columnResizePolicy>
+        <center>
+            <VBox spacing="20">
+                <TableView fx:id="PartRequestsTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="parts-table" VBox.vgrow="ALWAYS">
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
 
-                <columns>
-                    <TableColumn fx:id="colPartRequestsPartID" text="Part ID" styleClass="work-orders-table-cell" maxWidth="150"/>
-                    <TableColumn fx:id="colPartRequestsPartName" text="Part Name" styleClass="work-orders-table-cell"/>
-                    <TableColumn fx:id="colPartRequestsPartQuantity" text="Quantity" styleClass="work-orders-table-cell" maxWidth="100"/>
-                </columns>
-            </TableView>
-        </VBox>
-    </center>
+                    <columns>
+                        <TableColumn fx:id="colPartRequestsPartID" text="Part ID" styleClass="work-orders-table-cell" maxWidth="150"/>
+                        <TableColumn fx:id="colPartRequestsPartName" text="Part Name" styleClass="work-orders-table-cell"/>
+                        <TableColumn fx:id="colPartRequestsPartQuantity" text="Quantity" styleClass="work-orders-table-cell" maxWidth="100"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </center>
+
 </BorderPane>

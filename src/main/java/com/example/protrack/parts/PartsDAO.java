@@ -120,6 +120,27 @@ public class PartsDAO {
         return part;
     }
 
+    public String getPartNameById(int partId) {
+        String partName = null;
+        String query = "SELECT name FROM parts WHERE partsId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, partId); // Set the partId in the query
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) { // Check if there is a result
+                partName = resultSet.getString("name"); // Get the part name from the result set
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        return partName; // Return the part name or null if no part was found
+    }
+
+
     /**
      * Checks if the 'parts' table is empty
      * @return true if the table is empty, false otherwise

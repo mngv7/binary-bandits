@@ -1,5 +1,6 @@
 package com.example.protrack.requests;
 
+import com.example.protrack.applicationpages.WarehousePastRequests;
 import com.example.protrack.products.Product;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.utility.DatabaseConnection;
@@ -107,6 +108,36 @@ public class RequestsDAO {
         // return list of requests in table
         return requests;
     }
+
+
+    /**
+     * Getter that gets PartRequests of table
+     * @return PartRequests in requests table
+     */
+    public List<WarehousePastRequests> getPartRequests() {
+        List<WarehousePastRequests> partRequests = new ArrayList<>();
+
+        String query = "SELECT r.partId, p.name AS partName, r.quantity "
+                + "FROM requests r "
+                + "JOIN parts p ON r.partId = p.partsId";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int partId = rs.getInt("partId");
+                String partName = rs.getString("partName");
+                int quantity = rs.getInt("quantity");
+
+                WarehousePastRequests request = new WarehousePastRequests(partId, partName, quantity);
+                partRequests.add(request);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        return partRequests;
+    }
+
 
     /**
      * Checks if table is empty.

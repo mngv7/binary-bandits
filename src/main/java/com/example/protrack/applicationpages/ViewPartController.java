@@ -1,7 +1,6 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
-import com.example.protrack.warehouseutil.MockWorkstation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,9 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.example.protrack.applicationpages.WarehousePastRequests;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-//import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.parts.Parts;
+import com.example.protrack.parts.PartsDAO;
+import com.example.protrack.requests.RequestsDAO;
+import com.example.protrack.requests.Requests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,8 @@ public class ViewPartController {
     @FXML
     private TableView<WarehousePastRequests> PartRequestsTable;
 //    private List<PartRequests> partRequests;
+
+
 
     @FXML
     private TableColumn<WarehousePastRequests, Integer> colPartRequestsPartID;
@@ -37,6 +42,8 @@ public class ViewPartController {
 //    private WarehouseController parentWarehouse;
 
     public Button closePopupButton;
+
+
 //    private ViewPartController parentViewPart;
 
     //    public void setParentWarehouseController (WarehouseController warehouse){
@@ -52,35 +59,49 @@ public class ViewPartController {
 
 
         // Set up the TableView columns with the corresponding property values
-        colPartRequestsPartID.setCellValueFactory(new PropertyValueFactory<>("Part ID"));
-        colPartRequestsPartName.setCellValueFactory(new PropertyValueFactory<>("Part Name"));
-        colPartRequestsPartQuantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+        colPartRequestsPartID.setCellValueFactory(new PropertyValueFactory<>("partsId"));
+        colPartRequestsPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colPartRequestsPartQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
 
         //Initialize the ObservableList and set it to the TableView
         PartRequestsList = FXCollections.observableArrayList();
         PartRequestsTable.setItems(PartRequestsList);
         PartRequestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+        loadPartsRequestFormDB();
 
-        // Load and display the initial list of work orders
-//        refreshTable();
+    }
+
+    public void loadPartsRequestFormDB() {
+        PartRequestsList.clear();  // Clear the list to avoid duplicates
+
+        // Create DAO objects
+        RequestsDAO requestsDAO = new RequestsDAO();
+
+        // Use getPartRequests() method to fetch all part requests from both 'requests' and 'parts' tables
+        List<WarehousePastRequests> partRequests = requestsDAO.getPartRequests();
+
+        // Add all the part requests to the ObservableList
+        PartRequestsList.addAll(partRequests);
+
+        // Refresh the TableView to display updated data
+        PartRequestsTable.refresh();
     }
 
 
 
-    public void refreshTable() {
-        // Create DAOs for fetching data
-//        UsersDAO usersDAO = new UsersDAO();
-//        CustomerDAO customerDAO = new CustomerDAO();
-//        WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(
-//                usersDAO.getProductionUsers(),
-//                customerDAO.getAllCustomers()
-//        );
 
-        // Clear the current list and load the updated work orders
-//        PartRequestsList.clear();
-//        PartRequestsList.addAll(PartRequestsDAO());
-    }
+
+
+
+
+
+
+
+
+
+
 
     public void onClosePopupButton(ActionEvent actionEvent) {
         // Create a confirmation alert
