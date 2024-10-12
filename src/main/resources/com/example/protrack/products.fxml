@@ -25,7 +25,7 @@
                     <Button fx:id="addProductButton" text="Create Product" onAction="#openCreateProductPopup" styleClass="create-product-button-refresh-button"/>
                 </HBox>
             </HBox>
-            <TableView fx:id="productTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" VBox.vgrow="ALWAYS">
+            <TableView fx:id="productTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="600.0" styleClass="products-table" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colProductId" text="Product ID"/>
                     <TableColumn fx:id="colProductName" text="Product Name"/>
