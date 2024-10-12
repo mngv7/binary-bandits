@@ -34,6 +34,18 @@ public class MainController {
     @FXML
     private VBox inventoryVBox;
 
+    public void initialize() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/dashboard.fxml"));
+            Parent dashboardContent = loader.load();
+            // Clear the existing content of dynamicVBox and add the new content
+            dynamicVBox.getChildren().clear();
+            dynamicVBox.getChildren().add(dashboardContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void inventory() {
         if (!(inventoryVBox.isManaged())) {

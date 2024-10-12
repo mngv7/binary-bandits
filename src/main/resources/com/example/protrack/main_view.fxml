@@ -120,13 +120,6 @@
             <padding>
                 <Insets top="20"/>
             </padding>
-
-            <BorderPane prefHeight="400.0" prefWidth="600.0">
-                <top>
-                    <Label text="Dashboard" styleClass="title-label"/>
-                </top>
-            </BorderPane>
-
         </VBox>
 
     </center>

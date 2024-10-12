@@ -1,27 +1,40 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
+import com.example.protrack.customer.EditCustomerController;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.products.BillOfMaterialsDAO;
+import com.example.protrack.report.GenerateReportController;
 import com.example.protrack.report.OrgReport;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
+import com.example.protrack.workorder.WorkOrdersDAO;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -38,6 +51,9 @@ import java.util.*;
 public class DashboardController {
     @FXML
     public ComboBox<String> monthComboBox;
+
+    @FXML
+    public Label generateReport;
 
     @FXML
     public VBox partsAndQuantity;
@@ -60,6 +76,7 @@ public class DashboardController {
     OrgReport orgReport;
     List<Customer> customers;
     List<ProductionUser> productionUsers;
+
     @FXML
     private LineChart<String, Number> lineChart;
 
@@ -416,6 +433,36 @@ public class DashboardController {
         barChart.getData().add(series);
 
         return barChart;
+    }
+
+    public void generateReportPopup() {
+        try {
+            // Load the FXML file for the edit customer dialog
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/generate_report.fxml"));
+            Parent root = fxmlLoader.load();
+
+            GenerateReportController controller = fxmlLoader.getController();
+
+            WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
+            WorkOrderProductsDAOImplementation workOrderProductsDAO = new WorkOrderProductsDAOImplementation();
+
+            orgReport = new OrgReport(workOrdersDAO, workOrderProductsDAO);
+            controller.setOrgReport(orgReport);
+
+            Stage popupStage = new Stage();
+            popupStage.initStyle(StageStyle.UNDECORATED);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Generate Report");
+            popupStage.setScene(new Scene(root));
+
+            Bounds rootBounds = generateReport.getScene().getRoot().getLayoutBounds();
+            popupStage.setY(rootBounds.getCenterY() - 100);
+            popupStage.setX(rootBounds.getCenterX());
+
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
