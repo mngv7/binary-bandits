@@ -46,4 +46,6 @@ module com.example.protrack {
 
     exports com.example.protrack.observers;
     opens com.example.protrack.observers to javafx.fxml;
+    exports com.example.protrack.report;
+    opens com.example.protrack.report to javafx.fxml;
 }

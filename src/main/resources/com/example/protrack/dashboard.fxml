@@ -36,8 +36,9 @@
                 <Button text="Load Month" onAction="#loadMonthlyReport" styleClass="add-parts-button" />
                 <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
             </HBox>
+
             <HBox>
-                <VBox minHeight="300" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+                <VBox minHeight="350" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
                     <VBox>
                         <Label text="Inventory Usage" styleClass="subheading"/>
                     </VBox>
@@ -65,9 +66,13 @@
                 </VBox>
             </HBox>
 
-            <HBox fx:id="graphContainer" minHeight="300" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
+            <HBox HBox.hgrow="ALWAYS">
                 <Label text="Performance" styleClass="subheading"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="generateReport" text="Generate Organisation Report" onMouseClicked="#generateReportPopup" style="-fx-text-fill: blue; -fx-font-size: 14px; -fx-underline: true; cursor: hand; -fx-padding: 5 10 0 0;"/>
             </HBox>
+
+            <HBox fx:id="graphContainer" minHeight="350" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;"/>
         </VBox>
     </center>
 </BorderPane>
