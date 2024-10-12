@@ -30,10 +30,10 @@
                 <Button text="Generate" onAction="#handleGenerateReport"/>
             </HBox>
 
-            <Button text="Cancel" onAction="#handleCancel" alignment="CENTER"/>
-
-            <!-- Add the TextArea for displaying the report -->
+            <!-- TextArea for displaying the report -->
             <TextArea fx:id="reportOutput" prefHeight="150" prefWidth="350" wrapText="true" editable="false"/>
+
+            <Button text="Cancel" onAction="#handleCancel" alignment="CENTER"/>
         </VBox>
     </center>
 </BorderPane>
