@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * Controller class for adding a new customer.
+ * The {@code AddCustomerController} class for adding a new customer.
  * This class handles the UI and logic for saving customer information to the database.
  */
 public class AddCustomerController {

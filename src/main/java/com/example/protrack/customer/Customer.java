@@ -5,7 +5,7 @@ import com.example.protrack.workorder.WorkOrder;
 import java.util.ArrayList;
 
 /**
- * Represents a customer.
+ * The {@code Customer} class represents a customer.
  * The Customer class contains details about the customer.
  */
 public class Customer {

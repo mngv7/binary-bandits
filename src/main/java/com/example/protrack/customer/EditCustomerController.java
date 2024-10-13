@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
- * The EditCustomerController class manages the editing of customer details.
+ * The {@code EditCustomerController} class manages the editing of customer details.
  * It allows users to view and modify customer information
  */
 public class EditCustomerController {

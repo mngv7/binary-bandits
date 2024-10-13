@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * The CustomerController class manages the customer data display and interactions within the application.
+ * The {@code CustomerController} class manages the customer data display and interactions within the application.
  * It implements the Observer pattern to update the customer data from the subject and to handle
  * customer-related actions of adding and editing customer information.
  */
