@@ -5,6 +5,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * The EditCustomerController class manages the editing of customer details.
+ * It allows users to view and modify customer information
+ */
 public class EditCustomerController {
 
     @FXML
@@ -42,6 +46,7 @@ public class EditCustomerController {
     private Label shippingAddressLabel;
     @FXML
     private TextField shippingAddressField;
+
     @FXML
     private Label statusLabel;
     @FXML
@@ -61,6 +66,10 @@ public class EditCustomerController {
     private Customer customer;
     private CustomerDAOImplementation customerDAOImplementation;
 
+    /**
+     * Initializes the controller and hides editable fields.
+     * Also sets the labels with the customer's data.
+     */
     public void initialize() {
         // Hide editable fields initially
         firstNameField.setVisible(false);
@@ -78,6 +87,9 @@ public class EditCustomerController {
         }
     }
 
+    /**
+     * Sets the label fields with the customer's information.
+     */
     private void populateLabels() {
         customerIdLabel.setText(String.valueOf(customer.getCustomerId()));
         firstNameLabel.setText(customer.getFirstName());
@@ -89,10 +101,14 @@ public class EditCustomerController {
         statusLabel.setText(customer.getStatus());
     }
 
+    /**
+     * Resets editable fields to their original values and switches back to view mode.
+     */
     private void resetFieldsToOriginal() {
         editButton.setText("Edit");
         saveButton.setVisible(false);
 
+        // Hide editable fields
         firstNameField.setVisible(false);
         lastNameField.setVisible(false);
         emailField.setVisible(false);
@@ -105,7 +121,11 @@ public class EditCustomerController {
         populateLabels();
     }
 
-    // This method will be called from another controller
+    /**
+     * Sets the customer to be edited and populates the view with customer fields.
+     *
+     * @param customer the customer object to be edited
+     */
     public void setCustomer(Customer customer) {
         this.customer = customer;
 
@@ -113,6 +133,10 @@ public class EditCustomerController {
         populateLabels();
     }
 
+    /**
+     * Toggles the edit mode for the customer details.
+     * In edit mode, fields become editable and the user can save or cancel changes.
+     */
     @FXML
     private void toggleEdit() {
         edit = !edit;
@@ -146,6 +170,10 @@ public class EditCustomerController {
         }
     }
 
+    /**
+     * Saves the edited customer details to the database.
+     * Validates input before updating the customer information.
+     */
     public void saveCustomer() {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -155,12 +183,13 @@ public class EditCustomerController {
         String shippingAddress = shippingAddressField.getText();
         String status = statusCombo.getValue();
 
-
+        // Validate required fields
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || status.isEmpty()) {
             System.out.println("Validation failed");
             return;
         }
 
+        // Update customer details
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
         customer.setEmail(email);
@@ -169,12 +198,18 @@ public class EditCustomerController {
         customer.setShippingAddress(shippingAddress);
         customer.setStatus(status);
 
+        // Update customer in the database
         customerDAOImplementation = new CustomerDAOImplementation();
         customerDAOImplementation.updateCustomer(customer);
 
+        // Reset fields after saving
         resetFieldsToOriginal();
     }
 
+    /**
+     * Deletes the current customer after user confirmation.
+     * Shows a confirmation dialog before deletion.
+     */
     @FXML
     public void deleteCustomer() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -191,11 +226,12 @@ public class EditCustomerController {
         Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
 
         confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
-        cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
+        cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold;");
 
         // Load the CSS file
         alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
 
+        // Show confirmation dialog and delete customer if confirmed
         alert.showAndWait().ifPresent(response -> {
             if (response == confirmBtn) {
                 customerDAOImplementation = new CustomerDAOImplementation();
@@ -205,6 +241,10 @@ public class EditCustomerController {
         });
     }
 
+    /**
+     * Closes the popup window. If the edit button is active, prompts for confirmation
+     * to cancel editing before closing.
+     */
     @FXML
     public void closePopup() {
         if (editButton.getText().equals("Cancel")) {
@@ -222,19 +262,21 @@ public class EditCustomerController {
             Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
 
             confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
-            cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
+            cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold;");
 
             // Load the CSS file
             alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
 
-            // Show confirmation dialog and close if confirmed
-            alert.showAndWait().ifPresent(result -> {
-                if (result == confirmBtn) {
-                    ((Stage) closePopupButton.getScene().getWindow()).close();
+            alert.showAndWait().ifPresent(response -> {
+                if (response == confirmBtn) {
+                    // Close the popup window
+                    Stage stage = (Stage) closePopupButton.getScene().getWindow();
+                    stage.close();
                 }
             });
         } else {
-            Stage stage = (Stage) editButton.getScene().getWindow();
+            // Close the popup window directly
+            Stage stage = (Stage) closePopupButton.getScene().getWindow();
             stage.close();
         }
     }
