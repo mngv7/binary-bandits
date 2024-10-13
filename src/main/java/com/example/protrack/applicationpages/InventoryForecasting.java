@@ -43,9 +43,14 @@ public class InventoryForecasting {
 
             if (dailyAveragePartUsage.containsKey(partId)) {
                 int supplierId = part.getSupplierId();
+                reorderPoint = 0;
+
+                if (supplierDAO.getSupplier(supplierId) != null){
                 double leadTime = supplierDAO.getSupplier(supplierId).getLeadTime();
-                int dailyAverageUsage = dailyAveragePartUsage.get(partId);
-                reorderPoint = (int) Math.round((leadTime * dailyAverageUsage) + safetyStock);
+                    int dailyAverageUsage = dailyAveragePartUsage.get(partId);
+                    reorderPoint = (int) Math.round((leadTime * dailyAverageUsage) + safetyStock);
+                }
+
             } else {
                 reorderPoint = safetyStock;
             }
