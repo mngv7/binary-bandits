@@ -6,19 +6,28 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code ProductDAO} class provides methods for interacting with the products table in the database.
+ */
 public class ProductDAO {
-    private final Connection connection;
+    private final Connection connection; // Database connection
 
+    /**
+     * Initializes a new {@code ProductDAO} instance and establishes a connection to the database.
+     */
     public ProductDAO() {
         connection = DatabaseConnection.getInstance();
     }
 
+    /**
+     * Creates the products table in the database if it does not already exist.
+     */
     public void createTable() {
         try {
             // Create a statement object for sending SQL queries to the database
             Statement createTable = connection.createStatement();
 
-            // Execute the SQL query to create a table named 'products' if it does not already exist
+            // Execute the SQL query to create a table named 'products'
             createTable.execute(
                     "CREATE TABLE IF NOT EXISTS products (" +
                             "productId INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -34,24 +43,24 @@ public class ProductDAO {
     }
 
     /**
-     * Deletes product table
+     * Drops the products table from the database if it exists.
      */
     public void dropTable() {
         String query = "DROP TABLE IF EXISTS products";  // SQL statement to drop the products table
 
         try (Statement stmt = connection.createStatement()) {
-            stmt.execute(query);    // executes SQL deletion statement
+            stmt.execute(query);    // Executes SQL deletion statement
             System.out.println("Table 'products' dropped successfully.");
         } catch (SQLException ex) {
-            // Catch and print any SQL exceptions that may occur during table creation
+            // Catch and print any SQL exceptions that may occur during table dropping
             System.err.println("Error dropping table 'products': " + ex.getMessage());
         }
     }
 
     /**
-     * Adds new product to product table
+     * Inserts a new product into the products table.
      *
-     * @param product a product being added to the table
+     * @param product The product being added to the table.
      */
     public void newProduct(Product product) {
         try {
@@ -59,13 +68,13 @@ public class ProductDAO {
                     "INSERT INTO products (productId, productName, dateCreated, price) VALUES (?, ?, ?, ?)"
             );
 
-            // sets product values into statement
+            // Sets product values into the prepared statement
             insertProduct.setInt(1, product.getProductId());
             insertProduct.setString(2, product.getProductName());
             insertProduct.setDate(3, product.getDateCreated());
             insertProduct.setDouble(4, product.getPrice()); // Set price
 
-            // executes and inserts product into product table
+            // Executes and inserts product into the products table
             insertProduct.execute();
         } catch (SQLException ex) {
             // Catch and print any SQL exceptions that may occur during product insertion
@@ -74,9 +83,9 @@ public class ProductDAO {
     }
 
     /**
-     * Checks if table is empty.
+     * Checks if the products table is empty.
      *
-     * @return true if empty, else returns false.
+     * @return {@code true} if the table is empty, {@code false} otherwise.
      */
     public boolean isTableEmpty() {
         try {
@@ -93,9 +102,9 @@ public class ProductDAO {
     }
 
     /**
-     * Getter that gets all products of table
+     * Retrieves all products from the products table.
      *
-     * @return all products in product table
+     * @return A list of all products in the products table.
      */
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
@@ -109,7 +118,7 @@ public class ProductDAO {
                 int productId = rs.getInt("productId");
                 String productName = rs.getString("productName");
                 Date dateCreated = rs.getDate("dateCreated");
-                double price = rs.getDouble("price"); // Retrieve price directly from the product table
+                double price = rs.getDouble("price"); // Retrieve price directly from the products table
 
                 // Create Product object with price
                 Product product = new Product(productId, productName, dateCreated, price);
@@ -122,6 +131,12 @@ public class ProductDAO {
         return products;
     }
 
+    /**
+     * Calculates the total price of a product based on its parts and required amounts.
+     *
+     * @param productId The ID of the product to calculate the price for.
+     * @return The total calculated price of the product.
+     */
     public double calculateProductPrice(int productId) {
         double totalPrice = 0.0;
 
