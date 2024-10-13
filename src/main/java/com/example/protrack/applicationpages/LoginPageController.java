@@ -61,13 +61,13 @@ public class LoginPageController {
 
         // Disable login after 3 failed attempts
         if (loginAttempts >= 3) {
-            disableLogin();
+            disableLoginButton();
         }
     }
 
 
     @FXML
-    protected void disableLogin() {
+    protected void disableLoginButton() {
         loginButton.setDisable(true);
         loginErrorMessage.setText("Too many incorrect login attempts, please contact supervisor.");
     }
@@ -98,7 +98,7 @@ public class LoginPageController {
     }
 
 
-    private boolean isInputValid() {
+    private boolean isUsernamePasswordValid() {
         String fullName = fullNameTextField.getText();
         String password = passwordTextField.getText();
 
@@ -123,7 +123,7 @@ public class LoginPageController {
 
     private boolean checkLoginDetails(String fullName) throws SQLException {
         // Check if the input fields are valid
-        if (isInputValid()) {
+        if (isUsernamePasswordValid()) {
             UsersDAO usersDAO = new UsersDAO();
             Integer employeeId = usersDAO.getEmployeeIdByFullName(fullName); // Get employee ID based on full name
             String usersPassword = usersDAO.getUserById(employeeId).getPassword(); // Retrieve the stored password for comparison

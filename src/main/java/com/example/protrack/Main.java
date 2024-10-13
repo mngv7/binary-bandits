@@ -26,6 +26,7 @@ import com.example.protrack.warehouseutil.RealWorkstation;
 import com.example.protrack.warehouseutil.partIdWithQuantity;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
+import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -64,13 +65,13 @@ public class Main extends Application {
         PartsDAO partsDAO = new PartsDAO();
         partsDAO.createTable();
         if (partsDAO.isTableEmpty()) {
-            partsDAO.newPart(new Parts(50, "TestPart", "Testing", 50, 12.50));
-            partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", 50, 6.69));
-            partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
-            partsDAO.newPart(new Parts(2, "Wooden Panel", "Panels from Tom's workshop", 52, 3.75));
-            partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 51, 2.10));
-            partsDAO.newPart(new Parts(4, "Australium Cables", "Cables from Mann.co", 53, 52.1));
-            partsDAO.newPart(new Parts(5, "Glass Panel", "Panels from Bob Industry", 51, 20.50));
+            partsDAO.newPart(new Parts(50, "TestPart", "Testing", 1, 12.50));
+            partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", 2, 6.69));
+            partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 3, 5.50));
+            partsDAO.newPart(new Parts(2, "Wooden Panel", "Panels from Tom's workshop", 1, 3.75));
+            partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 2, 2.10));
+            partsDAO.newPart(new Parts(4, "Australium Cables", "Cables from Mann.co", 3, 52.1));
+            partsDAO.newPart(new Parts(5, "Glass Panel", "Panels from Bob Industry", 1, 20.50));
         }
 
         BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
@@ -164,12 +165,6 @@ public class Main extends Application {
         }
         List<Customer> customers = customerDAOImplementation.getAllCustomers();
 
-        WorkOrdersDAOImplementation wdao = new WorkOrdersDAOImplementation(productionUsers, customers);
-        wdao.createTable();
-        if (wdao.isTableEmpty()) {
-            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), LocalDateTime.now(), "shipAdd", "Pending", 40.87));
-        }
-
         LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
         locationsAndContentsDAO.createTables();
 
@@ -245,6 +240,76 @@ public class Main extends Application {
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
         workOrderProductsDAOImplementation.createTable();
 
+        if (workOrderProductsDAOImplementation.isTableEmpty()) {
+            // Products for Work Order ID 1
+            WorkOrderProduct product1 = new WorkOrderProduct(1, 1, 1, "Mining Collision Detector", 30, 73.75);
+            WorkOrderProduct product2 = new WorkOrderProduct(2, 1, 2, "Displacement Monitoring Device", 32, 69.2);
+            WorkOrderProduct product3 = new WorkOrderProduct(3, 1, 3, "Power Supply", 15, 30.9);
+
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product1);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product2);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product3);
+
+            // Products for Work Order ID 2
+            WorkOrderProduct product4 = new WorkOrderProduct(1, 2, 1, "Mining Collision Detector", 50, 73.75);
+            WorkOrderProduct product5 = new WorkOrderProduct(2, 2, 2, "Displacement Monitoring Device", 12, 69.2);
+            WorkOrderProduct product6 = new WorkOrderProduct(3, 2, 3, "Power Supply", 70, 30.9);
+
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product4);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product5);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product6);
+
+            // Products for Work Order ID 3
+            WorkOrderProduct product7 = new WorkOrderProduct(1, 3, 1, "Mining Collision Detector", 75, 73.75);
+            WorkOrderProduct product8 = new WorkOrderProduct(2, 3, 2, "Displacement Monitoring Device", 20, 69.2);
+            WorkOrderProduct product9 = new WorkOrderProduct(3, 3, 3, "Power Supply", 100, 30.9);
+
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product7);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product8);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product9);
+
+            // Products for Work Order ID 4 (May)
+            WorkOrderProduct product10 = new WorkOrderProduct(1, 4, 1, "Mining Collision Detector", 40, 73.75);
+            WorkOrderProduct product11 = new WorkOrderProduct(2, 4, 2, "Displacement Monitoring Device", 25, 69.2);
+            WorkOrderProduct product12 = new WorkOrderProduct(3, 4, 3, "Power Supply", 50, 30.9);
+
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product10);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product11);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product12);
+
+            // Products for Work Order ID 5 (June)
+            WorkOrderProduct product13 = new WorkOrderProduct(1, 5, 1, "Mining Collision Detector", 55, 73.75);
+            WorkOrderProduct product14 = new WorkOrderProduct(2, 5, 2, "Displacement Monitoring Device", 35, 69.2);
+            WorkOrderProduct product15 = new WorkOrderProduct(3, 5, 3, "Power Supply", 20, 30.9);
+
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product13);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product14);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product15);
+
+            // Products for Work Order ID 6 (July)
+            WorkOrderProduct product16 = new WorkOrderProduct(1, 6, 1, "Mining Collision Detector", 90, 73.75);
+            WorkOrderProduct product17 = new WorkOrderProduct(2, 6, 2, "Displacement Monitoring Device", 10, 69.2);
+            WorkOrderProduct product18 = new WorkOrderProduct(3, 6, 3, "Power Supply", 30, 30.9);
+
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product16);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product17);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product18);
+        }
+
+        WorkOrdersDAOImplementation wdao = new WorkOrdersDAOImplementation(productionUsers, customers);
+        wdao.createTable();
+        if (wdao.isTableEmpty()) {
+            wdao.createWorkOrder(new WorkOrder(1, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.of(2024, 9, 15, 10, 0), LocalDateTime.of(2024, 9, 15, 10, 0).plusDays(7), "shipAdd", "Pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(2, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.of(2024, 8, 15, 10, 0), LocalDateTime.of(2024, 8, 15, 10, 0).plusDays(7), "shipAdd", "Pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(3, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.of(2024, 10, 15, 10, 0), LocalDateTime.of(2024, 10, 15, 10, 0).plusDays(7), "shipAdd", "Pending", 40.87));
+
+            // Create Work Orders for May, June, and July
+            wdao.createWorkOrder(new WorkOrder(4, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.of(2024, 5, 15, 10, 0), LocalDateTime.of(2024, 5, 15, 10, 0).plusDays(7), "shipAdd", "Pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(5, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.of(2024, 6, 15, 10, 0), LocalDateTime.of(2024, 6, 15, 10, 0).plusDays(7), "shipAdd", "Pending", 40.87));
+            wdao.createWorkOrder(new WorkOrder(6, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.of(2024, 7, 15, 10, 0), LocalDateTime.of(2024, 7, 15, 10, 0).plusDays(7), "shipAdd", "Pending", 40.87));
+        }
+
+
         ProductBuildDAO productBuildDAO = new ProductBuildDAO();
         productBuildDAO.createTable();
 
@@ -273,13 +338,9 @@ public class Main extends Application {
 
         if (supplierDAOImplementation.getAllSuppliers().isEmpty()) {
             supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
+            supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier2", "supplier2@email.com", "6123456789", "billingAddress2", "shippingAddress2", 10.0));
+            supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier3", "supplier3@email.com", "6145678901", "billingAddress3", "shippingAddress3", 15.4));
         }
-
-
-        //productsController.initialize();
-        //productsController.refreshTable();
-
-
         launch();
     }
 
