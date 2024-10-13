@@ -24,6 +24,10 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Controller for managing the Supplier table view and handling
+ * interactions related to suppliers, including adding and editing suppliers.
+ */
 public class SupplierController implements Observer {
 
     @FXML
@@ -58,7 +62,10 @@ public class SupplierController implements Observer {
     // Reference to the subject
     private SuppliersTableSubject subject;
 
-    // Initialize the controller
+    /**
+     * Initializes the SupplierController, setting up the TableView,
+     * registering as an observer, and loading initial supplier data.
+     */
     @FXML
     private void initialize() {
         subject = new SuppliersTableSubject();
@@ -106,17 +113,21 @@ public class SupplierController implements Observer {
         });
     }
 
-    // Refresh the suppliers table with data from the database
+    /**
+     * Refreshes the suppliers table with data from the database.
+     */
     public void update() {
         suppliers.clear();
         suppliers.setAll(subject.getData());
     }
 
-    // Opens add supplier popup
+    /**
+     * Opens a popup for adding a new supplier.
+     */
     @FXML
     private void addSupplierPopup() {
         try {
-            // Load the FXML file for the add supplier dialog
+            // Load the FXML file for the add supplier popup
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/supplier/add_supplier.fxml"));
             Parent addSupplierRoot = fxmlLoader.load();
 
@@ -148,10 +159,14 @@ public class SupplierController implements Observer {
         }
     }
 
-    // Open the edit supplier popup
+    /**
+     * Opens a popup for editing the details of a selected supplier.
+     *
+     * @param supplier the Supplier object to be edited
+     */
     public void editSupplierPopup(Supplier supplier) {
         try {
-            // Load the FXML file for the edit supplier dialog
+            // Load the FXML file for the edit supplier popup
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/supplier/edit_supplier.fxml"));
             Parent editSupplierRoot = fxmlLoader.load();
 
