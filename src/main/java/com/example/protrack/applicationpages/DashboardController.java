@@ -72,13 +72,19 @@ public class DashboardController {
 
     @FXML
     public HBox graphContainer; // HBox to hold the graphs
-    HashMap<Integer, Integer> sumOfParts = new HashMap<>();
+
+    // <PartID, Usage>
+    private final HashMap<Integer, Integer> sumOfParts = new HashMap<>();
     OrgReport orgReport;
     List<Customer> customers;
     List<ProductionUser> productionUsers;
 
     @FXML
     private LineChart<String, Number> lineChart;
+
+    public HashMap<Integer, Integer> getSumOfParts() {
+        return sumOfParts;
+    }
 
     public static void createPDF() {
         String userHome = System.getProperty("user.home");
