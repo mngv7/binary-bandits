@@ -4,6 +4,7 @@ import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.supplier.SupplierDAOImplementation;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,8 +14,11 @@ public class InventoryForecasting {
 
     private void calculateAverageDailyUsage()
     {
+        int currentMonth = LocalDate.now().getMonthValue();
+
         DashboardController dashboardController = new DashboardController();
 
+        dashboardController.populateHashMap(currentMonth);
         HashMap<Integer, Integer> sumOfParts = dashboardController.getSumOfParts();
 
         for (HashMap.Entry<Integer, Integer> entry : sumOfParts.entrySet()) {
@@ -25,7 +29,7 @@ public class InventoryForecasting {
         }
     }
 
-    private HashMap<Integer, Integer> reorderPoints = new HashMap<>();
+    private final HashMap<Integer, Integer> reorderPoints = new HashMap<>();
 
     private void calculateReorderPoint() {
         PartsDAO partsDAO = new PartsDAO();
@@ -34,13 +38,22 @@ public class InventoryForecasting {
 
         for (Parts part : parts) {
             int partId = part.getPartsId();
-            int supplierId = part.getSupplierId();
-            double leadTime = supplierDAO.getSupplier(supplierId).getLeadTime();
-            int dailyAverageUsage = dailyAveragePartUsage.get(partId);
             int safetyStock = 500;
-            int reorderPoint = (int) Math.round((leadTime * dailyAverageUsage) + safetyStock);
+            int reorderPoint;
+
+            if (dailyAveragePartUsage.containsKey(partId)) {
+                int supplierId = part.getSupplierId();
+                double leadTime = supplierDAO.getSupplier(supplierId).getLeadTime();
+                int dailyAverageUsage = dailyAveragePartUsage.get(partId);
+                reorderPoint = (int) Math.round((leadTime * dailyAverageUsage) + safetyStock);
+            } else {
+                reorderPoint = safetyStock;
+            }
+
             reorderPoints.put(partId, reorderPoint);
         }
+
+
     }
 
     public HashMap<Integer, Integer> getReorderPoints() {

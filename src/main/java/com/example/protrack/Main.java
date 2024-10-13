@@ -26,6 +26,7 @@ import com.example.protrack.warehouseutil.RealWorkstation;
 import com.example.protrack.warehouseutil.partIdWithQuantity;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
+import com.example.protrack.workorderproducts.WorkOrderProduct;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -64,13 +65,13 @@ public class Main extends Application {
         PartsDAO partsDAO = new PartsDAO();
         partsDAO.createTable();
         if (partsDAO.isTableEmpty()) {
-            partsDAO.newPart(new Parts(50, "TestPart", "Testing", 50, 12.50));
-            partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", 50, 6.69));
-            partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 50, 5.50));
-            partsDAO.newPart(new Parts(2, "Wooden Panel", "Panels from Tom's workshop", 52, 3.75));
-            partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 51, 2.10));
-            partsDAO.newPart(new Parts(4, "Australium Cables", "Cables from Mann.co", 53, 52.1));
-            partsDAO.newPart(new Parts(5, "Glass Panel", "Panels from Bob Industry", 51, 20.50));
+            partsDAO.newPart(new Parts(50, "TestPart", "Testing", 1, 12.50));
+            partsDAO.newPart(new Parts(51, "TestPart2", "Testing2", 2, 6.69));
+            partsDAO.newPart(new Parts(1, "AA batteries", "Batteries from Japan", 3, 5.50));
+            partsDAO.newPart(new Parts(2, "Wooden Panel", "Panels from Tom's workshop", 1, 3.75));
+            partsDAO.newPart(new Parts(3, "Stainless Steel", "Stainless Steel from Bob Industry", 2, 2.10));
+            partsDAO.newPart(new Parts(4, "Australium Cables", "Cables from Mann.co", 3, 52.1));
+            partsDAO.newPart(new Parts(5, "Glass Panel", "Panels from Bob Industry", 1, 20.50));
         }
 
         BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
@@ -164,12 +165,6 @@ public class Main extends Application {
         }
         List<Customer> customers = customerDAOImplementation.getAllCustomers();
 
-        WorkOrdersDAOImplementation wdao = new WorkOrdersDAOImplementation(productionUsers, customers);
-        wdao.createTable();
-        if (wdao.isTableEmpty()) {
-            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), LocalDateTime.now(), "shipAdd", "Pending", 40.87));
-        }
-
         LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
         locationsAndContentsDAO.createTables();
 
@@ -245,6 +240,23 @@ public class Main extends Application {
         WorkOrderProductsDAOImplementation workOrderProductsDAOImplementation = new WorkOrderProductsDAOImplementation();
         workOrderProductsDAOImplementation.createTable();
 
+        if (workOrderProductsDAOImplementation.isTableEmpty()) {
+            WorkOrderProduct product1 = new WorkOrderProduct(1, 1, 101, "Product A", 5, 20.0); // WorkOrder ID 1, Product ID 101, quantity 5, price $20.0
+            WorkOrderProduct product2 = new WorkOrderProduct(2, 1, 102, "Product B", 3, 15.0); // WorkOrder ID 1, Product ID 102, quantity 3, price $15.0
+            WorkOrderProduct product3 = new WorkOrderProduct(3, 2, 103, "Product C", 7, 10.0); // WorkOrder ID 2, Product ID 103, quantity 7, price $10.0
+
+            // Adding the dummy products to the database
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product1);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product2);
+            workOrderProductsDAOImplementation.addWorkOrderProduct(product3);
+        }
+
+        WorkOrdersDAOImplementation wdao = new WorkOrdersDAOImplementation(productionUsers, customers);
+        wdao.createTable();
+        if (wdao.isTableEmpty()) {
+            wdao.createWorkOrder(new WorkOrder(100, productionUsers.getFirst(), customers.getFirst(), LocalDateTime.now(), LocalDateTime.now(), "shipAdd", "Pending", 40.87));
+        }
+
         ProductBuildDAO productBuildDAO = new ProductBuildDAO();
         productBuildDAO.createTable();
 
@@ -273,13 +285,9 @@ public class Main extends Application {
 
         if (supplierDAOImplementation.getAllSuppliers().isEmpty()) {
             supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier1", "suppler1@email.com", "6130289348", "billAdd", "shipAdd", 4.7));
+            supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier2", "supplier2@email.com", "6123456789", "billingAddress2", "shippingAddress2", 10.0));
+            supplierDAOImplementation.addSupplier(new Supplier(0, "Supplier3", "supplier3@email.com", "6145678901", "billingAddress3", "shippingAddress3", 15.4));
         }
-
-
-        //productsController.initialize();
-        //productsController.refreshTable();
-
-
         launch();
     }
 

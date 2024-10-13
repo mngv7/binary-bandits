@@ -87,6 +87,7 @@ public class DashboardController {
 
     // <PartID, Usage>
     private final HashMap<Integer, Integer> sumOfParts = new HashMap<>();
+    HashMap<Integer, Integer> reorderPoints = new HashMap<>();
     OrgReport orgReport;
     List<Customer> customers;
     List<ProductionUser> productionUsers;
@@ -98,116 +99,64 @@ public class DashboardController {
         return sumOfParts;
     }
 
-    public static void createPDF() {
-        String userHome = System.getProperty("user.home");
-        String downloadsPath = userHome + "/Downloads/PartsForecast.pdf";
-
-        try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage();
-            document.addPage(page);
-
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Set the font and size for the heading
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
-                contentStream.beginText();
-                contentStream.newLineAtOffset(100, 750); // Position the text
-                contentStream.showText("Parts Forecast"); // Set the text to display
-                contentStream.endText();
-            }
-
-            // Save the document to the specified path
-            document.save(downloadsPath);
-            System.out.println("PDF created: " + downloadsPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void initialize() {
         CustomerDAOImplementation customerDAO = new CustomerDAOImplementation();
         customers = customerDAO.getAllCustomers();
 
         UsersDAO usersDAO = new UsersDAO();
         productionUsers = usersDAO.getProductionUsers();
+        InventoryForecasting inventoryForecasting = new InventoryForecasting();
 
         setLastThreeMonths();
         initializeHashMap();
         loadMonthlyReport();
         displayGraphs();
         updatePartUsageLineChart(sortMonthlyUsage(loadPartUsageStatistics()));
+        reorderPoints = inventoryForecasting.getReorderPoints();
+        populateReorderPointGrid();
+
     }
 
-    private HashMap<String, Integer> sortMonthlyUsage(HashMap<String, Integer> monthlyTotalUsage) {
-        // Create a list from the entry set of the HashMap
-        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(monthlyTotalUsage.entrySet());
+    public void populateReorderPointGrid() {
+        // Clear any existing children in the GridPane to avoid duplicate entries
+        reorderPointGrid.getChildren().clear();
 
-        Map<String, Integer> monthOrder = new HashMap<>();
-        monthOrder.put("January", 1);
-        monthOrder.put("February", 2);
-        monthOrder.put("March", 3);
-        monthOrder.put("April", 4);
-        monthOrder.put("May", 5);
-        monthOrder.put("June", 6);
-        monthOrder.put("July", 7);
-        monthOrder.put("August", 8);
-        monthOrder.put("September", 9);
-        monthOrder.put("October", 10);
-        monthOrder.put("November", 11);
-        monthOrder.put("December", 12);
+        // Add the header labels to the first row
+        Label partIdHeader = new Label("Part ID");
+        partIdHeader.getStyleClass().add("subheading2"); // Optional styling
+        reorderPointGrid.add(partIdHeader, 0, 0);
 
-        // Sort the entry list by month order
-        entryList.sort(Comparator.comparingInt(entry -> monthOrder.get(entry.getKey())));
+        Label reorderPointHeader = new Label("Reorder Point");
+        reorderPointHeader.getStyleClass().add("subheading2"); // Optional styling
+        reorderPointGrid.add(reorderPointHeader, 1, 0);
 
-        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> entry : entryList) {
-            sortedMap.put(entry.getKey(), entry.getValue());
+        // Initialize row index
+        int rowIndex = 1;
+
+        // Iterate through the reorderPoints HashMap and populate the grid
+        for (Map.Entry<Integer, Integer> entry : reorderPoints.entrySet()) {
+            int partId = entry.getKey();
+            int reorderPointValue = entry.getValue();
+
+            // Only populate if reorderPointValue is greater than 0
+            if (reorderPointValue > 0) {
+                // Create labels for Part ID and Reorder Point
+                Label partIdLabel = new Label(String.valueOf(partId));
+                Label reorderPointLabel = new Label(String.valueOf(reorderPointValue));
+
+                // Add labels to the grid (Part ID in column 0, Reorder Point in column 1)
+                reorderPointGrid.add(partIdLabel, 0, rowIndex);
+                reorderPointGrid.add(reorderPointLabel, 1, rowIndex);
+
+                // Move to the next row for the next entry
+                rowIndex++;
+            }
         }
 
-        return sortedMap;
+        // Request layout update to ensure the changes are reflected
+        reorderPointGrid.requestLayout();
     }
 
-    private HashMap<String, Integer> loadPartUsageStatistics() {
-        // Get the current month
-        YearMonth currentMonth = YearMonth.now();
-
-        // Create a map to store total part usage for each month
-        HashMap<String, Integer> monthlyTotalUsage = new HashMap<>();
-
-        // Loop through the last 6 months
-        for (int i = 0; i < 6; i++) {
-            YearMonth month = currentMonth.minusMonths(i);
-            String monthName = month.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-            int monthValue = month.getMonthValue();
-
-            // Reset the sumOfParts for each month
-            initializeHashMap();
-
-            populateHashMap(monthValue);
-
-            // Calculate the total usage for the current month
-            int totalUsageForMonth = sumOfParts.values().stream().mapToInt(Integer::intValue).sum();
-
-            // Store the total usage for the current month
-            monthlyTotalUsage.put(monthName, totalUsageForMonth);
-        }
-
-        return monthlyTotalUsage;
-    }
-
-    private void updatePartUsageLineChart(HashMap<String, Integer> monthlyTotalUsage) {
-        lineChart.getData().clear();
-
-        // Create a new series for the line chart
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-        // Populate the series with the monthly data
-        for (Map.Entry<String, Integer> entry : monthlyTotalUsage.entrySet()) {
-            series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
-        }
-
-        // Add the series to the line chart
-        lineChart.getData().add(series);
-    }
 
     private void setLastThreeMonths() {
         // Get the current month
@@ -256,7 +205,7 @@ public class DashboardController {
         }
     }
 
-    private void populateHashMap(Integer month) {
+    public void populateHashMap(Integer month) {
         List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
         List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
 
@@ -348,6 +297,35 @@ public class DashboardController {
 
         // Add charts to the graph container
         graphContainer.getChildren().addAll(forecastingChart, schedulePieChart, metricsBarChart);
+    }
+
+    private HashMap<String, Integer> sortMonthlyUsage(HashMap<String, Integer> monthlyTotalUsage) {
+        // Create a list from the entry set of the HashMap
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(monthlyTotalUsage.entrySet());
+
+        Map<String, Integer> monthOrder = new HashMap<>();
+        monthOrder.put("January", 1);
+        monthOrder.put("February", 2);
+        monthOrder.put("March", 3);
+        monthOrder.put("April", 4);
+        monthOrder.put("May", 5);
+        monthOrder.put("June", 6);
+        monthOrder.put("July", 7);
+        monthOrder.put("August", 8);
+        monthOrder.put("September", 9);
+        monthOrder.put("October", 10);
+        monthOrder.put("November", 11);
+        monthOrder.put("December", 12);
+
+        // Sort the entry list by month order
+        entryList.sort(Comparator.comparingInt(entry -> monthOrder.get(entry.getKey())));
+
+        LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
     }
 
     private ScatterChart<Number, Number> createWorkOrderForecastingChart() {
@@ -453,6 +431,49 @@ public class DashboardController {
         return barChart;
     }
 
+    private HashMap<String, Integer> loadPartUsageStatistics() {
+        // Get the current month
+        YearMonth currentMonth = YearMonth.now();
+
+        // Create a map to store total part usage for each month
+        HashMap<String, Integer> monthlyTotalUsage = new HashMap<>();
+
+        // Loop through the last 6 months
+        for (int i = 0; i < 6; i++) {
+            YearMonth month = currentMonth.minusMonths(i);
+            String monthName = month.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+            int monthValue = month.getMonthValue();
+
+            // Reset the sumOfParts for each month
+            initializeHashMap();
+
+            populateHashMap(monthValue);
+
+            // Calculate the total usage for the current month
+            int totalUsageForMonth = sumOfParts.values().stream().mapToInt(Integer::intValue).sum();
+
+            // Store the total usage for the current month
+            monthlyTotalUsage.put(monthName, totalUsageForMonth);
+        }
+
+        return monthlyTotalUsage;
+    }
+
+    private void updatePartUsageLineChart(HashMap<String, Integer> monthlyTotalUsage) {
+        lineChart.getData().clear();
+
+        // Create a new series for the line chart
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        // Populate the series with the monthly data
+        for (Map.Entry<String, Integer> entry : monthlyTotalUsage.entrySet()) {
+            series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+
+        // Add the series to the line chart
+        lineChart.getData().add(series);
+    }
+
     public void generateReportPopup() {
         try {
             // Load the FXML file for the edit customer dialog
@@ -482,5 +503,28 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+    public static void createPDF() {
+        String userHome = System.getProperty("user.home");
+        String downloadsPath = userHome + "/Downloads/PartsForecast.pdf";
 
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                // Set the font and size for the heading
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(100, 750); // Position the text
+                contentStream.showText("Parts Forecast"); // Set the text to display
+                contentStream.endText();
+            }
+
+            // Save the document to the specified path
+            document.save(downloadsPath);
+            System.out.println("PDF created: " + downloadsPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
