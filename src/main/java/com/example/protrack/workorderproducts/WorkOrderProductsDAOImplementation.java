@@ -7,21 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Interface to the database relevant to WorkOrder operations, providing abstraction
+ * Implementation of the WorkOrderProductsDAO interface, providing access to the database
+ * for operations related to work order products.
  */
 public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO {
 
     // Connection to the database
     private final Connection connection;
 
-    // Constructor initializes the JDBC connection using the singleton instance
+    /**
+     * Initializes the WorkOrderProductsDAOImplementation and establishes a
+     * connection to the database using the DatabaseConnection singleton instance.
+     */
     public WorkOrderProductsDAOImplementation() {
         connection = DatabaseConnection.getInstance();
     }
 
-    /**
-     * Creates the work_order_products table in the database with a composite key
-     */
+    @Override
     public void createTable() {
         String sqlCreateTable = """
                     CREATE TABLE IF NOT EXISTS work_order_products (
@@ -40,9 +42,7 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
         }
     }
 
-    /**
-     * Adds a product to a work order in the work_order_products table
-     */
+    @Override
     public boolean addWorkOrderProduct(WorkOrderProduct workOrderProduct) {
         String sqlAddWorkOrderProduct = "INSERT INTO work_order_products (work_order_id, product_id, quantity) VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAddWorkOrderProduct, Statement.RETURN_GENERATED_KEYS)) {
@@ -66,9 +66,7 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
         return false;
     }
 
-    /**
-     * Retrieves all products associated with the specified work order
-     */
+    @Override
     public List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId) {
         String sqlGetWorkOrderProducts =
                 """ 
@@ -107,6 +105,7 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
         return productsInWorkOrder;
     }
 
+    @Override
     public List<WorkOrderProduct> getAllWorkOrderProducts() {
         String sqlGetAllWorkOrderProducts =
                 """ 
@@ -144,9 +143,7 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
         return allWorkOrderProducts;
     }
 
-    /**
-     * Deletes a product from a work order using the work_order_product_id as the primary key
-     */
+    @Override
     public boolean deleteWorkOrderProduct(int workOrderProductId) {
         String sqlDeleteWorkOrderProduct = "DELETE FROM work_order_products WHERE work_order_product_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteWorkOrderProduct)) {
@@ -158,6 +155,7 @@ public class WorkOrderProductsDAOImplementation implements WorkOrderProductsDAO 
         return false;
     }
 
+    @Override
     public boolean isTableEmpty() {
         try {
             Statement stmt = connection.createStatement();

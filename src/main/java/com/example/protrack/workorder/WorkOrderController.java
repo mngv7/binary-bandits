@@ -31,10 +31,10 @@ import java.util.Objects;
 
 public class WorkOrderController implements Observer {
 
-
     private static final String TITLE = "Create Work Order";
     private static final int WIDTH = 900;
     private static final int HEIGHT = 650;
+
     @FXML
     private TableView<WorkOrder> workOrderTable;
     @FXML
@@ -57,20 +57,18 @@ public class WorkOrderController implements Observer {
     private TableColumn<WorkOrder, Double> colSubtotal;
     @FXML
     private Button createWorkOrderButton;
+
     private ObservableList<WorkOrder> workOrders;
-    // Reference to the subject
-    private WorkOrderTableSubject subject;
+    private WorkOrderTableSubject workOrderSubject;
 
     /**
-     * Initializes the controller class. This method is automatically called
-     * after the FXML file has been loaded.
+     * Initialises the controller class, automatically after the FXML file loads.
      */
     public void initialize() {
-        subject = new WorkOrderTableSubject();
-        // Register this controller as an observer to the subject
-        subject.registerObserver(this);
+        workOrderSubject = new WorkOrderTableSubject();
+        workOrderSubject.registerObserver(this);
 
-        // Set up the TableView columns with the corresponding property values
+        // Sets the TableView columns with the corresponding property values
         colWorkOrderId.setCellValueFactory(new PropertyValueFactory<>("workOrderId"));
         colOrderOwner.setCellValueFactory(new PropertyValueFactory<>("orderOwner"));
         colCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
@@ -80,7 +78,7 @@ public class WorkOrderController implements Observer {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
 
-        // Initialize the ObservableList and set it to the TableView
+        // Initialise the ObservableList and set it to the TableView
         workOrders = FXCollections.observableArrayList();
         workOrderTable.setItems(workOrders);
 
@@ -90,22 +88,20 @@ public class WorkOrderController implements Observer {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     WorkOrder selectedWorkOrder = row.getItem();
-                    editWorkOrderPopup(selectedWorkOrder);
+                    openEditWorkOrderPopup(selectedWorkOrder);
                 }
             });
             return row;
         });
 
         // Load and display the initial list of work orders
-        subject.syncDataFromDB(); // Fetch data from the database directly
+        workOrderSubject.syncDataFromDB();
         update();
 
         Platform.runLater(() -> {
             Window window = createWorkOrderButton.getScene().getWindow();
             if (window instanceof Stage stage) {
-                stage.setOnCloseRequest(event -> {
-                    subject.deregisterObserver(this);
-                });
+                stage.setOnCloseRequest(event -> workOrderSubject.deregisterObserver(this));
             }
         });
     }
@@ -116,75 +112,73 @@ public class WorkOrderController implements Observer {
     @Override
     public void update() {
         workOrders.clear();
-        workOrders.setAll(subject.getData());
+        workOrders.setAll(workOrderSubject.getData());
     }
 
     /**
      * Opens a popup window to create a new work order.
      */
-    public void createWorkOrderPopup() {
+    public void openCreateWorkOrderPopup() {
         try {
-            // Load the FXML file for the create work order dialog
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/workorder/create_work_order.fxml"));
             Parent createWorkOrderRoot = fxmlLoader.load();
 
-            // Set up the popup stage
             Stage popupStage = new Stage();
             popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(TITLE);
 
-            // Create the scene and apply styles
             Scene scene = new Scene(createWorkOrderRoot, WIDTH, HEIGHT);
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
             // Center the popup window on the screen
-            Bounds rootBounds = createWorkOrderButton.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 280);
-            popupStage.setX(rootBounds.getCenterX() - 310);
+            centerPopupWindow(popupStage);
 
             // Show the popup window
             popupStage.showAndWait();
-            subject.syncDataFromDB();
+            workOrderSubject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void editWorkOrderPopup(WorkOrder workOrder) {
+    public void openEditWorkOrderPopup(WorkOrder workOrder) {
         try {
-            // Load the FXML file for the work order edit popup
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/workorder/edit_work_order.fxml"));
             Parent root = fxmlLoader.load();
 
-            // Get the controller of the popup
             EditWorkOrderController controller = fxmlLoader.getController();
             controller.setWorkOrder(workOrder); // Pass the selected work order
 
-            // Set up the popup stage
             Stage popupStage = new Stage();
             popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle("Edit Work Order");
 
-            // Create the scene and show the popup
             Scene scene = new Scene(root);
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
             // Center the popup window on the screen
-            Bounds rootBounds = createWorkOrderButton.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 195);
-            popupStage.setX(rootBounds.getCenterX() - 310);
+            centerPopupWindow(popupStage);
 
             popupStage.showAndWait();
-            subject.syncDataFromDB();
+            workOrderSubject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Centers the popup window on the screen.
+     */
+    private void centerPopupWindow(Stage popupStage) {
+        Bounds rootBounds = createWorkOrderButton.getScene().getRoot().getLayoutBounds();
+        popupStage.setY(rootBounds.getCenterY() - (HEIGHT / 2));
+        popupStage.setX(rootBounds.getCenterX() - (WIDTH / 2));
     }
 
     /**
@@ -196,7 +190,6 @@ public class WorkOrderController implements Observer {
      * @param productId  the ID of the product being ordered
      */
     public void addWorkOrder(ProductionUser orderOwner, Customer customer, LocalDateTime orderDate, Integer productId) {
-        // Create DAOs for fetching data
         UsersDAO usersDAO = new UsersDAO();
         CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
         WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(
@@ -204,9 +197,8 @@ public class WorkOrderController implements Observer {
                 customerDAOImplementation.getAllCustomers()
         );
 
-        // Create a new work order and add it to the database
         WorkOrder newWorkOrder = new WorkOrder(
-                1,
+                1,  // ID can be generated by the database
                 orderOwner,
                 customer,
                 orderDate,
@@ -215,7 +207,8 @@ public class WorkOrderController implements Observer {
                 "Pending",
                 21.00
         );
+
         workOrdersDAO.createWorkOrder(newWorkOrder);
-        subject.syncDataFromDB();
+        workOrderSubject.syncDataFromDB();
     }
 }

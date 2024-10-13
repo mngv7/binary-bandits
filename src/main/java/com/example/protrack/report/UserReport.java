@@ -13,12 +13,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * UserReport generates reports specific to the logged-in user regarding work orders
+ * and associated production metrics. It implements the Report interface and uses
+ * DAOs to fetch necessary data.
+ */
 public class UserReport implements Report {
 
     private final WorkOrdersDAO workOrdersDAO;
     private final WorkOrderProductsDAO workOrderProductsDAO;
     private final int loggedInUserId;
 
+    /**
+     * Constructs a UserReport instance, initializing the DAO instances and
+     * retrieving the logged-in user's ID.
+     *
+     * @param workOrdersDAO       Data Access Object for work orders.
+     * @param workOrderProductsDAO Data Access Object for work order products.
+     */
     public UserReport(WorkOrdersDAO workOrdersDAO, WorkOrderProductsDAO workOrderProductsDAO) {
         this.workOrdersDAO = workOrdersDAO;
         this.workOrderProductsDAO = workOrderProductsDAO;
@@ -32,7 +44,7 @@ public class UserReport implements Report {
 
         for (WorkOrder order : userWorkOrders) {
             double forecastRate = estimateProduction(order);
-            forecastData.put((double) order.getOrderDate().toEpochSecond(ZoneOffset.of("+10:00")), forecastRate); // Use epoch seconds
+            forecastData.put((double) order.getOrderDate().toEpochSecond(ZoneOffset.of("+10:00")), forecastRate);
         }
         return forecastData;
     }
@@ -44,7 +56,7 @@ public class UserReport implements Report {
 
         for (WorkOrder order : userWorkOrders) {
             double expectedTime = calculateExpectedCycleTime(order);
-            expectedCycleTimes.put((double) order.getOrderDate().toEpochSecond(ZoneOffset.of("+10:00")), expectedTime); // Use epoch seconds
+            expectedCycleTimes.put((double) order.getOrderDate().toEpochSecond(ZoneOffset.of("+10:00")), expectedTime);
         }
         return expectedCycleTimes;
     }
@@ -57,7 +69,7 @@ public class UserReport implements Report {
         for (WorkOrder order : userWorkOrders) {
             double actualTime = calculateActualCycleTime(order);
             if (order.getStatus().equals("Completed")) {
-                actualCycleTimes.put((double) order.getDeliveryDate().toEpochSecond(ZoneOffset.of("+10:00")), actualTime); // Use epoch seconds
+                actualCycleTimes.put((double) order.getDeliveryDate().toEpochSecond(ZoneOffset.of("+10:00")), actualTime);
             }
         }
         return actualCycleTimes;
@@ -70,7 +82,7 @@ public class UserReport implements Report {
 
         for (WorkOrder order : userWorkOrders) {
             double throughput = calculateThroughput(order);
-            throughputData.put((double) order.getOrderDate().toEpochSecond(ZoneOffset.of("+10:00")), throughput); // Use epoch seconds
+            throughputData.put((double) order.getOrderDate().toEpochSecond(ZoneOffset.of("+10:00")), throughput);
         }
         return throughputData;
     }
@@ -147,13 +159,19 @@ public class UserReport implements Report {
         for (WorkOrder order : userWorkOrders) {
             List<WorkOrderProduct> products = workOrderProductsDAO.getWorkOrderProductsByWorkOrderId(order.getWorkOrderId());
             for (WorkOrderProduct product : products) {
-                totalCost += product.getTotal(); // Assuming total is already calculated in WorkOrderProduct
+                totalCost += product.getTotal();
             }
         }
 
         return totalCost;
     }
 
+    /**
+     * Calculates the expected cycle time for a given work order based on its products.
+     *
+     * @param order the work order for which to calculate expected cycle time.
+     * @return the expected cycle time in hours.
+     */
     private double calculateExpectedCycleTime(WorkOrder order) {
         List<WorkOrderProduct> products = workOrderProductsDAO.getWorkOrderProductsByWorkOrderId(order.getWorkOrderId());
         double totalExpectedTime = 0;
@@ -166,42 +184,75 @@ public class UserReport implements Report {
         return totalExpectedTime; // Total expected time in hours
     }
 
+    /**
+     * Calculates the actual cycle time for a given work order.
+     *
+     * @param order the work order for which to calculate actual cycle time.
+     * @return the actual cycle time in hours, or 0.0 if not completed.
+     */
     private double calculateActualCycleTime(WorkOrder order) {
         if (!"Completed".equals(order.getStatus())) {
             return 0.0; // Not completed orders have no actual cycle time
         }
 
-        LocalDateTime completionTime = order.getDeliveryDate(); // Assuming deliveryDate is when the order is completed
+        LocalDateTime completionTime = order.getDeliveryDate();
         LocalDateTime orderDate = order.getOrderDate();
         Duration duration = Duration.between(orderDate, completionTime);
-        return duration.toHours(); // Returning hours; change as necessary
+        return duration.toHours();
     }
 
+    /**
+     * Determines whether a work order is on schedule based on its delivery date and status.
+     *
+     * @param order the work order to check.
+     * @return true if the order is on schedule, false otherwise.
+     */
     private boolean isOnSchedule(WorkOrder order) {
         return order.getDeliveryDate().isAfter(LocalDateTime.now()) && order.getStatus().equals("In Progress");
     }
 
+    /**
+     * Returns the number of parts used for a given work order product.
+     *
+     * @param product the work order product to check.
+     * @return the quantity of parts used.
+     */
     private int getPartsUsed(WorkOrderProduct product) {
-        return product.getQuantity(); // Assuming this returns the quantity of parts used
+        return product.getQuantity();
     }
 
+    /**
+     * Estimates the production for a given work order based on its products.
+     *
+     * @param order the work order for which to estimate production.
+     * @return the estimated production rate in hours.
+     */
     private double estimateProduction(WorkOrder order) {
         List<WorkOrderProduct> products = workOrderProductsDAO.getWorkOrderProductsByWorkOrderId(order.getWorkOrderId());
         double totalProduced = 0;
 
         for (WorkOrderProduct product : products) {
-            int quantity = product.getQuantity(); // Total quantity for this product
-            double productionRateForProduct = (quantity * 10.0) / 60.0; // Convert minutes to hours
-            totalProduced += productionRateForProduct; // Sum of production rates per hour for each product
+            int quantity = product.getQuantity();
+            totalProduced += quantity; // Add to the total produced
         }
 
-        return totalProduced; // Total production rate in hours
+        return totalProduced / 10; // Return an estimated rate based on some logic
     }
 
+    /**
+     * Calculates the throughput for a given work order.
+     *
+     * @param order the work order for which to calculate throughput.
+     * @return the throughput rate.
+     */
     private double calculateThroughput(WorkOrder order) {
-        if (!"Completed".equals(order.getStatus())) {
-            return 0.0; // Only completed orders contribute to throughput
+        List<WorkOrderProduct> products = workOrderProductsDAO.getWorkOrderProductsByWorkOrderId(order.getWorkOrderId());
+        int totalQuantity = 0;
+
+        for (WorkOrderProduct product : products) {
+            totalQuantity += product.getQuantity(); // Sum the quantities
         }
-        return calculateTotalProductsProduced(); // Total produced units, could be optimized
+
+        return totalQuantity; // Return total throughput
     }
 }

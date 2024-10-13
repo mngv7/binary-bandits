@@ -18,6 +18,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Controller class for editing work orders in the application. This class handles the
+ * functionality of the Edit Work Order popup, allowing users to modify the details of a selected work order
+ */
 public class EditWorkOrderController {
 
     @FXML
@@ -106,6 +110,10 @@ public class EditWorkOrderController {
 
     private ObservableList<WorkOrderProduct> workOrderProducts;
 
+    /**
+     * Initializes the controller class, setting up UI components after FXML file loads
+     *
+     */
     public void initialize() {
         usersList = FXCollections.observableArrayList(new UsersDAO().getProductionUsers());
         customerList = FXCollections.observableArrayList(new CustomerDAOImplementation().getAllCustomers());
@@ -143,6 +151,11 @@ public class EditWorkOrderController {
         saveButton.managedProperty().bind(saveButton.visibleProperty());
     }
 
+    /**
+     * Loads the work order products associated with a specific work order ID.
+     *
+     * @param workOrderId the ID of the work order whose products are to be loaded
+     */
     private void loadWorkOrderProducts(int workOrderId) {
         // Fetch work order products from the database
         WorkOrderProductsDAOImplementation workOrderProductsDAO = new WorkOrderProductsDAOImplementation();
@@ -153,6 +166,10 @@ public class EditWorkOrderController {
         workOrderProducts.addAll(products);
     }
 
+    /**
+     * Toggles between edit mode and view mode. When in edit mode editable fields are visible.
+     * When in view mode fields are reset to their original values.
+     */
     @FXML
     private void toggleEdit() {
         edit = !edit;
@@ -188,6 +205,10 @@ public class EditWorkOrderController {
         }
     }
 
+    /**
+     * Saves the original values of the work order fields for potential
+     * restoration if edit mode is canceled.
+     */
     private void setOriginalValues() {
         originalOrderOwner = workOrder.getOrderOwner();
         originalCustomer = workOrder.getCustomer();
@@ -197,6 +218,10 @@ public class EditWorkOrderController {
         originalStatus = workOrder.getStatus();
     }
 
+    /**
+     * Resets the fields in the UI to the original values stored before
+     * entering edit mode.
+     */
     private void resetFieldsToOriginal() {
         editButton.setText("Edit");
         saveButton.setVisible(false);
@@ -224,7 +249,6 @@ public class EditWorkOrderController {
         shippingAddressField.setText(originalShippingAddress);
         statusField.setText(originalStatus);
 
-
         if (originalOrderOwner != null) {
             orderOwnerLabel.setText(originalOrderOwner.toString());
         } else {
@@ -241,8 +265,12 @@ public class EditWorkOrderController {
         orderStatusLabel.setText(originalStatus);
     }
 
-    // setWorkOrder acts as an initialiser as well, as is called through another controller,
-    // if called in initialize the workOrder instance cannot be accessed (until after init)
+    /**
+     * Sets the work order to be edited and populates the UI fields with
+     * the current values from the work order.
+     *
+     * @param workOrder the work order to be edited
+     */
     public void setWorkOrder(WorkOrder workOrder) {
         this.workOrder = workOrder;
 
@@ -253,100 +281,55 @@ public class EditWorkOrderController {
         }
         customerLabel.setText(workOrder.getCustomer().toString());
         shippingAddressLabel.setText(workOrder.getShippingAddress());
-        orderDateLabel.setText(workOrder.getOrderDate().toString().substring(0, 10));
-        if (workOrder.getDeliveryDate() != null) {
-            deliveryDateLabel.setText(workOrder.getDeliveryDate().toString().substring(0, 10));
-        }
         orderStatusLabel.setText(workOrder.getStatus());
-        subtotalLabel.setText(workOrder.getSubtotal().toString());
+        orderDateLabel.setText(workOrder.getOrderDate().toString().substring(0, 10));
+        deliveryDateLabel.setText(workOrder.getDeliveryDate() != null
+                ? workOrder.getDeliveryDate().toString() : "No delivery date set");
 
-        // Populate editable fields with current work order data (initially hidden)
-        workOrderIdLabel.setText(String.valueOf(workOrder.getWorkOrderId()));
-        orderOwnerComboBox.setValue(workOrder.getOrderOwner());
-        customerComboBox.setValue(workOrder.getCustomer());
-        orderDatePicker.setValue(workOrder.getOrderDate().toLocalDate());
-        deliveryDatePicker.setValue(workOrder.getDeliveryDate() != null ? workOrder.getDeliveryDate().toLocalDate() : null);
-        shippingAddressField.setText(workOrder.getShippingAddress());
-        statusField.setText(workOrder.getStatus());
-
-        // Save the original values to reset if cancel is clicked
-        setOriginalValues();
-
-        int workOrderId = workOrder.getWorkOrderId();
-        loadWorkOrderProducts(workOrderId);
+        // Load products associated with the work order
+        loadWorkOrderProducts(workOrder.getWorkOrderId());
     }
 
-    public void saveWorkOrder() {
-        ProductionUser selectedUser = orderOwnerComboBox.getValue();
-        Customer selectedCustomer = customerComboBox.getValue();
-        LocalDate orderDate = orderDatePicker.getValue();
-        LocalDate deliveryDate = deliveryDatePicker.getValue();
-        String shippingAddress = shippingAddressField.getText();
-        String status = statusField.getText();
-        double subtotal = Double.parseDouble(subtotalLabel.getText());
+    /**
+     * Saves the modified work order details back to the database
+     * and closes the edit popup.
+     */
+    @FXML
+    private void saveWorkOrder() {
+        workOrder.setOrderOwner(orderOwnerComboBox.getValue());
+        workOrder.setCustomer(customerComboBox.getValue());
+        workOrder.setOrderDate(LocalDateTime.now());
+        workOrder.setDeliveryDate(deliveryDatePicker.getValue() != null
+                ? LocalDateTime.of(deliveryDatePicker.getValue(), LocalDateTime.now().toLocalTime())
+                : null);
+        workOrder.setShippingAddress(shippingAddressField.getText());
+        workOrder.setStatus(statusField.getText());
 
-        if (selectedCustomer == null || orderDate == null || shippingAddress.isEmpty() || status.isEmpty()) {
-            System.out.println("Validation failed");
-            return;
-        }
-
-        workOrder.setOrderOwner(selectedUser);
-        workOrder.setCustomer(selectedCustomer);
-        workOrder.setOrderDate(LocalDateTime.of(orderDate, workOrder.getOrderDate().toLocalTime()));
-        workOrder.setDeliveryDate(deliveryDate != null ? LocalDateTime.of(deliveryDate, workOrder.getDeliveryDate().toLocalTime()) : null);
-        workOrder.setShippingAddress(shippingAddress);
-        workOrder.setStatus(status);
-        workOrder.setSubtotal(subtotal);
-
-        workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
         workOrdersDAO.updateWorkOrder(workOrder);
 
-        setOriginalValues();
-        resetFieldsToOriginal();
+        // Close the popup window
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 
+    /**
+     * Deletes the current work order from the database and closes the edit popup.
+     */
     @FXML
-    public void deleteWorkOrder() {
-        // Add logic to delete the work order from the database
-        workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
+    private void deleteWorkOrder() {
         workOrdersDAO.deleteWorkOrder(workOrder.getWorkOrderId());
 
-        // Close the popup after deletion
-        closePopup();
+        // Close the popup window
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 
+    /**
+     * Closes the edit popup without making changes.
+     */
     @FXML
-    public void closePopup() {
-        if (editButton.getText().equals("Cancel")) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.setHeaderText("Close Work Order View");
-            alert.setContentText("Are you sure you want to cancel editing the work order?");
-            alert.setGraphic(null);
-
-            // Define dialog buttons
-            ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
-            ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-            alert.getButtonTypes().setAll(confirmBtn, backBtn);
-
-            Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
-            Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
-
-            confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
-            cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
-
-            // Load the CSS file
-            alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
-
-            // Show confirmation dialog and close if confirmed
-            alert.showAndWait().ifPresent(result -> {
-                if (result == confirmBtn) {
-                    ((Stage) closePopupButton.getScene().getWindow()).close();
-                }
-            });
-        } else {
-            Stage stage = (Stage) editButton.getScene().getWindow();
-            stage.close();
-        }
+    private void closePopup() {
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        stage.close();
     }
 }

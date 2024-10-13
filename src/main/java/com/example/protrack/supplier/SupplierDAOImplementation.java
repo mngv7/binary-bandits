@@ -6,15 +6,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the SupplierDAO interface for interacting with databases suppliers
+ */
 public class SupplierDAOImplementation implements SupplierDAO {
     private final Connection connection;
 
-    // Constructor that accepts a database connection
+    /**
+     * Constructor that initialises the database connection.
+     */
     public SupplierDAOImplementation() {
         connection = DatabaseConnection.getInstance();
     }
 
-    // Method to create the suppliers table if it does not exist
+    @Override
     public void createTable() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS suppliers (" +
                 "supplier_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -31,6 +36,7 @@ public class SupplierDAOImplementation implements SupplierDAO {
         }
     }
 
+    @Override
     public void addSupplier(Supplier supplier) {
         String sql = "INSERT INTO suppliers (name, email, phone_number, billing_address, shipping_address, lead_time) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -47,6 +53,7 @@ public class SupplierDAOImplementation implements SupplierDAO {
         }
     }
 
+    @Override
     public Supplier getSupplier(int supplierId) {
         String sql = "SELECT * FROM suppliers WHERE supplier_id = ?";
         Supplier supplier = null;
@@ -70,6 +77,7 @@ public class SupplierDAOImplementation implements SupplierDAO {
         return supplier;
     }
 
+    @Override
     public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
         String sql = "SELECT * FROM suppliers";
@@ -93,6 +101,7 @@ public class SupplierDAOImplementation implements SupplierDAO {
         return suppliers;
     }
 
+    @Override
     public void updateSupplier(Supplier supplier) {
         String sql = "UPDATE suppliers SET name = ?, email = ?, phone_number = ?, billing_address = ?, shipping_address = ?, lead_time = ? WHERE supplier_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -109,6 +118,7 @@ public class SupplierDAOImplementation implements SupplierDAO {
         }
     }
 
+    @Override
     public void deleteSupplier(int supplierId) {
         String sql = "DELETE FROM suppliers WHERE supplier_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

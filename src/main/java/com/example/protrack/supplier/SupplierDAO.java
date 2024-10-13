@@ -2,23 +2,50 @@ package com.example.protrack.supplier;
 
 import java.util.List;
 
+/**
+ * Interface for Supplier Data Access Object (DAO) that defines methods
+ * for interacting with the suppliers data in the database.
+ */
 public interface SupplierDAO {
 
-    // Method to create the suppliers table if it does not exist
+    /**
+     * Creates the suppliers table in the database if it does not already exist.
+     */
     void createTable();
 
-    // Method to add a new supplier
+    /**
+     * Adds a new supplier to the database.
+     *
+     * @param supplier the Supplier object to be added
+     */
     void addSupplier(Supplier supplier);
 
-    // Method to get a supplier by ID
+    /**
+     * Retrieves a supplier from the database by its ID.
+     *
+     * @param supplierId the ID of the supplier to retrieve
+     * @return the Supplier object corresponding to the specified ID
+     */
     Supplier getSupplier(int supplierId);
 
-    // Method to get all suppliers
+    /**
+     * Retrieves all suppliers from the database.
+     *
+     * @return a list of all Supplier objects
+     */
     List<Supplier> getAllSuppliers();
 
-    // Method to update an existing supplier
+    /**
+     * Updates an existing supplier in the database.
+     *
+     * @param supplier the Supplier object with updated information
+     */
     void updateSupplier(Supplier supplier);
 
-    // Method to delete a supplier by ID
+    /**
+     * Deletes a supplier from the database by its ID.
+     *
+     * @param supplierId the ID of the supplier to delete
+     */
     void deleteSupplier(int supplierId);
 }

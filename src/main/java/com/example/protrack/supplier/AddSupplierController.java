@@ -5,6 +5,9 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * AddSupplierController manages the user interface for adding new suppliers.
+ */
 public class AddSupplierController {
 
     @FXML
@@ -20,10 +23,17 @@ public class AddSupplierController {
     @FXML
     private TextField leadTimeField;
 
+    /**
+     * Initializes the controller automatically after the FXML file has been loaded.
+     */
     @FXML
     private void initialize() {
+        // Initialization code can go here, if needed
     }
 
+    /**
+     * Saves the supplier information entered by the user.
+     */
     @FXML
     private void saveSupplier() {
         String name = supplierNameField.getText();
@@ -66,6 +76,9 @@ public class AddSupplierController {
         closePopup();
     }
 
+    /**
+     * Closes the popup window. This method is called after a supplier is saved.
+     */
     @FXML
     private void closePopup() {
         Stage stage = (Stage) supplierNameField.getScene().getWindow();

@@ -7,6 +7,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * The {@code AddCustomerController} class for adding a new customer.
+ * This class handles the UI and logic for saving customer information to the database.
+ */
 public class AddCustomerController {
 
     @FXML
@@ -38,8 +42,11 @@ public class AddCustomerController {
 
     private CustomerDAOImplementation customerDAOImplementation;
 
+    /**
+     * Initializes the controller class.
+     * Clears form fields and sets default values.
+     */
     public void initialize() {
-        // Set default values or clear fields
         firstNameField.clear();
         lastNameField.clear();
         emailField.clear();
@@ -50,6 +57,11 @@ public class AddCustomerController {
         statusCombo.setValue("Active");
     }
 
+    /**
+     * Handles the save action when the save button is clicked.
+     * Provides form validation before creating a new customer object
+     * and then saves it using the DAO. Closes the window upon success.
+     */
     @FXML
     private void saveCustomer() {
         String firstName = firstNameField.getText();
@@ -89,6 +101,9 @@ public class AddCustomerController {
         closePopup();
     }
 
+    /**
+     * Closes the popup when the cancel button is clicked.
+     */
     @FXML
     private void closePopup() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
