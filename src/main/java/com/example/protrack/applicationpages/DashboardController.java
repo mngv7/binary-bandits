@@ -73,6 +73,18 @@ public class DashboardController {
     @FXML
     public HBox graphContainer; // HBox to hold the graphs
 
+    @FXML
+    public GridPane reorderPointGrid;
+
+    @FXML
+    public VBox partAndReorderGroup;
+
+    @FXML
+    public VBox PartId;
+
+    @FXML
+    public VBox reorderPoint;
+
     // <PartID, Usage>
     private final HashMap<Integer, Integer> sumOfParts = new HashMap<>();
     OrgReport orgReport;

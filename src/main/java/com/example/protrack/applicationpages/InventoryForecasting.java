@@ -11,7 +11,7 @@ public class InventoryForecasting {
 
     HashMap<Integer, Integer> dailyAveragePartUsage = new HashMap<>(); // PartID, Daily usage
 
-    public void calculateAverageDailyUsage()
+    private void calculateAverageDailyUsage()
     {
         DashboardController dashboardController = new DashboardController();
 
@@ -25,9 +25,9 @@ public class InventoryForecasting {
         }
     }
 
-    HashMap<Integer, Integer> reorderPoints = new HashMap<>();
+    private HashMap<Integer, Integer> reorderPoints = new HashMap<>();
 
-    public void calculateReorderPoint() {
+    private void calculateReorderPoint() {
         PartsDAO partsDAO = new PartsDAO();
         List<Parts> parts = partsDAO.getAllParts();
         SupplierDAOImplementation supplierDAO = new SupplierDAOImplementation();
@@ -35,12 +35,17 @@ public class InventoryForecasting {
         for (Parts part : parts) {
             int partId = part.getPartsId();
             int supplierId = part.getSupplierId();
-            double leadTime = supplierDAO.getSupplierLeadTime(supplierId);
+            double leadTime = supplierDAO.getSupplier(supplierId).getLeadTime();
             int dailyAverageUsage = dailyAveragePartUsage.get(partId);
             int safetyStock = 500;
             int reorderPoint = (int) Math.round((leadTime * dailyAverageUsage) + safetyStock);
             reorderPoints.put(partId, reorderPoint);
         }
+    }
 
+    public HashMap<Integer, Integer> getReorderPoints() {
+        calculateAverageDailyUsage();
+        calculateReorderPoint();
+        return reorderPoints;
     }
 }

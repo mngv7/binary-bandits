@@ -63,6 +63,12 @@
 
                 <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
                     <Label text="Inventory Forecasting" styleClass="subheading"/>
+                    <GridPane fx:id="reorderPointGrid" hgap="15" vgap="5" alignment="CENTER_LEFT">
+                        <VBox fx:id="partAndReorderGroup">
+                            <VBox fx:id="PartId"/>
+                            <VBox fx:id="reorderPoint" />
+                        </VBox>
+                    </GridPane>
                 </VBox>
             </HBox>
 
