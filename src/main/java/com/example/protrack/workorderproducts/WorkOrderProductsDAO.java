@@ -23,7 +23,7 @@ public interface WorkOrderProductsDAO {
     /**
      * Deletes a product from a work order.
      *
-     * @param workOrderProductId The ID of the work order product
+     * @param workOrderProductId The ID of the work order product.
      * @return true if the operation was successful, false otherwise.
      */
     boolean deleteWorkOrderProduct(int workOrderProductId);
@@ -36,7 +36,17 @@ public interface WorkOrderProductsDAO {
      */
     List<WorkOrderProduct> getWorkOrderProductsByWorkOrderId(int workOrderId);
 
+    /**
+     * Retrieves all work order products from the database.
+     *
+     * @return A list of all work order products.
+     */
     List<WorkOrderProduct> getAllWorkOrderProducts();
 
+    /**
+     * Checks if the work_order_products table is empty.
+     *
+     * @return true if the table is empty, false otherwise.
+     */
     boolean isTableEmpty();
 }

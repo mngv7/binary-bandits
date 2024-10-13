@@ -87,6 +87,11 @@ public class CreateWorkOrderController {
 
     private ObservableList<WorkOrderProduct> workOrderProducts;
 
+    /**
+     * Initialises the controller. Sets up the TableView and populates the ComboBoxes
+     * with data from the database. Binds the createWorkOrderButton's disable property
+     * to the state of required fields.
+     */
     public void initialize() {
 
         // Update the TableView
@@ -146,6 +151,10 @@ public class CreateWorkOrderController {
         createWorkOrderButton.disableProperty().bind(emptyFields);
     }
 
+    /**
+     * Adds the selected product from the productComboBox to the work order table.
+     * Updates the total price accordingly. Handles invalid input gracefully.
+     */
     @FXML
     protected void addProductToTable() {
         try {
@@ -192,7 +201,12 @@ public class CreateWorkOrderController {
         }
     }
 
-    // Method to calculate total price for a given product ID based on BOM
+    /**
+     * Calculates the total price for a given product ID based on the Bill of Materials (BOM).
+     *
+     * @param productId The ID of the product to calculate the total price for.
+     * @return The calculated total price for the product.
+     */
     private double calculateTotalPrice(int productId) {
         BillOfMaterialsDAO bomDAO = new BillOfMaterialsDAO();
         List<BillOfMaterials> bomList = bomDAO.getBillOfMaterialsForProduct(productId);
@@ -209,7 +223,9 @@ public class CreateWorkOrderController {
         return totalPrice; // Return the total price for the product based on BOM
     }
 
-    // Method to update the total price label
+    /**
+     * Updates the total price label to reflect the sum of all work order products.
+     */
     private void updateTotalPrice() {
         double totalOrderPrice = workOrderProducts.stream()
                 .mapToDouble(WorkOrderProduct::getTotal)
@@ -217,12 +233,18 @@ public class CreateWorkOrderController {
         totalLabel.setText(String.format("%.2f", totalOrderPrice));
     }
 
-    // Method to clear product input fields
+    /**
+     * Clears the product input fields in the form.
+     */
     private void clearProductInputFields() {
         productComboBox.getSelectionModel().clearSelection();
         productQuantityField.clear();
     }
 
+    /**
+     * Creates a new work order using the information provided in the form fields.
+     * Saves the work order and its associated products to the database.
+     */
     @FXML
     protected void createWorkOrder() {
         try {
@@ -275,6 +297,9 @@ public class CreateWorkOrderController {
         }
     }
 
+    /**
+     * Closes the work order creation popup.
+     */
     @FXML
     protected void onClosePopupButton() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
