@@ -22,29 +22,32 @@ public interface WorkOrdersDAO {
      */
     List<WorkOrder> getWorkOrderByStatus(String status);
 
+    /**
+     * Retrieves work orders that have a certain employee as the order owner.
+     *
+     * @param employeeId The ID of the employee.
+     * @return A list of work orders associated with an employee.
+     */
     List<WorkOrder> getWorkOrdersByEmployeeId(int employeeId);
 
     /**
      * Creates a new work order in the database.
      *
      * @param workOrder The work order to be created.
-     * @return true if the work order was created successfully, false otherwise.
      */
-    boolean createWorkOrder(WorkOrder workOrder);
+    void createWorkOrder(WorkOrder workOrder);
 
     /**
      * Updates an existing work order in the database.
      *
      * @param workOrder The work order with updated information.
-     * @return true if the work order was updated successfully, false otherwise.
      */
-    boolean updateWorkOrder(WorkOrder workOrder);
+    void updateWorkOrder(WorkOrder workOrder);
 
     /**
      * Deletes a work order from the database based on its ID.
      *
      * @param id The ID of the work order to be deleted.
-     * @return true if the work order was deleted successfully, false otherwise.
      */
-    boolean deleteWorkOrder(Integer id);
+    void deleteWorkOrder(Integer id);
 }

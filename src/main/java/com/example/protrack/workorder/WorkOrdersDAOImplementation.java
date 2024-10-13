@@ -86,11 +86,8 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         }
     }
 
-    /**
-     * @param workOrder the WorkOrder to be inserted into the database
-     * @return true if at least one row is affected from the SQL insertion, otherwise false
-     */
-    public boolean createWorkOrder(WorkOrder workOrder) {
+    @Override
+    public void createWorkOrder(WorkOrder workOrder) {
         String sqlNewWorkOrder = "INSERT INTO work_orders (work_order_owner_id, customer_id, order_date, delivery_date, shipping_address, status, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlNewWorkOrder)) {
@@ -112,13 +109,13 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
             preparedStatement.setDouble(7, workOrder.getSubtotal());
 
             // Execute the PreparedStatement and return true if at least one row is affected, otherwise false
-            return preparedStatement.executeUpdate() > 0;
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
+    @Override
     public List<WorkOrder> getWorkOrdersByEmployeeId(int employeeId) {
         String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE work_order_owner_id = ?";
         List<WorkOrder> workOrders = new ArrayList<>();
@@ -141,6 +138,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return workOrders;
     }
 
+    @Override
     public List<WorkOrder> getAllWorkOrders() {
         String sqlAllWorkOrders = "SELECT * FROM work_orders";
         List<WorkOrder> allWorkOrders = new ArrayList<>();
@@ -158,10 +156,7 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return allWorkOrders;
     }
 
-    /**
-     * @param status String containing the status of the Work Order
-     * @return 'ArrayList<WorkOrder>'  all orders that satisfy the status
-     */
+    @Override
     public List<WorkOrder> getWorkOrderByStatus(String status) {
 
         // SQL query retrieves Work Orders based on status
@@ -244,7 +239,8 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return null;
     }
 
-    public boolean updateWorkOrder(WorkOrder workOrder) {
+    @Override
+    public void updateWorkOrder(WorkOrder workOrder) {
         String query = "UPDATE work_orders SET work_order_owner_id = ?, customer_id = ?, order_date = ?, delivery_date = ?, " +
                 "shipping_address = ?, status = ?, subtotal = ? WHERE work_order_id = ?";
 
@@ -273,32 +269,36 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
             statement.setInt(8, workOrder.getWorkOrderId());
 
             int rowsUpdated = statement.executeUpdate();
-            return rowsUpdated > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
-    public boolean deleteWorkOrder(Integer workOrderId) {
+    @Override
+    public void deleteWorkOrder(Integer workOrderId) {
         String query = "DELETE FROM work_orders WHERE work_order_id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, workOrderId);
 
             int rowsDeleted = statement.executeUpdate();
-            return rowsDeleted > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
-    // Since DB auto-increments primary key (workOrderId) it is hard to associate a WorkOrderProduct with a WorkOrder
-    // so retrieval via a candidate key (such as Customer & Order Date) is necessary to return the work order from DB
-    // to get the ID
+    /**
+     * Retrieves a WorkOrder based on the specified customer and order date.
+     * Since the primary key (workOrderId) is auto-incremented in the database,
+     * this method uses a candidate key (customer ID and order date) to
+     * retrieve the WorkOrder from the database.
+     *
+     * @param customer the Customer whose work order is to be retrieved
+     * @param orderDate the date the order was placed
+     * @return the WorkOrder associated with the specified customer and order date, or null if no
+     * matching WorkOrder is found
+     */
     public WorkOrder getWorkOrderByCustomerAndDate(Customer customer, LocalDateTime orderDate) {
-
         WorkOrder workOrder = null;
 
         // SQL query retrieves Work Orders based on status
@@ -319,8 +319,13 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return workOrder;
     }
 
+    /**
+     * Retrieves a list of WorkOrders placed in the specified month.
+     *
+     * @param month the month (1-12) for which WorkOrders should be retrieved
+     * @return a List of WorkOrders placed in the specified month
+     */
     public List<WorkOrder> getWorkOrderByMonth(Integer month) {
-
         List<WorkOrder> workOrders = new ArrayList<>();
 
         // SQL query retrieves Work Orders based on the month from order_date
@@ -344,5 +349,6 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
 
         return workOrders;
     }
+
 
 }
