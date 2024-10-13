@@ -118,4 +118,20 @@ public class SupplierDAOImplementation implements SupplierDAO {
             e.printStackTrace();
         }
     }
+
+    public double getSupplierLeadTime(int supplierId) {
+        String sql = "SELECT lead_time FROM suppliers WHERE supplier_id = ?";
+        double leadTime = 0;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, supplierId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                leadTime = resultSet.getDouble("lead_time");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return leadTime;
+    }
+
 }
