@@ -453,11 +453,15 @@ public class DashboardController {
             popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle("Generate Report");
-            popupStage.setScene(new Scene(root));
+
+            Scene scene = new Scene(root);
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+            popupStage.setScene(scene);
 
             Bounds rootBounds = generateReport.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 100);
-            popupStage.setX(rootBounds.getCenterX());
+            popupStage.setY(rootBounds.getCenterY() - 150);
+            popupStage.setX(rootBounds.getCenterX() - 275);
 
             popupStage.showAndWait();
         } catch (IOException e) {

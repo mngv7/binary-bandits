@@ -1,6 +1,7 @@
 package com.example.protrack.report;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
@@ -21,16 +22,14 @@ public class GenerateReportController {
     @FXML
     private TextArea reportOutput; // Text area to display the report
 
-    private OrgReport orgReport; // This should be initialized
+    @FXML
+    private Button closePopupButton;
+
+    private OrgReport orgReport;
 
     // Setter method to allow external initialization
     public void setOrgReport(OrgReport orgReport) {
         this.orgReport = orgReport;
-    }
-
-    @FXML
-    public void initialize() {
-        // Any necessary initialization can be done here
     }
 
     @FXML
@@ -51,9 +50,6 @@ public class GenerateReportController {
             return;
         }
 
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
-
         // Generate report metrics
         Map<Double, Double> forecastData = orgReport.forecastWorkOrderChartValues();
         Map<Double, Double> expectedCycleTimes = orgReport.calculateOrdersExpectedCycleTimeChartValues();
@@ -62,24 +58,51 @@ public class GenerateReportController {
 
         // Build the report string
         StringBuilder reportBuilder = new StringBuilder();
-        reportBuilder.append("Report from ").append(startDate).append(" to ").append(endDate).append("\n\n");
+        reportBuilder.append("**Report Period**: ").append(startDate).append(" to ").append(endDate).append("\n\n");
 
-        reportBuilder.append("Forecast Data:\n").append(forecastData).append("\n");
-        reportBuilder.append("Expected Cycle Times:\n").append(expectedCycleTimes).append("\n");
-        reportBuilder.append("Actual Cycle Times:\n").append(actualCycleTimes).append("\n");
-        reportBuilder.append("Throughput Data:\n").append(throughputData).append("\n");
+        reportBuilder.append("### Forecast Data\n");
+        if (forecastData.isEmpty()) {
+            reportBuilder.append("No forecast data available.\n");
+        } else {
+            for (Map.Entry<Double, Double> entry : forecastData.entrySet()) {
+                reportBuilder.append("- Day ").append(entry.getKey()).append(": ").append(String.format("%.2f", entry.getValue())).append(" units forecasted\n");
+            }
+        }
+
+        reportBuilder.append("\n### Expected Cycle Times (in Days)\n");
+        if (expectedCycleTimes.isEmpty()) {
+            reportBuilder.append("No expected cycle times available.\n");
+        } else {
+            for (Map.Entry<Double, Double> entry : expectedCycleTimes.entrySet()) {
+                reportBuilder.append("- Day ").append(entry.getKey()).append(": ").append(String.format("%.2f", entry.getValue())).append(" days expected\n");
+            }
+        }
+
+        reportBuilder.append("\n### Actual Cycle Times (in Days)\n");
+        if (actualCycleTimes.isEmpty()) {
+            reportBuilder.append("No actual cycle times available for the reporting period.\n");
+        } else {
+            for (Map.Entry<Double, Double> entry : actualCycleTimes.entrySet()) {
+                reportBuilder.append("- Day ").append(entry.getKey()).append(": ").append(String.format("%.2f", entry.getValue())).append(" days actual\n");
+            }
+        }
+
+        reportBuilder.append("\n### Throughput Data\n");
+        if (throughputData.isEmpty()) {
+            reportBuilder.append("No throughput data available.\n");
+        } else {
+            for (Map.Entry<Double, Double> entry : throughputData.entrySet()) {
+                reportBuilder.append("- Day ").append(entry.getKey()).append(": ").append(String.format("%.2f", entry.getValue())).append(" units processed\n");
+            }
+        }
 
         // Display the report in the TextArea
         reportOutput.setText(reportBuilder.toString());
     }
 
     @FXML
-    private void handleCancel() {
-        closePopup();
-    }
-
     private void closePopup() {
-        Stage stage = (Stage) startDatePicker.getScene().getWindow();
+        Stage stage = (Stage) closePopupButton.getScene().getWindow();
         stage.close();
     }
 }
