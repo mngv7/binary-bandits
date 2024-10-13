@@ -160,7 +160,7 @@ public class OrgReport implements Report {
         double totalCost = 0.0;
 
         for (WorkOrderProduct product : allWorkOrderProducts) {
-            totalCost += product.getTotal(); // Assuming total is already calculated in WorkOrderProduct
+            totalCost += product.getTotal();
         }
 
         return totalCost;
@@ -187,7 +187,7 @@ public class OrgReport implements Report {
         LocalDateTime completionTime = order.getDeliveryDate(); // Assuming deliveryDate is when the order is completed
         LocalDateTime orderDate = order.getOrderDate();
         Duration duration = Duration.between(orderDate, completionTime);
-        return duration.toHours(); // Returning hours; change as necessary
+        return duration.toHours(); // Returning hours
     }
 
     private boolean isOnSchedule(WorkOrder order) {
@@ -195,7 +195,7 @@ public class OrgReport implements Report {
     }
 
     private int getPartsUsed(WorkOrderProduct product) {
-        return product.getQuantity(); // Assuming this returns the quantity of parts used
+        return product.getQuantity(); // Returns the quantity of parts used
     }
 
     private double estimateProduction(WorkOrder order) {
@@ -215,6 +215,6 @@ public class OrgReport implements Report {
         if (!"Completed".equals(order.getStatus())) {
             return 0.0; // Only completed orders contribute to throughput
         }
-        return calculateTotalProductsProduced(); // Total produced units, could be optimized
+        return calculateTotalProductsProduced(); // Total produced units
     }
 }
