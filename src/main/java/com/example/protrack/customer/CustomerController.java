@@ -24,6 +24,11 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * The CustomerController class manages the customer data display and interactions within the application.
+ * It implements the Observer pattern to update the customer data from the subject and to handle
+ * customer-related actions of adding and editing customer information.
+ */
 public class CustomerController implements Observer {
 
     @FXML
@@ -51,6 +56,11 @@ public class CustomerController implements Observer {
 
     private CustomersTableSubject subject;
 
+    /**
+     * Initializes the CustomerController, setting up the observable list for customers,
+     * configuring table columns, sets row click event for table rows, and registers the observer
+     * with the CustomersTableSubject. Data is synchronised from the database.
+     */
     @FXML
     public void initialize() {
         subject = new CustomersTableSubject();
@@ -91,6 +101,9 @@ public class CustomerController implements Observer {
         });
     }
 
+    /**
+     * Updates the customer table view with the updated data from CustomersTableSubject.
+     */
     public void update() {
         customers.clear();
         customers.setAll(subject.getData());
@@ -98,22 +111,22 @@ public class CustomerController implements Observer {
     }
 
     /**
-     * Opens a popup window to create a new work order.
+     * Opens a popup window to create a new customer.
      */
     public void addCustomerPopup() {
         try {
-            // Load the FXML file for the create work order dialog
+            // Load the FXML file for the create customer dialog
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/customer/add_customer.fxml"));
-            Parent createWorkOrderRoot = fxmlLoader.load();
+            Parent createCustomerRoot = fxmlLoader.load();
 
             // Set up the popup stage
             Stage popupStage = new Stage();
             popupStage.initStyle(StageStyle.UNDECORATED);
             popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle("Edit Customer");
+            popupStage.setTitle("Add Customer");
 
             // Create the scene and apply styles
-            Scene scene = new Scene(createWorkOrderRoot, 350, 380);
+            Scene scene = new Scene(createCustomerRoot, 350, 380);
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
@@ -131,6 +144,11 @@ public class CustomerController implements Observer {
         }
     }
 
+    /**
+     * Opens a popup window to edit the details of an existing customer.
+     *
+     * @param customer The customer object to be edited.
+     */
     public void editCustomerPopup(Customer customer) {
         try {
             // Load the FXML file for the edit customer dialog
