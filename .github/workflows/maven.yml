@@ -6,13 +6,15 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Build and Deploy Javadocs to GitHub Pages
 
 on:
   push:
-    branches: [ "integration" ]
+    branches:
+      - integration
   pull_request:
-    branches: [ "integration" ]
+    branches:
+      - integration
 
 jobs:
   build:
@@ -20,17 +22,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
           cache: maven
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
       - name: Generate Javadoc
         run: mvn javadoc:javadoc
-      - name: Publish Javadoc
+
+      - name: Publish Javadoc to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          branch: gh-pages
           folder: target/docs/javadoc
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
