@@ -90,7 +90,7 @@ public class CreatePartsRequestController {
 
             // Reset the part selection and quantity fields
             clearPartInputFields();
-
+            ((Stage)sendRequestButton.getScene().getWindow()).close();
         } catch (NumberFormatException e) {
             // Alert handles invalid number formats for quantity
             Alert alert = new Alert(Alert.AlertType.ERROR);
