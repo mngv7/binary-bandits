@@ -78,6 +78,10 @@ public class ExpandedEmployeeController {
     private Integer employeeId;
     private MainController mainController;
 
+    /**
+     * Initializes the controller by fetching the details of the selected employee
+     * and populating UI fields retrieved information.
+     */
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
@@ -129,6 +133,9 @@ public class ExpandedEmployeeController {
         populateUserStatistics();
     }
 
+    /**
+     * Populates the various user KPIs for display
+     */
     private void populateUserStatistics() {
         // Fetch and display total work orders
         int totalWorkOrders = userReport.calculateTotalOrders();
@@ -160,10 +167,18 @@ public class ExpandedEmployeeController {
         ordersByStatusLabel.setText(statusText.toString().trim()); // Remove trailing newline
     }
 
+    /**
+     * Sets reference to the main controller for return navigation to main page.
+     *
+     * @param mainController the main controller of the application
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Navigates back to the employees page.
+     */
     @FXML
     public void backToEmployees() {
         if (mainController != null) {
@@ -171,14 +186,21 @@ public class ExpandedEmployeeController {
         }
     }
 
-    public void onRemoveEmployeeButtonPress() throws SQLException {
+    /**
+     * Handles the removal of an employee
+     */
+    public void onRemoveEmployeeButtonPress() {
 
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
 
         if (!Objects.equals(employeeId, loggedInId)) {
             UsersDAO usersDAO = new UsersDAO();
 
-            usersDAO.deleteUserById(employeeId);
+            try {
+                usersDAO.deleteUserById(employeeId);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             backToEmployees();
         } else {
             System.out.println("You can't do that silly!");
