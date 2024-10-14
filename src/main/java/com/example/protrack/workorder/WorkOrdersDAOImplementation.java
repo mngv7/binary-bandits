@@ -162,7 +162,6 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         // SQL query retrieves Work Orders based on status
         String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE status = ?";
 
-        // Initialises the to-be-returned ArrayList<WorkOrder>
         List<WorkOrder> allWorkOrders = new ArrayList<>();
 
         // Executes the PreparedStatement with the status String
