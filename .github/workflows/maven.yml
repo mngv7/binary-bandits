@@ -39,7 +39,7 @@ jobs:
       - name: Publish Javadoc to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
+          branch: integration  # Change branch to 'integration'
           folder: target/docs/javadoc
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
