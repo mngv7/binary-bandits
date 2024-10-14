@@ -4,6 +4,7 @@ import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.utility.LoggedInUserSingleton;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.fxml.FXML;
@@ -22,9 +23,9 @@ public class ProfileWorkOrdersController {
 
     private final WorkOrdersDAOImplementation workOrdersDAO;
     @FXML
-    private ListView<WorkOrder> pendingWorkOrdersListView; //ListView containing pending work orders
+    private ListView<WorkOrder> ownedWorkOrdersListView; //ListView containing pending work orders
 
-    public ProfileWorkOrdersController() throws SQLException {
+    public ProfileWorkOrdersController() {
 
         // Initialises a new UsersDAO and CustomerDAO interface (and connections)
         UsersDAO usersDAO = new UsersDAO();
@@ -45,7 +46,7 @@ public class ProfileWorkOrdersController {
      */
     @FXML
     private void initialize() {
-        displayPendingWorkOrders(); // Displays pending work orders in the list view once controller initialises
+        displayOwnedWorkOrders(); // Displays pending work orders in the list view once controller initialises
     }
 
     /**
@@ -53,16 +54,16 @@ public class ProfileWorkOrdersController {
      * Retrieves work orders from the database and sets them in the ListView as ListCells.
      */
     @FXML
-    private void displayPendingWorkOrders() {
-        List<WorkOrder> pendingWorkOrders;
+    private void displayOwnedWorkOrders() {
+        List<WorkOrder> ownedWorkOrders;
 
         // Retrieves pending work orders
-        pendingWorkOrders = workOrdersDAO.getWorkOrderByStatus("pending");
-        System.out.println("Fetched Work Orders: " + pendingWorkOrders);
+        ownedWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(LoggedInUserSingleton.getInstance().getEmployeeId());
+        System.out.println("Fetched Work Orders: " + ownedWorkOrders);
 
 
         // Sets cell factory for work order display
-        pendingWorkOrdersListView.setCellFactory(listView -> new ListCell<>() {
+        ownedWorkOrdersListView.setCellFactory(listView -> new ListCell<>() {
 
             @Override
             protected void updateItem(WorkOrder item, boolean empty) {
@@ -78,10 +79,10 @@ public class ProfileWorkOrdersController {
         });
 
         // Updates ListView with retrieved pending work orders
-        if (pendingWorkOrders != null) {
-            pendingWorkOrdersListView.getItems().setAll(pendingWorkOrders);
+        if (ownedWorkOrders != null) {
+            ownedWorkOrdersListView.getItems().setAll(ownedWorkOrders);
         } else {
-            pendingWorkOrdersListView.getItems().clear(); // Clear if null
+            ownedWorkOrdersListView.getItems().clear(); // Clear if null
         }
     }
 

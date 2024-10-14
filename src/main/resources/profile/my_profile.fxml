@@ -6,89 +6,87 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.protrack.profile.ProfileController">
 
-    <Label text="← Employees" styleClass="heading"/>
     <Label text="My Profile" styleClass="title-label"/>
     <Region minHeight="20"/>
 
-    <GridPane VBox.vgrow="ALWAYS">
+    <GridPane VBox.vgrow="ALWAYS" style="-fx-padding: 5;">
         <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
-            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
-            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
-            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="25.0"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="20"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="22.5"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="30"/>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="20"/>
         </columnConstraints>
-
-        <Pane GridPane.columnIndex="0">
+        <Pane GridPane.columnIndex="0" GridPane.vgrow="ALWAYS">
             <VBox spacing="20">
                 <Label fx:id="initialsIcon" text="Initials" styleClass="initials-icon-large"/>
                 <HBox>
                     <Label text="Employee ID: " styleClass="parts-table-label"/>
-                    <Label fx:id="employeeIdLabel" text="ID" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="employeeIdLabel" text="ID" style="-fx-font-size: 16px;"/>
                 </HBox>
             </VBox>
         </Pane>
 
-        <Pane GridPane.columnIndex="1">
+        <Pane GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
             <VBox spacing="10">
                 <Label text="Personal Details" styleClass="parts-table-title"/>
 
                 <Label text="Full Name" styleClass="parts-table-label"/>
-                <Label fx:id="fullName" text="Full Name" style="-fx-font-size: 14px;"/>
+                <Label fx:id="fullName" text="Full Name" style="-fx-font-size: 16px;"/>
 
                 <Label text="Title" styleClass="parts-table-label"/>
-                <Label fx:id="employeeRole" text="Employee Role" style="-fx-font-size: 14px;"/>
+                <Label fx:id="employeeRole" text="Employee Role" style="-fx-font-size: 16px;"/>
 
                 <Label text="Email Address" styleClass="parts-table-label"/>
-                <Label fx:id="emailAddress" text="Email Address" style="-fx-font-size: 14px;"/>
+                <Label fx:id="emailAddress" text="Email Address" style="-fx-font-size: 16px;"/>
 
                 <Label text="Date of Birth" styleClass="parts-table-label"/>
-                <Label fx:id="dob" text="DOB" style="-fx-font-size: 14px;"/>
+                <Label fx:id="dob" text="DOB" style="-fx-font-size: 16px;"/>
 
                 <Label text="Phone Number" styleClass="parts-table-label"/>
-                <Label fx:id="phoneNo" text="Phone Number" style="-fx-font-size: 14px;"/>
+                <Label fx:id="phoneNo" text="Phone Number" style="-fx-font-size: 16px;"/>
 
                 <Label text="Gender" styleClass="parts-table-label"/>
-                <Label fx:id="gender" text="Gender" style="-fx-font-size: 14px;"/>
+                <Label fx:id="gender" text="Gender" style="-fx-font-size: 16px;"/>
             </VBox>
         </Pane>
 
-        <Pane GridPane.columnIndex="2">
+        <Pane GridPane.columnIndex="2" GridPane.vgrow="ALWAYS">
             <VBox spacing="10">
                 <Label text="Work Insights" styleClass="parts-table-title"/>
 
                 <HBox spacing="10">
                     <Label text="Total Work Orders: " styleClass="parts-table-label"/>
-                    <Label fx:id="totalWorkOrdersLabel" text="0" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="totalWorkOrdersLabel" text="0" style="-fx-font-size: 16px;"/>
                 </HBox>
 
                 <HBox spacing="10">
                     <Label text="Total Products Produced: " styleClass="parts-table-label"/>
-                    <Label fx:id="totalProductsProducedLabel" text="0" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="totalProductsProducedLabel" text="0" style="-fx-font-size: 16px;"/>
                 </HBox>
 
                 <HBox spacing="10">
                     <Label text="Total Parts Used: " styleClass="parts-table-label"/>
-                    <Label fx:id="totalPartsUsedLabel" text="0" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="totalPartsUsedLabel" text="0" style="-fx-font-size: 16px;"/>
                 </HBox>
 
                 <HBox spacing="10">
                     <Label text="On-Schedule Rate: " styleClass="parts-table-label"/>
-                    <Label fx:id="onScheduleRateLabel" text="0%" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="onScheduleRateLabel" text="0%" style="-fx-font-size: 16px;"/>
                 </HBox>
 
                 <HBox spacing="10">
                     <Label text="Total Production Cost: " styleClass="parts-table-label"/>
-                    <Label fx:id="totalProductionCostLabel" text="0.00" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="totalProductionCostLabel" text="0.00" style="-fx-font-size: 16px;"/>
                 </HBox>
 
-                <HBox spacing="10">
+                <VBox>
                     <Label text="Orders By Status: " styleClass="parts-table-label"/>
-                    <Label fx:id="ordersByStatusLabel" text="Not Available" style="-fx-font-size: 14px;"/>
-                </HBox>
+                    <Label fx:id="ordersByStatusLabel" text="Not Available" style="-fx-font-size: 16px;"/>
+                </VBox>
             </VBox>
         </Pane>
 
-        <Pane GridPane.columnIndex="3">
+        <Pane GridPane.columnIndex="3" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" style="-fx-padding: 0 20 0 0">
             <fx:include source="profile_work_orders.fxml"/>
         </Pane>
     </GridPane>

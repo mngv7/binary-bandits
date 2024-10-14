@@ -150,9 +150,14 @@ public class ExpandedEmployeeController {
         double totalProductionCost = userReport.calculateTotalProductionCost();
         totalProductionCostLabel.setText(String.format("$%.2f", totalProductionCost));
 
-        // Fetch and display orders by status
+        // Fetch and display orders by status with each status on a new line
         Map<String, Integer> ordersByStatus = userReport.calculateTotalOrdersByStatus();
-        ordersByStatusLabel.setText(ordersByStatus.toString());
+        StringBuilder statusText = new StringBuilder();
+        for (Map.Entry<String, Integer> entry : ordersByStatus.entrySet()) {
+            statusText.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        }
+
+        ordersByStatusLabel.setText(statusText.toString().trim()); // Remove trailing newline
     }
 
     public void setMainController(MainController mainController) {
