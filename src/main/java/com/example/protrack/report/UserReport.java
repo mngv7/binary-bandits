@@ -1,6 +1,6 @@
 package com.example.protrack.report;
 
-import com.example.protrack.utility.LoggedInUserSingleton;
+import com.example.protrack.users.ProductionUser;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAO;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
@@ -14,33 +14,33 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * UserReport generates reports specific to the logged-in user regarding work orders
- * and associated production metrics. It implements the Report interface and uses
- * DAOs to fetch necessary data.
+ * UserReport generates reports specific to a given employee regarding work orders
+ * and associated production metrics.
  */
 public class UserReport implements Report {
 
     private final WorkOrdersDAO workOrdersDAO;
     private final WorkOrderProductsDAO workOrderProductsDAO;
-    private final int loggedInUserId;
+    private final int employeeId; // Change to use employeeId
 
     /**
      * Constructs a UserReport instance, initializing the DAO instances and
-     * retrieving the logged-in user's ID.
+     * setting the employee ID for the report.
      *
-     * @param workOrdersDAO       Data Access Object for work orders.
+     * @param workOrdersDAO        Data Access Object for work orders.
      * @param workOrderProductsDAO Data Access Object for work order products.
+     * @param employeeId           The ID of the employee for the report.
      */
-    public UserReport(WorkOrdersDAO workOrdersDAO, WorkOrderProductsDAO workOrderProductsDAO) {
+    public UserReport(WorkOrdersDAO workOrdersDAO, WorkOrderProductsDAO workOrderProductsDAO, int employeeId) {
         this.workOrdersDAO = workOrdersDAO;
         this.workOrderProductsDAO = workOrderProductsDAO;
-        this.loggedInUserId = LoggedInUserSingleton.getInstance().getEmployeeId();
+        this.employeeId = employeeId;
     }
 
     @Override
     public Map<Double, Double> forecastWorkOrderChartValues() {
         Map<Double, Double> forecastData = new HashMap<>();
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId);
 
         for (WorkOrder order : userWorkOrders) {
             double forecastRate = estimateProduction(order);
@@ -52,7 +52,7 @@ public class UserReport implements Report {
     @Override
     public Map<Double, Double> calculateOrdersExpectedCycleTimeChartValues() {
         Map<Double, Double> expectedCycleTimes = new HashMap<>();
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
 
         for (WorkOrder order : userWorkOrders) {
             double expectedTime = calculateExpectedCycleTime(order);
@@ -64,7 +64,7 @@ public class UserReport implements Report {
     @Override
     public Map<Double, Double> calculateOrdersActualCycleTimeChartValues() {
         Map<Double, Double> actualCycleTimes = new HashMap<>();
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
 
         for (WorkOrder order : userWorkOrders) {
             double actualTime = calculateActualCycleTime(order);
@@ -78,7 +78,7 @@ public class UserReport implements Report {
     @Override
     public Map<Double, Double> calculateThroughputChartValues() {
         Map<Double, Double> throughputData = new HashMap<>();
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
 
         for (WorkOrder order : userWorkOrders) {
             double throughput = calculateThroughput(order);
@@ -89,7 +89,7 @@ public class UserReport implements Report {
 
     @Override
     public Double calculateOnScheduleRate() {
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
         int onScheduleOrders = 0;
         int totalOrders = userWorkOrders.size();
 
@@ -104,7 +104,7 @@ public class UserReport implements Report {
 
     @Override
     public Map<String, Integer> calculateTotalOrdersByStatus() {
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
         Map<String, Integer> orderStatusCount = new HashMap<>();
 
         for (WorkOrder order : userWorkOrders) {
@@ -117,13 +117,13 @@ public class UserReport implements Report {
 
     @Override
     public Integer calculateTotalOrders() {
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
         return userWorkOrders.size();
     }
 
     @Override
     public Integer calculateTotalProductsProduced() {
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
         int totalProducts = 0;
 
         for (WorkOrder order : userWorkOrders) {
@@ -138,7 +138,7 @@ public class UserReport implements Report {
 
     @Override
     public Integer calculateTotalPartsUsed() {
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
         int totalParts = 0;
 
         for (WorkOrder order : userWorkOrders) {
@@ -153,7 +153,7 @@ public class UserReport implements Report {
 
     @Override
     public Double calculateTotalProductionCost() {
-        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(loggedInUserId);
+        List<WorkOrder> userWorkOrders = workOrdersDAO.getWorkOrdersByEmployeeId(employeeId); // Use employeeId
         double totalCost = 0.0;
 
         for (WorkOrder order : userWorkOrders) {

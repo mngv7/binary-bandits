@@ -88,7 +88,7 @@ public class WorkOrderController implements Observer {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     WorkOrder selectedWorkOrder = row.getItem();
-                    openEditWorkOrderPopup(selectedWorkOrder);
+                    editWorkOrderPopup(selectedWorkOrder);
                 }
             });
             return row;
@@ -118,7 +118,7 @@ public class WorkOrderController implements Observer {
     /**
      * Opens a popup window to create a new work order.
      */
-    public void openCreateWorkOrderPopup() {
+    public void createWorkOrderPopup() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/workorder/create_work_order.fxml"));
             Parent createWorkOrderRoot = fxmlLoader.load();
@@ -144,7 +144,7 @@ public class WorkOrderController implements Observer {
         }
     }
 
-    public void openEditWorkOrderPopup(WorkOrder workOrder) {
+    public void editWorkOrderPopup(WorkOrder workOrder) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/workorder/edit_work_order.fxml"));
             Parent root = fxmlLoader.load();
