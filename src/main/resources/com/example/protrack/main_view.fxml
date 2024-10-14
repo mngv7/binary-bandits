@@ -25,14 +25,15 @@
                 <VBox alignment="CENTER_LEFT" spacing="2">
                     <Label fx:id="timesheet" text="Timesheets" styleClass="timesheet-title" onMouseClicked="#myTimesheets"/>
                 </VBox>
-                <VBox alignment="CENTER_RIGHT" spacing="1">
+                <VBox alignment="CENTER_RIGHT">
                     <Label fx:id="employeeName" text="employeeName" styleClass="employee-name"/>
                     <Label fx:id="employeeTitle" text="employeeTitle" styleClass="employee-title"/>
                 </VBox>
 
                 <!-- Can do onMouseClicked to imitate a button, will need prepared statements  -->
+                <Region minWidth="1"/>
                 <Text text="🚹" style="-fx-fill: white;" styleClass="profile-text" onMouseClicked="#myProfile"/>
-                <Text text="🔔" style="-fx-fill: white;" styleClass="bell-text"/>
+                <Region minWidth="6"/>
             </HBox>
         </HBox>
     </top>
