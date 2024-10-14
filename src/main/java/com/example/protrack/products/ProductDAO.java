@@ -167,7 +167,6 @@ public class ProductDAO {
      *
      * @param productId The ID of the product to update.
      * @param newPrice  The new price to set for the product.
-     * @throws SQLException if there is an error during the update operation.
      */
     public void updateProductPrice(int productId, double newPrice) {
         String updatePriceSQL = "UPDATE products SET price = ? WHERE productId = ?";
