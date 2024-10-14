@@ -63,7 +63,6 @@ public class CustomerDAOImplementation implements CustomerDAO {
      *
      * @param customer The Customer object to be added
      * @return true if the customer was added successfully to the database, false otherwise
-     * @throws SQLException If an SQL error occurs
      */
     public boolean addCustomer(Customer customer) {
         String query = "INSERT INTO customer (first_name, last_name, email, phone_number, billing_address, shipping_address, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -94,7 +93,6 @@ public class CustomerDAOImplementation implements CustomerDAO {
      *
      * @param customerId The ID of the customer to be retrieved.
      * @return The Customer object if found, otherwise null.
-     * @throws SQLException If an SQL error occurs.
      */
     public Customer getCustomer(Integer customerId) {
         return null; // Need to implement.
@@ -117,7 +115,7 @@ public class CustomerDAOImplementation implements CustomerDAO {
     /**
      * Retrieves all customers from the database.
      *
-     * @return 'List<Customer>' containing all customers.
+     * @return List containing all customers.
      */
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
