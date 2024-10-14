@@ -27,33 +27,64 @@
                     <Label fx:id="initialsIcon" text="Initials" styleClass="initials-icon-large"/>
                     <HBox>
                         <Label text="Employee ID: " styleClass="parts-table-label"/>
-                        <Label fx:id="employeeIdLabel" text="ID"/>
+                        <Label fx:id="employeeIdLabel" text="ID" style="-fx-font-size: 14px;"/>
                     </HBox>
                 </VBox>
                 <VBox HBox.hgrow="ALWAYS" spacing="10">
                     <Label text="Personal Details" styleClass="parts-table-title"/>
 
                     <Label text="Full Name" styleClass="parts-table-label"/>
-                    <Label fx:id="fullName" text="Full Name"/>
+                    <Label fx:id="fullName" text="Full Name" style="-fx-font-size: 14px;"/>
 
                     <Label text="Title" styleClass="parts-table-label"/>
-                    <Label fx:id="employeeRole" text="Employee Role"/>
+                    <Label fx:id="employeeRole" text="Employee Role" style="-fx-font-size: 14px;"/>
 
                     <Label text="Email Address" styleClass="parts-table-label"/>
-                    <Label fx:id="emailAddress" text="Email Address"/>
+                    <Label fx:id="emailAddress" text="Email Address" style="-fx-font-size: 14px;"/>
 
                     <Label text="Date of Birth" styleClass="parts-table-label"/>
-                    <Label fx:id="dob" text="DOB"/>
+                    <Label fx:id="dob" text="DOB" style="-fx-font-size: 14px;"/>
 
                     <Label text="Phone Number" styleClass="parts-table-label"/>
-                    <Label fx:id="phoneNo" text="PhoneNo"/>
+                    <Label fx:id="phoneNo" text="Phone Number" style="-fx-font-size: 14px;"/>
 
                     <Label text="Gender" styleClass="parts-table-label"/>
-                    <Label fx:id="gender" text="Gender"/>
+                    <Label fx:id="gender" text="Gender" style="-fx-font-size: 14px;"/>
                 </VBox>
-                <VBox HBox.hgrow="ALWAYS">
+                <VBox HBox.hgrow="ALWAYS" spacing="10">
                     <Label text="Work Insights" styleClass="parts-table-title"/>
+
+                    <HBox spacing="10">
+                        <Label text="Total Work Orders: " styleClass="parts-table-label"/>
+                        <Label fx:id="totalWorkOrdersLabel" text="0" style="-fx-font-size: 14px;"/>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <Label text="Total Products Produced: " styleClass="parts-table-label"/>
+                        <Label fx:id="totalProductsProducedLabel" text="0" style="-fx-font-size: 14px;"/>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <Label text="Total Parts Used: " styleClass="parts-table-label"/>
+                        <Label fx:id="totalPartsUsedLabel" text="0" style="-fx-font-size: 14px;"/>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <Label text="On-Schedule Rate: " styleClass="parts-table-label"/>
+                        <Label fx:id="onScheduleRateLabel" text="0%" style="-fx-font-size: 14px;"/>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <Label text="Total Production Cost: " styleClass="parts-table-label"/>
+                        <Label fx:id="totalProductionCostLabel" text="0.00" style="-fx-font-size: 14px;"/>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <Label text="Orders By Status: " styleClass="parts-table-label"/>
+                        <Label fx:id="ordersByStatusLabel" text="Not Available" style="-fx-font-size: 14px;"/>
+                    </HBox>
                 </VBox>
+
             </HBox>
         </VBox>
     </center>

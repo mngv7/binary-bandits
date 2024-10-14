@@ -1,15 +1,26 @@
 package com.example.protrack.applicationpages;
 
+import com.example.protrack.customer.Customer;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.employees.SelectedEmployeeSingleton;
+import com.example.protrack.report.UserReport;
 import com.example.protrack.users.AbstractUser;
+import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import com.example.protrack.workorder.WorkOrdersDAO;
+import com.example.protrack.workorder.WorkOrdersDAOImplementation;
+import com.example.protrack.workorderproducts.WorkOrderProductsDAO;
+import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ExpandedEmployeeController {
@@ -44,14 +55,32 @@ public class ExpandedEmployeeController {
     @FXML
     private Label employeeNameTitle;
 
+    @FXML
+    private Label totalWorkOrdersLabel;
+
+    @FXML
+    private Label totalProductsProducedLabel;
+
+    @FXML
+    private Label totalPartsUsedLabel;
+
+    @FXML
+    private Label onScheduleRateLabel;
+
+    @FXML
+    private Label totalProductionCostLabel;
+
+    @FXML
+    private Label ordersByStatusLabel;
+
+    private UserReport userReport;
+
     private Integer employeeId;
     private MainController mainController;
 
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
-
-        removeEmployeeButton.setDisable(!usersDAO.getUserById(loggedInId).getAccessLevel().equals("HIGH"));
 
         String firstName = SelectedEmployeeSingleton.getInstance().getEmployeeFirstName();
         String lastname = SelectedEmployeeSingleton.getInstance().getEmployeeLastName();
@@ -61,6 +90,8 @@ public class ExpandedEmployeeController {
         employeeNameTitle.setText(firstName + " " + lastname);
 
         AbstractUser selectedUser = usersDAO.getUserById(employeeId);
+
+        removeEmployeeButton.setDisable(!usersDAO.getUserById(loggedInId).getAccessLevel().equals("HIGH"));
 
         String accessLevel = selectedUser.getAccessLevel();
         String role = switch (accessLevel) {
@@ -85,6 +116,43 @@ public class ExpandedEmployeeController {
         phoneNo.setText(selectedUser.getPhoneNo());
         gender.setText(selectedUser.getGender());
         employeeIdLabel.setText(String.valueOf(selectedUser.getEmployeeId()));
+
+        List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
+
+        List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
+
+        WorkOrdersDAO workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
+        WorkOrderProductsDAO workOrderProductsDAO = new WorkOrderProductsDAOImplementation();
+
+        userReport = new UserReport(workOrdersDAO, workOrderProductsDAO, employeeId);
+
+        populateUserStatistics();
+    }
+
+    private void populateUserStatistics() {
+        // Fetch and display total work orders
+        int totalWorkOrders = userReport.calculateTotalOrders();
+        totalWorkOrdersLabel.setText(String.valueOf(totalWorkOrders));
+
+        // Fetch and display total products produced
+        int totalProductsProduced = userReport.calculateTotalProductsProduced();
+        totalProductsProducedLabel.setText(String.valueOf(totalProductsProduced));
+
+        // Fetch and display total parts used
+        int totalPartsUsed = userReport.calculateTotalPartsUsed();
+        totalPartsUsedLabel.setText(String.valueOf(totalPartsUsed));
+
+        // Fetch and display on-schedule rate
+        double onScheduleRate = userReport.calculateOnScheduleRate();
+        onScheduleRateLabel.setText(String.format("%.2f%%", onScheduleRate));
+
+        // Fetch and display total production cost
+        double totalProductionCost = userReport.calculateTotalProductionCost();
+        totalProductionCostLabel.setText(String.format("$%.2f", totalProductionCost));
+
+        // Fetch and display orders by status
+        Map<String, Integer> ordersByStatus = userReport.calculateTotalOrdersByStatus();
+        ordersByStatusLabel.setText(ordersByStatus.toString());
     }
 
     public void setMainController(MainController mainController) {

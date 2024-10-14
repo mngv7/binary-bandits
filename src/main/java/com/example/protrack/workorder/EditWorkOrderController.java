@@ -179,6 +179,14 @@ public class EditWorkOrderController {
             editButton.setText("Cancel");
             saveButton.setVisible(true);
 
+            setOriginalValues();
+            orderOwnerComboBox.setValue(originalOrderOwner);
+            customerComboBox.setValue(originalCustomer);
+            orderDatePicker.setValue(originalOrderDate);
+            deliveryDatePicker.setValue(originalDeliveryDate);
+            shippingAddressField.setText(originalShippingAddress);
+            statusField.setText(originalStatus);
+
             orderOwnerComboBox.setVisible(true);
             customerComboBox.setVisible(true);
             orderDatePicker.setVisible(true);
@@ -197,8 +205,6 @@ public class EditWorkOrderController {
 
             shippingAddressField.setEditable(true);
             statusField.setEditable(true);
-
-            setOriginalValues();
         } else {
             // Switch to View Mode and reset fields
             resetFieldsToOriginal();
@@ -296,6 +302,8 @@ public class EditWorkOrderController {
      */
     @FXML
     private void saveWorkOrder() {
+        workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
+
         workOrder.setOrderOwner(orderOwnerComboBox.getValue());
         workOrder.setCustomer(customerComboBox.getValue());
         workOrder.setOrderDate(LocalDateTime.now());
@@ -317,6 +325,8 @@ public class EditWorkOrderController {
      */
     @FXML
     private void deleteWorkOrder() {
+        workOrdersDAO = new WorkOrdersDAOImplementation(usersList, customerList);
+
         workOrdersDAO.deleteWorkOrder(workOrder.getWorkOrderId());
 
         // Close the popup window
