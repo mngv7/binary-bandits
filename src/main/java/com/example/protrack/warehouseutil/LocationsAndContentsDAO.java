@@ -278,7 +278,7 @@ public class LocationsAndContentsDAO {
                     }
 
                     int quantity = rs.getInt(3);
-                    if (quantity > partToRemove.quantity) {
+                    if (quantity < partToRemove.quantity) {
                         /*
                          * Delete locationContents record as the partsID for that location is now empty.
                          * TODO: An exception handler in an exception handler... pray it doesn't explode.
