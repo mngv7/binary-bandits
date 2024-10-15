@@ -110,7 +110,7 @@ public class CreateWorkOrderController {
             @Override
             public TableCell<WorkOrderProduct, String> call(TableColumn<WorkOrderProduct, String> param) {
                 return new TableCell<>() {
-                    private final Button deleteButton = new Button(" 🗑 ️"); // Trash icon as button
+                    private final Button deleteButton = new Button(" \uD83D\uDDD1 "); // Trash icon as button
 
                     {
                         deleteButton.getStyleClass().add("trash-button");
