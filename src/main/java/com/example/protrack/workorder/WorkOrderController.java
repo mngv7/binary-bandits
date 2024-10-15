@@ -2,11 +2,13 @@ package com.example.protrack.workorder;
 
 import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
+import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.observers.Observer;
 import com.example.protrack.observers.WorkOrderTableSubject;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
+import com.example.protrack.workorderproducts.WorkOrderProduct;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,13 +22,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
+import javafx.stage.*;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class WorkOrderController implements Observer {
@@ -57,6 +59,8 @@ public class WorkOrderController implements Observer {
     private TableColumn<WorkOrder, Double> colSubtotal;
     @FXML
     private Button createWorkOrderButton;
+    @FXML
+    private Button exportToCsvButton;
 
     private ObservableList<WorkOrder> workOrders;
     private WorkOrderTableSubject workOrderSubject;
@@ -210,5 +214,66 @@ public class WorkOrderController implements Observer {
 
         workOrdersDAO.createWorkOrder(newWorkOrder);
         workOrderSubject.syncDataFromDB();
+    }
+
+    /**
+     * Method that handles the export to CSV when the button is clicked.
+     */
+    public void exportToCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save CSV File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showSaveDialog(exportToCsvButton.getScene().getWindow());
+
+        if (file != null) {
+            try (FileWriter writer = new FileWriter(file)) {
+                // Write the header row
+                writer.write("Work Order ID,Owner,Customer,Order Date,Delivery Date,Shipping Address,Products,Status,Subtotal\n");
+
+                // Fetch all work orders from the DAO
+                List<ProductionUser> productionUsers = new UsersDAO().getProductionUsers();
+                List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
+
+                WorkOrdersDAOImplementation workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
+                List<WorkOrder> workOrders = workOrdersDAO.getAllWorkOrders();
+
+                // Loop through each work order and export details including products
+                for (WorkOrder workOrder : workOrders) {
+                    // Fetch the products for this work order
+                    List<WorkOrderProduct> products = workOrder.getProducts();
+
+                    // Create a formatted string of all product names and quantities
+                    StringBuilder productDetails = new StringBuilder();
+                    for (WorkOrderProduct product : products) {
+                        productDetails.append(product.getProductName())
+                                .append(" (Qty: ")
+                                .append(product.getQuantity())
+                                .append("), ");
+                    }
+
+                    // Remove the trailing comma and space if products exist
+                    if (!productDetails.isEmpty()) {
+                        productDetails.setLength(productDetails.length() - 2);
+                    }
+
+                    // Write the work order details to the CSV
+                    writer.write(String.format("%d,%s,%s,%s,%s,%s,\"%s\",%s,%.2f\n",
+                            workOrder.getWorkOrderId(),
+                            workOrder.getOrderOwner(),
+                            workOrder.getCustomer(),
+                            workOrder.getOrderDate(),
+                            workOrder.getDeliveryDate(),
+                            workOrder.getShippingAddress(),
+                            productDetails,  // Include the products
+                            workOrder.getStatus(),
+                            workOrder.getSubtotal()
+                    ));
+                }
+
+                System.out.println("CSV file created successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
