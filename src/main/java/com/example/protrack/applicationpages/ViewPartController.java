@@ -4,7 +4,6 @@ import com.example.protrack.Main;
 import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 import com.example.protrack.warehouseutil.Warehouse;
 import com.example.protrack.warehouseutil.Workstation;
-import com.sun.net.httpserver.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,9 +21,6 @@ import java.util.Objects;
 public class ViewPartController {
     @FXML
     private TableView<Requests> PartRequestsTable;
-//    private List<PartRequests> partRequests;
-
-
 
     @FXML
     private TableColumn<Requests, Integer> colPartRequestsPartID;
@@ -35,24 +31,11 @@ public class ViewPartController {
     @FXML
     private TableColumn<Requests, Integer> colPartRequestsPartQuantity;
 
-    private ObservableList<Requests> PartRequestsList;
-
-//    private WarehouseController parentWarehouse;
-
+    @FXML
     public Button closePopupButton;
 
-
-//    private ViewPartController parentViewPart;
-
-    //    public void setParentWarehouseController (WarehouseController warehouse){
-//        this.parentWarehouse = warehouse;
-//    }
-//    public void setParentViewPartController (ViewPartController WarehousePastRequests){
-//        this.parentViewPart = WarehousePastRequests;
-//    }
-
     List<Requests> partRequests;
-
+    private ObservableList<Requests> PartRequestsList;
 
     public void initialize() {
         // Set up the TableView columns with the corresponding property values
@@ -134,7 +117,6 @@ public class ViewPartController {
             }
         }
     }
-
 
     // load parts request from db.
     public void loadPartsRequestFormDB() {

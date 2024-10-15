@@ -1,6 +1,5 @@
 package com.example.protrack.requests;
 
-import com.example.protrack.applicationpages.WarehousePartsRequests;
 import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
@@ -106,38 +105,6 @@ public class RequestsDAO {
         // return list of requests in table
         return requests;
     }
-
-
-    /**
-     * Getter that gets PartRequests of table
-     * @return PartRequests in requests table
-     */
-    //getPartRequests.
-    public List<WarehousePartsRequests> getPartRequests() {
-        List<WarehousePartsRequests> partRequests = new ArrayList<>();
-
-        String query = "SELECT r.partId, p.name AS partName, r.quantity "
-                + "FROM requests r "
-                + "JOIN parts p ON r.partId = p.partsId";
-
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            while (rs.next()) {
-                int partId = rs.getInt("partId");
-                int locationId = rs.getInt("locationId");
-                String partName = rs.getString("partName");
-                int quantity = rs.getInt("quantity");
-
-                WarehousePartsRequests request = new WarehousePartsRequests(partId, locationId, partName, quantity);
-                partRequests.add(request);
-            }
-        } catch (SQLException ex) {
-            System.err.println(ex);
-        }
-        return partRequests;
-    }
-
 
     /**
      * Removes a part request from the database.

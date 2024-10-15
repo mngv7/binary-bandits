@@ -18,10 +18,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class CreatePartsRequestController {
-
-    //@FXML
-    //private ComboBox<Workstation> workstationComboBox;
-
     @FXML
     private ComboBox<Parts> partComboBox;
 
@@ -54,14 +50,11 @@ public class CreatePartsRequestController {
 
     public void setWorkStationId(Integer value) {
         workStationId = value;
-        //System.out.println("WS ID HERE IN REQUEST" + workStationId);
-        //refreshTable();
     }
 
     // Method to clear product input fields
     private void clearPartInputFields() {
         partComboBox.getSelectionModel().clearSelection();
-        //workstationComboBox.getSelectionModel().clearSelection();
         partQuantityField.clear();
     }
 
@@ -91,8 +84,6 @@ public class CreatePartsRequestController {
         try {
             // Get the selected items from the ComboBoxes
             Parts selectedPart = partComboBox.getSelectionModel().getSelectedItem();
-            //Workstation selectedWorkstation = workstationComboBox.getSelectionModel().getSelectedItem();
-
             int quantity = Integer.parseInt(partQuantityField.getText());
 
             // Get the quantity entered by the user
@@ -100,7 +91,6 @@ public class CreatePartsRequestController {
                 throw new RuntimeException("Quantity cannot be less than 0");
             } else {
                 // Create a new request and add it to the database
-                // TODO: Primary key constraint assumption here completely breaks if a request is removed.
                 requestsDAO.newRequest(new Requests(workStationId,
                                                     selectedPart.getPartsId(),
                                                     findFirstFreeRequestId(),
