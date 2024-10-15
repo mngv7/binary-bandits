@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.workorderproducts.CreateWorkOrderController"
@@ -35,7 +37,7 @@
                 <!-- Customer Information -->
                 <Label text="Customer" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="parts-table-title"/>
                 <Label text="Customer:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <ComboBox fx:id="customerComboBox" promptText="Select Customer" maxWidth="700" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="customerComboBox" promptText="Select Customer" maxWidth="700" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#populateCustomerFields"/>
                 <Label text="Address:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                 <TextField fx:id="addressField" promptText="Address" maxWidth="700" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                 <Label text="Email:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
@@ -46,7 +48,7 @@
                 <!-- Shipping Information -->
                 <Label text="Shipping" GridPane.columnIndex="3" GridPane.rowIndex="0" styleClass="parts-table-title"/>
                 <Label text="Shipping Method:" styleClass="parts-table-label" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                <TextField fx:id="shippingMethodField" promptText="Shipping Method" maxWidth="700" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="shippingMethodCombo" promptText="Shipping Method:" maxWidth="700" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
                 <Label text="Shipping Address:" styleClass="parts-table-label" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
                 <TextField fx:id="shippingAddressField" promptText="Shipping Address" maxWidth="700" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
             </GridPane>
