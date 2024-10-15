@@ -4,6 +4,9 @@ import com.example.protrack.applicationpages.WarehousePastRequests;
 import com.example.protrack.products.Product;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.utility.DatabaseConnection;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.Warehouse;
+import com.example.protrack.warehouseutil.Workstation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -138,6 +141,25 @@ public class RequestsDAO {
         }
         return partRequests;
     }
+
+
+    /**
+     * Removes a part request from the database.
+     * @param partId the ID of the part request to be removed
+     */
+    public void removePartRequest(int partId) {
+        String query = "DELETE FROM requests WHERE partId = ?";  // SQL statement to delete a specific part request
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, partId);  // Set the partId parameter in the SQL query
+            stmt.executeUpdate();     // Execute the deletion
+
+            System.out.println("Part request with partId " + partId + " removed successfully.");
+        } catch (SQLException ex) {
+            System.err.println("Error removing part request: " + ex.getMessage());
+        }
+    }
+
 
 
     /**

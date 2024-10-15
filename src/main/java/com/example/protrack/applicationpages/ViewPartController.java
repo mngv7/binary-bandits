@@ -1,6 +1,7 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.sun.net.httpserver.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,10 +13,8 @@ import com.example.protrack.applicationpages.WarehousePastRequests;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import com.example.protrack.parts.Parts;
-import com.example.protrack.parts.PartsDAO;
-import com.example.protrack.requests.RequestsDAO;
-import com.example.protrack.requests.Requests;
+import com.example.protrack.parts.*;
+import com.example.protrack.requests.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +63,21 @@ public class ViewPartController {
         colPartRequestsPartQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
 
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        MenuItem acceptMenuItem = new MenuItem("Accept");
+        contextMenu.getItems().addAll(acceptMenuItem, deleteMenuItem);
+
+
+        deleteMenuItem.setOnAction(event -> handleDeletePartRequest());
+        acceptMenuItem.setOnAction(event -> handleAcceptPartRequest());
+
+        PartRequestsTable.setOnContextMenuRequested(event -> {
+            contextMenu.show(PartRequestsTable, event.getScreenX(), event.getScreenY());
+        });
+
+
+
         //Initialize the ObservableList and set it to the TableView
         PartRequestsList = FXCollections.observableArrayList();
         PartRequestsTable.setItems(PartRequestsList);
@@ -72,6 +86,34 @@ public class ViewPartController {
         loadPartsRequestFormDB();
 
     }
+
+    private void handleAcceptPartRequest() {
+
+    }
+
+    private void handleDeletePartRequest() {
+        WarehousePastRequests selectedPartRequest = PartRequestsTable.getSelectionModel().getSelectedItem();
+        if (selectedPartRequest != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Confirmation");
+            alert.setHeaderText("Are you sure you want to delete this part request?");
+            alert.setContentText("This action cannot be undone.");
+
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                // Remove the selected request from the TableView
+                PartRequestsTable.getItems().remove(selectedPartRequest);
+
+                // Remove the selected request from the database using partId
+                RequestsDAO requestsDAO = new RequestsDAO();
+                requestsDAO.removePartRequest(selectedPartRequest.getPartsId());  // Pass partId directly
+
+                // Optionally, refresh the table after the deletion
+                PartRequestsTable.refresh();
+            }
+        }
+    }
+
+
     // load parts request from db.
     public void loadPartsRequestFormDB() {
         PartRequestsList.clear();  // Clear the list to avoid duplicates
@@ -88,7 +130,6 @@ public class ViewPartController {
         // Refresh the TableView to display updated data
         PartRequestsTable.refresh();
     }
-
 
     public void onClosePopupButton(ActionEvent actionEvent) {
         // Create a confirmation alert
