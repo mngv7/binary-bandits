@@ -257,7 +257,7 @@ public class WorkOrderController implements Observer {
                     }
 
                     // Write the work order details to the CSV
-                    writer.write(String.format("%d,%s,%s,%s,%s,%s,\"%s\",%s,%.2f\n",
+                    writer.write(String.format("%d,%s,%s,%s,%s,\"%s\",\"%s\",%s,%.2f\n",
                             workOrder.getWorkOrderId(),
                             workOrder.getOrderOwner(),
                             workOrder.getCustomer(),
