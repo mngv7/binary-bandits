@@ -108,6 +108,38 @@ public class ProductOrderDAO {
         return productOrders;
     }
 
+
+    /**
+     * Getter that gets certain productOrder of table
+     * and it's WorkOrderID
+     *
+     * @return WorkOrderID of productOrder in productOrder table
+     */
+    public int getWOIDFromProductOrderID(int productOrderID) {
+
+        int workOrderID = -1;
+
+        // query being run, get all from productOrder
+        String query = "SELECT * FROM productOrder WHERE productOrderID = ?";
+
+        // try running query
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, productOrderID); // Set the product ID in the query
+            ResultSet rs = stmt.executeQuery();
+
+            // Loop through the result set and populate the HashMap
+            while (rs.next()) {
+                workOrderID = rs.getInt("workOrderID");
+            }
+        } catch (SQLException ex) {
+            //System.err.println("Error retrieving parts and amounts for product ID " + productId + ": " + ex.getMessage());
+            System.out.println(ex);
+        }
+
+        // return workOrderID from productOrder in table
+        return workOrderID;
+    }
+
     /**
      * Checks if table is empty.
      *

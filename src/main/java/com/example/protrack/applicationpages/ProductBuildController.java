@@ -1,18 +1,25 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.customer.Customer;
+import com.example.protrack.customer.CustomerDAO;
+import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.database.ProductBuildWSAmt;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.productbuild.ProductBuild;
 import com.example.protrack.productbuild.ProductBuildDAO;
+import com.example.protrack.productorders.ProductOrderDAO;
 import com.example.protrack.products.BillOfMaterials;
 import com.example.protrack.products.BillOfMaterialsDAO;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.products.TestRecordDAO;
+import com.example.protrack.users.ProductionUser;
+import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.DatabaseConnection;
 import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
 import com.example.protrack.warehouseutil.partIdWithQuantity;
+import com.example.protrack.workorder.WorkOrdersDAOImplementation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -94,6 +101,7 @@ public class ProductBuildController {
     private void loadBuildsFromDB() {
 
         try {
+            builds.clear();
             productBuildVBox.getChildren().clear();
             ProductBuildDAO productBuildDAO = new ProductBuildDAO();
             List<ProductBuild> buildList = productBuildDAO.getAllProductBuildsWithPOID(currentProductOrderId);
@@ -351,6 +359,34 @@ public class ProductBuildController {
 
             refreshReqTable();
             loadBuildsFromDB();
+
+            ProductOrderDAO productOrderDAO = new ProductOrderDAO();
+            int workOrderID = productOrderDAO.getWOIDFromProductOrderID(currentProductOrderId);
+            System.out.println("Got workOrderID " + workOrderID);
+
+            //check each pb in po, if all 100%, set wo to complete.
+            int isAllComplete = 1;
+            for (ProductBuild build : builds) {
+                System.out.println("This is build " + build.getBuildId() + " " + build.getBuildCompletion());
+                if (build.getBuildCompletion() != 100.00f) {
+                    isAllComplete = 0;
+                    System.out.println("This PO ain't complete");
+                    break;
+                }
+            }
+
+            if (isAllComplete == 1) {
+                UsersDAO usersDAO = new UsersDAO();
+                List<ProductionUser> productionUserList = usersDAO.getProductionUsers();
+                CustomerDAOImplementation customerDAOImplementation = new CustomerDAOImplementation();
+                List<Customer> customerList = customerDAOImplementation.getAllCustomers();
+                WorkOrdersDAOImplementation workOrdersDAOImplementation = new WorkOrdersDAOImplementation(productionUserList, customerList);
+                workOrdersDAOImplementation.updateWorkOrderStatus(workOrderID, "Complete");
+
+                System.out.println("Should have updated WO to be completed");
+            }
+
+
 
         }
     }
