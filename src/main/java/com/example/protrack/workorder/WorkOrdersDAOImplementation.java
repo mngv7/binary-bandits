@@ -349,5 +349,15 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
         return workOrders;
     }
 
-
+    @Override
+    public void updateWorkOrderStatus(int workOrderID, String newStatus) {
+        String sqlUpdateWorkOrder = "UPDATE work_orders SET status = ? WHERE work_order_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateWorkOrder)) {
+            preparedStatement.setString(1, newStatus);
+            preparedStatement.setInt(2, workOrderID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

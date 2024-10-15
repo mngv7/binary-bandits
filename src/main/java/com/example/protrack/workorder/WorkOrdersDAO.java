@@ -50,4 +50,11 @@ public interface WorkOrdersDAO {
      * @param id The ID of the work order to be deleted.
      */
     void deleteWorkOrder(Integer id);
+
+    /**
+     *
+     * @param workOrderID
+     * @param newStatus
+     */
+    void updateWorkOrderStatus(int workOrderID, String newStatus);
 }
