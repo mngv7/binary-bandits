@@ -100,7 +100,9 @@ public class WorkOrderController implements Observer {
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
-                if (!(empty || item == null)) {
+                if (empty || item == null) {
+                    setText(null);
+                } else {
                     setText(item.format(dateFormatter));
                 }
             }
