@@ -51,7 +51,7 @@ public class CreateWorkOrderController {
     private TextField phoneField;
 
     @FXML
-    private TextField shippingMethodField;
+    private ComboBox shippingMethodCombo;
 
     @FXML
     private TextField shippingAddressField;
@@ -110,7 +110,7 @@ public class CreateWorkOrderController {
             @Override
             public TableCell<WorkOrderProduct, String> call(TableColumn<WorkOrderProduct, String> param) {
                 return new TableCell<>() {
-                    private final Button deleteButton = new Button("🗑️"); // Trash icon as button
+                    private final Button deleteButton = new Button(" \uD83D\uDDD1 "); // Trash icon as button
 
                     {
                         deleteButton.getStyleClass().add("trash-button");
@@ -139,20 +139,40 @@ public class CreateWorkOrderController {
         workOrderOwnerComboBox.getItems().setAll(new UsersDAO().getProductionUsers());
         customerComboBox.getItems().setAll(new CustomerDAOImplementation().getAllCustomers());
         productComboBox.getItems().setAll(new ProductDAO().getAllProducts());
+        shippingMethodCombo.getItems().addAll("Priority", "International", "Economy");
 
         // Create a binding to check if any essential field is empty
         BooleanBinding emptyFields = Bindings.createBooleanBinding(() ->
                         addressField.getText().trim().isEmpty() ||
                                 emailField.getText().trim().isEmpty() ||
                                 shippingAddressField.getText().trim().isEmpty() ||
-                                shippingMethodField.getText().trim().isEmpty() ||
+                                shippingMethodCombo.getSelectionModel().isEmpty() ||
                                 workOrderTableView.getItems().isEmpty() ||
                                 customerComboBox.getSelectionModel().isEmpty(),
                 addressField.textProperty(), emailField.textProperty(),
-                shippingAddressField.textProperty(), shippingMethodField.textProperty(), workOrderTableView.getItems()
+                shippingAddressField.textProperty(), workOrderTableView.getItems()
         );
 
         createWorkOrderButton.disableProperty().bind(emptyFields);
+    }
+
+    /**
+     * Populates customer-related fields when a customer is selected from the customer combo box
+     */
+    @FXML
+    private void populateCustomerFields() {
+        Customer selectedCustomer = customerComboBox.getValue();
+        if (selectedCustomer != null) {
+            addressField.setText(selectedCustomer.getBillingAddress());
+            emailField.setText(selectedCustomer.getEmail());
+            phoneField.setText(selectedCustomer.getPhoneNumber());
+            shippingAddressField.setText(selectedCustomer.getShippingAddress());
+        } else {
+            addressField.clear();
+            emailField.clear();
+            phoneField.clear();
+            shippingAddressField.clear();
+        }
     }
 
     /**
@@ -256,7 +276,6 @@ public class CreateWorkOrderController {
             ProductionUser orderOwner = workOrderOwnerComboBox.getSelectionModel().getSelectedItem();
             Customer customer = customerComboBox.getSelectionModel().getSelectedItem();
             String shippingAddress = shippingAddressField.getText();
-            String shippingMethod = shippingMethodField.getText();
             LocalDateTime orderDate = LocalDateTime.now();
             LocalDateTime deliveryDate = orderDate.plusDays(7); // estimated delivery
 
@@ -313,8 +332,7 @@ public class CreateWorkOrderController {
                 new WorkOrderProductsDAOImplementation().addWorkOrderProduct(newWorkOrderProduct);
             }
 
-            // Clear the form after saving the work order and products
-            clearFormFields();
+            ((Stage) closePopupButton.getScene().getWindow()).close();
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid input: Please ensure all fields are filled correctly.");
@@ -362,7 +380,7 @@ public class CreateWorkOrderController {
         emailField.clear();
         phoneField.clear();
         shippingAddressField.clear();
-        shippingMethodField.clear();
+        shippingMethodCombo.getPromptText();
         workOrderOwnerComboBox.getSelectionModel().clearSelection();
         customerComboBox.getSelectionModel().clearSelection();
         productComboBox.getSelectionModel().clearSelection();
