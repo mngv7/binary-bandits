@@ -10,6 +10,9 @@ import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,17 +20,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.*;
+import javafx.util.Callback;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,12 +72,40 @@ public class WorkOrderController implements Observer {
         workOrderSubject = new WorkOrderTableSubject();
         workOrderSubject.registerObserver(this);
 
+        // Create a DateTimeFormatter for formatting the date
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         // Sets the TableView columns with the corresponding property values
         colWorkOrderId.setCellValueFactory(new PropertyValueFactory<>("workOrderId"));
         colOrderOwner.setCellValueFactory(new PropertyValueFactory<>("orderOwner"));
         colCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
-        colOrderDate.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
-        colDeliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
+
+        // Custom cell factory for colOrderDate
+        colOrderDate.setCellValueFactory(new PropertyValueFactory<>("orderDate")); // Just bind the property
+        colOrderDate.setCellFactory(column -> new TableCell<WorkOrder, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.format(dateFormatter));
+                }
+            }
+        });
+
+        // Custom cell factory for colDeliveryDate
+        colDeliveryDate.setCellValueFactory(new PropertyValueFactory<>("deliveryDate")); // Just bind the property
+        colDeliveryDate.setCellFactory(column -> new TableCell<WorkOrder, LocalDateTime>() {
+            @Override
+            protected void updateItem(LocalDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!(empty || item == null)) {
+                    setText(item.format(dateFormatter));
+                }
+            }
+        });
+
         colShippingAddress.setCellValueFactory(new PropertyValueFactory<>("shippingAddress"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
