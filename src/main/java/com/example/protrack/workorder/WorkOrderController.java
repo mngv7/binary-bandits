@@ -52,8 +52,6 @@ public class WorkOrderController implements Observer {
     @FXML
     private TableColumn<WorkOrder, String> colShippingAddress;
     @FXML
-    private TableColumn<WorkOrder, Integer> colProducts;
-    @FXML
     private TableColumn<WorkOrder, String> colStatus;
     @FXML
     private TableColumn<WorkOrder, Double> colSubtotal;

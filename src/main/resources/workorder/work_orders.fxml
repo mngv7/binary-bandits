@@ -25,13 +25,12 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                     </columnResizePolicy>
                     <columns>
-                        <TableColumn fx:id="colWorkOrderId" text="Work Order ID"/>
-                        <TableColumn fx:id="colOrderOwner" text="Owner:"/>
+                        <TableColumn fx:id="colWorkOrderId" text="Order ID"/>
+                        <TableColumn fx:id="colOrderOwner" text="Owner"/>
                         <TableColumn fx:id="colCustomer" text="Customer"/>
                         <TableColumn fx:id="colOrderDate" text="Order Date" />
                         <TableColumn fx:id="colDeliveryDate" text="Delivery Date"/>
                         <TableColumn fx:id="colShippingAddress" text="Shipping Address"/>
-                        <TableColumn fx:id="colProducts" text="Products"/>
                         <TableColumn fx:id="colStatus" text="Status"/>
                         <TableColumn fx:id="colSubtotal" text="Subtotal"/>
                     </columns>
