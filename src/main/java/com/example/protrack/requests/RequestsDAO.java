@@ -1,12 +1,7 @@
 package com.example.protrack.requests;
 
-import com.example.protrack.applicationpages.WarehousePastRequests;
-import com.example.protrack.products.Product;
-import com.example.protrack.products.TestRecord;
+import com.example.protrack.applicationpages.WarehousePartsRequests;
 import com.example.protrack.utility.DatabaseConnection;
-import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
-import com.example.protrack.warehouseutil.Warehouse;
-import com.example.protrack.warehouseutil.Workstation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -118,8 +113,8 @@ public class RequestsDAO {
      * @return PartRequests in requests table
      */
     //getPartRequests.
-    public List<WarehousePastRequests> getPartRequests() {
-        List<WarehousePastRequests> partRequests = new ArrayList<>();
+    public List<WarehousePartsRequests> getPartRequests() {
+        List<WarehousePartsRequests> partRequests = new ArrayList<>();
 
         String query = "SELECT r.partId, p.name AS partName, r.quantity "
                 + "FROM requests r "
@@ -130,10 +125,11 @@ public class RequestsDAO {
 
             while (rs.next()) {
                 int partId = rs.getInt("partId");
+                int locationId = rs.getInt("locationId");
                 String partName = rs.getString("partName");
                 int quantity = rs.getInt("quantity");
 
-                WarehousePastRequests request = new WarehousePastRequests(partId, partName, quantity);
+                WarehousePartsRequests request = new WarehousePartsRequests(partId, locationId, partName, quantity);
                 partRequests.add(request);
             }
         } catch (SQLException ex) {

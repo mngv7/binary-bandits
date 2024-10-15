@@ -1,6 +1,9 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.Warehouse;
+import com.example.protrack.warehouseutil.Workstation;
 import com.sun.net.httpserver.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,34 +12,30 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.example.protrack.applicationpages.WarehousePastRequests;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import com.example.protrack.parts.*;
 import com.example.protrack.requests.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ViewPartController {
     @FXML
-    private TableView<WarehousePastRequests> PartRequestsTable;
+    private TableView<Requests> PartRequestsTable;
 //    private List<PartRequests> partRequests;
 
 
 
     @FXML
-    private TableColumn<WarehousePastRequests, Integer> colPartRequestsPartID;
+    private TableColumn<Requests, Integer> colPartRequestsPartID;
 
     @FXML
-    private TableColumn<WarehousePastRequests, String> colPartRequestsPartName;
+    private TableColumn<Requests, String> colPartRequestsPartName;
 
     @FXML
-    private TableColumn<WarehousePastRequests, Integer> colPartRequestsPartQuantity;
+    private TableColumn<Requests, Integer> colPartRequestsPartQuantity;
 
-    private ObservableList<WarehousePastRequests> PartRequestsList;
+    private ObservableList<Requests> PartRequestsList;
 
 //    private WarehouseController parentWarehouse;
 
@@ -52,22 +51,19 @@ public class ViewPartController {
 //        this.parentViewPart = WarehousePastRequests;
 //    }
 
+    List<Requests> partRequests;
+
 
     public void initialize() {
-
-
-
         // Set up the TableView columns with the corresponding property values
-        colPartRequestsPartID.setCellValueFactory(new PropertyValueFactory<>("partsId"));
-        colPartRequestsPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colPartRequestsPartID.setCellValueFactory(new PropertyValueFactory<>("partId"));
+        colPartRequestsPartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
         colPartRequestsPartQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteMenuItem = new MenuItem("Delete");
         MenuItem acceptMenuItem = new MenuItem("Accept");
         contextMenu.getItems().addAll(acceptMenuItem, deleteMenuItem);
-
 
         deleteMenuItem.setOnAction(event -> handleDeletePartRequest());
         acceptMenuItem.setOnAction(event -> handleAcceptPartRequest());
@@ -75,8 +71,6 @@ public class ViewPartController {
         PartRequestsTable.setOnContextMenuRequested(event -> {
             contextMenu.show(PartRequestsTable, event.getScreenX(), event.getScreenY());
         });
-
-
 
         //Initialize the ObservableList and set it to the TableView
         PartRequestsList = FXCollections.observableArrayList();
@@ -88,11 +82,39 @@ public class ViewPartController {
     }
 
     private void handleAcceptPartRequest() {
+        Requests request = PartRequestsTable.getSelectionModel().getSelectedItem();
+        if (request != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Accept Confirmation");
+            alert.setHeaderText("Would you like to accept this parts request? This will automatically transfer parts to the Workstation that sent this request.");
+            alert.setContentText("This action cannot be undone.");
 
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                /* Transfer parts from Warehouse to Workstation. */
+                RequestsDAO requestsDAO = new RequestsDAO();
+                LocationsAndContentsDAO dao = new LocationsAndContentsDAO();
+                Warehouse targetWarehouse = dao.getAllWarehouses().get(0); /* Get first warehouse as there's only one warehouse. */
+                List<Workstation> allWorkstations = dao.getAllWorkstations();
+
+                /* Man, wtf is this... */
+                for (int i = 0; i < allWorkstations.size(); ++i) {
+                    if (allWorkstations.get(i).getWorkstationLocationId() == request.getLocationId()) {
+                        allWorkstations.get(i).importPartsIdWithQuantityFromWarehouse(targetWarehouse, dao, request.getPartId(), request.getQuantity());
+                        PartRequestsTable.getItems().remove(request);
+                        requestsDAO.removePartRequest(request.getPartId());
+                        PartRequestsTable.refresh();
+                        return; /* Exit this loop and function. */
+                    }
+                }
+
+                /* If we reach here at all, we've hit an error condition. */
+                throw new IllegalArgumentException("The workstation for this parts request doesn't exist.");
+            }
+        }
     }
 
     private void handleDeletePartRequest() {
-        WarehousePastRequests selectedPartRequest = PartRequestsTable.getSelectionModel().getSelectedItem();
+        Requests selectedPartRequest = PartRequestsTable.getSelectionModel().getSelectedItem();
         if (selectedPartRequest != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Confirmation");
@@ -105,7 +127,7 @@ public class ViewPartController {
 
                 // Remove the selected request from the database using partId
                 RequestsDAO requestsDAO = new RequestsDAO();
-                requestsDAO.removePartRequest(selectedPartRequest.getPartsId());  // Pass partId directly
+                requestsDAO.removePartRequest(selectedPartRequest.getPartId());  // Pass partId directly
 
                 // Optionally, refresh the table after the deletion
                 PartRequestsTable.refresh();
@@ -122,7 +144,7 @@ public class ViewPartController {
         RequestsDAO requestsDAO = new RequestsDAO();
 
         // Use getPartRequests() method to fetch all part requests from both 'requests' and 'parts' tables
-        List<WarehousePastRequests> partRequests = requestsDAO.getPartRequests();
+        partRequests = requestsDAO.getAllRequests();
 
         // Add all the part requests to the ObservableList
         PartRequestsList.addAll(partRequests);

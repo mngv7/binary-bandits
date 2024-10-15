@@ -7,6 +7,7 @@ module com.example.protrack {
     requires javafx.base;
     requires java.desktop;
     requires org.apache.pdfbox;
+    requires jdk.httpserver;
 
     opens com.example.protrack to javafx.fxml;
     opens com.example.protrack.products to javafx.base;

@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.List;
 import java.util.Objects;
 
 public class CreatePartsRequestController {
@@ -64,6 +65,20 @@ public class CreatePartsRequestController {
         partQuantityField.clear();
     }
 
+    public int findFirstFreeRequestId () {
+        RequestsDAO requestsDAO = new RequestsDAO();
+        List<Requests> requests = requestsDAO.getAllRequests();
+        int record_idx = 0;
+        int first_free_val = 0;
+        while (record_idx < requests.size()) {
+            if (requests.get(record_idx).getRequestId() == first_free_val) {
+                first_free_val++;
+            }
+            record_idx++;
+        }
+        return first_free_val;
+    }
+
     /**
      * Event handler for the "Request Stock Transfer" button.
      * Parses the input fields to create a new Requests object and adds it to the database.
@@ -85,7 +100,11 @@ public class CreatePartsRequestController {
                 throw new RuntimeException("Quantity cannot be less than 0");
             } else {
                 // Create a new request and add it to the database
-                requestsDAO.newRequest(new Requests(workStationId, selectedPart.getPartsId(), (requestsDAO.getAllRequests().toArray()).length + 1, quantity));
+                // TODO: Primary key constraint assumption here completely breaks if a request is removed.
+                requestsDAO.newRequest(new Requests(workStationId,
+                                                    selectedPart.getPartsId(),
+                                                    findFirstFreeRequestId(),
+                                                    quantity));
             }
 
             // Reset the part selection and quantity fields
