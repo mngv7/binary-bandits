@@ -21,25 +21,34 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller class for managing the employees page.
+ * Handles displaying the list of users and opening the user creation popup.
+ */
 public class EmployeesController {
 
     // Constants for the popup window
     private static final String TITLE = "Create User";
     private static final int WIDTH = 500;
     private static final int HEIGHT = 600;
+
     @FXML
     public VBox employeeNames; // VBox to display the list of employee names and titles
     @FXML
     public Button newUserButton; // Button to create a new user
     @FXML
-    public VBox employeeIcons;
+    public VBox employeeIcons; // VBox for displaying employee icons
     @FXML
-    public GridPane employeesGridPane;
+    public GridPane employeesGridPane; // GridPane for arranging employee icons and names
     @FXML
-    public VBox iconAndNameGroup;
+    public VBox iconAndNameGroup; // Group containing employee icon and name together
+
     private MainController mainController;  // Store the MainController instance
 
-    // Initializes the controller and sets up UI components
+    /**
+     * Initializes the controller and sets up UI components.
+     * Disables the 'New User' button for users without 'HIGH' access level.
+     */
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
         UsersDAO usersDAO = new UsersDAO();
@@ -51,16 +60,18 @@ public class EmployeesController {
         loadAllUsers();
     }
 
-    // Loads all users from the database and adds them to the VBox
+    /**
+     * Loads all users from the database and populates the GridPane with their names and icons.
+     */
     public void loadAllUsers() {
         UsersDAO usersDAO = new UsersDAO();
         List<AbstractUser> allUsers = usersDAO.getAllUsers();
 
-        // Initialize column and row indexes
+        // Initialize column and row indexes for arranging the employee details
         int columnIndex = 0;
         int rowIndex = 0;
 
-        // Iterate through the list of all users and add their information to the UI
+        // Iterate through the list of users and add their details to the UI
         for (AbstractUser user : allUsers) {
             VBox columns = new VBox();
             VBox rows = new VBox();
@@ -73,16 +84,17 @@ public class EmployeesController {
                 default -> "Unknown";
             };
 
-            // Create labels for the employee's name and title
+            // Create a button with the employee's full name and handle selection on click
             Button employeeNameButton = new Button();
             employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
             employeeNameButton.getStyleClass().add("text-button");
             employeeNameButton.setOnAction(event -> handleButtonPress(user.getFirstName(), user.getLastName()));
 
+            // Create labels for employee title and a spacer
             Label employeeTitleLabel = new Label(employeeTitle);
-            Label spacing = new Label(" "); // Spacer to separate labels
+            Label spacing = new Label(" ");
 
-            // Create initials label for the icon
+            // Create initials label for the employee icon
             String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0, 1);
             Label initialsIcon = new Label(initials);
             initialsIcon.getStyleClass().add("initials-icon");
@@ -94,34 +106,50 @@ public class EmployeesController {
             employeesGridPane.add(columns, columnIndex, rowIndex);
             employeesGridPane.add(rows, columnIndex + 1, rowIndex);
 
-            // Update the row and column indexes
+            // Update the row and column indexes for arranging users
             rowIndex++;
-            if (rowIndex > 4) { // Number of rows before changing columns.
+            if (rowIndex > 4) {
                 rowIndex = 0;
-                columnIndex += 2; // Skip to the next set of columns for icons and labels
+                columnIndex += 2;
             }
         }
     }
 
-    // Setter for MainController
+    /**
+     * Setter for injecting the MainController instance.
+     *
+     * @param mainController The MainController instance to be injected.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Loads the expanded employee profile by notifying the MainController.
+     */
     @FXML
     private void loadEmployeeProfile() {
         if (mainController != null) {
-            mainController.employeesExpanded();  // Use the injected MainController instance
+            mainController.employeesExpanded();
         }
     }
 
+    /**
+     * Handles the button press event for selecting an employee.
+     * Stores the selected employee's first and last name in the Singleton and loads the profile.
+     *
+     * @param firstName The first name of the selected employee.
+     * @param lastName  The last name of the selected employee.
+     */
     private void handleButtonPress(String firstName, String lastName) {
         SelectedEmployeeSingleton.getInstance().setEmployeeFirstName(firstName);
         SelectedEmployeeSingleton.getInstance().setEmployeeLastName(lastName);
         loadEmployeeProfile();
     }
 
-    // Opens a popup window to create a new user
+    /**
+     * Opens a popup window for creating a new user.
+     */
     public void openCreateNewUserPopup() {
         try {
             // Load the FXML file for the popup window
@@ -140,15 +168,16 @@ public class EmployeesController {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
+            // Inject EmployeesController instance to the popup's controller
             CreateNewUserController createNewUserController = fxmlLoader.getController();
-            createNewUserController.setEmployeesController(this);  // Pass EmployeesController to it
+            createNewUserController.setEmployeesController(this);
 
             // Set the position and show the popup window
             popupStage.setY(150);
             popupStage.setX(390);
             popupStage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace(); // Handle potential I/O errors
+            e.printStackTrace();
         }
     }
 }

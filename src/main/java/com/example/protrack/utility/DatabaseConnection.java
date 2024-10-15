@@ -12,7 +12,12 @@ public class DatabaseConnection {
     private DatabaseConnection() {
     }
 
-    // Get the single connection instance
+    /**
+     * Retrieves the single connection instance. If the connection is not
+     * established or is invalid, a new connection will be created.
+     *
+     * @return the established database connection
+     */
     public static Connection getInstance() {
         if (connection == null || !isConnectionValid()) {
             try {
@@ -26,7 +31,11 @@ public class DatabaseConnection {
         return connection;
     }
 
-    // Check if the connection is valid
+    /**
+     * Checks if the current database connection is valid.
+     *
+     * @return true if the connection is valid, false otherwise
+     */
     private static boolean isConnectionValid() {
         try {
             return connection != null && connection.isValid(2); // 2-second timeout
@@ -36,7 +45,10 @@ public class DatabaseConnection {
         }
     }
 
-    // Close the database connection
+    /**
+     * Closes the database connection if it is currently established.
+     * Allows for reinitialization of the connection.
+     */
     public static void close() {
         if (connection != null) {
             try {
