@@ -3,24 +3,38 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.protrack.applicationpages.CreateWorkstationController">
+            fx:controller="com.example.protrack.applicationpages.CreateWorkstationController" styleClass="add-parts-popup">
     <top>
         <!-- Title and Close Button -->
-        <GridPane styleClass="parts-title-container" hgap="165">
-            <Label text="Create Parts" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+        <GridPane styleClass="parts-title-container">
+            <Label text="Create Workstation" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Region GridPane.hgrow="ALWAYS"/>
             <Button fx:id="closePopupButton" text="❌" onAction="#handleCancel" GridPane.halignment="RIGHT"
                     GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
         </GridPane>
     </top>
     <center>
-        <VBox>
+        <VBox spacing="10">
             <!--the collect workstation data to add workstation table-->
-            <Label text="Workstation Details"/>
-            <TextField fx:id="nameField" promptText="Workstation Name"/>
-            <TextField fx:id="capacityField" promptText="Stock Capacity"/>
-            <Button text="Create Workstation" onAction="#handleCreate"/>
-            <Button text="Cancel" onAction="#handleCancel"/>
+            <Label text="Workstation Details" styleClass="parts-table-label"/>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Label text="Workstation Name:" style="-fx-font-size: 14px;"/>
+                <TextField fx:id="nameField" prefWidth="175" promptText="Workstation Name"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Label text="Workstation Capacity:" style="-fx-font-size: 14px;"/>
+                <TextField fx:id="capacityField" prefWidth="175" promptText="Stock Capacity"/>
+            </HBox>
+            <HBox>
+                <Button text="Create Workstation" onAction="#handleCreate" styleClass="create-product-button"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Cancel" onAction="#handleCancel" styleClass="delete-button"/>
+            </HBox>
+            <padding>
+                <Insets top="5" right="20" bottom="15" left="20"/>
+            </padding>
         </VBox>
     </center>
 </BorderPane>
