@@ -408,7 +408,9 @@ public class ProductBuildController {
             labelController.setLabelData(workOrderId);
 
             Stage stage = new Stage();
-            stage.setScene(new Scene(labelPopup));
+            stage.setScene(new Scene(labelPopup, 700, 420));
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
+            stage.getScene().getStylesheets().add(stylesheet);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);  // Customize the style as needed
             stage.showAndWait();

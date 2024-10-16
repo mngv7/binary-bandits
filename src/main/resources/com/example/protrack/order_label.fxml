@@ -7,60 +7,73 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.OrderLabelController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0" styleClass="add-parts-popup">
 
-    <VBox spacing="10" alignment="CENTER">
-        <Label text="Label Generation" styleClass="header-label"/>
+    <top>
+        <Region minHeight="20"/>
+        <GridPane styleClass="parts-title-container" hgap="345">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+            <Label text="Order Label" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Button fx:id="closePopupButton" text="❌" GridPane.halignment="RIGHT" onAction="#handleClose"
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="1" styleClass="close-button"/>
+        </GridPane>
+    </top>
 
-        <!-- Work Order Section -->
-        <HBox spacing="10">
-            <Label text="Work Order ID:"/>
-            <Label fx:id="workOrderIdLabel"/>
-        </HBox>
-        <HBox spacing="10">
-            <Label text="Barcode:"/>
-            <ImageView fx:id="barcodeImageView"/>
-        </HBox>
+    <center>
+        <VBox spacing="10">
+            <HBox spacing="10">
+                <Label text="Work Order ID:" styleClass="parts-table-label"/>
+                <Label fx:id="workOrderIdLabel" style="-fx-font-size: 16px;"/>
+            </HBox>
 
-        <!-- Customer Info Section -->
-        <HBox spacing="10">
-            <Label text="Customer Name:"/>
-            <Label fx:id="customerNameLabel"/>
-        </HBox>
-        <HBox spacing="10">
-            <Label text="Customer Phone:"/>
-            <Label fx:id="customerPhoneLabel"/>
-        </HBox>
+            <HBox spacing="10">
+                <ImageView fx:id="barcodeImageView"/>
 
-        <!-- Shipping Info Section -->
-        <HBox spacing="10">
-            <Label text="Shipping Address:"/>
-            <Label fx:id="shippingAddressLabel"/>
-        </HBox>
-        <HBox spacing="10">
-            <Label text="Location:"/>
-            <Label fx:id="locationLabel"/>
-        </HBox>
+                <!-- Customer Info Section -->
+                <VBox spacing="10">
+                    <Label text="Customer Details:" styleClass="parts-table-label"/>
+                    <HBox spacing="10">
+                        <Label text="Customer Name:" styleClass="parts-table-label"/>
+                        <Label fx:id="customerNameLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Customer Phone:" styleClass="parts-table-label"/>
+                        <Label fx:id="customerPhoneLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
 
-        <!-- Business Info Section -->
-        <HBox spacing="10">
-            <Label text="Business Phone:"/>
-            <Label fx:id="businessPhoneLabel"/>
-        </HBox>
-        <HBox spacing="10">
-            <Label text="Business Email:"/>
-            <Label fx:id="businessEmailLabel"/>
-        </HBox>
+                    <!-- Shipping Info Section -->
+                    <HBox spacing="10">
+                        <Label text="Shipping Address:" styleClass="parts-table-label"/>
+                        <Label fx:id="shippingAddressLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
 
-        <!-- Buttons -->
-        <HBox spacing="10">
-            <Button text="Generate" onAction="#handleGenerate"/>
-            <Button text="Close" onAction="#handleClose"/>
-        </HBox>
-    </VBox>
+                    <Region minHeight="20"/>
 
-
-</AnchorPane>
+                    <Label text="Business Details:" styleClass="parts-table-label"/>
+                    <HBox spacing="10">
+                        <Label text="Location:" styleClass="parts-table-label"/>
+                        <Label fx:id="locationLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Business Phone:" styleClass="parts-table-label"/>
+                        <Label fx:id="businessPhoneLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Business Email:" styleClass="parts-table-label"/>
+                        <Label fx:id="businessEmailLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

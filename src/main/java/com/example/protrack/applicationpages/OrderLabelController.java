@@ -91,11 +91,6 @@ public class OrderLabelController {
     }
 
     @FXML
-    private void handleGenerate() {
-
-    }
-
-    @FXML
     private void handleClose() {
         Stage stage = (Stage) workOrderIdLabel.getScene().getWindow();
         stage.close();
