@@ -23,6 +23,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controller for the expanded view of an employee's details.
+ * This class manages the display of an employee's information and statistics,
+ * as well as handling navigation and employee removal functionality.
+ */
 public class ExpandedEmployeeController {
 
     @FXML
@@ -80,7 +85,7 @@ public class ExpandedEmployeeController {
 
     /**
      * Initializes the controller by fetching the details of the selected employee
-     * and populating UI fields retrieved information.
+     * and populating UI fields with the retrieved information.
      */
     public void initialize() {
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
@@ -105,7 +110,6 @@ public class ExpandedEmployeeController {
             default -> "Unknown Role"; // Handle unexpected access levels
         };
 
-
         String initials = selectedUser.getFirstName().charAt(0) + selectedUser.getLastName().substring(0, 1);
         initialsIcon.setText(initials);
 
@@ -122,7 +126,6 @@ public class ExpandedEmployeeController {
         employeeIdLabel.setText(String.valueOf(selectedUser.getEmployeeId()));
 
         List<ProductionUser> productionUsers = usersDAO.getProductionUsers();
-
         List<Customer> customers = new CustomerDAOImplementation().getAllCustomers();
 
         WorkOrdersDAO workOrdersDAO = new WorkOrdersDAOImplementation(productionUsers, customers);
@@ -134,7 +137,7 @@ public class ExpandedEmployeeController {
     }
 
     /**
-     * Populates the various user KPIs for display
+     * Populates the various user Key Performance Indicators (KPIs) for display.
      */
     private void populateUserStatistics() {
         // Fetch and display total work orders
@@ -168,7 +171,7 @@ public class ExpandedEmployeeController {
     }
 
     /**
-     * Sets reference to the main controller for return navigation to main page.
+     * Sets a reference to the main controller for navigation back to the main page.
      *
      * @param mainController the main controller of the application
      */
@@ -187,10 +190,9 @@ public class ExpandedEmployeeController {
     }
 
     /**
-     * Handles the removal of an employee
+     * Handles the removal of an employee by deleting the selected employee from the database.
      */
     public void onRemoveEmployeeButtonPress() {
-
         Integer loggedInId = LoggedInUserSingleton.getInstance().getEmployeeId();
 
         if (!Objects.equals(employeeId, loggedInId)) {

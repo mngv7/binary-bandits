@@ -48,12 +48,17 @@ public class CreateNewUserController {
 
     private EmployeesController employeesController;  // Reference to EmployeesController
 
+    /**
+     * Sets the reference to the EmployeesController to allow interaction with the employee list.
+     *
+     * @param employeesController the EmployeesController instance
+     */
     public void setEmployeesController(EmployeesController employeesController) {
         this.employeesController = employeesController;
     }
 
     /**
-     * Method to handle the action when the close popup button is clicked.
+     * Handles the action when the close popup button is clicked.
      * Displays a confirmation dialog asking if the user is sure they want to cancel.
      */
     public void onClosePopupButton() {
@@ -95,7 +100,7 @@ public class CreateNewUserController {
     }
 
     /**
-     * Method to create a new user based on the input fields and selected access level.
+     * Creates a new user based on the input fields and selected access level.
      * Throws SQLException if there is an issue with database operations.
      */
     public void createNewUser() throws SQLException {
@@ -128,8 +133,9 @@ public class CreateNewUserController {
                 break;
         }
 
+        // Refresh the employee list in EmployeesController
         if (employeesController != null) {
-            employeesController.loadAllUsers();  // Refresh the employee list
+            employeesController.loadAllUsers();
         }
 
         // Close the popup window after user creation
