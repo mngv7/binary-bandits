@@ -20,9 +20,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.awt.image.BufferedImage;
+import javafx.print.PrinterJob;
 import java.util.List;
 
 public class OrderLabelController {
@@ -50,6 +52,9 @@ public class OrderLabelController {
 
     @FXML
     private Label businessEmailLabel;
+
+    @FXML
+    private VBox labelContent;
 
     // Method to initialize the controller with the required data
     public void setLabelData(int workOrderId) {
@@ -87,6 +92,20 @@ public class OrderLabelController {
             barcodeImageView.setImage(barcodeImage);
         } catch (WriterException e) {
             System.err.println("Error generating barcode: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Handles the print button action by rendering the labelPane to an image and sending it to the printer.
+     */
+    @FXML
+    private void handlePrint() {
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
+        if (printerJob != null) {
+            boolean success = printerJob.printPage(labelContent);
+            if (success) {
+                printerJob.endJob();
+            }
         }
     }
 

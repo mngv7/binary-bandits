@@ -15,19 +15,22 @@
 
     <top>
         <Region minHeight="20"/>
-        <GridPane styleClass="parts-title-container" hgap="345">
+        <GridPane styleClass="parts-title-container">
             <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="83"/>
+                <ColumnConstraints percentWidth="10"/>
+                <ColumnConstraints percentWidth="7"/>
             </columnConstraints>
             <Label text="Order Label" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Button fx:id="printButton" text="🖶" GridPane.halignment="RIGHT" onAction="#handlePrint" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                    style="-fx-background-color: #FFFFFF; -fx-background-radius: 6px; -fx-text-fill: #77c3ec; -fx-border-color: #77c3ec; -fx-border-width: 2px; -fx-border-style: solid; -fx-border-radius: 5px;"/>
             <Button fx:id="closePopupButton" text="❌" GridPane.halignment="RIGHT" onAction="#handleClose"
-                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="1" styleClass="close-button"/>
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
         </GridPane>
     </top>
 
     <center>
-        <VBox spacing="10">
+        <VBox fx:id="labelContent" spacing="10">
             <HBox spacing="10">
                 <Label text="Work Order ID:" styleClass="parts-table-label"/>
                 <Label fx:id="workOrderIdLabel" style="-fx-font-size: 16px;"/>
