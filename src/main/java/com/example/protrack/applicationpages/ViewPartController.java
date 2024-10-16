@@ -1,9 +1,13 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.database.WorkstationPartDBTable;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
+import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
+import com.example.protrack.warehouseutil.RealWarehouse;
+import com.example.protrack.warehouseutil.RealWorkstation;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -124,6 +128,17 @@ public class ViewPartController {
         public int getRequestID() {
             return getRequestId();
         }
+    }
+
+    public void handleReject(Requests request) {
+        RequestsDAO requestsDAO = new RequestsDAO();
+        requestsDAO.deleteRequestById(request.getRequestId());
+    }
+
+    public void handleAccept(Requests request) {
+        RequestsDAO requestsDAO = new RequestsDAO();
+        requestsDAO.deleteRequestById(request.getRequestId());
+        // full functionality could be implemented here
     }
 
     public void onClosePopupButton() {

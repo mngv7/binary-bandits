@@ -71,6 +71,27 @@ public class RequestsDAO {
     }
 
     /**
+     * Deletes a request from the database based on requestId.
+     * @param requestId the ID of the request to delete
+     */
+    public void deleteRequestById(int requestId) {
+        String query = "DELETE FROM requests WHERE requestId = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, requestId); // Set requestId for the query
+            int rowsAffected = stmt.executeUpdate(); // Execute the delete query
+
+            if (rowsAffected > 0) {
+                System.out.println("Request with ID " + requestId + " deleted successfully.");
+            } else {
+                System.out.println("No request found with ID " + requestId);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error deleting request: " + ex.getMessage());
+        }
+    }
+
+    /**
      * Drops the "requests" table from the database.
      */
     public void dropTable() {

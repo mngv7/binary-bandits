@@ -249,7 +249,7 @@ public class WarehouseController {
 
 
             // Set the scene for the pop-up
-            Scene scene = new Scene(ViewPartsRoot, WIDTH, HEIGHT);
+                Scene scene = new Scene(ViewPartsRoot, 600, HEIGHT);
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);

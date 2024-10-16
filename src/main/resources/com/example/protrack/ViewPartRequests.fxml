@@ -32,11 +32,12 @@
                 </columnResizePolicy>
 
                 <columns>
+                    <TableColumn fx:id="colLocationID" text="Location" />
                     <TableColumn fx:id="colPartRequestsPartID" text="Part ID" styleClass="work-orders-table-cell" maxWidth="150"/>
                     <TableColumn fx:id="colPartRequestsPartName" text="Part Name" styleClass="work-orders-table-cell"/>
                     <TableColumn fx:id="colPartRequestsPartQuantity" text="Quantity" styleClass="work-orders-table-cell" maxWidth="100"/>
-                    <TableColumn fx:id="acceptColumn" text="Accept" />
-                    <TableColumn fx:id="rejectColumn" text="Reject" />
+                    <TableColumn fx:id="acceptColumn" maxWidth="35"/>
+                    <TableColumn fx:id="rejectColumn" maxWidth="35"/>
                 </columns>
             </TableView>
         </VBox>
