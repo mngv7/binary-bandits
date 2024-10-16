@@ -6,9 +6,61 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.OrderLabelController"
             prefHeight="400.0" prefWidth="600.0">
+
+    <VBox spacing="10" alignment="CENTER">
+        <Label text="Label Generation" styleClass="header-label"/>
+
+        <!-- Work Order Section -->
+        <HBox spacing="10">
+            <Label text="Work Order ID:"/>
+            <Label fx:id="workOrderIdLabel"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Barcode:"/>
+            <ImageView fx:id="barcodeImageView"/>
+        </HBox>
+
+        <!-- Customer Info Section -->
+        <HBox spacing="10">
+            <Label text="Customer Name:"/>
+            <Label fx:id="customerNameLabel"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Customer Phone:"/>
+            <Label fx:id="customerPhoneLabel"/>
+        </HBox>
+
+        <!-- Shipping Info Section -->
+        <HBox spacing="10">
+            <Label text="Shipping Address:"/>
+            <Label fx:id="shippingAddressLabel"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Location:"/>
+            <Label fx:id="locationLabel"/>
+        </HBox>
+
+        <!-- Business Info Section -->
+        <HBox spacing="10">
+            <Label text="Business Phone:"/>
+            <Label fx:id="businessPhoneLabel"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Business Email:"/>
+            <Label fx:id="businessEmailLabel"/>
+        </HBox>
+
+        <!-- Buttons -->
+        <HBox spacing="10">
+            <Button text="Generate" onAction="#handleGenerate"/>
+            <Button text="Close" onAction="#handleClose"/>
+        </HBox>
+    </VBox>
+
 
 </AnchorPane>
