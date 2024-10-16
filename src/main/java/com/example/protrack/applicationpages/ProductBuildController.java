@@ -397,7 +397,7 @@ public class ProductBuildController {
 
     public void generateLabel() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/label-popup.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/order_label.fxml"));
             Parent labelPopup = fxmlLoader.load();
 
             OrderLabelController labelController = fxmlLoader.getController();
