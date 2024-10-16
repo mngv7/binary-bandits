@@ -1,11 +1,12 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
+import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -21,20 +22,22 @@ public class ViewPartController {
     private Button closePopupButton;
 
     @FXML
-    private TableView<Requests> partRequestsTable;
+    private TableView<RequestWithPartName> partRequestsTable;
     @FXML
-    private TableColumn<WarehousePastRequests, Integer> colPartRequestsPartID;
+    private TableColumn<RequestWithPartName, Integer> colPartRequestsPartID;
     @FXML
-    private TableColumn<WarehousePastRequests, String> colPartRequestsPartName;
+    private TableColumn<RequestWithPartName, String> colPartRequestsPartName;
     @FXML
-    private TableColumn<WarehousePastRequests, Integer> colPartRequestsPartQuantity;
+    private TableColumn<RequestWithPartName, Integer> colPartRequestsPartQuantity;
 
-    private ObservableList<Requests> partRequestsList;
+    private ObservableList<RequestWithPartName> partRequestsList;
 
     public void initialize() {
         // Set up the TableView columns with the corresponding property values
         colPartRequestsPartID.setCellValueFactory(new PropertyValueFactory<>("partId"));
-        colPartRequestsPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        colPartRequestsPartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
+
         colPartRequestsPartQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         // Initialize the ObservableList and set it to the TableView
@@ -42,23 +45,40 @@ public class ViewPartController {
         partRequestsTable.setItems(partRequestsList);
         partRequestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Load and display the initial list of work orders
+        // Load and display the initial list of requests
         refreshTable();
     }
 
-
     public void refreshTable() {
-        // You need to implement this function to fetch data from your DAO or service class
-        // Simulating fetching data from some DAO
         partRequestsList.clear();
-
         RequestsDAO requestsDAO = new RequestsDAO();
+        PartsDAO partsDAO = new PartsDAO(); // Create an instance of PartsDAO
 
         List<Requests> fetchedRequests = requestsDAO.getAllRequests();
-        partRequestsList.addAll(fetchedRequests);
+
+        for (Requests request : fetchedRequests) {
+            // Fetch part name using partId
+            String partName = partsDAO.getPartById(request.getPartId()).getName();
+            // Add the request to the observable list along with part name
+            partRequestsList.add(new RequestWithPartName(request, partName));
+        }
     }
 
-    public void onClosePopupButton(ActionEvent actionEvent) {
+    // Inner class to wrap Requests with part name
+    public static class RequestWithPartName extends Requests {
+        private final String partName;
+
+        public RequestWithPartName(Requests request, String partName) {
+            super(request.getLocationId(), request.getPartId(), request.getRequestId(), request.getQuantity());
+            this.partName = partName;
+        }
+
+        public String getPartName() {
+            return partName;
+        }
+    }
+
+    public void onClosePopupButton() {
         // Create a confirmation alert
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UNDECORATED);
