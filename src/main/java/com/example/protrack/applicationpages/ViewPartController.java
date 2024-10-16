@@ -24,11 +24,17 @@ public class ViewPartController {
     @FXML
     private TableView<RequestWithPartName> partRequestsTable;
     @FXML
+    private TableColumn<RequestWithPartName, Integer> colLocationID;
+    @FXML
     private TableColumn<RequestWithPartName, Integer> colPartRequestsPartID;
     @FXML
     private TableColumn<RequestWithPartName, String> colPartRequestsPartName;
     @FXML
     private TableColumn<RequestWithPartName, Integer> colPartRequestsPartQuantity;
+    @FXML
+    private TableColumn<RequestWithPartName, Void> acceptColumn;
+    @FXML
+    private TableColumn<RequestWithPartName, Void> rejectColumn;
 
     private ObservableList<RequestWithPartName> partRequestsList;
 
@@ -44,6 +50,44 @@ public class ViewPartController {
         partRequestsList = FXCollections.observableArrayList();
         partRequestsTable.setItems(partRequestsList);
         partRequestsTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        colLocationID.setCellValueFactory(new PropertyValueFactory<>("locationId")); // Bind the location ID column
+
+        // Accept column
+        acceptColumn.setCellFactory(column -> new TableCell<RequestWithPartName, Void>() {
+            private final Button acceptButton = new Button("✔");
+
+            {
+                acceptButton.setOnAction(e -> {
+                    RequestWithPartName request = getTableView().getItems().get(getIndex());
+                    handleAccept(request);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : acceptButton);
+            }
+        });
+
+        // Reject column
+        rejectColumn.setCellFactory(column -> new TableCell<RequestWithPartName, Void>() {
+            private final Button rejectButton = new Button("✖");
+
+            {
+                rejectButton.setOnAction(e -> {
+                    RequestWithPartName request = getTableView().getItems().get(getIndex());
+                    handleReject(request);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : rejectButton);
+            }
+        });
 
         // Load and display the initial list of requests
         refreshTable();
@@ -75,6 +119,10 @@ public class ViewPartController {
 
         public String getPartName() {
             return partName;
+        }
+
+        public int getRequestID() {
+            return getRequestId();
         }
     }
 

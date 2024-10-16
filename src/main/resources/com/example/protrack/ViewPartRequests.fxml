@@ -15,8 +15,8 @@
         <Region minHeight="20"/>
         <GridPane styleClass="parts-title-container" hgap="345">
             <columnConstraints>
-                <ColumnConstraints percentWidth="100"/>
-                <ColumnConstraints percentWidth="100"/>
+                <ColumnConstraints percentWidth="70"/>
+                <ColumnConstraints percentWidth="30"/>
             </columnConstraints>
             <Label text="Part Requests" styleClass="parts-title-label" GridPane.rowIndex="0"/>
             <Button fx:id="closePopupButton" text="❌" GridPane.halignment="RIGHT" onAction="#onClosePopupButton"
@@ -35,6 +35,8 @@
                     <TableColumn fx:id="colPartRequestsPartID" text="Part ID" styleClass="work-orders-table-cell" maxWidth="150"/>
                     <TableColumn fx:id="colPartRequestsPartName" text="Part Name" styleClass="work-orders-table-cell"/>
                     <TableColumn fx:id="colPartRequestsPartQuantity" text="Quantity" styleClass="work-orders-table-cell" maxWidth="100"/>
+                    <TableColumn fx:id="acceptColumn" text="Accept" />
+                    <TableColumn fx:id="rejectColumn" text="Reject" />
                 </columns>
             </TableView>
         </VBox>
