@@ -80,7 +80,8 @@ public class EmployeesController {
 
             VBox rows = new VBox();
             rows.setAlignment(Pos.CENTER_LEFT);
-            rows.setMinWidth(125);
+            rows.setMinWidth(126);
+            rows.setPadding(new Insets(0, 75, 0, 0));
 
             // Determine the title of the employee based on their access level
             String employeeTitle = switch (user.getAccessLevel()) {
