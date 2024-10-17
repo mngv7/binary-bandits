@@ -21,8 +21,8 @@ import java.util.Objects;
 public class MainController {
 
     private static final String TimesheetTITLE = "Add Timesheets";
-    private static final int TimesheetWIDTH = 500;
-    private static final int TimesheetHEIGHT = 500;
+    private static final int TimesheetWIDTH = 400;
+    private static final int TimesheetHEIGHT = 400;
     @FXML
     private Label employeeName;
     @FXML

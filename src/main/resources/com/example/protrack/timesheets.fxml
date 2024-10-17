@@ -11,8 +11,8 @@
             fx:controller="com.example.protrack.applicationpages.TimesheetsController"
             prefHeight="400.0" prefWidth="600.0" styleClass="add-parts-popup">
     <top>
-        <GridPane styleClass="parts-title-container" hgap="105">
-            <Label text="Employee Timesheet" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+        <GridPane styleClass="parts-title-container" hgap="145">
+            <Label text="Employee Timesheet" styleClass="parts-title-label" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
             <Button fx:id="closePopupButton" text="❌" onAction="#onClosePopupButton" GridPane.halignment="RIGHT"
                     GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
         </GridPane>
@@ -31,7 +31,7 @@
             <Label text="End Time" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
             <TextField fx:id="endTimeField" promptText="00:00" maxWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Button fx:id="addTimesheet" text="Add Timesheet Entry" onAction="#onAddTimesheetButton" styleClass="add-parts-button"
-                    GridPane.columnIndex="0" GridPane.rowIndex="9"
+                    GridPane.columnIndex="0" GridPane.rowIndex="7"
                     GridPane.columnSpan="3" GridPane.rowSpan="2"
                     GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
         </GridPane>
