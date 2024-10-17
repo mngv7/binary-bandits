@@ -146,7 +146,6 @@ public class CreateWorkOrderController {
                         addressField.getText().trim().isEmpty() ||
                                 emailField.getText().trim().isEmpty() ||
                                 shippingAddressField.getText().trim().isEmpty() ||
-                                shippingMethodCombo.getSelectionModel().isEmpty() ||
                                 workOrderTableView.getItems().isEmpty() ||
                                 customerComboBox.getSelectionModel().isEmpty(),
                 addressField.textProperty(), emailField.textProperty(),

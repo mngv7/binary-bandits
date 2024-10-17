@@ -139,6 +139,23 @@ public class WorkOrdersDAOImplementation implements WorkOrdersDAO {
     }
 
     @Override
+    public WorkOrder getWorkOrderByOrderId(int workOrderId) {
+        String sqlAllWorkOrders = "SELECT * FROM work_orders WHERE work_order_id = ?";
+        WorkOrder workOrder = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlAllWorkOrders)) {
+            preparedStatement.setInt(1, workOrderId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            workOrder = mapToWorkOrder(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return workOrder;
+    }
+
+    @Override
     public List<WorkOrder> getAllWorkOrders() {
         String sqlAllWorkOrders = "SELECT * FROM work_orders";
         List<WorkOrder> allWorkOrders = new ArrayList<>();

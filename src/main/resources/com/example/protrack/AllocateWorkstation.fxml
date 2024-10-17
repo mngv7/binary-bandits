@@ -7,11 +7,12 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import com.example.protrack.warehouseutil.Workstation?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.applicationpages.AllocateWorkstationController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.protrack.applicationpages.AllocateWorkstationController" styleClass="add-parts-popup">
     <top>
         <!-- Title and Close Button -->
-        <GridPane styleClass="parts-title-container" hgap="165">
-            <Label text="Create Parts" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+        <GridPane styleClass="parts-title-container">
+            <Label text="Allocate Workstation" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Region GridPane.hgrow="ALWAYS"/>
             <Button fx:id="closePopupButton" text="❌" onAction="#handleClose" GridPane.halignment="RIGHT"
                     GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
         </GridPane>
@@ -20,31 +21,38 @@
 
         <HBox>
             <children>
-                <Label text="Allocate your Workstation" styleClass="subpage-title"/>
+                <Label text="Allocate your Workstation" styleClass="parts-table-label"/>
             </children>
             <alignment>TOP_RIGHT</alignment>
         </HBox>
 
         <!-- Workstation Options -->
-        <VBox>
+        <VBox spacing="10">
             <children>
-                <ComboBox fx:id="workstationComboBox">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Workstation 1"/>
-                            <String fx:value="Workstation 2"/>
-                            <String fx:value="Workstation 3"/>
-                            <String fx:value="Workstation 4"/>
-                            <String fx:value="Workstation 5"/>
-                        </FXCollections>
-                    </items>
-                </ComboBox>
-                <Button fx:id="allocateButton" text="Allocate" onAction="#handleAllocate"/>
-                <Button text="Cancel" onAction="#handleCancel"/>
+                <HBox spacing="10">
+                    <Label text="Workstations:" style="-fx-font-size: 16px;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <ComboBox fx:id="workstationComboBox" promptText="Select Station" prefWidth="130">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Workstation 1"/>
+                                <String fx:value="Workstation 2"/>
+                                <String fx:value="Workstation 3"/>
+                                <String fx:value="Workstation 4"/>
+                                <String fx:value="Workstation 5"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <HBox>
+                    <Button text="Cancel" onAction="#handleCancel" styleClass="delete-button"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="allocateButton" text="Allocate" onAction="#handleAllocate" styleClass="create-product-button"/>
+                </HBox>
             </children>
             <spacing>10</spacing>
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="10" right="20" bottom="15" left="20"/>
             </padding>
         </VBox>
     </center>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.protrack.applicationpages.OrderLabelController"
+            prefHeight="400.0" prefWidth="600.0" styleClass="add-parts-popup">
+
+    <top>
+        <Region minHeight="20"/>
+        <GridPane styleClass="parts-title-container">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="83"/>
+                <ColumnConstraints percentWidth="10"/>
+                <ColumnConstraints percentWidth="7"/>
+            </columnConstraints>
+            <Label text="Order Label" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+            <Button fx:id="printButton" text="🖶" GridPane.halignment="RIGHT" onAction="#handlePrint" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                    style="-fx-background-color: #FFFFFF; -fx-background-radius: 6px; -fx-text-fill: #77c3ec; -fx-border-color: #77c3ec; -fx-border-width: 2px; -fx-border-style: solid; -fx-border-radius: 5px;"/>
+            <Button fx:id="closePopupButton" text="❌" GridPane.halignment="RIGHT" onAction="#handleClose"
+                    GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
+        </GridPane>
+    </top>
+
+    <center>
+        <VBox fx:id="labelContent" spacing="10">
+            <HBox spacing="10">
+                <Label text="Work Order ID:" styleClass="parts-table-label"/>
+                <Label fx:id="workOrderIdLabel" style="-fx-font-size: 16px;"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <ImageView fx:id="barcodeImageView"/>
+
+                <!-- Customer Info Section -->
+                <VBox spacing="10">
+                    <Label text="Customer Details:" styleClass="parts-table-label"/>
+                    <HBox spacing="10">
+                        <Label text="Customer Name:" styleClass="parts-table-label"/>
+                        <Label fx:id="customerNameLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Customer Phone:" styleClass="parts-table-label"/>
+                        <Label fx:id="customerPhoneLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+
+                    <!-- Shipping Info Section -->
+                    <HBox spacing="10">
+                        <Label text="Shipping Address:" styleClass="parts-table-label"/>
+                        <Label fx:id="shippingAddressLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+
+                    <Region minHeight="20"/>
+
+                    <Label text="Business Details:" styleClass="parts-table-label"/>
+                    <HBox spacing="10">
+                        <Label text="Location:" styleClass="parts-table-label"/>
+                        <Label fx:id="locationLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Business Phone:" styleClass="parts-table-label"/>
+                        <Label fx:id="businessPhoneLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                    <HBox spacing="10">
+                        <Label text="Business Email:" styleClass="parts-table-label"/>
+                        <Label fx:id="businessEmailLabel" style="-fx-font-size: 16px;"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>
