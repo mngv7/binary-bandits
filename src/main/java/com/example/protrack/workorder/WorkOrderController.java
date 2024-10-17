@@ -167,9 +167,6 @@ public class WorkOrderController implements Observer {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
-            // Center the popup window on the screen
-            centerPopupWindow(popupStage);
-
             // Show the popup window
             popupStage.showAndWait();
             workOrderSubject.syncDataFromDB();
@@ -196,23 +193,11 @@ public class WorkOrderController implements Observer {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
-            // Center the popup window on the screen
-            centerPopupWindow(popupStage);
-
             popupStage.showAndWait();
             workOrderSubject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Centers the popup window on the screen.
-     */
-    private void centerPopupWindow(Stage popupStage) {
-        Bounds rootBounds = createWorkOrderButton.getScene().getRoot().getLayoutBounds();
-        popupStage.setY(rootBounds.getCenterY() - (HEIGHT / 2));
-        popupStage.setX(rootBounds.getCenterX() - (WIDTH / 2));
     }
 
     /**

@@ -128,8 +128,7 @@ public class ViewWorkstationController {
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
-            popupStage.setY(150);
-            popupStage.setX(390);
+
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

@@ -540,10 +540,6 @@ public class DashboardController {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
-            Bounds rootBounds = generateReport.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 150);
-            popupStage.setX(rootBounds.getCenterX() - 275);
-
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

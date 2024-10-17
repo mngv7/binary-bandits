@@ -143,11 +143,6 @@ public class SupplierController implements Observer {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
-            // Center the popup window on the screen
-            Bounds rootBounds = addSupplierButton.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 100);
-            popupStage.setX(rootBounds.getCenterX());
-
             // Show the popup window
             popupStage.showAndWait();
 
@@ -185,11 +180,6 @@ public class SupplierController implements Observer {
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
-
-            // Center the popup window on the screen
-            Bounds rootBounds = addSupplierButton.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 100);
-            popupStage.setX(rootBounds.getCenterX());
 
             // Show the popup window
             popupStage.showAndWait();

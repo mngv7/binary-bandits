@@ -172,9 +172,6 @@ public class EmployeesController {
             CreateNewUserController createNewUserController = fxmlLoader.getController();
             createNewUserController.setEmployeesController(this);
 
-            // Set the position and show the popup window
-            popupStage.setY(150);
-            popupStage.setX(390);
             popupStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
