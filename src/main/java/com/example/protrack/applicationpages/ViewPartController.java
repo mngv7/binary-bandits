@@ -129,7 +129,7 @@ public class ViewPartController {
 
     /**
      * Event handler for loadPartsRequestFormDB.
-     * Refresh the table and get the data from database again
+     * Refresh the table and get the data from database again.
      */
     public void loadPartsRequestFormDB() {
         PartRequestsList.clear();  // Clear the list to avoid duplicates
@@ -150,7 +150,7 @@ public class ViewPartController {
      * Event handler for the "Close Popup" button.
      * Displays a confirmation dialog asking the user if they want to cancel part creation.
      */
-    public void onClosePopupButton(ActionEvent actionEvent) {
+    public void onClosePopupButton() {
         // Create a confirmation alert
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UNDECORATED);
