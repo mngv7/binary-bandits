@@ -64,6 +64,10 @@ public class ViewPartController {
 
     }
 
+    /**
+     * Event handler for the "AcceptPartRequest" button.
+     * Accept the data from Part Request and send the data to WareStation
+     */
     private void handleAcceptPartRequest() {
         Requests request = PartRequestsTable.getSelectionModel().getSelectedItem();
         if (request != null) {
@@ -95,7 +99,10 @@ public class ViewPartController {
             }
         }
     }
-
+    /**
+     * Event handler for the "DeletePartRequest" button.
+     * Delete the data from Part Request
+     */
     private void handleDeletePartRequest() {
         Requests selectedPartRequest = PartRequestsTable.getSelectionModel().getSelectedItem();
         if (selectedPartRequest != null) {
@@ -134,7 +141,10 @@ public class ViewPartController {
         // Refresh the TableView to display updated data
         PartRequestsTable.refresh();
     }
-
+    /**
+     * Event handler for the "Close Popup" button.
+     * Displays a confirmation dialog asking the user if they want to cancel part creation.
+     */
     public void onClosePopupButton(ActionEvent actionEvent) {
         // Create a confirmation alert
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
