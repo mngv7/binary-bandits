@@ -437,6 +437,7 @@
 
 .subheading2 {
     -fx-font-weight: bold; /* Make the text bold */
+    -fx-font-size: 16px;
 }
 
 <img src="application_logo.png">

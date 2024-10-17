@@ -165,8 +165,13 @@ public class DashboardController {
 
                 // Create labels for Part ID, Part Name, and Reorder Point
                 Label partIdLabel = new Label(String.valueOf(partId));
+                partIdLabel.setStyle("-fx-font-size: 14px;");
+
                 Label partNameLabel = new Label(partName);
+                partNameLabel.setStyle("-fx-font-size: 14px;");
+
                 Label reorderPointLabel = new Label(String.valueOf(reorderPointValue));
+                reorderPointLabel.setStyle("-fx-font-size: 14px;");
 
                 // Add labels to the grid (Part ID in column 0, Part Name in column 1, Reorder Point in column 2)
                 reorderPointGrid.add(partIdLabel, 0, rowIndex);
@@ -290,9 +295,18 @@ public class DashboardController {
             totalCost = roundedTotalCost.doubleValue();
 
             if (totalAmount > 0) {
-                inventoryUsageGrid.add(new Label(partsDAO.getPartById(partsId).getName()), columnIndex, rowIndex);
-                inventoryUsageGrid.add(new Label(Integer.toString(totalAmount)), columnIndex + 1, rowIndex);
-                inventoryUsageGrid.add(new Label("$" + totalCost), columnIndex + 2, rowIndex);
+                Label partName = new Label(partsDAO.getPartById(partsId).getName());
+                partName.setStyle("-fx-font-size: 14px");
+
+                Label partQuantity = new Label(Integer.toString(totalAmount));
+                partName.setStyle("-fx-font-size: 14px");
+
+                Label partTotal = new Label("$" + totalCost);
+                partName.setStyle("-fx-font-size: 14px");
+
+                inventoryUsageGrid.add(partName, columnIndex, rowIndex);
+                inventoryUsageGrid.add(partQuantity, columnIndex + 1, rowIndex);
+                inventoryUsageGrid.add(partTotal, columnIndex + 2, rowIndex);
 
                 rowIndex++;
                 if (rowIndex > 6) { // Number of rows before changing columns.

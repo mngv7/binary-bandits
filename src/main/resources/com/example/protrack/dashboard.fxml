@@ -69,7 +69,7 @@
                     </VBox>
                     <VBox minHeight="200" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" spacing="5">
                         <Label text="Inventory Forecasting" styleClass="subheading"/>
-                        <GridPane fx:id="reorderPointGrid" hgap="30" vgap="10" alignment="CENTER_LEFT">
+                        <GridPane fx:id="reorderPointGrid" hgap="40" vgap="10" alignment="CENTER_LEFT">
                             <VBox fx:id="partAndReorderGroup">
                                 <VBox fx:id="PartId"/>
                                 <VBox fx:id="reorderPoint"/>
