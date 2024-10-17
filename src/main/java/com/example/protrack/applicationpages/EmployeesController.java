@@ -5,8 +5,11 @@ import com.example.protrack.employees.SelectedEmployeeSingleton;
 import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.utility.LoggedInUserSingleton;
+import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -74,7 +77,10 @@ public class EmployeesController {
         // Iterate through the list of users and add their details to the UI
         for (AbstractUser user : allUsers) {
             VBox columns = new VBox();
+
             VBox rows = new VBox();
+            rows.setAlignment(Pos.CENTER_LEFT);
+            rows.setMinWidth(125);
 
             // Determine the title of the employee based on their access level
             String employeeTitle = switch (user.getAccessLevel()) {
@@ -87,12 +93,16 @@ public class EmployeesController {
             // Create a button with the employee's full name and handle selection on click
             Button employeeNameButton = new Button();
             employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
+            employeeNameButton.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
             employeeNameButton.getStyleClass().add("text-button");
             employeeNameButton.setOnAction(event -> handleButtonPress(user.getFirstName(), user.getLastName()));
 
             // Create labels for employee title and a spacer
             Label employeeTitleLabel = new Label(employeeTitle);
             Label spacing = new Label(" ");
+
+            employeeNameButton.setWrapText(true);
+            employeeTitleLabel.setWrapText(true);
 
             // Create initials label for the employee icon
             String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0, 1);
@@ -101,7 +111,7 @@ public class EmployeesController {
 
             // Add labels to the rows and columns
             rows.getChildren().addAll(employeeNameButton, employeeTitleLabel, spacing);
-            columns.getChildren().add(initialsIcon);
+            columns.getChildren().add(initialsIcon);;
 
             employeesGridPane.add(columns, columnIndex, rowIndex);
             employeesGridPane.add(rows, columnIndex + 1, rowIndex);
@@ -110,7 +120,7 @@ public class EmployeesController {
             rowIndex++;
             if (rowIndex > 4) {
                 rowIndex = 0;
-                columnIndex += 2;
+                columnIndex += 2;  // Move to the next pair of columns
             }
         }
     }
