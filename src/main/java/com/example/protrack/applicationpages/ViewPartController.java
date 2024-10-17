@@ -43,11 +43,12 @@ public class ViewPartController {
         colPartRequestsPartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
         colPartRequestsPartQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
+        // If click the data in table, will show delete and accept options
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteMenuItem = new MenuItem("Delete");
         MenuItem acceptMenuItem = new MenuItem("Accept");
         contextMenu.getItems().addAll(acceptMenuItem, deleteMenuItem);
-
+        // connect the options to functions
         deleteMenuItem.setOnAction(event -> handleDeletePartRequest());
         acceptMenuItem.setOnAction(event -> handleAcceptPartRequest());
 
@@ -84,6 +85,7 @@ public class ViewPartController {
                 List<Workstation> allWorkstations = dao.getAllWorkstations();
 
                 /* Man, wtf is this... */
+                /* connect the part Database to Location and Contents Database*/
                 for (int i = 0; i < allWorkstations.size(); ++i) {
                     if (allWorkstations.get(i).getWorkstationLocationId() == request.getLocationId()) {
                         allWorkstations.get(i).importPartsIdWithQuantityFromWarehouse(targetWarehouse, dao, request.getPartId(), request.getQuantity());
@@ -125,7 +127,10 @@ public class ViewPartController {
         }
     }
 
-    // load parts request from db.
+    /**
+     * Event handler for loadPartsRequestFormDB.
+     * Refresh the table and get the data from database again
+     */
     public void loadPartsRequestFormDB() {
         PartRequestsList.clear();  // Clear the list to avoid duplicates
 
