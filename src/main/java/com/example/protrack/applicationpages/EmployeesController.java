@@ -15,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -76,55 +78,57 @@ public class EmployeesController {
 
         // Iterate through the list of users and add their details to the UI
         for (AbstractUser user : allUsers) {
-            VBox columns = new VBox();
-
-            VBox rows = new VBox();
-            rows.setAlignment(Pos.CENTER_LEFT);
-            rows.setMinWidth(126);
-            rows.setPadding(new Insets(0, 75, 0, 0));
-
-            // Determine the title of the employee based on their access level
-            String employeeTitle = switch (user.getAccessLevel()) {
-                case "HIGH" -> "Manager";
-                case "MEDIUM" -> "Stock Controller";
-                case "LOW" -> "Production Worker";
-                default -> "Unknown";
-            };
-
-            // Create a button with the employee's full name and handle selection on click
-            Button employeeNameButton = new Button();
-            employeeNameButton.setText(user.getFirstName() + " " + user.getLastName());
-            employeeNameButton.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-            employeeNameButton.getStyleClass().add("text-button");
-            employeeNameButton.setOnAction(event -> handleButtonPress(user.getFirstName(), user.getLastName()));
-
-            // Create labels for employee title and a spacer
-            Label employeeTitleLabel = new Label(employeeTitle);
-            Label spacing = new Label(" ");
-
-            employeeNameButton.setWrapText(true);
-            employeeTitleLabel.setWrapText(true);
+            // Create a VBox for employee name and title
+            VBox employeeInfoBox = new VBox();
+            employeeInfoBox.setAlignment(Pos.CENTER_LEFT);
+            employeeInfoBox.setMinWidth(150);
+            employeeInfoBox.setPadding(new Insets(1, 20, 3, 5));
+            employeeInfoBox.setSpacing(5); // Space between name and title
+            employeeInfoBox.setStyle("-fx-background-color: #eaeaff; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;"); // Background styling
 
             // Create initials label for the employee icon
             String initials = user.getFirstName().charAt(0) + user.getLastName().substring(0, 1);
             Label initialsIcon = new Label(initials);
             initialsIcon.getStyleClass().add("initials-icon");
 
-            // Add labels to the rows and columns
-            rows.getChildren().addAll(employeeNameButton, employeeTitleLabel, spacing);
-            columns.getChildren().add(initialsIcon);;
+            // Create a button with the employee's full name
+            Button employeeNameButton = new Button(user.getFirstName() + " " + user.getLastName());
+            employeeNameButton.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+            employeeNameButton.getStyleClass().add("text-button");
+            employeeNameButton.setOnAction(event -> handleButtonPress(user.getFirstName(), user.getLastName()));
 
-            employeesGridPane.add(columns, columnIndex, rowIndex);
-            employeesGridPane.add(rows, columnIndex + 1, rowIndex);
+            // Create a label for employee title
+            String employeeTitle = switch (user.getAccessLevel()) {
+                case "HIGH" -> "Manager";
+                case "MEDIUM" -> "Stock Controller";
+                case "LOW" -> "Production Worker";
+                default -> "Unknown";
+            };
+            Label employeeTitleLabel = new Label(employeeTitle);
 
-            // Update the row and column indexes for arranging users
+            // Add the initials icon to the GridPane
+            employeesGridPane.add(initialsIcon, columnIndex, rowIndex);
+
+            // Add the employee info to the VBox
+            employeeInfoBox.getChildren().addAll(employeeNameButton, employeeTitleLabel);
+
+            // Add the VBox to the GridPane
+            employeesGridPane.add(employeeInfoBox, columnIndex + 1, rowIndex);
+
+            // Add a Region with a minimum width of 30 for spacing
+            Region spacer = new Region();
+            spacer.setMinWidth(30);
+            employeesGridPane.add(spacer, columnIndex + 2, rowIndex); // Add spacer to the right
+
+            // Update the rowIndex and columnIndex for the next employee
             rowIndex++;
-            if (rowIndex > 4) {
+            if (rowIndex >= 5) {
                 rowIndex = 0;
-                columnIndex += 2;  // Move to the next pair of columns
+                columnIndex += 3; // Move to the next set of columns
             }
         }
     }
+
 
     /**
      * Setter for injecting the MainController instance.
