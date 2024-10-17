@@ -14,8 +14,11 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.CategoryAxis?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            fx:id="dashboardPane"
             fx:controller="com.example.protrack.applicationpages.DashboardController"
             prefHeight="400.0" prefWidth="600.0">
 
@@ -26,56 +29,66 @@
     </top>
 
     <center>
-        <VBox>
-            <HBox spacing="10" style="-fx-padding: 0 0 10 0;">
-                <Label text="Select Month:" styleClass="subheading"/>
-                <ComboBox fx:id="monthComboBox" styleClass="part-text-field"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Button text="Load Month" onAction="#loadMonthlyReport" styleClass="add-parts-button" />
-                <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
-            </HBox>
+        <ScrollPane fitToWidth="true" fitToHeight="true" minHeight="500" style="-fx-background-color: #ffffff; -fx-border-width: 0;">
+            <VBox style="-fx-background-color: #ffffff">
+                <HBox spacing="10" style="-fx-padding: 0 0 10 0; -fx-border-color: f0f0f0; -fx-border-width: 0 0 5 0;">
+                    <Label text="Select Month:" styleClass="subheading"/>
+                    <ComboBox fx:id="monthComboBox" styleClass="part-text-field"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Load Month" onAction="#loadMonthlyReport" styleClass="add-parts-button" />
+                    <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
+                </HBox>
 
-            <HBox>
-                <VBox minHeight="350" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2 0 2 2; -fx-padding: 0 30 0 0">
-                    <VBox>
-                        <Label text="Inventory Usage" styleClass="subheading"/>
-                    </VBox>
-                    <GridPane fx:id="inventoryUsageGrid" hgap="15" vgap="5" alignment="CENTER_LEFT">
-                        <VBox fx:id="partAndAmountGroup">
-                            <VBox fx:id="partName"/>
-                            <VBox fx:id="partUsage"/>
+                <HBox spacing="25">
+                    <VBox minHeight="350" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" spacing="5">
+                        <VBox>
+                            <Label text="Inventory Usage" styleClass="subheading"/>
                         </VBox>
-                    </GridPane>
+                        <GridPane fx:id="inventoryUsageGrid" hgap="30" vgap="10" alignment="CENTER_LEFT">
+                            <VBox fx:id="partAndAmountGroup">
+                                <Label text="Part ID" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="subheading2"/>
+                                <Label text="Part Name" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="subheading2"/>
+                                <Label text="Reorder Point" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="subheading2"/>
+                            </VBox>
+                            <padding>
+                                <Insets left="6"/>
+                            </padding>
+                        </GridPane>
+                        <Region/>
 
-                    <VBox minWidth="350" VBox.vgrow="ALWAYS">
-                        <LineChart fx:id="lineChart" prefHeight="200" prefWidth="400">
-                            <xAxis>
-                                <CategoryAxis label="Months"/>
-                            </xAxis>
-                            <yAxis>
-                                <NumberAxis label="Total Usage"/>
-                            </yAxis>
-                        </LineChart>
-                    </VBox>
-                </VBox>
-                <VBox minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 2;">
-                    <Label text="Inventory Forecasting" styleClass="subheading"/>
-                    <GridPane fx:id="reorderPointGrid" hgap="15" vgap="5" alignment="CENTER_LEFT">
-                        <VBox fx:id="partAndReorderGroup">
-                            <VBox fx:id="PartId"/>
-                            <VBox fx:id="reorderPoint" />
+                        <VBox minWidth="350" minHeight="125" VBox.vgrow="ALWAYS">
+                            <LineChart fx:id="lineChart" prefHeight="200" prefWidth="400">
+                                <xAxis>
+                                    <CategoryAxis label="Months"/>
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis label="Total Usage"/>
+                                </yAxis>
+                            </LineChart>
                         </VBox>
-                    </GridPane>
-                </VBox>
-            </HBox>
+                    </VBox>
+                    <VBox minHeight="200" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" spacing="5">
+                        <Label text="Inventory Forecasting" styleClass="subheading"/>
+                        <GridPane fx:id="reorderPointGrid" hgap="30" vgap="10" alignment="CENTER_LEFT">
+                            <VBox fx:id="partAndReorderGroup">
+                                <VBox fx:id="PartId"/>
+                                <VBox fx:id="reorderPoint"/>
+                            </VBox>
+                            <padding>
+                                <Insets left="6"/>
+                            </padding>
+                        </GridPane>
+                    </VBox>
+                </HBox>
 
-            <HBox HBox.hgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 0 2 0 2;">
-                <Label text="Performance" styleClass="subheading"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Label fx:id="generateReport" text="Generate Organisation Report" onMouseClicked="#generateReportPopup" style="-fx-text-fill: blue; -fx-font-size: 14px; -fx-underline: true; cursor: hand; -fx-padding: 5 10 0 0;"/>
-            </HBox>
+                <HBox HBox.hgrow="ALWAYS">
+                    <Label text="Performance" styleClass="subheading"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="generateReport" text="Generate Organisation Report" onMouseClicked="#generateReportPopup" style="-fx-text-fill: blue; -fx-font-size: 14px; -fx-underline: true; cursor: hand; -fx-padding: 5 10 0 0;"/>
+                </HBox>
 
-            <HBox fx:id="graphContainer" minHeight="350" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" style="-fx-border-color: lightgrey; -fx-border-width: 0 2 2 2;"/>
-        </VBox>
+                <HBox fx:id="graphContainer" minHeight="250" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" spacing="15"/>
+            </VBox>
+        </ScrollPane>
     </center>
 </BorderPane>
