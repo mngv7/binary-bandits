@@ -45,10 +45,13 @@ public class ViewWorkstation2 {
     private TableColumn<WorkstationPartDBTable, String> colAddPart;
     @FXML
     private Button toProductBuild;
+    @FXML
+    private Label workStationTitle;
     private ObservableList<WorkstationPartDBTable> wsPartDBTable;
     private int workStationId = -1;
 
     public void initialize() {
+
         colWSPartId.setCellValueFactory(new PropertyValueFactory<>("partID"));
         colWSPartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
         colWSPartQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -57,10 +60,11 @@ public class ViewWorkstation2 {
             @Override
             public TableCell<WorkstationPartDBTable, String> call(TableColumn<WorkstationPartDBTable, String> param) {
                 return new TableCell<>() {
-                    private final Button addPartToPB = new Button("Add to Product Build");
+                    private final Button addPartToPB = new Button(" Add to Product Build ");
 
                     {
                         addPartToPB.getStyleClass().add("add-to-product-build-button");
+                        addPartToPB.setStyle("-fx-border: none; -fx-text-align: center; -fx-display: inline-block; -fx-font-size: 12px; -fx-background-color: #eaeaff");
 
                         // Handles row deletion
                         addPartToPB.setOnAction(event -> {
@@ -68,8 +72,6 @@ public class ViewWorkstation2 {
                             //getTableView().getItems().remove(product);  // Remove from table
 
                             System.out.println("Add this part to Product build " + wsPartDBTableItem.getPartName());
-
-
                         });
                     }
 
@@ -134,7 +136,7 @@ public class ViewWorkstation2 {
     }
 
     @FXML
-    protected void onClosePopupButton(ActionEvent actionEvent) {
+    protected void onClosePopupButton() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UNDECORATED);
         alert.setHeaderText("Exit Workstation");
@@ -194,11 +196,11 @@ public class ViewWorkstation2 {
         }
     }
 
-    public void refreshTableButton(ActionEvent actionEvent) {
+    public void refreshTableButton() {
         refreshTable();
     }
 
-    public void goToProductBuild(ActionEvent actionEvent) {
+    public void goToProductBuild() {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-build.fxml"));
 
@@ -222,7 +224,7 @@ public class ViewWorkstation2 {
         }
     }
 
-    public void goToProductOrder(ActionEvent actionEvent) {
+    public void goToProductOrder() {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-order.fxml"));
 
