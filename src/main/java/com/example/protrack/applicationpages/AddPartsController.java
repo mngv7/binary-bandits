@@ -1,17 +1,13 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
 import com.example.protrack.parts.Parts;
 import com.example.protrack.parts.PartsDAO;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.util.Objects;
 
 /**
  * Controller for handling the new part creation UI.

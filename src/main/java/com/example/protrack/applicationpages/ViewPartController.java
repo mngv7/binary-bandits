@@ -1,25 +1,19 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
-import com.example.protrack.database.WorkstationPartDBTable;
 import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
-import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
-import com.example.protrack.warehouseutil.RealWarehouse;
-import com.example.protrack.warehouseutil.RealWorkstation;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ViewPartController {
     @FXML

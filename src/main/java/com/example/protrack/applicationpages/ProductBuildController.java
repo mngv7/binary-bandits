@@ -2,7 +2,6 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.database.ProductBuildWSAmt;
 import com.example.protrack.parts.Parts;
@@ -99,12 +98,10 @@ public class ProductBuildController {
         colPBWSreqAmt.setCellValueFactory(new PropertyValueFactory<>("reqAmount"));
         colWorkstationAmt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        //System.out.println("HERE IN PB BABY");
         loadBuildsFromDB();
     }
 
     private void loadBuildsFromDB() {
-
         try {
             builds.clear();
             productBuildVBox.getChildren().clear();
@@ -163,14 +160,10 @@ public class ProductBuildController {
 
         PBWSRequirementTableView.getItems().clear();
         PBWSRequirementTableView.getItems().addAll(productBuildWSAmtList);
-
-
-        //Now using the productBoM generate the table.
-
     }
 
     /**
-     * Loads
+     * Loads Test Records
      *
      * @param productId
      * @return
@@ -207,12 +200,13 @@ public class ProductBuildController {
             spacer.setMinHeight(10);
 
             if (stepCheckType.equals("CheckBox")) {
-                CheckBox checkBox = new CheckBox("Checkbox");
+                CheckBox checkBox = new CheckBox("Completed");
                 checkBox.setStyle("-fx-font-color: grey;");
                 newRow.getChildren().addAll(idLabel, idLabel2, checkBox, spacer);
             } else {
 
-                TextField textfield = new TextField("Enter test comment");
+                TextField textfield = new TextField();
+                textfield.setPromptText("Enter test comment");
                 textfield.setStyle("-fx-font-color: gray;");
                 newRow.getChildren().addAll(idLabel, idLabel2, textfield, spacer);
             }
@@ -308,10 +302,6 @@ public class ProductBuildController {
         } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
             alert.close();
         }
-    }
-
-
-    public void onAddPartButton(ActionEvent actionEvent) {
     }
 
     public void onCommitButton(ActionEvent actionEvent) {

@@ -3,7 +3,6 @@ package com.example.protrack.workorder;
 import com.example.protrack.customer.Customer;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
-import com.example.protrack.workorderproducts.WorkOrderProductsDAO;
 import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation;
 
 import java.time.LocalDateTime;
@@ -30,7 +29,7 @@ public class WorkOrder {
 
     private Double subtotal;
 
-    private WorkOrderProductsDAOImplementation workOrderProductsDAO;
+    private final WorkOrderProductsDAOImplementation workOrderProductsDAO;
 
     /**
      * Constructs a new WorkOrder instance.

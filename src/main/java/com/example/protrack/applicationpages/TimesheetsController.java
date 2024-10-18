@@ -1,24 +1,16 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
-import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.productbuild.ProductBuild;
 import com.example.protrack.productbuild.ProductBuildDAO;
 import com.example.protrack.timesheets.Timesheets;
 import com.example.protrack.timesheets.TimesheetsDAO;
-import com.example.protrack.users.ProductionUser;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.lang.invoke.StringConcatFactory;
-import java.text.Format;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**

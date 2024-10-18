@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
  * Contains information about start time, end time, employee ID, and product order ID.
  */
 public class Timesheets {
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Integer employeeID;
-    private Integer productOrderID;
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
+    private final Integer employeeID;
+    private final Integer productOrderID;
 
     /**
      * Constructs a Timesheets object with the specified start time, end time, employee ID, and product order ID.

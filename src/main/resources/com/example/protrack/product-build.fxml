@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.protrack.applicationpages.ProductBuildController"
@@ -17,7 +13,7 @@
         </GridPane>
     </top>
     <center>
-        <HBox spacing="15" minHeight="450" styleClass="create-product-scrollpane" VBox.vgrow="ALWAYS">
+        <HBox spacing="15" minHeight="435" styleClass="create-product-scrollpane" VBox.vgrow="ALWAYS">
             <!--Left side tab -->
             <ScrollPane minWidth="200" fitToWidth="true" fitToHeight="true" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER">
                 <VBox fx:id="productBuildVBox" minWidth="180">
@@ -30,9 +26,9 @@
             <VBox spacing="10">
                 <Region/>
                 <!--WS quantity -->
-                <ScrollPane minWidth="700" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER" style="-fx-background-color: white; -fx-background: white;">
-                    <VBox fx:id="PBWSRequirementBox" minWidth="680">
-                        <TableView fx:id="PBWSRequirementTableView" styleClass="parts-table" maxHeight="140" minWidth="590.0">
+                <ScrollPane minWidth="680" styleClass="create-product-scrollpane" BorderPane.alignment="CENTER" style="-fx-background-color: white; -fx-background: white;">
+                    <VBox fx:id="PBWSRequirementBox" minWidth="660">
+                        <TableView fx:id="PBWSRequirementTableView" styleClass="parts-table" maxHeight="135" minWidth="590.0">
                             <columnResizePolicy>
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                             </columnResizePolicy>
@@ -54,7 +50,10 @@
         </HBox>
     </center>
     <bottom>
-        <HBox alignment="BOTTOM_RIGHT" style="-fx-padding: 20;">
+        <HBox alignment="BOTTOM_CENTER" style="-fx-font-weight: bold; -fx-font-size: 18px;">
+            <padding>
+                <Insets top="25"/>
+            </padding>
             <Button fx:id="commitButton" text="Complete Order Build" onAction="#onCommitButton" styleClass="create-product-button-refresh-button" />
         </HBox>
     </bottom>

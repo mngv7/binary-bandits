@@ -1,13 +1,10 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
 import com.example.protrack.products.TestRecord;
 import com.example.protrack.products.TestRecordDAO;
 import com.example.protrack.utility.DatabaseConnection;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -17,7 +14,6 @@ import javafx.stage.StageStyle;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class CreateTestRecordController {
 

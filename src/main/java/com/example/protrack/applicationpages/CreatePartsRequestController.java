@@ -1,20 +1,17 @@
 package com.example.protrack.applicationpages;
 
-import com.example.protrack.Main;
-import com.example.protrack.parts.*;
+import com.example.protrack.parts.Parts;
+import com.example.protrack.parts.PartsDAO;
 import com.example.protrack.requests.Requests;
 import com.example.protrack.requests.RequestsDAO;
-import com.example.protrack.warehouseutil.LocationsAndContentsDAO;
-import com.example.protrack.warehouseutil.Workstation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.util.Objects;
 
 /**
  * Controller for handling the stock request creation UI.

@@ -1,7 +1,5 @@
 package com.example.protrack.requests;
 
-import com.example.protrack.products.Product;
-import com.example.protrack.products.TestRecord;
 import com.example.protrack.utility.DatabaseConnection;
 
 import java.sql.*;
