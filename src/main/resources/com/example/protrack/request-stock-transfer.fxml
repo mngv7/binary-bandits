@@ -8,7 +8,7 @@
             fx:controller="com.example.protrack.applicationpages.CreatePartsRequestController"
             prefHeight="500.0" prefWidth="500.0" styleClass="add-parts-popup">
     <top>
-        <GridPane styleClass="parts-title-container" hgap="105">
+        <GridPane styleClass="parts-title-container" hgap="63">
             <Label text="Request Stock Transfer" styleClass="parts-title-label" GridPane.rowIndex="0"/>
             <Button fx:id="closePopupButton" text="❌" onAction="#onClosePopupButton" GridPane.halignment="RIGHT"
                     GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
@@ -16,18 +16,18 @@
     </top>
     <center>
         <GridPane hgap="10" vgap="20" alignment="CENTER" styleClass="parts-grid-pane">
-            <Label text="Select stock to be transferred to this workstation" GridPane.columnIndex="0"
+            <Label text="Transfer stock to this workstation" GridPane.columnIndex="0"
                    GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.halignment="CENTER"
                    GridPane.valignment="CENTER" styleClass="parts-table-title"/>
             <!--<Label text="Location" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
             <ComboBox fx:id="workstationComboBox" promptText="Select Workstation" maxWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
             -->
-            <Label text="Part ID" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <ComboBox fx:id="partComboBox" promptText="Select Part" maxWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-            <Label text="Quantity Required" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="partQuantityField" promptText="Part Quantity" maxWidth="300" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Part ID:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="partComboBox" promptText="Select Part" maxWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Quantity Required:" styleClass="parts-table-label" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="partQuantityField" promptText="Part Quantity" maxWidth="300" styleClass="part-text-field" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             <Button fx:id="sendRequestButton" text="Send Request" onAction="#onSendRequestButton" styleClass="add-parts-button"
-                    GridPane.columnIndex="0" GridPane.rowIndex="9"
+                    GridPane.columnIndex="0" GridPane.rowIndex="5"
                     GridPane.columnSpan="2" GridPane.rowSpan="2"
                     GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
         </GridPane>
