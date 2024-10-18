@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.skin.TableHeaderRow?>
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -15,22 +14,20 @@
     </top>
     <center>
         <VBox spacing="20">
-            <Region minHeight="15"/>
+            <Region/>
 
             <HBox spacing="10" alignment="CENTER" styleClass="parts-grid-pane" maxWidth="Infinity" maxHeight="Infinity">
-                <Label text="Product Order:" styleClass="parts-table-label" style="-fx-font-size: 16px;"/>
+                <Label text="Product Order:" styleClass="parts-table-label" style="-fx-font-size: 18px;"/>
                 <ComboBox fx:id="productOrderComboBox" promptText="Select Product Order" maxWidth="300"/>
                 <Region minWidth="20"/>
                 <Button fx:id="goToProductBuildButton" text="Begin Work" onAction="#goToProductBuildButton" styleClass="add-parts-button"/>
             </HBox>
 
-            <Region/>
-
-            <VBox fx:id="productBuildVBox">
+            <VBox>
                 <padding>
-                    <Insets topRightBottomLeft="5"/>
+                    <Insets right="5" left="5"/>
                 </padding>
-                <TableView fx:id="productBuildTableView" styleClass="parts-table" minHeight="375" minWidth="860.0">
+                <TableView fx:id="productBuildTableView" styleClass="parts-table" minHeight="395" minWidth="860.0">
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                     </columnResizePolicy>

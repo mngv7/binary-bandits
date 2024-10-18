@@ -30,6 +30,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -110,19 +111,18 @@ public class ProductBuildController {
             ProductBuildDAO productBuildDAO = new ProductBuildDAO();
             List<ProductBuild> buildList = productBuildDAO.getAllProductBuildsWithPOID(currentProductOrderId);
 
-            //System.out.println("Does buildlist have stuff? " + buildList.size());
-            //System.out.println("Does buildlist have stuff? " + buildList.isEmpty());
             for (ProductBuild build : buildList) {
                 int buildId = build.getBuildId();
                 int productOrderId = build.getProductOrderId();
                 float buildCompletion = build.getBuildCompletion();
                 int productId = build.getProductId();
                 builds.add(new ProductBuild(buildId, productOrderId, buildCompletion, productId));
-                //System.out.println("Got this build Id" + buildId);
 
                 VBox newRow = new VBox();
 
                 Label idLabel = new Label("Build ID: " + buildId);
+                idLabel.setStyle("-fx-font-weight: bold;");
+
                 Label idLabel2 = new Label("Product Order ID: " + productOrderId);
                 Label idLabel3 = new Label("Build Completion: " + buildCompletion);
                 Label idLabel4 = new Label("ProductID: " + productId);
@@ -200,15 +200,21 @@ public class ProductBuildController {
             VBox newRow = new VBox();
 
             Label idLabel = new Label("Step " + stepNum + ":");
+            idLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
             Label idLabel2 = new Label(stepDescription);
+
+            Region spacer = new Region();
+            spacer.setMinHeight(10);
 
             if (stepCheckType.equals("CheckBox")) {
                 CheckBox checkBox = new CheckBox("Checkbox");
-                newRow.getChildren().addAll(idLabel, idLabel2, checkBox);
+                checkBox.setStyle("-fx-font-color: grey;");
+                newRow.getChildren().addAll(idLabel, idLabel2, checkBox, spacer);
             } else {
 
-                TextField textfield = new TextField("Enter stuff here");
-                newRow.getChildren().addAll(idLabel, idLabel2, textfield);
+                TextField textfield = new TextField("Enter test comment");
+                textfield.setStyle("-fx-font-color: gray;");
+                newRow.getChildren().addAll(idLabel, idLabel2, textfield, spacer);
             }
             productBuildTRVBox.getChildren().add(newRow);
         }
@@ -419,31 +425,4 @@ public class ProductBuildController {
             e.printStackTrace();
         }
     }
-
-
-    /*
-    @FXML
-    protected void PBSearch(ActionEvent actionEvent) {
-        for (ProductBuild build : builds) {
-            int buildId = build.getBuildId();
-            int productOrderId = build.getProductOrderId();
-            float buildCompletion = build.getBuildCompletion();
-            int productId = build.getProductId();
-            //builds.add(new ProductBuild(buildId, productOrderId, buildCompletion, productId));
-            System.out.println("Got this build Id" + buildId);
-
-            VBox newRow = new VBox();
-
-            Label idLabel = new Label("Build ID: " + buildId);
-            Label idLabel2 = new Label("Product Order ID: " + productOrderId);
-            Label idLabel3 = new Label("Build Completion: " + buildCompletion);
-            Label idLabel4 = new Label("ProductID: " + productId);
-
-            newRow.getChildren().addAll(idLabel, idLabel2, idLabel3, idLabel4);
-
-            newRow.setOnMouseClicked(event -> selectProductBuild(newRow));
-
-            productBuildVBox.getChildren().add(newRow);
-        }
-    }*/
 }

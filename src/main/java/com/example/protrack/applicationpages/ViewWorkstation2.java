@@ -212,6 +212,9 @@ public class ViewWorkstation2 {
             dynamicVBox.getChildren().clear();
             dynamicVBox.getChildren().add(content);
 
+            ProductOrderController productOrderController = fxmlLoader.getController();
+            productOrderController.setMainController(parentMainController);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
