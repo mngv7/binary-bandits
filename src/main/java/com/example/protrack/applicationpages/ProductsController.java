@@ -50,8 +50,8 @@ public class ProductsController implements Observer {
     */
 
     private static final String TITLE = "Create Product";
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 360;
+    private static final int WIDTH = 350;
+    private static final int HEIGHT = 550;
     @FXML
     public Button addProductButton;
     @FXML

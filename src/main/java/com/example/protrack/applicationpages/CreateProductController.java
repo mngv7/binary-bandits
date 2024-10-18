@@ -120,13 +120,20 @@ public class CreateProductController {
                     //Make the new vbox with those partid
                     // Create a new row with the partId and a partName
                     VBox newRow = new VBox();
+
                     Label idLabel = new Label("Part ID: " + rs.getString("partsId"));
+                    idLabel.setStyle("-fx-font-weight: bold;");
+
                     Label idLabel2 = new Label("Part Name: " + rs.getString("name"));
+
                     TextField textField = new TextField();
+
+                    textField.setPromptText("Enter Quantity");
                     newRow.getChildren().addAll(idLabel, idLabel2, textField);
 
                     // Add the new row to the result VBox
                     partResultVBox.getChildren().add(newRow);
+                    partIdSearchField.clear();
                 }
             } catch (SQLException ex) {
                 // Catch and print any SQL exceptions that may occur during table creation
@@ -275,7 +282,8 @@ public class CreateProductController {
     private void updateButtonVisibility() {
         // Creates delete all parts button
         Button removeAllButton = new Button("Remove all parts");
-        removeAllButton.getStyleClass().add("create-product-button");
+        removeAllButton.getStyleClass().add("create-product-button-small");
+        removeAllButton.setStyle("-fx-background-color: red;");
 
         removeAllButton.setOnAction(event -> {
             //Delete all children in partsResultVbox and container
