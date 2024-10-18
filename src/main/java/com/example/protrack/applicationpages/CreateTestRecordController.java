@@ -139,17 +139,29 @@ public class CreateTestRecordController {
 
                 numNewSteps++;
                 Label label = new Label("Step " + numNewSteps + ": ");
+                label.getStyleClass().add("parts-table-label");
 
                 TextField textField1 = (TextField) column.getChildren().get(1);
 
+                Region spacer1 = new Region();
+                spacer1.setMinWidth(10);
+
+                ComboBox<Object> comboBox = (ComboBox<Object>) column.getChildren().get(3);
+                comboBox.setMaxWidth(100);
 
                 TextField textField2 = (TextField) column.getChildren().get(4);
+                textField2.setMaxWidth(140);
+
+                Region spacer2 = new Region();
+                spacer2.setMinWidth(10);
 
                 Button removeButton = new Button("Remove Step");
+                removeButton.getStyleClass().add("create-product-button-small");
+                removeButton.setStyle("-fx-background-color: red;");
+                removeButton.setOnAction(event -> removeRow(newColumn));
 
-                removeButton.setOnAction(event -> removeRow(column));
+                newColumn2.getChildren().addAll(label, textField1, spacer1, comboBox, textField2, spacer2, removeButton);
 
-                newColumn2.getChildren().addAll(label, textField1, column.getChildren().get(2), textField2, removeButton);
                 testRecordsVBox.getChildren().remove(column);
                 testRecordsVBox.getChildren().add(newColumn2);
 
@@ -199,11 +211,11 @@ public class CreateTestRecordController {
                     String description = textField1.getText();
 
                     // Get Check type from second column
-                    ComboBox<Object> comboBox = (ComboBox<Object>) column.getChildren().get(2);
+                    ComboBox<Object> comboBox = (ComboBox<Object>) column.getChildren().get(3);
                     String checkType = (String) comboBox.getValue();
 
                     // Get Check criteria from third column
-                    TextField textField2 = (TextField) column.getChildren().get(3);
+                    TextField textField2 = (TextField) column.getChildren().get(4);
                     String checkCriteria = textField2.getText();
 
                     // Create new test record using previous values
