@@ -24,6 +24,7 @@
                 <VBox alignment="CENTER_LEFT" spacing="2">
                     <Label fx:id="timesheet" text="Timesheets" styleClass="timesheet-title" onMouseClicked="#myTimesheets"/>
                 </VBox>
+                <Region/>
                 <VBox alignment="CENTER_RIGHT">
                     <Label fx:id="employeeName" text="employeeName" styleClass="employee-name"/>
                     <Label fx:id="employeeTitle" text="employeeTitle" styleClass="employee-title"/>
@@ -43,14 +44,14 @@
                 <Insets top="10" bottom="10" left="20" right="20"/>
             </padding>
             <!-- Menu Buttons -->
-            <Button text="Dashboard" onAction="#dashboard" styleClass="menu-button">
+            <Button fx:id="dashboardButton" text="Dashboard" onAction="#dashboard" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                         <Image url="@images/dashboard_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
-            <Button text="Inventory ▾" onAction="#inventory" styleClass="menu-button">
+            <Button fx:id="inventoryButton" text="Inventory ▾" onAction="#inventory" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                         <Image url="@images/inventory_icon.png"/>
@@ -58,14 +59,14 @@
                 </graphic>
             </Button>
             <VBox fx:id="inventoryVBox" managed="false" visible="false" spacing="10">
-                <Button text="Products" onAction="#products" styleClass="menu-button">
+                <Button fx:id="productsButton" text="Products" onAction="#products" styleClass="menu-button">
                     <graphic>
                         <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                             <Image url="@images/product_icon.png"/>
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button text="Parts" onAction="#parts" styleClass="menu-button">
+                <Button fx:id="partsButton" text="Parts" onAction="#parts" styleClass="menu-button">
                     <graphic>
                         <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                             <Image url="@images/parts_icon.png"/>
@@ -73,28 +74,28 @@
                     </graphic>
                 </Button>
             </VBox>
-            <Button text="Work Orders" onAction="#purchaseOrders" styleClass="menu-button">
+            <Button fx:id="purchaseOrdersButton" text="Work Orders" onAction="#purchaseOrders" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                         <Image url="@images/purchase_orders_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
-            <Button text="Customers" onAction="#customers" styleClass="menu-button">
+            <Button fx:id="customersButton" text="Customers" onAction="#customers" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                         <Image url="@images/customers_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
-            <Button text="Suppliers" onAction="#suppliers" styleClass="menu-button">
+            <Button fx:id="suppliersButton" text="Suppliers" onAction="#suppliers" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                         <Image url="@images/supplier_icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
-            <Button text="Employees" onAction="#employees" styleClass="menu-button">
+            <Button fx:id="employeesButton" text="Employees" onAction="#employees" styleClass="menu-button">
                 <graphic>
                     <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                         <Image url="@images/employee_icon.png"/>
@@ -103,7 +104,7 @@
             </Button>
             <BorderPane VBox.vgrow="ALWAYS">
                 <bottom>
-                    <Button text="Warehouse" prefHeight="100" onAction="#warehouse" styleClass="menu-button">
+                    <Button fx:id="warehouseButton" text="Warehouse" prefHeight="100" onAction="#warehouse" styleClass="menu-button">
                         <graphic>
                             <ImageView fitHeight="35" fitWidth="35" preserveRatio="true">
                                 <Image url="@images/warehouse_icon.png"/>

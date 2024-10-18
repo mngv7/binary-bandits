@@ -21,12 +21,13 @@
     <center>
         <ScrollPane fitToWidth="true" fitToHeight="true" minHeight="500" style="-fx-background-color: #ffffff; -fx-border-width: 0;">
             <VBox style="-fx-background-color: #ffffff">
-                <HBox spacing="10" style="-fx-padding: 0 0 10 0; -fx-border-color: f0f0f0; -fx-border-width: 0 0 5 0;">
+                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 0 0 10 0; -fx-border-color: f0f0f0; -fx-border-width: 0 0 5 0;">
                     <Label text="Select Month:" styleClass="subheading"/>
                     <ComboBox fx:id="monthComboBox" styleClass="part-text-field" style="-fx-padding: 4;"/>
                     <Region HBox.hgrow="ALWAYS"/>
                     <Button text="Load Month" onAction="#loadMonthlyReport" styleClass="add-parts-button" />
                     <Button text="Download Parts Invoice" onAction="#downloadPDF" styleClass="add-parts-button" />
+                    <Region/>
                 </HBox>
 
                 <HBox spacing="25">
@@ -41,7 +42,7 @@
                                 <Label text="Reorder Point" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="subheading2"/>
                             </VBox>
                             <padding>
-                                <Insets left="6"/>
+                                <Insets left="5"/>
                             </padding>
                         </GridPane>
                         <Region/>
