@@ -32,9 +32,9 @@ public class ViewWorkstation2 {
     private static final int HEIGHT = 280;
     @FXML
     public Button closePopupButton;
-    @FXML
-    private Button toProductOrder;
+
     private MainController parentMainController;
+
     @FXML
     private TableView wsPartTable;
     @FXML
@@ -46,16 +46,16 @@ public class ViewWorkstation2 {
     @FXML
     private TableColumn<WorkstationPartDBTable, String> colAddPart;
     @FXML
-    private Button toProductBuild;
-    @FXML
     private Label workStationTitle;
-    @FXML
-    private BorderPane container;
 
     private ObservableList<WorkstationPartDBTable> wsPartDBTable;
-    private int workStationId = -1;
+    private int workStationId;
 
     public void initialize() {
+        LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
+        String workstationName = locationsAndContentsDAO.getNameFromID(workStationId);
+
+        workStationTitle.setText("Workstation " + workstationName);
 
         colWSPartId.setCellValueFactory(new PropertyValueFactory<>("partID"));
         colWSPartName.setCellValueFactory(new PropertyValueFactory<>("partName"));
@@ -136,7 +136,6 @@ public class ViewWorkstation2 {
      */
     public void setWorkStationIdV3(Integer value) {
         workStationId = value;
-        System.out.println("WS ID HERE " + workStationId);
         refreshTable();
     }
 

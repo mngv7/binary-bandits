@@ -14,13 +14,13 @@ public class LocationsAndContentsDAO {
         connection = DatabaseConnection.getInstance();
     }
 
-    /*
+    /**
      * Unlike other DAOs in ProTrack, this one manipulates two database tables.
      * Incidentally we create them both here.
      */
     public void createTables() {
         try {
-            /* NOTE: locationCapacity has been made an integer as a percentage makes zero sense here.
+            /**NOTE: locationCapacity has been made an integer as a percentage makes zero sense here.
              *       This deviates from the design by quite a bit.
              */
             Statement createTableForLocations = connection.createStatement();
@@ -43,7 +43,7 @@ public class LocationsAndContentsDAO {
         }
     }
 
-    /*
+    /**
      * Inserts a new Warehouse into the locations table.
      * In ProTrack, we only have one global warehouse but this code was written with the old
      * Warehouse interface design in mind before the database ERD changed.
@@ -66,12 +66,8 @@ public class LocationsAndContentsDAO {
         }
     }
 
-    /*
+    /**
      * Inserts a new Workstation into the locations table.
-     * TODO: Maybe change method naming? With its current usage often following a call to
-     *       operator new() on the implementation of Workstation in use, this could be renamed
-     *       addWorkstation instead.
-     *       The same can be said for Warehouse but typically in ProTrack we only use one.
      */
     public void newWorkstation(Workstation workstation) {
         try {
@@ -144,19 +140,6 @@ public class LocationsAndContentsDAO {
         int locationId = -1;
 
         try {
-            /*
-            PreparedStatement getPrice = connection.prepareStatement(
-                            "SELECT SUM (a.requiredAmount * b.cost) AS TotalValue " +
-                                    "FROM requiredParts a " +
-                                    "JOIN parts b ON a.PartsId = b.PartsId " +
-                                    "WHERE a.productId = ?");
-                    getPrice.setInt(1, productId);
-                    ResultSet rs2 = getPrice.executeQuery();
-
-                    if (rs2.next()) {
-                        price += rs2.getDouble("TotalValue");
-                    }
-             */
             PreparedStatement getLocID = connection.prepareStatement(
                     "SELECT locationID " +
                             "FROM locations a " +
@@ -166,11 +149,7 @@ public class LocationsAndContentsDAO {
 
             if (rs2.next()) {
                 locationId = rs2.getInt("locationID");
-                //System.out.println("This is locationID " + locationId);
-                //return locationId;
             }
-
-            //return locationId;
 
         } catch (SQLException e) {
             System.out.println(e);
@@ -179,7 +158,25 @@ public class LocationsAndContentsDAO {
         return locationId;
     }
 
-    /*
+    public String getNameFromID(int workstationId) {
+        String workstationName = null;
+
+        try {
+            PreparedStatement nameQuery = connection.prepareStatement(
+                    "SELECT locationAlias FROM locations WHERE locationID = ?");
+            nameQuery.setInt(1, workstationId);
+            ResultSet rs = nameQuery.executeQuery();
+
+            workstationName = rs.getString("locationAlias");
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return workstationName;
+    }
+
+    /**
      * Inserts parts into a location by making links between the locationID and partID in the locationcontents table.
      * This is more or less generic but intended to be utilised by Warehouse and Workstation in specific ways.
      * If a locationID and partsID pair already exists, the quantity is added to the existing quantity instead.

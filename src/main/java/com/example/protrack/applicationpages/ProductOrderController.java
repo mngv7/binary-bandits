@@ -30,13 +30,7 @@ public class ProductOrderController {
     private ComboBox<ProductOrder> productOrderComboBox;
 
     @FXML
-    private Button goToProductBuildButton;
-
-    @FXML
     private TableView<ProductBuild> productBuildTableView;
-
-    @FXML
-    private VBox productBuildVBox;
 
     @FXML
     private TableColumn<ProductBuild, Integer> colbuildID;
@@ -83,12 +77,6 @@ public class ProductOrderController {
 
         productBuildTableView.getItems().clear();
         productBuildTableView.getItems().addAll(productBuildList);
-    }
-
-    private void generateProductBuildTable(List<ProductBuild> productBuildList) {
-        for (ProductBuild productBuild : productBuildList) {
-            System.out.println("Test");
-        }
     }
 
     public void onClosePopupButton(ActionEvent actionEvent) {

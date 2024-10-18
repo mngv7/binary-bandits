@@ -25,9 +25,6 @@ public class AllocateWorkstationController {
     @FXML
     private ComboBox<String> workstationComboBox;
 
-    @FXML
-    private Button allocateButton;
-
     public void initialize() {
     }
 
