@@ -6,9 +6,11 @@ import com.example.protrack.products.TestRecordDAO;
 import com.example.protrack.utility.DatabaseConnection;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -29,13 +31,11 @@ public class CreateTestRecordController {
     @FXML
     private VBox testRecordsVBox;
     @FXML
-    private VBox removeAllTRButtonContainer;
     private String productIdLabel;
 
     public void initialize() {
-
-        VBox newRow = new VBox();
         HBox newColumn = new HBox();
+
         numSteps++;
         Label label = new Label("Step " + numSteps + ": ");
         label.getStyleClass().add("parts-table-label");
@@ -44,59 +44,44 @@ public class CreateTestRecordController {
         textField.setPromptText("Description");
 
         ComboBox<Object> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Checkbox 1", "Text Entry");
+        comboBox.getItems().addAll("Checkbox", "Text");
+        comboBox.setPromptText("Criterion");
+        comboBox.setMaxWidth(90);
+
+        Region spacer1 = new Region();
+        spacer1.setMinWidth(20);
 
         TextField textField2 = new TextField();
-        textField2.setPromptText("Check Criteria");
+        textField2.setPromptText("Enter Check Criteria");
+        textField2.setMaxWidth(140);
 
+        Region spacer2 = new Region();
+        spacer2.setMinWidth(10);
+
+        // for each row add a button that removes that row.
         Button removeButton = new Button("Remove Step");
         removeButton.getStyleClass().add("create-product-button-small");
+        removeButton.setStyle("-fx-background-color: red;");
         removeButton.setOnAction(event -> removeRow(newColumn));
 
-        newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
+        newColumn.getChildren().addAll(label, textField, spacer1, comboBox, textField2, spacer2, removeButton);
 
         testRecordsVBox.getChildren().add(newColumn);
 
-        testRecordsVBox.getChildren().addListener((ListChangeListener<? super Node>) c -> {
-            updateButtonVisibility();
-        });
-
+        testRecordsVBox.setAlignment(Pos.CENTER_LEFT);
     }
 
     public void setProductId(String value) {
         productIdLabel = value;
     }
 
-    private void updateButtonVisibility() {
-        Button removeAllButton = new Button("Remove all Steps");
-        removeAllButton.getStyleClass().add("create-product-button");
-        removeAllButton.setOnAction(event -> {
-            //Do things here
-            testRecordsVBox.getChildren().clear();
-            removeAllTRButtonContainer.getChildren().clear();
-            numSteps = 0;
-        });
-        if (testRecordsVBox.getChildren().isEmpty()) {
-            // If no rows, remove the button if it exists
-            removeAllTRButtonContainer.getChildren().remove(removeAllButton);
-        } else {
-            // If there are rows, ensure the button is added
-            if (!removeAllTRButtonContainer.getChildren().contains(removeAllButton)) {
-                removeAllTRButtonContainer.getChildren().clear();
-                removeAllTRButtonContainer.getChildren().add(removeAllButton);
-            }
-        }
-    }
-
-    //Adds Test record to page
-
     /**
      * Add test record to page
      */
     @FXML
     protected void addTestRecord() {
-        VBox newRow = new VBox();
         HBox newColumn = new HBox();
+
         numSteps++;
         Label label = new Label("Step " + numSteps + ": ");
         label.getStyleClass().add("parts-table-label");
@@ -105,17 +90,27 @@ public class CreateTestRecordController {
         textField.setPromptText("Description");
 
         ComboBox<Object> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("Checkbox 1", "Text Entry");
+        comboBox.getItems().addAll("Checkbox", "Text");
+        comboBox.setPromptText("Criterion");
+        comboBox.setMaxWidth(90);
+
+        Region spacer1 = new Region();
+        spacer1.setMinWidth(20);
 
         TextField textField2 = new TextField();
-        textField2.setPromptText("Check Criteria");
+        textField2.setPromptText("Enter Check Criteria");
+        textField2.setMaxWidth(140);
+
+        Region spacer2 = new Region();
+        spacer2.setMinWidth(10);
 
         // for each row add a button that removes that row.
         Button removeButton = new Button("Remove Step");
         removeButton.getStyleClass().add("create-product-button-small");
+        removeButton.setStyle("-fx-background-color: red;");
         removeButton.setOnAction(event -> removeRow(newColumn));
 
-        newColumn.getChildren().addAll(label, textField, comboBox, textField2, removeButton);
+        newColumn.getChildren().addAll(label, textField, spacer1, comboBox, textField2, spacer2, removeButton);
 
         testRecordsVBox.getChildren().add(newColumn);
     }
@@ -214,8 +209,6 @@ public class CreateTestRecordController {
                     // Create new test record using previous values
                     TestRecordDAO testRecordDAO = new TestRecordDAO();
                     testRecordDAO.newTestRecordStep(new TestRecord(stepId, productIdValue, stepNum, description, checkType, checkCriteria));
-
-
                 }
             }
             connection.commit();
@@ -232,6 +225,10 @@ public class CreateTestRecordController {
 
     }
 
+    /**
+     * During an attempt at closing the pop-up, ask the user whether
+     * they really would like the close the tab
+     */
     @FXML
     protected void onClosePopupButton() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -240,29 +237,25 @@ public class CreateTestRecordController {
         alert.setContentText("Are you sure you want to cancel?");
         alert.setGraphic(null);
 
-        DialogPane dialogPane = alert.getDialogPane();
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("cancelAlert.css")).toExternalForm();
-        dialogPane.getStyleClass().add("cancelDialog");
-        dialogPane.getStylesheets().add(stylesheet);
-
+        // Define dialog buttons
         ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
-
         alert.getButtonTypes().setAll(confirmBtn, backBtn);
-        Stage stage = (Stage) closePopupButton.getScene().getWindow();
-        Node confirmButton = dialogPane.lookupButton(confirmBtn);
-        ButtonBar.setButtonData(confirmButton, ButtonBar.ButtonData.LEFT);
-        confirmButton.setId("confirmBtn");
-        Node backButton = dialogPane.lookupButton(backBtn);
-        ButtonBar.setButtonData(backButton, ButtonBar.ButtonData.RIGHT);
-        backButton.setId("backBtn");
-        alert.showAndWait();
-        if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
-            alert.close();
-            stage.close();
-        } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
-            alert.close();
-        }
+
+        Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
+
+        confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
+        cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
+
+        // Load the CSS file
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+
+        // Show confirmation dialog and close if confirmed
+        alert.showAndWait().ifPresent(result -> {
+            if (result == confirmBtn) {
+                ((Stage) closePopupButton.getScene().getWindow()).close();
+            }
+        });
     }
 }

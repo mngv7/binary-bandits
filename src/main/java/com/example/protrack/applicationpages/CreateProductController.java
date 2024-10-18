@@ -28,7 +28,7 @@ import static java.lang.Integer.parseInt;
 
 public class CreateProductController {
     private static final String TITLE = "Create Product";
-    private static final int WIDTH = 900;
+    private static final int WIDTH =590;
     private static final int HEIGHT = 360;
 
     @FXML
@@ -177,7 +177,6 @@ public class CreateProductController {
     protected void onCreateProductButton() {
 
         ProductDAO productDAO = new ProductDAO();
-        BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
 
         try {
 
