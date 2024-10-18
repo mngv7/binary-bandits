@@ -46,10 +46,10 @@ public class CreateTestRecordController {
         ComboBox<Object> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("Checkbox", "Text");
         comboBox.setPromptText("Criterion");
-        comboBox.setMaxWidth(90);
+        comboBox.setMaxWidth(100);
 
         Region spacer1 = new Region();
-        spacer1.setMinWidth(20);
+        spacer1.setMinWidth(10);
 
         TextField textField2 = new TextField();
         textField2.setPromptText("Enter Check Criteria");
@@ -92,10 +92,10 @@ public class CreateTestRecordController {
         ComboBox<Object> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("Checkbox", "Text");
         comboBox.setPromptText("Criterion");
-        comboBox.setMaxWidth(90);
+        comboBox.setMaxWidth(100);
 
         Region spacer1 = new Region();
-        spacer1.setMinWidth(20);
+        spacer1.setMinWidth(10);
 
         TextField textField2 = new TextField();
         textField2.setPromptText("Enter Check Criteria");
@@ -143,7 +143,7 @@ public class CreateTestRecordController {
                 TextField textField1 = (TextField) column.getChildren().get(1);
 
 
-                TextField textField2 = (TextField) column.getChildren().get(3);
+                TextField textField2 = (TextField) column.getChildren().get(4);
 
                 Button removeButton = new Button("Remove Step");
 
