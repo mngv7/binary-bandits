@@ -208,7 +208,6 @@ public class MainController {
 
     private void loadContent(String fxmlFile) {
         try {
-            Scene scene = dynamicVBox.getScene();
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
@@ -227,5 +226,9 @@ public class MainController {
 
     public void setEmployeeTitle(String employeeTitle) {
         this.employeeTitle.setText("Access Level: " + employeeTitle);
+    }
+
+    public VBox getDynamicVBox(){
+        return dynamicVBox;
     }
 }

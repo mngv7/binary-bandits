@@ -65,23 +65,14 @@ public class AllocateWorkstationController {
     // This function loads a new FXML page when called, complete with an error handler.
     private void loadNewPage(String fxmlFilePath) {
         try {
-            //System.out.println("Loading FXML: " + fxmlFilePath);  // Debugging line
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFilePath));
             Parent root = loader.load();
 
-            //Transfers productID to create test controller page
-            //CreateTestRecordController createTestRecordController = fxmlLoader.getController();
-            //String productIdValue = productIdField.getText();
-            //createTestRecordController.setProductId(productIdValue);
-
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/WorkStation.fxml"));
             WorkStationController workStationController = loader.getController();
             LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
-            //System.out.println("This is workstation alias" + workstationComboBox.getValue());
+
             int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
             workStationController.setWorkStationId(workstationId);
-            //System.out.println("This is ws id " + workstationId);
-
 
             // Get the current stage (window) and set the new scene
             Stage stage = (Stage) workstationComboBox.getScene().getWindow();

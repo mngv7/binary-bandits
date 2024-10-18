@@ -9,6 +9,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            fx:id="container"
             fx:controller="com.example.protrack.applicationpages.ViewWorkstation2"
             prefHeight="600.0" prefWidth="900.0" styleClass="add-parts-popup">
 

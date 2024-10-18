@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -47,6 +49,9 @@ public class ViewWorkstation2 {
     private Button toProductBuild;
     @FXML
     private Label workStationTitle;
+    @FXML
+    private BorderPane container;
+
     private ObservableList<WorkstationPartDBTable> wsPartDBTable;
     private int workStationId = -1;
 
@@ -200,48 +205,13 @@ public class ViewWorkstation2 {
         refreshTable();
     }
 
-    public void goToProductBuild() {
-        Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-build.fxml"));
-
-        try {
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-
-            Parent createAllocateWSRoot = fxmlLoader.load();
-
-            ProductBuildController productBuildController = fxmlLoader.getController();
-            //LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
-            //int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
-            productBuildController.setWorkStation(workStationId);
-
-            Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
-            scene.getStylesheets().add(stylesheet);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void goToProductOrder() {
-        Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-order.fxml"));
-
         try {
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-
-            Parent createAllocateWSRoot = fxmlLoader.load();
-
-            //ProductBuildController productBuildController = fxmlLoader.getController();
-            //productBuildController.setWorkStation(workStationId);
-            ProductOrderController productOrderController = fxmlLoader.getController();
-            productOrderController.setWorkStation(workStationId);
-
-            Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
-            scene.getStylesheets().add(stylesheet);
-            stage.setScene(scene);
-            stage.show();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-order.fxml"));
+            Parent content = fxmlLoader.load();
+            VBox dynamicVBox = parentMainController.getDynamicVBox();
+            dynamicVBox.getChildren().clear();
+            dynamicVBox.getChildren().add(content);
 
         } catch (IOException e) {
             e.printStackTrace();
