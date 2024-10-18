@@ -9,8 +9,8 @@
             prefHeight="360.0" prefWidth="600.0" styleClass="add-parts-popup">
 
     <top>
-        <GridPane styleClass="parts-title-container" hgap="205">
-            <Label text="Test Records" styleClass="parts-title-label" GridPane.rowIndex="0"/>
+        <GridPane styleClass="parts-title-container" hgap="168">
+            <Label text="Test Record Creation" styleClass="parts-title-label" GridPane.rowIndex="0"/>
             <Button fx:id="closePopupButton" text="❌" onAction="#onClosePopupButton" GridPane.halignment="RIGHT"
                     GridPane.rowIndex="0" GridPane.rowSpan="2" GridPane.columnIndex="2" styleClass="close-button"/>
         </GridPane>

@@ -263,6 +263,8 @@ public class CreateProductController {
             createTestRecordController.setProductId(productIdValue);
 
             Stage stage = (Stage) productIdField.getScene().getWindow();
+            stage.setX(stage.getX() - 120);
+            stage.setY(stage.getY() + 100);
 
             Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
             scene.getStylesheets().add(stylesheet);
