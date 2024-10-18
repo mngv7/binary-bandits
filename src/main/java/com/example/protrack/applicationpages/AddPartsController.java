@@ -98,45 +98,31 @@ public class AddPartsController {
      */
     @FXML
     protected void onClosePopupButton() {
-        // Create a confirmation alert
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UNDECORATED);
         alert.setHeaderText("Cancel Part Creation");
         alert.setContentText("Are you sure you want to cancel?");
         alert.setGraphic(null);
 
-        // Apply custom stylesheet to the alert dialog
-        DialogPane dialogPane = alert.getDialogPane();
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("cancelAlert.css")).toExternalForm();
-        dialogPane.getStyleClass().add("cancelDialog");
-        dialogPane.getStylesheets().add(stylesheet);
-
-        // Define the confirm and back buttons
+        // Define dialog buttons
         ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
         alert.getButtonTypes().setAll(confirmBtn, backBtn);
 
-        // Get the current stage (popup window)
-        Stage stage = (Stage) closePopupButton.getScene().getWindow();
+        Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
 
-        // Set button data for confirm and back buttons
-        Node confirmButton = dialogPane.lookupButton(confirmBtn);
-        ButtonBar.setButtonData(confirmButton, ButtonBar.ButtonData.LEFT);
-        confirmButton.setId("confirmBtn");
-        Node backButton = dialogPane.lookupButton(backBtn);
-        ButtonBar.setButtonData(backButton, ButtonBar.ButtonData.RIGHT);
-        backButton.setId("backBtn");
+        confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
+        cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
 
-        // Show the alert and handle the user's response
-        alert.showAndWait();
-        if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
-            // Close the stage if user confirms cancellation
-            alert.close();
-            stage.close();
-        } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
-            // Close the alert if user decides to go back
-            alert.close();
-        }
+        // Load the CSS file
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+
+        // Show confirmation dialog and close if confirmed
+        alert.showAndWait().ifPresent(result -> {
+            if (result == confirmBtn) {
+                ((Stage) closePopupButton.getScene().getWindow()).close();
+            }
+        });
     }
 }
