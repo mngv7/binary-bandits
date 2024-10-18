@@ -50,8 +50,8 @@ public class ProductsController implements Observer {
     */
 
     private static final String TITLE = "Create Product";
-    private static final int WIDTH = 900;
-    private static final int HEIGHT = 360;
+    private static final int WIDTH = 350;
+    private static final int HEIGHT = 550;
     @FXML
     public Button addProductButton;
     @FXML
@@ -131,8 +131,7 @@ public class ProductsController implements Observer {
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
-            popupStage.setY(150);
-            popupStage.setX(390);
+
             popupStage.showAndWait();
             subject.syncDataFromDB();
         } catch (IOException e) {

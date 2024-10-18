@@ -216,10 +216,19 @@ public class CreateWorkOrderController {
 
         } catch (NumberFormatException e) {
             // Handle invalid number formats for quantity
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText("Invalid Quantity");
-            alert.setContentText("Please enter a valid number for quantity.");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.setHeaderText("Invalid Product Entry");
+            alert.setContentText("Ensure product selected with a valid quantity.");
+            alert.setGraphic(null);
+
+            ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
+            alert.getButtonTypes().setAll(confirmBtn);
+            Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+            confirmButton.setStyle("-fx-background-color: #390b91; -fx-text-fill: white; -fx-style: bold;");
+
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+
             alert.showAndWait();
         }
     }

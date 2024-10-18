@@ -1,9 +1,7 @@
 package com.example.protrack.applicationpages;
 
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.customer.CustomerDAOImplementation;
-import com.example.protrack.users.IUsersDAO;
 import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorder.WorkOrder;
@@ -16,15 +14,14 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.print.PrinterJob;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.awt.image.BufferedImage;
-import javafx.print.PrinterJob;
 import java.util.List;
 
 public class OrderLabelController {

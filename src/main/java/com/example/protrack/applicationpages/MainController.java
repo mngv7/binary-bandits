@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -21,8 +22,8 @@ import java.util.Objects;
 public class MainController {
 
     private static final String TimesheetTITLE = "Add Timesheets";
-    private static final int TimesheetWIDTH = 500;
-    private static final int TimesheetHEIGHT = 500;
+    private static final int TimesheetWIDTH = 400;
+    private static final int TimesheetHEIGHT = 400;
     @FXML
     private Label employeeName;
     @FXML
@@ -34,10 +35,35 @@ public class MainController {
     @FXML
     private VBox inventoryVBox;
 
+    private Button activeButton; // Stores the reference to the currently active button
+
+    @FXML
+    private Button dashboardButton;
+    @FXML
+    private Button inventoryButton;
+    @FXML
+    private Button purchaseOrdersButton;
+    @FXML
+    private Button customersButton;
+    @FXML
+    private Button suppliersButton;
+    @FXML
+    private Button employeesButton;
+    @FXML
+    private Button productsButton;
+    @FXML
+    private Button partsButton;
+    @FXML
+    private Button warehouseButton;
+
     public void initialize() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/dashboard.fxml"));
             Parent dashboardContent = loader.load();
+
+            activeButton = dashboardButton; // Replace 'dashboardButton' with your actual button reference
+            setActiveButton(activeButton);
+
             // Clear the existing content of dynamicVBox and add the new content
             dynamicVBox.getChildren().clear();
             dynamicVBox.getChildren().add(dashboardContent);
@@ -45,6 +71,31 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Sets the buttons background blue depending on the current page.
+     *
+     * @param button the button to be set
+     */
+    private void setActiveButton(Button button) {
+        // Remove active style from all buttons
+        partsButton.getStyleClass().remove("menu-button-active");
+        productsButton.getStyleClass().remove("menu-button-active");
+        inventoryButton.getStyleClass().remove("menu-button-active");
+
+        activeButton.getStyleClass().remove("menu-button-active");
+
+        // Set active styles based on which button is clicked
+        if (button == partsButton || button == productsButton) {
+            button.getStyleClass().add("menu-button-active");
+            inventoryButton.getStyleClass().add("menu-button-active");
+        }
+
+        // Update the active button reference
+        activeButton = button; // Update activeButton reference
+        activeButton.getStyleClass().add("menu-button-active");
+    }
+
 
     @FXML
     private void inventory() {
@@ -60,31 +111,37 @@ public class MainController {
 
     @FXML
     private void dashboard() {
+        setActiveButton(dashboardButton);
         loadContent("/com/example/protrack/dashboard.fxml");
     }
 
     @FXML
     private void products() {
+        setActiveButton(productsButton);
         loadContent("/com/example/protrack/products.fxml");
     }
 
     @FXML
     private void parts() {
+        setActiveButton(partsButton);
         loadContent("/com/example/protrack/parts/parts.fxml");
     }
 
     @FXML
     private void purchaseOrders() {
+        setActiveButton(purchaseOrdersButton);
         loadContent("/workorder/work_orders.fxml");
     }
 
     @FXML
     private void customers() {
+        setActiveButton(customersButton);
         loadContent("/customer/customers.fxml");
     }
 
     @FXML
     private void suppliers() {
+        setActiveButton(suppliersButton);
         loadContent("/supplier/suppliers.fxml");
     }
 
@@ -97,6 +154,8 @@ public class MainController {
             // Get the EmployeesController and inject MainController
             EmployeesController employeesController = loader.getController();
             employeesController.setMainController(this);  // Pass the current MainController instance
+
+            setActiveButton(employeesButton);
 
             dynamicVBox.getChildren().clear();  // Clear existing content
             dynamicVBox.getChildren().add(content);  // Add new content
@@ -114,6 +173,8 @@ public class MainController {
             // Get the controller and inject MainController
             ExpandedEmployeeController expandedController = loader.getController();
             expandedController.setMainController(this);  // Inject the current MainController instance
+
+            setActiveButton(employeesButton);
 
             dynamicVBox.getChildren().clear();
             dynamicVBox.getChildren().add(content);
@@ -152,6 +213,7 @@ public class MainController {
 
     @FXML
     private void myProfile() {
+        setActiveButton(employeesButton);
         loadContent("/profile/my_profile.fxml");
     }
 
@@ -162,6 +224,8 @@ public class MainController {
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/protrack/warehouse.fxml"));
             Parent content = loader.load();
+
+            setActiveButton(warehouseButton);
 
             WarehouseController controller = loader.getController();
             if (controller != null) {
@@ -189,6 +253,8 @@ public class MainController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/view-workstation2.fxml"));
         String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
 
+        setActiveButton(warehouseButton);
+
         Parent createAllocateWSRoot = null;
         try {
             createAllocateWSRoot = fxmlLoader.load();
@@ -208,7 +274,6 @@ public class MainController {
 
     private void loadContent(String fxmlFile) {
         try {
-            Scene scene = dynamicVBox.getScene();
             dynamicVBox.getChildren().clear(); // Clears existing content
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent content = loader.load();
@@ -227,5 +292,9 @@ public class MainController {
 
     public void setEmployeeTitle(String employeeTitle) {
         this.employeeTitle.setText("Access Level: " + employeeTitle);
+    }
+
+    public VBox getDynamicVBox(){
+        return dynamicVBox;
     }
 }

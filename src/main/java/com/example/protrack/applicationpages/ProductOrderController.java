@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
@@ -52,7 +51,7 @@ public class ProductOrderController {
 
     private Integer currentWorkstationId = -1;
 
-    //private Integer currentProductOrderId = -1;
+    private MainController mainController;
 
     public void initialize() {
         // Populate the ComboBoxes with data from the database
@@ -70,6 +69,10 @@ public class ProductOrderController {
 
         //productBuildTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+    }
+
+    public void setMainController(MainController controller) {
+        this.mainController = controller;
     }
 
     public void setWorkStation(int value) {
@@ -123,27 +126,19 @@ public class ProductOrderController {
         }
     }
 
-    public void goToProductBuildButton(ActionEvent actionEvent) {
-        Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-build.fxml"));
-
+    public void goToProductBuildButton() {
         try {
-            String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
-
-            Parent createAllocateWSRoot = fxmlLoader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/protrack/product-build.fxml"));
+            Parent content = fxmlLoader.load();
 
             ProductBuildController productBuildController = fxmlLoader.getController();
-            //LocationsAndContentsDAO locationsAndContentsDAO = new LocationsAndContentsDAO();
-            //int workstationId = locationsAndContentsDAO.getLocationIDFromAlias(workstationComboBox.getValue());
             productBuildController.setWorkStation(currentWorkstationId);
             ProductOrder productOrder = productOrderComboBox.getSelectionModel().getSelectedItem();
-            //System.out.println("ProductORDERID " + productOrder.getProductOrderID());
             productBuildController.setProductOrder(productOrder.getProductOrderID());
 
-            Scene scene = new Scene(createAllocateWSRoot, Main.getWidth(), Main.getHeight());
-            scene.getStylesheets().add(stylesheet);
-            stage.setScene(scene);
-            stage.show();
+            VBox dynamicVBox = mainController.getDynamicVBox();
+            dynamicVBox.getChildren().clear();
+            dynamicVBox.getChildren().add(content);
 
         } catch (IOException e) {
             e.printStackTrace();

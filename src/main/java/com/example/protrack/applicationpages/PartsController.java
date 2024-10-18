@@ -28,8 +28,8 @@ import java.util.Objects;
 public class PartsController implements Observer {
 
     private static final String TITLE = "Add Parts";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
+    private static final int WIDTH = 350;
+    private static final int HEIGHT = 410;
     @FXML
     public Button addPartsButton;
     @FXML
@@ -111,8 +111,7 @@ public class PartsController implements Observer {
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
-            popupStage.setY(150);
-            popupStage.setX(390);
+
             popupStage.showAndWait();
             subject.syncDataFromDB();
         } catch (IOException e) {

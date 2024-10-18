@@ -7,7 +7,6 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

@@ -2,7 +2,6 @@ package com.example.protrack.workorder;
 
 import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.observers.Observer;
 import com.example.protrack.observers.WorkOrderTableSubject;
@@ -10,20 +9,15 @@ import com.example.protrack.users.ProductionUser;
 import com.example.protrack.users.UsersDAO;
 import com.example.protrack.workorderproducts.WorkOrderProduct;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.*;
-import javafx.util.Callback;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -167,9 +161,6 @@ public class WorkOrderController implements Observer {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
-            // Center the popup window on the screen
-            centerPopupWindow(popupStage);
-
             // Show the popup window
             popupStage.showAndWait();
             workOrderSubject.syncDataFromDB();
@@ -196,23 +187,11 @@ public class WorkOrderController implements Observer {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
-            // Center the popup window on the screen
-            centerPopupWindow(popupStage);
-
             popupStage.showAndWait();
             workOrderSubject.syncDataFromDB();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Centers the popup window on the screen.
-     */
-    private void centerPopupWindow(Stage popupStage) {
-        Bounds rootBounds = createWorkOrderButton.getScene().getRoot().getLayoutBounds();
-        popupStage.setY(rootBounds.getCenterY() - (HEIGHT / 2));
-        popupStage.setX(rootBounds.getCenterX() - (WIDTH / 2));
     }
 
     /**

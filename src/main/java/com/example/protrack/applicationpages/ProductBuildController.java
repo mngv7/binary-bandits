@@ -2,7 +2,6 @@ package com.example.protrack.applicationpages;
 
 import com.example.protrack.Main;
 import com.example.protrack.customer.Customer;
-import com.example.protrack.customer.CustomerDAO;
 import com.example.protrack.customer.CustomerDAOImplementation;
 import com.example.protrack.database.ProductBuildWSAmt;
 import com.example.protrack.parts.Parts;
@@ -30,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -98,31 +98,28 @@ public class ProductBuildController {
         colPBWSreqAmt.setCellValueFactory(new PropertyValueFactory<>("reqAmount"));
         colWorkstationAmt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        //System.out.println("HERE IN PB BABY");
         loadBuildsFromDB();
     }
 
     private void loadBuildsFromDB() {
-
         try {
             builds.clear();
             productBuildVBox.getChildren().clear();
             ProductBuildDAO productBuildDAO = new ProductBuildDAO();
             List<ProductBuild> buildList = productBuildDAO.getAllProductBuildsWithPOID(currentProductOrderId);
 
-            //System.out.println("Does buildlist have stuff? " + buildList.size());
-            //System.out.println("Does buildlist have stuff? " + buildList.isEmpty());
             for (ProductBuild build : buildList) {
                 int buildId = build.getBuildId();
                 int productOrderId = build.getProductOrderId();
                 float buildCompletion = build.getBuildCompletion();
                 int productId = build.getProductId();
                 builds.add(new ProductBuild(buildId, productOrderId, buildCompletion, productId));
-                //System.out.println("Got this build Id" + buildId);
 
                 VBox newRow = new VBox();
 
                 Label idLabel = new Label("Build ID: " + buildId);
+                idLabel.setStyle("-fx-font-weight: bold;");
+
                 Label idLabel2 = new Label("Product Order ID: " + productOrderId);
                 Label idLabel3 = new Label("Build Completion: " + buildCompletion);
                 Label idLabel4 = new Label("ProductID: " + productId);
@@ -163,14 +160,10 @@ public class ProductBuildController {
 
         PBWSRequirementTableView.getItems().clear();
         PBWSRequirementTableView.getItems().addAll(productBuildWSAmtList);
-
-
-        //Now using the productBoM generate the table.
-
     }
 
     /**
-     * Loads
+     * Loads Test Records
      *
      * @param productId
      * @return
@@ -200,15 +193,22 @@ public class ProductBuildController {
             VBox newRow = new VBox();
 
             Label idLabel = new Label("Step " + stepNum + ":");
+            idLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
             Label idLabel2 = new Label(stepDescription);
 
+            Region spacer = new Region();
+            spacer.setMinHeight(10);
+
             if (stepCheckType.equals("CheckBox")) {
-                CheckBox checkBox = new CheckBox("Checkbox");
-                newRow.getChildren().addAll(idLabel, idLabel2, checkBox);
+                CheckBox checkBox = new CheckBox("Completed");
+                checkBox.setStyle("-fx-font-color: grey;");
+                newRow.getChildren().addAll(idLabel, idLabel2, checkBox, spacer);
             } else {
 
-                TextField textfield = new TextField("Enter stuff here");
-                newRow.getChildren().addAll(idLabel, idLabel2, textfield);
+                TextField textfield = new TextField();
+                textfield.setPromptText("Enter test comment");
+                textfield.setStyle("-fx-font-color: gray;");
+                newRow.getChildren().addAll(idLabel, idLabel2, textfield, spacer);
             }
             productBuildTRVBox.getChildren().add(newRow);
         }
@@ -302,10 +302,6 @@ public class ProductBuildController {
         } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
             alert.close();
         }
-    }
-
-
-    public void onAddPartButton(ActionEvent actionEvent) {
     }
 
     public void onCommitButton(ActionEvent actionEvent) {
@@ -419,31 +415,4 @@ public class ProductBuildController {
             e.printStackTrace();
         }
     }
-
-
-    /*
-    @FXML
-    protected void PBSearch(ActionEvent actionEvent) {
-        for (ProductBuild build : builds) {
-            int buildId = build.getBuildId();
-            int productOrderId = build.getProductOrderId();
-            float buildCompletion = build.getBuildCompletion();
-            int productId = build.getProductId();
-            //builds.add(new ProductBuild(buildId, productOrderId, buildCompletion, productId));
-            System.out.println("Got this build Id" + buildId);
-
-            VBox newRow = new VBox();
-
-            Label idLabel = new Label("Build ID: " + buildId);
-            Label idLabel2 = new Label("Product Order ID: " + productOrderId);
-            Label idLabel3 = new Label("Build Completion: " + buildCompletion);
-            Label idLabel4 = new Label("ProductID: " + productId);
-
-            newRow.getChildren().addAll(idLabel, idLabel2, idLabel3, idLabel4);
-
-            newRow.setOnMouseClicked(event -> selectProductBuild(newRow));
-
-            productBuildVBox.getChildren().add(newRow);
-        }
-    }*/
 }

@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -143,11 +142,6 @@ public class SupplierController implements Observer {
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
 
-            // Center the popup window on the screen
-            Bounds rootBounds = addSupplierButton.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 100);
-            popupStage.setX(rootBounds.getCenterX());
-
             // Show the popup window
             popupStage.showAndWait();
 
@@ -185,11 +179,6 @@ public class SupplierController implements Observer {
             String stylesheet = Objects.requireNonNull(Main.class.getResource("stylesheet.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
             popupStage.setScene(scene);
-
-            // Center the popup window on the screen
-            Bounds rootBounds = addSupplierButton.getScene().getRoot().getLayoutBounds();
-            popupStage.setY(rootBounds.getCenterY() - 100);
-            popupStage.setX(rootBounds.getCenterX());
 
             // Show the popup window
             popupStage.showAndWait();

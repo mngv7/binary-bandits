@@ -1,6 +1,5 @@
 package com.example.protrack.report;
 
-import com.example.protrack.users.ProductionUser;
 import com.example.protrack.workorder.WorkOrder;
 import com.example.protrack.workorder.WorkOrdersDAO;
 import com.example.protrack.workorderproducts.WorkOrderProduct;

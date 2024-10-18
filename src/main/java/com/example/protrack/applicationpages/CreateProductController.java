@@ -28,7 +28,7 @@ import static java.lang.Integer.parseInt;
 
 public class CreateProductController {
     private static final String TITLE = "Create Product";
-    private static final int WIDTH = 900;
+    private static final int WIDTH =590;
     private static final int HEIGHT = 360;
 
     @FXML
@@ -120,13 +120,20 @@ public class CreateProductController {
                     //Make the new vbox with those partid
                     // Create a new row with the partId and a partName
                     VBox newRow = new VBox();
+
                     Label idLabel = new Label("Part ID: " + rs.getString("partsId"));
+                    idLabel.setStyle("-fx-font-weight: bold;");
+
                     Label idLabel2 = new Label("Part Name: " + rs.getString("name"));
+
                     TextField textField = new TextField();
+
+                    textField.setPromptText("Enter Quantity");
                     newRow.getChildren().addAll(idLabel, idLabel2, textField);
 
                     // Add the new row to the result VBox
                     partResultVBox.getChildren().add(newRow);
+                    partIdSearchField.clear();
                 }
             } catch (SQLException ex) {
                 // Catch and print any SQL exceptions that may occur during table creation
@@ -170,7 +177,6 @@ public class CreateProductController {
     protected void onCreateProductButton() {
 
         ProductDAO productDAO = new ProductDAO();
-        BillOfMaterialsDAO billOfMaterial = new BillOfMaterialsDAO();
 
         try {
 
@@ -257,6 +263,8 @@ public class CreateProductController {
             createTestRecordController.setProductId(productIdValue);
 
             Stage stage = (Stage) productIdField.getScene().getWindow();
+            stage.setX(stage.getX() - 120);
+            stage.setY(stage.getY() + 100);
 
             Scene scene = new Scene(createProductRoot, WIDTH, HEIGHT);
             scene.getStylesheets().add(stylesheet);
@@ -275,7 +283,8 @@ public class CreateProductController {
     private void updateButtonVisibility() {
         // Creates delete all parts button
         Button removeAllButton = new Button("Remove all parts");
-        removeAllButton.getStyleClass().add("create-product-button");
+        removeAllButton.getStyleClass().add("create-product-button-small");
+        removeAllButton.setStyle("-fx-background-color: red;");
 
         removeAllButton.setOnAction(event -> {
             //Delete all children in partsResultVbox and container
@@ -306,28 +315,25 @@ public class CreateProductController {
         alert.setContentText("Are you sure you want to cancel?");
         alert.setGraphic(null);
 
-        DialogPane dialogPane = alert.getDialogPane();
-        String stylesheet = Objects.requireNonNull(Main.class.getResource("cancelAlert.css")).toExternalForm();
-        dialogPane.getStyleClass().add("cancelDialog");
-        dialogPane.getStylesheets().add(stylesheet);
-
+        // Define dialog buttons
         ButtonType confirmBtn = new ButtonType("Confirm", ButtonBar.ButtonData.YES);
         ButtonType backBtn = new ButtonType("Back", ButtonBar.ButtonData.NO);
-
         alert.getButtonTypes().setAll(confirmBtn, backBtn);
-        Stage stage = (Stage) closePopupButton.getScene().getWindow();
-        Node confirmButton = dialogPane.lookupButton(confirmBtn);
-        ButtonBar.setButtonData(confirmButton, ButtonBar.ButtonData.LEFT);
-        confirmButton.setId("confirmBtn");
-        Node backButton = dialogPane.lookupButton(backBtn);
-        ButtonBar.setButtonData(backButton, ButtonBar.ButtonData.RIGHT);
-        backButton.setId("backBtn");
-        alert.showAndWait();
-        if (alert.getResult().getButtonData() == ButtonBar.ButtonData.YES) {
-            alert.close();
-            stage.close();
-        } else if (alert.getResult().getButtonData() == ButtonBar.ButtonData.NO) {
-            alert.close();
-        }
+
+        Button confirmButton = (Button) alert.getDialogPane().lookupButton(confirmBtn);
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(backBtn);
+
+        confirmButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-style: bold;");
+        cancelButton.setStyle("-fx-background-color: #ccccff; -fx-text-fill: white; -fx-style: bold");
+
+        // Load the CSS file
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/protrack/stylesheet.css").toExternalForm());
+
+        // Show confirmation dialog and close if confirmed
+        alert.showAndWait().ifPresent(result -> {
+            if (result == confirmBtn) {
+                ((Stage) closePopupButton.getScene().getWindow()).close();
+            }
+        });
     }
 }

@@ -2,7 +2,6 @@ package com.example.protrack.profile;
 
 import com.example.protrack.customer.Customer;
 import com.example.protrack.customer.CustomerDAOImplementation;
-import com.example.protrack.employees.SelectedEmployeeSingleton;
 import com.example.protrack.report.UserReport;
 import com.example.protrack.users.AbstractUser;
 import com.example.protrack.users.ProductionUser;
@@ -15,7 +14,6 @@ import com.example.protrack.workorderproducts.WorkOrderProductsDAOImplementation
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
