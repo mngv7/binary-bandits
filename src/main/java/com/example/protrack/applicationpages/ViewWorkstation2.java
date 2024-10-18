@@ -26,8 +26,8 @@ import java.util.Objects;
 public class ViewWorkstation2 {
 
     private static final String TITLE = "Parts Request Form";
-    private static final int WIDTH = 400;
-    private static final int HEIGHT = 300;
+    private static final int WIDTH = 350;
+    private static final int HEIGHT = 280;
     @FXML
     public Button closePopupButton;
     @FXML
