@@ -28,8 +28,8 @@ import java.util.Objects;
 public class PartsController implements Observer {
 
     private static final String TITLE = "Add Parts";
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
+    private static final int WIDTH = 350;
+    private static final int HEIGHT = 410;
     @FXML
     public Button addPartsButton;
     @FXML
