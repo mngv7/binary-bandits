@@ -9,13 +9,12 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:id="container"
             fx:controller="com.example.protrack.applicationpages.ViewWorkstation2"
-            prefHeight="600.0" prefWidth="900.0" styleClass="add-parts-popup">
+            prefHeight="600.0" prefWidth="900.0" styleClass="add-parts-popup" style="-fx-border-width: 0px;">
 
     <!-- TODO: find another way to close the workstation dialog? -->
     <top>
-        <GridPane styleClass="parts-title-container" hgap="365">
+        <GridPane styleClass="parts-title-container">
             <Label fx:id="workStationTitle" text="Workstation" styleClass="parts-title-label" GridPane.rowIndex="0"/>
         </GridPane>
     </top>
